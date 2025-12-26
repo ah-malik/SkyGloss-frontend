@@ -12,9 +12,11 @@ import { ShopIcon } from "./CustomIcons";
 import { ForgotPasswordModal } from "./ForgotPasswordModal";
 import { Footer } from "./Footer";
 import { useNavigate } from "react-router";
+import { useAuth } from "../AuthContext";
 
 export function ShopLogin() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const [country, setCountry] = useState("");
   const [username, setUsername] = useState("");
@@ -77,7 +79,7 @@ export function ShopLogin() {
 
       const { access_token, user } = response.data;
       localStorage.setItem('token', access_token);
-      localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
 
       const interval = setInterval(() => {
         setProgress((prev) => {

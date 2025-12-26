@@ -10,9 +10,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { TechnicianIcon } from "./CustomIcons";
 import { ContactDistributorModal } from "./ContactDistributorModal";
 import { useNavigate } from "react-router";
+import { useAuth } from "../AuthContext";
 
 export function TechnicianLogin() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const [accessCode, setAccessCode] = useState("");
   const [country, setCountry] = useState("United States");
@@ -55,7 +57,7 @@ export function TechnicianLogin() {
       const { access_token, user } = response.data;
 
       localStorage.setItem('token', access_token);
-      localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
 
       // Show progress for better UX
       const interval = setInterval(() => {

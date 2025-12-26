@@ -10,9 +10,11 @@ import { DistributorIcon } from "./CustomIcons";
 import { ForgotPasswordModal } from "./ForgotPasswordModal";
 import { Footer } from "./Footer";
 import { useNavigate } from "react-router";
+import { useAuth } from "../AuthContext";
 
 export function DistributorLogin() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -38,7 +40,7 @@ export function DistributorLogin() {
       const { access_token, user } = response.data;
 
       localStorage.setItem('token', access_token);
-      localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
 
       const interval = setInterval(() => {
         setProgress((prev) => {

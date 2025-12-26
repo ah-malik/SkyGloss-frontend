@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
-import { ArrowLeft, ShoppingCart, Download, Play, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Download, Play, CheckCircle2, Plus, Minus } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
@@ -14,7 +14,7 @@ import { Loader2 } from "lucide-react";
 interface ProductDetailPageProps {
   productId: string;
   onBack: () => void;
-  onAddToCart: (size: string, price?: number) => void;
+  onAddToCart: (size: string, quantity: number, price?: number) => void;
   showPrice?: boolean;
   onOpenCart?: () => void;
 }
@@ -34,6 +34,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
   const [showBottomBar, setShowBottomBar] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showAether, setShowAether] = useState(false); // false = Element, true = Aether
+  const [quantity, setQuantity] = useState(1);
 
   const fetchProduct = async () => {
     try {
@@ -95,7 +96,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
   const currentPrice = sizes.find((s: any) => s.size === selectedSize)?.price || 0;
 
   const handleAddToCart = () => {
-    onAddToCart(selectedSize, showPrice ? currentPrice : undefined);
+    onAddToCart(selectedSize, quantity, showPrice ? currentPrice : undefined);
     setShowConfirmDialog(true);
   };
 
@@ -266,19 +267,51 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                 <div className="text-3xl text-[#0EA0DC] mb-2">
                   ${currentPrice.toFixed(2)}
                 </div>
-                <Badge variant="secondary" className="bg-green-100 text-green-800 border-0">
-                  In Stock
+                <Badge variant="secondary" className={`border-0 ${product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                  {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
                 </Badge>
               </div>
             )}
 
+            {/* Quantity Selector */}
+            <div className="mb-8 hidden">
+              <label className="block text-sm text-[#272727] mb-3 font-medium">Quantity</label>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center bg-gray-100 rounded-xl p-1.5 border border-gray-200">
+                  <button
+                    onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+                    className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-[#272727] shadow-sm hover:bg-[#0EA0DC] hover:text-white transition-all disabled:opacity-50"
+                    disabled={quantity <= 1 || product.stock === 0}
+                  >
+                    <Minus className="w-4 h-4" />
+                  </button>
+                  <span className="w-12 text-center font-bold text-[#272727] text-lg">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => setQuantity(prev => prev + 1)}
+                    className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-[#272727] shadow-sm hover:bg-[#0EA0DC] hover:text-white transition-all"
+                    disabled={product.stock === 0}
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+                {showPrice && (
+                  <span className="text-sm text-[#666666]">
+                    Total: <span className="text-[#0EA0DC] font-semibold">${(currentPrice * quantity).toFixed(2)}</span>
+                  </span>
+                )}
+              </div>
+            </div>
+
             {/* Add to Cart Button - Central */}
             <Button
               onClick={handleAddToCart}
-              className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] h-14 rounded-lg text-lg"
+              disabled={product.stock === 0}
+              className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] h-14 rounded-lg text-lg disabled:bg-gray-400"
             >
               <ShoppingCart className="w-5 h-5 mr-2" />
-              Add to Cart
+              {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
             </Button>
           </motion.div>
         </div>
@@ -306,19 +339,28 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
               <Card className="skygloss-card p-4 sm:p-10 rounded-2xl">
                 <h3 className="text-xl sm:text-2xl text-[#272727] mb-6 sm:mb-8">Technical Specifications</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 sm:gap-x-12 gap-y-4">
-                  {[
-                    { label: "Volume Options", value: "100ml / 250ml / 500ml" },
-                    { label: "Coverage", value: "3-4 vehicles (100ml)" },
-                    { label: "Cure Time", value: "4 hours" },
-                    { label: "Durability", value: "18 months" },
-                    { label: "Application Temp", value: "15-30°C" },
-                    { label: "Technology", value: "Hybrid Fusion" }
-                  ].map((spec, idx) => (
-                    <div key={idx} className="flex justify-between py-4 border-b border-[#0EA0DC]/10">
-                      <span className="text-[#666666]">{spec.label}</span>
-                      <span className="text-[#272727]">{spec.value}</span>
-                    </div>
-                  ))}
+                  {product.specifications && product.specifications.length > 0 ? (
+                    product.specifications.map((spec: any, idx: number) => (
+                      <div key={idx} className="flex justify-between py-4 border-b border-[#0EA0DC]/10">
+                        <span className="text-[#666666]">{spec.label}</span>
+                        <span className="text-[#272727]">{spec.value}</span>
+                      </div>
+                    ))
+                  ) : (
+                    [
+                      { label: "Volume Options", value: "100ml / 250ml / 500ml" },
+                      { label: "Coverage", value: "3-4 vehicles (100ml)" },
+                      { label: "Cure Time", value: "4 hours" },
+                      { label: "Durability", value: "18 months" },
+                      { label: "Application Temp", value: "15-30°C" },
+                      { label: "Technology", value: "Hybrid Fusion" }
+                    ].map((spec, idx) => (
+                      <div key={idx} className="flex justify-between py-4 border-b border-[#0EA0DC]/10">
+                        <span className="text-[#666666]">{spec.label}</span>
+                        <span className="text-[#272727]">{spec.value}</span>
+                      </div>
+                    ))
+                  )}
                 </div>
               </Card>
 
@@ -504,7 +546,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
             </div>
             <DialogTitle className="text-center text-2xl">Added to Cart!</DialogTitle>
             <DialogDescription className="text-center text-[#666666]">
-              SkyGloss Shield ({selectedSize}) has been added to your cart
+              {product.name} ({selectedSize}) has been added to your cart
             </DialogDescription>
           </DialogHeader>
           <div className="grid grid-cols-2 gap-4 mt-6">
@@ -542,7 +584,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                   {/* Product Name & Price */}
                   <div className="flex items-center justify-between w-full sm:w-auto">
                     <div>
-                      <h3 className="text-sm sm:text-lg text-[#272727] truncate">SkyGloss Shield</h3>
+                      <h3 className="text-sm sm:text-lg text-[#272727] truncate">{product.name}</h3>
                       {showPrice && (
                         <div className="text-base sm:text-xl text-[#666666]">
                           ${currentPrice.toFixed(2)}
@@ -566,15 +608,37 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                       </button>
                     ))}
                   </div>
+
+                  {/* Quantity Controls */}
+                  <div className="flex  items-center gap-3 bg-gray-100 rounded-lg p-1.5 border border-gray-200">
+                    <button
+                      onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+                      className="w-8 h-8 rounded-md bg-white hover:bg-[#0EA0DC] hover:text-white transition-all flex items-center justify-center shadow-sm disabled:opacity-50"
+                      disabled={quantity <= 1 || product.stock === 0}
+                    >
+                      <Minus className="w-3.5 h-3.5" />
+                    </button>
+                    <span className="text-base font-bold text-[#272727] w-8 text-center">
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={() => setQuantity(prev => prev + 1)}
+                      className="w-8 h-8 rounded-md bg-white hover:bg-[#0EA0DC] hover:text-white transition-all flex items-center justify-center shadow-sm"
+                      disabled={product.stock === 0}
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Add to Cart Button */}
                 <Button
                   onClick={handleAddToCart}
-                  className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] h-11 sm:h-12 px-6 sm:px-8 rounded-lg w-full sm:w-auto text-sm sm:text-base"
+                  disabled={product.stock === 0}
+                  className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20_px_rgba(14,160,220,0.4)] h-11 sm:h-12 px-6 sm:px-8 rounded-lg w-full sm:w-auto text-sm sm:text-base disabled:bg-gray-400"
                 >
                   <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                  Add to Cart
+                  {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
                 </Button>
               </div>
             </div>

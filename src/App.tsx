@@ -4,26 +4,24 @@ import { Navigation } from "./components/Navigation";
 import { useAuth } from "./AuthContext";
 
 export default function App() {
-  const { cartCount, showCartSheet, setShowCartSheet } = useAuth();
+  const { cartCount, setShowCartSheet, logout, accessType } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isLoggedIn =
-    location.pathname.includes("dashboard") ||
-    location.pathname.includes("resources") ||
-    location.pathname.includes("support") ||
-    location.pathname.includes("thank-you");
+  const isLoggedIn = !!accessType;
 
   return (
     <div className="size-full">
       <Navigation
         isLoggedIn={isLoggedIn}
-        onLogout={() => navigate("/")}
+        onLogout={() => {
+          logout();
+          navigate("/");
+        }}
         onNavigateResources={() => navigate("/resources")}
         onNavigateSupport={() => navigate("/support")}
         onNavigateDashboard={() => {
-          const role = localStorage.getItem("role") || "technician";
-          navigate(`/dashboard/${role}`);
+          navigate(`/dashboard/${accessType}`);
         }}
         cartCount={cartCount}
         onCartClick={() => setShowCartSheet(true)}

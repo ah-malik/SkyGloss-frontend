@@ -1,42 +1,22 @@
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
-import { Search, ShoppingCart, Download, Plus, Minus, Trash2, Eye, X, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { useNavigate, useParams } from "react-router";
+import { Search, ShoppingCart, Plus, Minus, Eye, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import api from "../api/axios";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Separator } from "./ui/separator";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "./ui/sheet";
-import { Switch } from "./ui/switch";
+import { Sheet, SheetContent, SheetTitle } from "./ui/sheet";
+
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ProductDetailPage } from "./ProductDetailPage";
 import { CheckoutPage } from "./CheckoutPage";
 import { toast } from "sonner";
-import dualLayerBanner from "../assets/600x400.svg";
-import fusionMainImage from "../assets/600x400.svg";
-import fusionElementImage from "../assets/600x400.svg";
-import fusionAetherImage from "../assets/600x400.svg";
-import resinFilmImage from "../assets/600x400.svg";
-import sealImage from "../assets/600x400.svg";
-import matteBoxImage from "../assets/600x400.svg";
-import matteBottleImage from "../assets/600x400.svg";
-import shineBoxImage from "../assets/600x400.svg";
-import shineBottleImage from "../assets/600x400.svg";
-import applicatorBottleImage from "../assets/600x400.svg";
-import edgeBladeBox1Image from "../assets/600x400.svg";
-import edgeBladeBox2Image from "../assets/600x400.svg";
-import paintPenBoxImage from "../assets/600x400.svg";
-import paintPenToolsImage from "../assets/600x400.svg";
+import { useAuth } from "../AuthContext";
 
-interface CartItem {
-  id: string;
-  name: string;
-  size: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
+
 
 interface ShopDashboardProps {
   onShowThankYou?: () => void;
@@ -51,22 +31,57 @@ export function ShopDashboard({
   showCartSheet: externalShowCartSheet = false,
   onCartSheetChange
 }: ShopDashboardProps) {
+  const { cart, addToCart: addToCartContext, updateQuantity, clearCart } = useAuth();
+  const navigate = useNavigate();
+  const { productId } = useParams();
+
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: string }>({});
   const [viewingProduct, setViewingProduct] = useState<string | null>(null);
   const [showCheckout, setShowCheckout] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Sync viewingProduct with URL parameter
+  useEffect(() => {
+    if (productId) {
+      setViewingProduct(productId);
+    } else {
+      setViewingProduct(null);
+    }
+  }, [productId]);
+
   useEffect(() => {
     fetchProducts();
   }, []);
 
+  // Handle Stripe Callback
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('success') === 'true') {
+      const orderId = params.get('order_id'); // Ensure backend sends this
+      toast.success("Payment Successful! Thank you for your order.", {
+        duration: 5000,
+      });
+      clearCart();
+      // Navigate to Receipt Page
+      if (orderId) {
+        navigate(`/dashboard/shop/receipt/${orderId}`);
+      } else {
+        // Fallback if no order ID (should rarely happen if backend is correct)
+        navigate('/dashboard/shop/my-orders');
+      }
+      if (onShowThankYou) onShowThankYou();
+    } else if (params.get('canceled') === 'true') {
+      toast.error("Payment Canceled.");
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []); // Run once on mount
+
   const fetchProducts = async () => {
     try {
-      const res = await api.get('/products');
+      const res = await api.get('/products?status=published');
       setProducts(res.data);
     } catch (err) {
       console.error("Failed to fetch products", err);
@@ -93,7 +108,7 @@ export function ShopDashboard({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [viewingProduct, showCheckout]);
 
-  // Update cart count in parent
+  // Update cart count in parent - although count is also in AuthContext
   useEffect(() => {
     if (onCartCountChange) {
       onCartCountChange(cartCount);
@@ -102,48 +117,10 @@ export function ShopDashboard({
 
   const addToCart = (product: any) => {
     const selectedSizeStr = selectedSizes[product._id] || product.sizes[0]?.size;
-    const sizeData = product.sizes.find((s: any) => s.size === selectedSizeStr);
-    const price = sizeData ? sizeData.price : 0;
-
-    const existingItem = cart.find(
-      item => item.id === product._id && item.size === selectedSizeStr
-    );
-
-    if (existingItem) {
-      setCart(cart.map(item =>
-        item.id === product._id && item.size === selectedSizeStr
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      ));
-    } else {
-      setCart([...cart, {
-        id: product._id,
-        name: product.name,
-        size: selectedSizeStr,
-        price,
-        quantity: 1,
-        image: product.images[0]
-      }]);
-    }
-
+    addToCartContext(product, selectedSizeStr);
     toast.success("Added to cart", {
       description: `${product.name} (${selectedSizeStr})`
     });
-  };
-
-  const updateQuantity = (id: string, size: string, delta: number) => {
-    setCart(cart.map(item => {
-      if (item.id === id && item.size === size) {
-        const newQuantity = Math.max(0, item.quantity + delta);
-        return { ...item, quantity: newQuantity };
-      }
-      return item;
-    }).filter(item => item.quantity > 0));
-  };
-
-  const removeFromCart = (id: string, size: string) => {
-    setCart(cart.filter(item => !(item.id === id && item.size === size)));
-    toast.success("Removed from cart");
   };
 
   const handleCheckout = () => {
@@ -151,38 +128,25 @@ export function ShopDashboard({
       toast.error("Your cart is empty");
       return;
     }
+    // Clear sub-route if navigating to checkout
+    if (productId) {
+      navigate('/dashboard/shop', { replace: true });
+    }
     setShowCheckout(true);
   };
 
-  const handleImageClick = (productId: string) => {
-    setViewingProduct(productId);
+  const handleOpenProduct = (id: string) => {
+    navigate(`/dashboard/shop/${id}`);
   };
 
-  const handleAddFromProductPage = (size: string, price?: number) => {
+  const handleBackFromProduct = () => {
+    navigate('/dashboard/shop');
+  };
+
+  const handleAddFromProductPage = (size: string, quantity: number, price?: number) => {
     const product = products.find(p => p._id === viewingProduct);
     if (!product || !price) return;
-
-    // Add the product to cart with the selected size
-    const existingItem = cart.find(
-      item => item.id === product._id && item.size === size
-    );
-
-    if (existingItem) {
-      setCart(cart.map(item =>
-        item.id === product._id && item.size === size
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      ));
-    } else {
-      setCart([...cart, {
-        id: product._id,
-        name: product.name,
-        size: size,
-        price: price,
-        quantity: 1,
-        image: product.images[0]
-      }]);
-    }
+    addToCartContext(product, size, quantity);
   };
 
   // Filter products based on search query
@@ -213,7 +177,7 @@ export function ShopDashboard({
         onBack={() => setShowCheckout(false)}
         onComplete={() => {
           setShowCheckout(false);
-          setCart([]);
+          clearCart();
           if (onShowThankYou) {
             onShowThankYou();
           }
@@ -226,11 +190,11 @@ export function ShopDashboard({
     return (
       <ProductDetailPage
         productId={viewingProduct}
-        onBack={() => setViewingProduct(null)}
+        onBack={handleBackFromProduct}
         onAddToCart={handleAddFromProductPage}
         showPrice={true}
         onOpenCart={() => {
-          setViewingProduct(null);
+          handleBackFromProduct();
           if (onCartSheetChange) {
             onCartSheetChange(true);
           }
@@ -315,7 +279,7 @@ export function ShopDashboard({
                       <Card className="skygloss-card p-6 rounded-2xl">
                         <div
                           className="cursor-pointer bg-gradient-to-br from-gray-50 to-white rounded-xl mb-4 p-4 hover:opacity-90 transition-opacity"
-                          onClick={() => handleImageClick(product._id)}
+                          onClick={() => handleOpenProduct(product._id)}
                         >
                           <ImageWithFallback
                             src={product.images?.[0]}
@@ -348,8 +312,8 @@ export function ShopDashboard({
                                 key={s.size}
                                 onClick={() => setSelectedSizes({ ...selectedSizes, [product._id]: s.size })}
                                 className={`px-3 py-1.5 rounded-lg text-xs transition-all duration-200 text-center leading-tight ${currentSizeStr === s.size
-                                    ? "bg-[#272727] text-white shadow-md"
-                                    : "bg-gray-100 text-[#666666] hover:bg-gray-200"
+                                  ? "bg-[#272727] text-white shadow-md"
+                                  : "bg-gray-100 text-[#666666] hover:bg-gray-200"
                                   }`}
                               >
                                 {s.size}
@@ -369,7 +333,7 @@ export function ShopDashboard({
                             <Button
                               size="sm"
                               variant="outline"
-                              onClick={() => handleImageClick(product._id)}
+                              onClick={() => handleOpenProduct(product._id)}
                               className="rounded-lg border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/10"
                             >
                               <Eye className="w-4 h-4" />

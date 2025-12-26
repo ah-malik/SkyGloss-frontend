@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import api from "../api/axios";
 import { motion, AnimatePresence } from "motion/react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Card } from "./ui/card";
@@ -6,184 +7,43 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { FileText, Droplets, Shield, Sparkles, X, ChevronLeft, ChevronRight } from "lucide-react";
-import fusionMainImage from "../assets/600x400.svg";
-import fusionElementImage from "../assets/600x400.svg";
-import fusionAetherImage from "../assets/600x400.svg";
-import resinFilmImage from "../assets/600x400.svg";
-import matteBoxImage from "../assets/600x400.svg";
-import shineBoxImage from "../assets/600x400.svg";
-import edgeBladeBox1Image from "../assets/600x400.svg";
-import edgeBladeBox2Image from "../assets/600x400.svg";
+import { FileText, Droplets, Shield, Sparkles, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 interface Product {
-  id: string;
+  _id: string;
   name: string;
   description: string;
-  image: string;
-  additionalImages?: string[];
+  images: string[];
   features: string[];
   specifications: {
     label: string;
     value: string;
   }[];
   applicationGuide: string[];
-  technicalSheet: string;
+  technicalSheetUrl?: string;
 }
 
-const products: Product[] = [
-  {
-    id: "1",
-    name: "FUSION",
-    description: "Complete dual-layer coating system combining Element base coat and Aether top coat. Professional-grade formula delivering unmatched durability, gloss enhancement, and protection.",
-    image: fusionMainImage,
-    additionalImages: [fusionElementImage, fusionAetherImage],
-    features: [
-      "Dual-layer hybrid coating system",
-      "Element: Clear coat with polymer protection",
-      "Aether: Advanced silica top coat",
-      "Superior gloss enhancement",
-      "Hydrophobic water beading",
-      "Self-cleaning effect",
-      "UV and chemical resistance",
-      "24-month durability"
-    ],
-    specifications: [
-      { label: "System", value: "Element (Base) + Aether (Top)" },
-      { label: "Volume", value: "Element: 100ml / 250ml / 500ml | Aether: 100ml / 250ml" },
-      { label: "Coverage", value: "2-4 vehicles per 100ml set" },
-      { label: "Total Cure Time", value: "10 hours (4hrs Element + 6hrs Aether)" },
-      { label: "Application Temp", value: "15-25°C" }
-    ],
-    applicationGuide: [
-      "Step 1: Clean and decontaminate surface thoroughly",
-      "Step 2: Apply Element base coat in thin, even layer",
-      "Step 3: Work in 2x2 ft sections, level after 2-3 minutes",
-      "Step 4: Allow Element to cure for 4 hours",
-      "Step 5: Apply Aether top coat in ultra-thin layer",
-      "Step 6: Level Aether after 1-2 minutes",
-      "Step 7: Allow minimum 6 hours cure time before water exposure"
-    ],
-    technicalSheet: "fusion-system-tech.pdf"
-  },
-  {
-    id: "3",
-    name: "RESIN FILM",
-    description: "Advanced resin & film coating technology providing superior protection and durability. Combines liquid film with resin formula for enhanced performance.",
-    image: resinFilmImage,
-    features: [
-      "Resin & film technology",
-      "Enhanced durability",
-      "Superior chemical resistance",
-      "Self-healing properties",
-      "24-month protection"
-    ],
-    specifications: [
-      { label: "Volume", value: "60ml" },
-      { label: "Coverage", value: "2-3 vehicles" },
-      { label: "Cure Time", value: "24 hours" },
-      { label: "Application Temp", value: "18-25°C" }
-    ],
-    applicationGuide: [
-      "Prepare surface with polish",
-      "Clean with isopropyl alcohol",
-      "Apply ultra-thin layer with foam applicator",
-      "Work in 2x2 ft sections",
-      "Level coating after 1-2 minutes",
-      "Allow 24 hours cure before water exposure"
-    ],
-    technicalSheet: "resin-film-tech.pdf"
-  },
-  {
-    id: "5",
-    name: "MATTE",
-    description: "Premium matte finish clear coating for professional results. Creates a sophisticated, non-reflective surface with long-term protection.",
-    image: matteBoxImage,
-    features: [
-      "Professional matte finish",
-      "Clear coat protection",
-      "Anti-fingerprint formula",
-      "Easy maintenance",
-      "24-month durability"
-    ],
-    specifications: [
-      { label: "Volume", value: "30ml (1.01 fl oz)" },
-      { label: "Coverage", value: "1-2 vehicles" },
-      { label: "Cure Time", value: "24 hours" },
-      { label: "Application Temp", value: "15-25°C" }
-    ],
-    applicationGuide: [
-      "Wash and decontaminate surface completely",
-      "Ensure surface is bone dry",
-      "Apply thin layer with foam applicator",
-      "Work in 2x2 ft sections",
-      "Level coating after 1-2 minutes",
-      "Allow 24 hours cure time before exposure to water"
-    ],
-    technicalSheet: "matte-tech.pdf"
-  },
-  {
-    id: "6",
-    name: "SHINE",
-    description: "Professional shine enhancer coating delivering exceptional gloss and depth. Perfect for achieving showroom-quality finish on all paint types.",
-    image: shineBoxImage,
-    features: [
-      "Ultimate gloss enhancement",
-      "Deep wet-look shine",
-      "Easy application",
-      "Quick cure time",
-      "6-month durability"
-    ],
-    specifications: [
-      { label: "Volume", value: "30ml (1.01 fl oz)" },
-      { label: "Coverage", value: "2-3 vehicles" },
-      { label: "Cure Time", value: "1 hour" },
-      { label: "Application Temp", value: "15-30°C" }
-    ],
-    applicationGuide: [
-      "Wash and dry vehicle thoroughly",
-      "Apply to clean paint surface",
-      "Work in small sections",
-      "Spread evenly with microfiber applicator",
-      "Buff to brilliant shine after 30 seconds",
-      "Can be layered for increased depth"
-    ],
-    technicalSheet: "shine-tech.pdf"
-  },
-  {
-    id: "8",
-    name: "EDGE BLADE",
-    description: "Professional tungsten carbide blade designed for precise clear coating application and leveling. Essential tool for achieving flawless coating results.",
-    image: edgeBladeBox1Image,
-    additionalImages: [edgeBladeBox2Image],
-    features: [
-      "Tungsten carbide construction",
-      "Ultra-precise edge",
-      "Chemical resistant",
-      "Ergonomic design",
-      "Reusable and durable"
-    ],
-    specifications: [
-      { label: "Material", value: "Tungsten Carbide" },
-      { label: "Edge Type", value: "Ultra-fine precision" },
-      { label: "Compatibility", value: "All clear coatings" },
-      { label: "Durability", value: "Long-lasting performance" }
-    ],
-    applicationGuide: [
-      "Use for leveling clear coating during application",
-      "Hold at 45-degree angle to surface",
-      "Work in smooth, consistent strokes",
-      "Clean blade frequently during use",
-      "Rinse thoroughly after each application",
-      "Store in protective case when not in use"
-    ],
-    technicalSheet: "edge-blade-tech.pdf"
-  }
-];
+
 
 export function PublicCatalog() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await api.get('/products?status=published');
+        setProducts(res.data);
+      } catch (err) {
+        console.error("Failed to fetch public products", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   // Determine how many products to show based on screen size
   const productsPerView = 4; // Desktop: 4 products at a time
@@ -198,6 +58,14 @@ export function PublicCatalog() {
   };
 
   const visibleProducts = products.slice(currentIndex, currentIndex + productsPerView);
+
+  if (loading) {
+    return (
+      <div className="py-20 flex justify-center items-center">
+        <Loader2 className="w-10 h-10 text-[#0EA0DC] animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="py-20 px-4">
@@ -231,7 +99,7 @@ export function PublicCatalog() {
 
             {/* Products Grid */}
             <div className="w-full overflow-hidden">
-              <motion.div 
+              <motion.div
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -240,7 +108,7 @@ export function PublicCatalog() {
                 <AnimatePresence mode="popLayout">
                   {visibleProducts.map((product, index) => (
                     <motion.div
-                      key={product.id}
+                      key={product._id}
                       initial={{ opacity: 0, x: 50 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -50 }}
@@ -250,7 +118,7 @@ export function PublicCatalog() {
                         {/* Product Image */}
                         <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-gray-50 to-white p-4">
                           <ImageWithFallback
-                            src={product.image}
+                            src={product.images?.[0]}
                             alt={product.name}
                             className="w-full h-full object-contain"
                           />
@@ -326,29 +194,27 @@ export function PublicCatalog() {
 
               <div className="space-y-6 bg-[rgba(168,159,159,0)]">
                 {/* Product Images */}
-                {selectedProduct.id === "1" && selectedProduct.additionalImages ? (
+                {selectedProduct.images?.length > 1 ? (
                   <div className="grid grid-cols-2 gap-4">
                     <div className="aspect-video rounded-xl overflow-hidden">
                       <ImageWithFallback
-                        src={selectedProduct.image}
-                        alt="FUSION Element"
+                        src={selectedProduct.images[0]}
+                        alt={selectedProduct.name}
                         className="w-full h-full object-cover"
                       />
-                      <p className="text-center text-sm text-[#0EA0DC] mt-2">Element (Base Coat)</p>
                     </div>
                     <div className="aspect-video rounded-xl overflow-hidden">
                       <ImageWithFallback
-                        src={selectedProduct.additionalImages[0]}
-                        alt="FUSION Aether"
+                        src={selectedProduct.images[1]}
+                        alt={selectedProduct.name}
                         className="w-full h-full object-cover"
                       />
-                      <p className="text-center text-sm text-[#0EA0DC] mt-2">Aether (Top Coat)</p>
                     </div>
                   </div>
                 ) : (
                   <div className="aspect-video rounded-xl overflow-hidden">
                     <ImageWithFallback
-                      src={selectedProduct.image}
+                      src={selectedProduct.images?.[0]}
                       alt={selectedProduct.name}
                       className="w-full h-full object-cover"
                     />
@@ -358,19 +224,19 @@ export function PublicCatalog() {
                 {/* Tabs */}
                 <Tabs defaultValue="overview" className="w-full">
                   <TabsList className="grid w-full grid-cols-3 bg-white rounded-xl p-1.5 border-2 border-[#0EA0DC] shadow-[0_0_10px_rgba(14,160,220,0.15)] h-auto">
-                    <TabsTrigger 
+                    <TabsTrigger
                       value="overview"
                       className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-3 px-4 rounded-lg transition-all duration-200"
                     >
                       Overview
                     </TabsTrigger>
-                    <TabsTrigger 
+                    <TabsTrigger
                       value="specifications"
                       className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-3 px-4 rounded-lg transition-all duration-200"
                     >
                       Specifications
                     </TabsTrigger>
-                    <TabsTrigger 
+                    <TabsTrigger
                       value="application"
                       className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-3 px-4 rounded-lg transition-all duration-200"
                     >
