@@ -19,11 +19,20 @@ export function PublicRoute() {
  * ProtectedRoute ensures that only authenticated users can access internal pages.
  * If not logged in, it redirects to the landing page.
  */
-export function ProtectedRoute() {
+interface ProtectedRouteProps {
+    allowedRole?: string;
+}
+
+export function ProtectedRoute({ allowedRole }: ProtectedRouteProps) {
     const { accessType } = useAuth();
 
     if (!accessType) {
         return <Navigate to="/" replace />;
+    }
+
+    if (allowedRole && accessType !== allowedRole) {
+        // Redirect to their appropriate dashboard if they try to access a route for another role
+        return <Navigate to={`/dashboard/${accessType}`} replace />;
     }
 
     return <Outlet />;

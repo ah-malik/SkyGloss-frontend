@@ -34,16 +34,33 @@ export const router = createBrowserRouter([
       },
 
       // Dashboard Pages (Protected from non-logged-in users)
+      // Dashboard Pages (Protected from non-logged-in users)
+      {
+        element: <ProtectedRoute allowedRole="technician" />,
+        children: [
+          { path: "dashboard/technician", element: <TechnicianDashboard /> },
+          { path: "dashboard/technician/receipt/:orderId", element: <ReceiptPage /> },
+        ]
+      },
+      {
+        element: <ProtectedRoute allowedRole="shop" />,
+        children: [
+          { path: "dashboard/shop", element: <ShopDashboard /> },
+          { path: "dashboard/shop/:productId", element: <ShopDashboard /> },
+          { path: "dashboard/shop/receipt/:orderId", element: <ReceiptPage /> },
+        ]
+      },
+      {
+        element: <ProtectedRoute allowedRole="distributor" />,
+        children: [
+          { path: "dashboard/distributor", element: <DistributorDashboard /> },
+        ]
+      },
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "dashboard/technician", element: <TechnicianDashboard /> },
-          { path: "dashboard/shop", element: <ShopDashboard /> },
-          { path: "dashboard/shop/:productId", element: <ShopDashboard /> },
-          { path: "dashboard/distributor", element: <DistributorDashboard /> },
           { path: "resources", element: <ResourcesPage /> },
           { path: "support", element: <SupportPage /> },
-          { path: "dashboard/shop/receipt/:orderId", element: <ReceiptPage /> },
           { path: "thank-you/:type", element: <ThankYouPage /> },
         ]
       },

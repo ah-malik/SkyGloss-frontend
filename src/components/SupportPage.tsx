@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useState } from "react";
-import { HelpCircle, Mail, MessageSquare, Phone, Search, ChevronDown, ChevronUp } from "lucide-react";
+import { HelpCircle, Mail, MessageSquare, Phone, Search, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -8,6 +8,8 @@ import { Textarea } from "./ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Badge } from "./ui/badge";
 import { toast } from "sonner";
+import api from "../api/axios";
+import { ChatWidget } from "./ChatWidget";
 
 const faqs = [
   {
@@ -50,7 +52,7 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
-  
+
   // Ticket Form State
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -58,18 +60,35 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
   const [issueCategory, setIssueCategory] = useState("");
   const [message, setMessage] = useState("");
   const [ticketSubmitted, setTicketSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
-  const handleSubmitTicket = (e: React.FormEvent) => {
+  const handleSubmitTicket = async (e: React.FormEvent) => {
     e.preventDefault();
-    setTicketSubmitted(true);
-    toast.success("Support ticket submitted!", {
-      description: "Our team will contact you within 24 hours"
-    });
+    setIsSubmitting(true);
+    try {
+      await api.post('/support', {
+        name,
+        email,
+        userType,
+        issueCategory,
+        message
+      });
+      setTicketSubmitted(true);
+      toast.success("Support ticket submitted!", {
+        description: "Our team will contact you within 24 hours"
+      });
+    } catch (error) {
+      console.error("Failed to submit ticket:", error);
+      toast.error("Failed to submit ticket. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const filteredFaqs = faqs.filter(faq => {
     const matchesCategory = selectedCategory === "all" || faq.category.toLowerCase() === selectedCategory;
-    const matchesSearch = searchQuery === "" || 
+    const matchesSearch = searchQuery === "" ||
       faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
       faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -130,8 +149,8 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
               <div className="space-y-3 mb-4 flex-grow">
                 <div>
                   <p className="text-xs text-[#0EA0DC] mb-1">Technical Support</p>
-                  <a 
-                    href="tel:+13604414886" 
+                  <a
+                    href="tel:+13604414886"
                     className="text-sm text-[#0EA0DC] hover:underline transition-all"
                   >
                     +1 (360) 441-4886
@@ -139,8 +158,8 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
                 </div>
                 <div>
                   <p className="text-xs text-[#0EA0DC] mb-1">Ordering Support</p>
-                  <a 
-                    href="tel:+16027844113" 
+                  <a
+                    href="tel:+16027844113"
                     className="text-sm text-[#0EA0DC] hover:underline transition-all"
                   >
                     +1 (602) 784-4113
@@ -161,9 +180,12 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
               <p className="text-sm text-[#666666] mb-4 flex-grow">Average response: 2 min</p>
               <Button
                 size="sm"
+                onClick={() => setShowChat(true)}
+
                 className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)]"
               >
                 Start Chat
+
               </Button>
             </Card>
           </motion.div>
@@ -177,122 +199,143 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
           className="max-w-2xl mx-auto"
         >
           <Card className="skygloss-card p-8 rounded-2xl">
-                <div className="text-center mb-6">
-                  <MessageSquare className="w-10 h-10 mx-auto mb-3 text-[#0EA0DC]" />
-                  <h3 className="text-xl text-[#272727]">
-                    Submit a Ticket
-                  </h3>
+            <div className="text-center mb-6">
+              <MessageSquare className="w-10 h-10 mx-auto mb-3 text-[#0EA0DC]" />
+              <h3 className="text-xl text-[#272727]">
+                Submit a Ticket
+              </h3>
+            </div>
+
+            {!ticketSubmitted ? (
+              <form onSubmit={handleSubmitTicket} className="space-y-4">
+                <div>
+                  <label className="block text-sm text-[#272727] mb-2">
+                    Name
+                  </label>
+                  <Input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Your name"
+                    className="border-[#0EA0DC]/30 rounded-lg"
+                    required
+                  />
                 </div>
 
-                {!ticketSubmitted ? (
-                  <form onSubmit={handleSubmitTicket} className="space-y-4">
-                    <div>
-                      <label className="block text-sm text-[#272727] mb-2">
-                        Name
-                      </label>
-                      <Input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Your name"
-                        className="border-[#0EA0DC]/30 rounded-lg"
-                        required
-                      />
-                    </div>
+                <div>
+                  <label className="block text-sm text-[#272727] mb-2">
+                    Email
+                  </label>
+                  <Input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    className="border-[#0EA0DC]/30 rounded-lg"
+                    required
+                  />
+                </div>
 
-                    <div>
-                      <label className="block text-sm text-[#272727] mb-2">
-                        Email
-                      </label>
-                      <Input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="your@email.com"
-                        className="border-[#0EA0DC]/30 rounded-lg"
-                        required
-                      />
-                    </div>
+                <div>
+                  <label className="block text-sm text-[#272727] mb-2">
+                    User Type
+                  </label>
+                  <Select value={userType} onValueChange={setUserType} required>
+                    <SelectTrigger className="border-[#0EA0DC]/30 rounded-lg">
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="technician">Technician</SelectItem>
+                      <SelectItem value="shop">Shop</SelectItem>
+                      <SelectItem value="distributor">Distributor</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                    <div>
-                      <label className="block text-sm text-[#272727] mb-2">
-                        User Type
-                      </label>
-                      <Select value={userType} onValueChange={setUserType} required>
-                        <SelectTrigger className="border-[#0EA0DC]/30 rounded-lg">
-                          <SelectValue placeholder="Select type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="technician">Technician</SelectItem>
-                          <SelectItem value="shop">Shop</SelectItem>
-                          <SelectItem value="distributor">Distributor</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                <div>
+                  <label className="block text-sm text-[#272727] mb-2">
+                    Issue Category
+                  </label>
+                  <Select value={issueCategory} onValueChange={setIssueCategory} required>
+                    <SelectTrigger className="border-[#0EA0DC]/30 rounded-lg">
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="login">Login Issue</SelectItem>
+                      <SelectItem value="product">Product Question</SelectItem>
+                      <SelectItem value="training">Training Access</SelectItem>
+                      <SelectItem value="order">Order Issue</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                    <div>
-                      <label className="block text-sm text-[#272727] mb-2">
-                        Issue Category
-                      </label>
-                      <Select value={issueCategory} onValueChange={setIssueCategory} required>
-                        <SelectTrigger className="border-[#0EA0DC]/30 rounded-lg">
-                          <SelectValue placeholder="Select category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="login">Login Issue</SelectItem>
-                          <SelectItem value="product">Product Question</SelectItem>
-                          <SelectItem value="training">Training Access</SelectItem>
-                          <SelectItem value="order">Order Issue</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                <div>
+                  <label className="block text-sm text-[#272727] mb-2">
+                    Message
+                  </label>
+                  <Textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Describe your issue..."
+                    className="border-[#0EA0DC]/30 rounded-lg min-h-[120px]"
+                    required
+                  />
+                </div>
 
-                    <div>
-                      <label className="block text-sm text-[#272727] mb-2">
-                        Message
-                      </label>
-                      <Textarea
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        placeholder="Describe your issue..."
-                        className="border-[#0EA0DC]/30 rounded-lg min-h-[120px]"
-                        required
-                      />
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] h-11 rounded-lg disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? (
+                    <div className="flex items-center gap-2 justify-center">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Submitting...</span>
                     </div>
+                  ) : (
+                    "Submit Ticket"
+                  )}
+                </Button>
+              </form>
+            ) : (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#0EA0DC]/10 flex items-center justify-center">
+                  <MessageSquare className="w-8 h-8 text-[#0EA0DC]" />
+                </div>
+                <h4 className="text-lg text-[#272727] mb-2">
+                  Ticket Submitted!
+                </h4>
+                <p className="text-sm text-[#666666] mb-4">
+                  Our support team will contact you within 24 hours.
+                </p>
+                <Button
+                  onClick={() => setTicketSubmitted(false)}
+                  variant="outline"
+                  size="sm"
+                  className="border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
+                >
+                  Submit Another
+                </Button>
+              </div>
+            )}
 
-                    <Button
-                      type="submit"
-                      className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] h-11 rounded-lg"
-                    >
-                      Submit Ticket
-                    </Button>
-                  </form>
-                ) : (
-                  <div className="text-center py-8">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#0EA0DC]/10 flex items-center justify-center">
-                      <MessageSquare className="w-8 h-8 text-[#0EA0DC]" />
-                    </div>
-                    <h4 className="text-lg text-[#272727] mb-2">
-                      Ticket Submitted!
-                    </h4>
-                    <p className="text-sm text-[#666666] mb-4">
-                      Our support team will contact you within 24 hours.
-                    </p>
-                    <Button
-                      onClick={() => setTicketSubmitted(false)}
-                      variant="outline"
-                      size="sm"
-                      className="border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
-                    >
-                      Submit Another
-                    </Button>
-                  </div>
-                )}
           </Card>
+
         </motion.div>
+        {/* </motion.div> */}
       </div>
+      {/* Live Chat Widget */}
+      {showChat && (
+        <ChatWidget
+          userName="Guest User"
+          userEmail="guest@skygloss.com"
+          userType="guest"
+          onClose={() => setShowChat(false)}
+        />
+      )}
     </div>
   );
 }
+

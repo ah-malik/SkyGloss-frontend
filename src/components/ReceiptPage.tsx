@@ -10,9 +10,12 @@ import api from "../api/axios";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { toast } from "sonner";
 
+import { useAuth } from "../AuthContext";
+
 export function ReceiptPage() {
     const { orderId } = useParams();
     const navigate = useNavigate();
+    const { accessType } = useAuth();
     const [order, setOrder] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
@@ -59,8 +62,8 @@ export function ReceiptPage() {
             <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-[#666666]">
                 <Package className="w-12 h-12 mb-4 text-gray-400" />
                 <p>Order not found</p>
-                <Button onClick={() => navigate('/dashboard/shop')} variant="link" className="text-[#0EA0DC]">
-                    Return to Shop
+                <Button onClick={() => navigate(`/dashboard/${accessType || 'shop'}`)} variant="link" className="text-[#0EA0DC]">
+                    Return to {accessType === 'technician' ? 'Dashboard' : 'Shop'}
                 </Button>
             </div>
         );
@@ -75,12 +78,12 @@ export function ReceiptPage() {
                 >
                     <div className="mb-6 flex items-center justify-between">
                         <Button
-                            onClick={() => navigate('/dashboard/shop')}
+                            onClick={() => navigate(`/dashboard/${accessType || 'shop'}`)}
                             variant="ghost"
                             className="text-[#666666] hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
                         >
                             <ArrowLeft className="w-4 h-4 mr-2" />
-                            Back to Shop
+                            Back to {accessType === 'technician' ? 'Dashboard' : 'Shop'}
                         </Button>
                         <Button
                             variant="outline"
