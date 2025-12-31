@@ -67,7 +67,7 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
             setRoomId(room._id);
 
             // Connect to Socket.IO
-            const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001';
+            const socketUrl = import.meta.env.VITE_SOCKET_URL || 'https://skygloss-backend-production.up.railway.app';
             const newSocket = io(socketUrl);
             socketRef.current = newSocket;
 
@@ -126,7 +126,17 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
     }
 
     return (
-        <Card className="fixed bottom-6 right-6 w-96 h-[500px] flex flex-col shadow-2xl z-50 rounded-2xl overflow-hidden">
+        <Card style={{
+            position: 'fixed',
+            bottom: '6px',
+            right: '6px',
+            width: '300px',
+            height: '500px',
+            zIndex: 50,
+            borderRadius: '20px',
+            overflow: 'hidden',
+            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+        }} className="!fixed !bottom-6 !right-6 w-96 h-[500px] flex flex-col shadow-2xl z-50 rounded-2xl overflow-hidden">
             {/* Header */}
             <div className="bg-[#0EA0DC] text-white p-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
