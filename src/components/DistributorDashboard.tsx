@@ -15,18 +15,18 @@ import { Footer } from "./Footer";
 import api from "../api/axios";
 import { useAuth } from "../AuthContext";
 import { Clock } from "lucide-react";
-import fusionMainImage from "../assets/600x400.svg";
-import fusionElementImage from "../assets/600x400.svg";
-import fusionAetherImage from "../assets/600x400.svg";
-import resinFilmImage from "../assets/600x400.svg";
-import sealImage from "../assets/600x400.svg";
-import matteBoxImage from "../assets/600x400.svg";
-import shineBoxImage from "../assets/600x400.svg";
-import applicatorBottleImage from "../assets/600x400.svg";
-import edgeBladeBox1Image from "../assets/600x400.svg";
-import edgeBladeBox2Image from "../assets/600x400.svg";
-import paintPenBoxImage from "../assets/600x400.svg";
-import paintPenToolsImage from "../assets/600x400.svg";
+import fusionMainImage from "../assets/Master_Distributor_Dashboard/1 Fusion.png";
+import fusionElementImage from "../assets/Master_Distributor_Dashboard/1 Fusion.png";
+import fusionAetherImage from "../assets/Master_Distributor_Dashboard/1 Fusion.png";
+import resinFilmImage from "../assets/Master_Distributor_Dashboard/2 Resin Film.png";
+import sealImage from "../assets/Master_Distributor_Dashboard/3 Seal.png";
+import matteBoxImage from "../assets/Master_Distributor_Dashboard/4 Matte.png";
+import shineBoxImage from "../assets/Master_Distributor_Dashboard/5 Shine.png";
+import applicatorBottleImage from "../assets/Master_Distributor_Dashboard/6 Applicator Bottle.png";
+import edgeBladeBox1Image from "../assets/Master_Distributor_Dashboard/7 Edge Blade.png";
+import edgeBladeBox2Image from "../assets/Master_Distributor_Dashboard/7 Edge Blade.png";
+import paintPenBoxImage from "../assets/Master_Distributor_Dashboard/8 Paint Pen.png";
+import paintPenToolsImage from "../assets/Master_Distributor_Dashboard/8 Paint Pen.png";
 
 const distributorProducts = [
   {
@@ -317,7 +317,7 @@ export function DistributorDashboard({
   };
 
   return (
-    <div className="min-h-screen bg-white pt-20 pb-12">
+    <div className="min-h-screen bg-white pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -385,7 +385,7 @@ export function DistributorDashboard({
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 pb-12">
                 <div className="lg:col-span-2 order-2 lg:order-1">
                   <div className="space-y-4 lg:space-y-6">
                     {distributorProducts.map((product, index) => (

@@ -3,7 +3,7 @@ import { LogOut, FileText, HelpCircle, Menu, X, ShoppingCart } from "lucide-reac
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { useState } from "react";
-import logoImage from "../assets/600x400.svg";
+import logoImage from "../assets/logo.svg";
 
 interface NavigationProps {
   isLoggedIn: boolean;
@@ -16,10 +16,10 @@ interface NavigationProps {
   showCart?: boolean;
 }
 
-export function Navigation({ 
-  isLoggedIn, 
-  onLogout, 
-  onNavigateResources, 
+export function Navigation({
+  isLoggedIn,
+  onLogout,
+  onNavigateResources,
   onNavigateSupport,
   onNavigateDashboard,
   cartCount = 0,
@@ -49,9 +49,9 @@ export function Navigation({
             transition={{ duration: 0.2 }}
             disabled={!isLoggedIn}
           >
-            <img 
-              src={logoImage} 
-              alt="SkyGloss" 
+            <img
+              src={logoImage}
+              alt="SkyGloss"
               className="h-7 sm:h-8 w-auto"
             />
             <div className="hidden sm:block h-8 w-px bg-[#0EA0DC]/20"></div>
@@ -125,7 +125,7 @@ export function Navigation({
                     )}
                   </button>
                 )}
-                
+
                 {/* Menu Button */}
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

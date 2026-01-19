@@ -1,6 +1,6 @@
 import technicianIcon from "../assets/600x400.svg";
-import shopIcon from "../assets/600x400.svg";
-import distributorIcon from "../assets/600x400.svg";
+import shopIcon from "../assets/shopIcon.svg";
+import distributorIcon from "../assets/distributorIcon.svg";
 
 export function TechnicianIcon({ className }: { className?: string }) {
   return (

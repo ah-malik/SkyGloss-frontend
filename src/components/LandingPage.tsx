@@ -6,7 +6,7 @@ import { PublicCatalog } from "./PublicCatalog";
 import { DistributorIcon, ShopIcon } from "./CustomIcons";
 import { useNavigate } from "react-router";
 
-interface LandingPageProps {}
+interface LandingPageProps { }
 
 type AccessType = "shop" | "distributor";
 

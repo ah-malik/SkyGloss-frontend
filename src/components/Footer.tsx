@@ -1,7 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "./ui/button";
-import skyglossLogo from "../assets/600x400.svg";
-import signatureImage from "../assets/600x400.svg";
+import skyglossLogo from "../assets/skyglossLogoFooter.svg";
+import signatureImage from "../assets/Signature.svg";
 
 export function Footer() {
   const socialLinks = [
@@ -49,9 +49,9 @@ export function Footer() {
 
           {/* Right Column - Signature/Handwriting */}
           <div className="flex items-center justify-center lg:justify-end">
-            <img 
-              src={signatureImage} 
-              alt="Signature" 
+            <img
+              src={signatureImage}
+              alt="Signature"
               className="w-full max-w-md h-auto opacity-90"
             />
           </div>
@@ -118,9 +118,9 @@ export function Footer() {
       <div className="w-full pb-8 -mt-4">
         {/* SkyGloss Logo - 100% Width */}
         <div className="w-full mb-4">
-          <img 
-            src={skyglossLogo} 
-            alt="SkyGloss" 
+          <img
+            src={skyglossLogo}
+            alt="SkyGloss"
             className="w-full h-auto scale-150 sm:scale-100"
           />
         </div>

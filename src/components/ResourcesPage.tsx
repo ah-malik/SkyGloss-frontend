@@ -39,7 +39,8 @@ interface ResourceFile {
   type: FileType;
   size: string;
   lastModified: string;
-  driveUrl: string;
+  driveUrl?: string;
+  assetPath?: string;
   previewUrl?: string;
 }
 
@@ -55,41 +56,17 @@ interface ResourceCategory {
 
 const mockFiles = {
   branding: [
-    { id: "1", name: "SkyGloss Logo Package", type: "ai" as FileType, size: "24 MB", lastModified: "2025-01-15", driveUrl: "https://drive.skygloss.com/branding/logo-package" },
-    { id: "2", name: "Brand Color Palette", type: "pdf" as FileType, size: "2 MB", lastModified: "2025-01-10", driveUrl: "https://drive.skygloss.com/branding/colors" },
-    { id: "3", name: "Typography Guidelines", type: "pdf" as FileType, size: "3.5 MB", lastModified: "2025-01-08", driveUrl: "https://drive.skygloss.com/branding/typography" },
-    { id: "4", name: "Brand Identity Manual", type: "pdf" as FileType, size: "18 MB", lastModified: "2024-12-20", driveUrl: "https://drive.skygloss.com/branding/manual" },
+    { id: "1", name: "SkyGloss Brand Guidelines", type: "pdf" as FileType, size: "2 MB", lastModified: "2025-01-10", assetPath: "/SkyGloss Resources/Branding & Visual Assets/SkyGloss Brand Guidelines.pdf" },
   ],
   marketing: [
-    { id: "5", name: "Product Brochure 2025", type: "pdf" as FileType, size: "12 MB", lastModified: "2025-01-18", driveUrl: "https://drive.skygloss.com/marketing/brochure" },
-    { id: "6", name: "Social Media Templates", type: "psd" as FileType, size: "45 MB", lastModified: "2025-01-12", driveUrl: "https://drive.skygloss.com/marketing/social" },
-    { id: "7", name: "Email Campaign Assets", type: "pdf" as FileType, size: "8 MB", lastModified: "2025-01-05", driveUrl: "https://drive.skygloss.com/marketing/email" },
-    { id: "8", name: "Presentation Template", type: "pdf" as FileType, size: "15 MB", lastModified: "2024-12-28", driveUrl: "https://drive.skygloss.com/marketing/presentation" },
-  ],
-  technical: [
-    { id: "9", name: "Crystal Shield SDS", type: "pdf" as FileType, size: "1.2 MB", lastModified: "2025-01-20", driveUrl: "https://drive.skygloss.com/technical/sds-crystal" },
-    { id: "10", name: "Technical Data Sheet - All Products", type: "pdf" as FileType, size: "4.5 MB", lastModified: "2025-01-15", driveUrl: "https://drive.skygloss.com/technical/tds" },
-    { id: "11", name: "Certification Documents", type: "pdf" as FileType, size: "6 MB", lastModified: "2025-01-10", driveUrl: "https://drive.skygloss.com/technical/certs" },
-    { id: "12", name: "Product Specifications", type: "xls" as FileType, size: "2.8 MB", lastModified: "2025-01-08", driveUrl: "https://drive.skygloss.com/technical/specs" },
-  ],
-  training: [
-    { id: "13", name: "Application Training Video", type: "mp4" as FileType, size: "125 MB", lastModified: "2025-01-22", driveUrl: "https://drive.skygloss.com/training/video-app" },
-    { id: "14", name: "Installation Guide", type: "pdf" as FileType, size: "8.5 MB", lastModified: "2025-01-18", driveUrl: "https://drive.skygloss.com/training/installation" },
-    { id: "15", name: "Troubleshooting Manual", type: "pdf" as FileType, size: "5.2 MB", lastModified: "2025-01-12", driveUrl: "https://drive.skygloss.com/training/troubleshooting" },
-    { id: "16", name: "Best Practices Guide", type: "pdf" as FileType, size: "4 MB", lastModified: "2025-01-10", driveUrl: "https://drive.skygloss.com/training/best-practices" },
+    { id: "2", name: "2026 SkyGloss Catalog", type: "pdf" as FileType, size: "12 MB", lastModified: "2025-01-18", assetPath: "/SkyGloss Resources/Catalog/2026 SkyGloss Catalog_Presentation.pdf" },
   ],
   sales: [
-    { id: "17", name: "Partner Pricing Sheet", type: "xls" as FileType, size: "1.5 MB", lastModified: "2025-01-25", driveUrl: "https://drive.skygloss.com/sales/pricing" },
-    { id: "18", name: "Sales Presentation Template", type: "pdf" as FileType, size: "22 MB", lastModified: "2025-01-20", driveUrl: "https://drive.skygloss.com/sales/presentation" },
-    { id: "19", name: "Competitive Analysis", type: "pdf" as FileType, size: "7.5 MB", lastModified: "2025-01-15", driveUrl: "https://drive.skygloss.com/sales/competitive" },
-    { id: "20", name: "Product Comparison Chart", type: "pdf" as FileType, size: "3.2 MB", lastModified: "2025-01-10", driveUrl: "https://drive.skygloss.com/sales/comparison" },
+    { id: "3", name: "Global Master Distributor Presentation", type: "pdf" as FileType, size: "22 MB", lastModified: "2025-01-20", assetPath: "/SkyGloss Resources/Presentation/SkyGloss Global Master Distributor Presentation.pdf" },
   ],
-  photography: [
-    { id: "21", name: "Crystal Shield - Before After", type: "jpg" as FileType, size: "8.5 MB", lastModified: "2025-01-23", driveUrl: "https://drive.skygloss.com/photos/crystal-ba" },
-    { id: "22", name: "Product Lifestyle Photos", type: "jpg" as FileType, size: "45 MB", lastModified: "2025-01-20", driveUrl: "https://drive.skygloss.com/photos/lifestyle" },
-    { id: "23", name: "Application Process Photos", type: "jpg" as FileType, size: "32 MB", lastModified: "2025-01-18", driveUrl: "https://drive.skygloss.com/photos/process" },
-    { id: "24", name: "Product Packaging Images", type: "png" as FileType, size: "28 MB", lastModified: "2025-01-15", driveUrl: "https://drive.skygloss.com/photos/packaging" },
-  ],
+  training: [],
+  technical: [],
+  photography: [],
 };
 
 const resourceCategories: ResourceCategory[] = [
@@ -100,25 +77,25 @@ const resourceCategories: ResourceCategory[] = [
     icon: Palette,
     files: mockFiles.branding,
     filterType: "branding",
-    driveUrl: "https://drive.skygloss.com/branding",
+    driveUrl: "https://drive.google.com/drive/folders/1dCMBekDy7HTlWZP0kxsGM7f64zL3HNlk?usp=drive_link",
   },
   {
     id: "marketing",
-    title: "Marketing Materials",
-    description: "Brochures, flyers, social media templates, and presentations",
+    title: "Catalog",
+    description: "Official SkyGloss product catalogs and brochures",
     icon: FileText,
     files: mockFiles.marketing,
     filterType: "marketing",
-    driveUrl: "https://drive.skygloss.com/marketing",
+    driveUrl: "https://drive.google.com/drive/folders/1lClixrZVE7zDQnVK2ivwoRTxWG5Ep_ny?usp=drive_link",
   },
   {
-    id: "technical",
-    title: "Technical Documents",
-    description: "SDS, TDS, certifications, and technical specifications",
-    icon: FileSpreadsheet,
-    files: mockFiles.technical,
+    id: "sales",
+    title: "Presentation",
+    description: "SkyGloss corporate and master distributor presentations",
+    icon: Briefcase,
+    files: mockFiles.sales,
     filterType: "documents",
-    driveUrl: "https://drive.skygloss.com/technical",
+    driveUrl: "https://drive.google.com/drive/folders/1v4xnxJ4qw0ZJzrDjBjgd13mo1Ui4r436?usp=drive_link",
   },
   {
     id: "training",
@@ -127,25 +104,25 @@ const resourceCategories: ResourceCategory[] = [
     icon: Video,
     files: mockFiles.training,
     filterType: "videos",
-    driveUrl: "https://drive.skygloss.com/training",
+    driveUrl: "#",
   },
   {
-    id: "sales",
-    title: "Sales & Partner Tools",
-    description: "Pricing sheets, sales presentations, and competitive analysis",
-    icon: Briefcase,
-    files: mockFiles.sales,
+    id: "technical",
+    title: "Technical Documents",
+    description: "SDS, TDS, certifications, and technical specifications",
+    icon: FileSpreadsheet,
+    files: mockFiles.technical,
     filterType: "documents",
-    driveUrl: "https://drive.skygloss.com/sales",
+    driveUrl: "#",
   },
   {
     id: "photography",
-    title: "Product Photography",
+    title: "Product Media",
     description: "High-resolution product images, lifestyle shots, and application photos",
     icon: Image,
     files: mockFiles.photography,
     filterType: "images",
-    driveUrl: "https://drive.skygloss.com/photography",
+    driveUrl: "https://drive.google.com/drive/folders/1bH8uyvV4rI1x4yBKeXDYSVJbTZC9flpk?usp=drive_link",
   },
 ];
 
@@ -180,17 +157,30 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
 
   const filteredCategories = resourceCategories.filter((category) => {
     const matchesSearch = category.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         category.description.toLowerCase().includes(searchQuery.toLowerCase());
+      category.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesFilter = filterType === "all" || category.filterType === filterType;
     return matchesSearch && matchesFilter;
   });
 
   const handleDownload = (file: ResourceFile) => {
-    window.open(file.driveUrl, "_blank");
+    if (file.assetPath) {
+      const link = document.createElement("a");
+      link.href = file.assetPath;
+      link.download = file.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else if (file.driveUrl) {
+      window.open(file.driveUrl, "_blank");
+    }
   };
 
   const handleViewFile = (file: ResourceFile) => {
-    window.open(file.driveUrl, "_blank");
+    if (file.assetPath) {
+      window.open(file.assetPath, "_blank");
+    } else if (file.driveUrl) {
+      window.open(file.driveUrl, "_blank");
+    }
   };
 
   return (
@@ -314,7 +304,7 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
               transition={{ delay: 0.2 + index * 0.1 }}
             >
               <Card className="skygloss-card p-6 rounded-2xl h-full flex flex-col group cursor-pointer"
-                    onClick={() => setSelectedCategory(category)}>
+                onClick={() => setSelectedCategory(category)}>
                 <div className="w-16 h-16 rounded-xl bg-[#0EA0DC]/10 flex items-center justify-center mb-5 group-hover:bg-[#0EA0DC] transition-all duration-200">
                   <category.icon className="w-8 h-8 text-[#0EA0DC] group-hover:text-white transition-all duration-200" />
                 </div>
@@ -356,8 +346,6 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
             <p className="text-[#666666] text-sm">Try adjusting your search or filters</p>
           </motion.div>
         )}
-
-        {/* Quick Access Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -366,12 +354,12 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
           <h3 className="text-2xl text-[#272727] mb-6">
             Quick Access Links
           </h3>
-          
+
           <div className="grid md:grid-cols-2 gap-4">
             <Button
               variant="outline"
               className="justify-start h-auto py-4 border-[#0EA0DC]/30 hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200 rounded-xl"
-              onClick={() => window.open("https://drive.skygloss.com", "_blank")}
+              onClick={() => window.open("#", "_blank")}
             >
               <div className="flex items-start gap-4 text-left">
                 <div className="w-10 h-10 rounded-lg bg-[#0EA0DC]/10 flex items-center justify-center flex-shrink-0">
@@ -387,7 +375,7 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
             <Button
               variant="outline"
               className="justify-start h-auto py-4 border-[#0EA0DC]/30 hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200 rounded-xl"
-              onClick={() => window.open("https://brand.skygloss.com", "_blank")}
+              onClick={() => window.open("https://drive.google.com/drive/folders/1lClixrZVE7zDQnVK2ivwoRTxWG5Ep_ny?usp=drive_link", "_blank")}
             >
               <div className="flex items-start gap-4 text-left">
                 <div className="w-10 h-10 rounded-lg bg-[#0EA0DC]/10 flex items-center justify-center flex-shrink-0">
@@ -403,7 +391,7 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
             <Button
               variant="outline"
               className="justify-start h-auto py-4 border-[#0EA0DC]/30 hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200 rounded-xl"
-              onClick={() => window.open("https://media.skygloss.com", "_blank")}
+              onClick={() => window.open("https://drive.google.com/drive/folders/1bH8uyvV4rI1x4yBKeXDYSVJbTZC9flpk?usp=drive_link", "_blank")}
             >
               <div className="flex items-start gap-4 text-left">
                 <div className="w-10 h-10 rounded-lg bg-[#0EA0DC]/10 flex items-center justify-center flex-shrink-0">
@@ -419,7 +407,7 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
             <Button
               variant="outline"
               className="justify-start h-auto py-4 border-[#0EA0DC]/30 hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200 rounded-xl"
-              onClick={() => window.open("https://training.skygloss.com", "_blank")}
+              onClick={() => window.open("#", "_blank")}
             >
               <div className="flex items-start gap-4 text-left">
                 <div className="w-10 h-10 rounded-lg bg-[#0EA0DC]/10 flex items-center justify-center flex-shrink-0">
@@ -455,6 +443,8 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
         </motion.div>
       </div>
 
+
+
       {/* Category Modal */}
       <AnimatePresence>
         {selectedCategory && (
@@ -485,67 +475,90 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
 
               {/* Files List */}
               <div className="space-y-3 mt-6">
-                {selectedCategory.files.map((file, index) => (
-                  <motion.div
-                    key={file.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    onMouseEnter={() => setHoveredFile(file.id)}
-                    onMouseLeave={() => setHoveredFile(null)}
-                    className="group"
-                  >
-                    <Card className={`p-4 rounded-xl transition-all duration-200 ${
-                      hoveredFile === file.id 
-                        ? "skygloss-card shadow-lg" 
+                {selectedCategory.files.length > 0 ? (
+                  selectedCategory.files.map((file, index) => (
+                    <motion.div
+                      key={file.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      onMouseEnter={() => setHoveredFile(file.id)}
+                      onMouseLeave={() => setHoveredFile(null)}
+                      className="group"
+                    >
+                      <Card className={`p-4 rounded-xl transition-all duration-200 ${hoveredFile === file.id
+                        ? "skygloss-card shadow-lg"
                         : "border border-[#0EA0DC]/10 bg-gray-50"
-                    }`}>
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-4 flex-1 min-w-0">
-                          <div className="flex-shrink-0">
-                            {getFileIcon(file.type)}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-[#272727] truncate mb-1">
-                              {file.name}
-                            </h4>
-                            <div className="flex items-center gap-3 text-xs text-[#666666]">
-                              <span className="uppercase">{file.type}</span>
-                              <span>•</span>
-                              <span>{file.size}</span>
-                              <span>•</span>
-                              <span>Modified {file.lastModified}</span>
+                        }`}>
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex items-center gap-4 flex-1 min-w-0">
+                            <div className="flex-shrink-0">
+                              {getFileIcon(file.type)}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-[#272727] truncate mb-1">
+                                {file.name}
+                              </h4>
+                              <div className="flex items-center gap-3 text-xs text-[#666666]">
+                                <span className="uppercase">{file.type}</span>
+                                <span>•</span>
+                                <span>{file.size}</span>
+                                <span>•</span>
+                                <span>Modified {file.lastModified}</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        {/* Action Buttons - Visible on Hover */}
-                        <div className={`flex items-center gap-2 transition-all duration-200 ${
-                          hoveredFile === file.id ? "opacity-100" : "opacity-0"
-                        }`}>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleViewFile(file)}
-                            className="h-9 px-3 rounded-lg border-[#0EA0DC]/30 hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200"
-                          >
-                            <Eye className="w-4 h-4 mr-1" />
-                            View
-                          </Button>
-                          <Button
-                            size="sm"
-                            onClick={() => handleDownload(file)}
-                            className="h-9 px-3 rounded-lg bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] transition-all duration-200"
-                          >
-                            <Download className="w-4 h-4 mr-1" />
-                            Download
-                          </Button>
+                          {/* Action Buttons */}
+                          <div className={`flex items-center gap-2 transition-all duration-200 ${hoveredFile === file.id ? "opacity-100" : "opacity-0"
+                            }`}>
+                            {file.assetPath ? (
+                              <>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => handleViewFile(file)}
+                                  className="h-9 px-3 rounded-lg border-[#0EA0DC]/30 hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200"
+                                >
+                                  <Eye className="w-4 h-4 mr-1" />
+                                  View
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  onClick={() => handleDownload(file)}
+                                  className="h-9 px-3 rounded-lg bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] transition-all duration-200"
+                                >
+                                  <Download className="w-4 h-4 mr-1" />
+                                  Download
+                                </Button>
+                              </>
+                            ) : file.driveUrl ? (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleViewFile(file)}
+                                className="h-9 px-3 rounded-lg border-[#0EA0DC]/30 hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200"
+                              >
+                                <ExternalLink className="w-4 h-4 mr-1" />
+                                Open in Drive
+                              </Button>
+                            ) : (
+                              <span className="text-sm text-gray-400 italic">Resource not available</span>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    </Card>
-                  </motion.div>
-                ))}
+                      </Card>
+                    </motion.div>
+                  ))
+                ) : (
+                  <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-[#0EA0DC]/20">
+                    <FolderOpen className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                    <p className="text-[#666666]">No resources available yet.</p>
+                  </div>
+                )}
               </div>
+
+
 
               {/* Modal Footer */}
               <div className="mt-6 pt-6 border-t border-[#0EA0DC]/10 flex items-center justify-between">
