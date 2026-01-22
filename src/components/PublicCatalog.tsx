@@ -81,7 +81,7 @@ export function PublicCatalog() {
             Product Catalog
           </Badge>
           <h2 className="text-4xl text-[#272727] mb-4">
-            SkyGloss Product Lineup
+            SkyGloss Product Line
           </h2>
         </motion.div>
 
@@ -223,7 +223,7 @@ export function PublicCatalog() {
 
                 {/* Tabs */}
                 <Tabs defaultValue="overview" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3 bg-white rounded-xl p-1.5 border-2 border-[#0EA0DC] shadow-[0_0_10px_rgba(14,160,220,0.15)] h-auto">
+                  <TabsList className="grid w-full grid-cols-2 bg-white rounded-xl p-1.5 border-2 border-[#0EA0DC] shadow-[0_0_10px_rgba(14,160,220,0.15)] h-auto">
                     <TabsTrigger
                       value="overview"
                       className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-3 px-4 rounded-lg transition-all duration-200"
@@ -236,12 +236,12 @@ export function PublicCatalog() {
                     >
                       Specifications
                     </TabsTrigger>
-                    <TabsTrigger
+                    {/* <TabsTrigger
                       value="application"
                       className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-3 px-4 rounded-lg transition-all duration-200"
                     >
                       Application
-                    </TabsTrigger>
+                    </TabsTrigger> */}
                   </TabsList>
 
                   <TabsContent value="overview" className="space-y-4 pt-4">
@@ -279,7 +279,7 @@ export function PublicCatalog() {
                     </div>
                   </TabsContent>
 
-                  <TabsContent value="application" className="space-y-3 pt-4">
+                  {/* <TabsContent value="application" className="space-y-3 pt-4">
                     <h4 className="text-[#272727] mb-3">Application Guide</h4>
                     <ol className="space-y-3">
                       {selectedProduct.applicationGuide.map((step, idx) => (
@@ -300,7 +300,7 @@ export function PublicCatalog() {
                         <li>• Use only as directed in technical sheet</li>
                       </ul>
                     </div>
-                  </TabsContent>
+                  </TabsContent> */}
                 </Tabs>
 
                 {/* Login CTA */}

@@ -52,6 +52,7 @@ export function Navigation({
             <img
               src={logoImage}
               alt="SkyGloss"
+              style={{ maxWidth: "130px" }}
               className="h-7 sm:h-8 w-auto"
             />
             <div className="hidden sm:block h-8 w-px bg-[#0EA0DC]/20"></div>

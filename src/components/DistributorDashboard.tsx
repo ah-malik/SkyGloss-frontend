@@ -140,7 +140,7 @@ export function DistributorDashboard({
   onShowThankYou,
   onCartCountChange,
 }: DistributorDashboardProps) {
-  const { showCartSheet, setShowCartSheet } = useAuth();
+  const { showCartSheet, setShowCartSheet, user } = useAuth();
   const [activeSection, setActiveSection] = useState<"shop" | "certified" | "network">("shop");
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const [certCountry, setCertCountry] = useState("");
@@ -154,6 +154,11 @@ export function DistributorDashboard({
   const [myRequests, setMyRequests] = useState<any[]>([]);
   const [loadingRequests, setLoadingRequests] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Shipping details for Order Request
+  const [shippingPhone, setShippingPhone] = useState("");
+  const [shippingAddress, setShippingAddress] = useState("");
+  const [shippingCountry, setShippingCountry] = useState("");
 
 
   // Check for successful payment from Stripe
@@ -262,19 +267,56 @@ export function DistributorDashboard({
   };
 
 
-  const generateOrderRequest = () => {
+  const generateOrderRequest = async () => {
     if (orderItems.length === 0) {
       toast.error("Please add items to your order");
       return;
     }
 
-    setOrderItems([]);
-    if (onShowThankYou) {
-      onShowThankYou();
-    } else {
-      toast.success("Order request generated!", {
-        description: "Invoice sent to SkyGloss admin team"
+    if (!shippingPhone || !shippingAddress || !shippingCountry) {
+      toast.error("Please fill in all shipping details");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await api.post("/orders/request", {
+        items: orderItems.map(item => ({
+          product: item.productId.toString(), // Entity expects string for ObjectId ref but we use product.id number locally. In actual setup, distributorProducts might need real IDs.
+          name: item.productName,
+          size: item.size,
+          quantity: item.quantity,
+          price: item.price
+        })),
+        shippingAddress: {
+          email: user?.email || "",
+          firstName: user?.firstName || "",
+          lastName: user?.lastName || "",
+          address: shippingAddress,
+          city: "N/A", // Defaulting for simple request
+          state: "N/A",
+          zipCode: "N/A",
+          country: shippingCountry,
+          phoneNumber: shippingPhone
+        }
       });
+
+      setOrderItems([]);
+      setShippingPhone("");
+      setShippingAddress("");
+      setShippingCountry("");
+
+      if (onShowThankYou) {
+        onShowThankYou();
+      } else {
+        toast.success("Order request generated!", {
+          description: "Our admin team will review and contact you."
+        });
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to generate order request");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -551,12 +593,35 @@ export function DistributorDashboard({
                               </div>
                             </div>
 
+                            <div className="space-y-4 mb-6">
+                              <h4 className="text-sm font-semibold text-[#272727]">Shipping Details</h4>
+                              <Input
+                                placeholder="Phone Number"
+                                value={shippingPhone}
+                                onChange={(e) => setShippingPhone(e.target.value)}
+                                className="bg-white rounded-lg border-[#0EA0DC]/30"
+                              />
+                              <Input
+                                placeholder="Shipping Address"
+                                value={shippingAddress}
+                                onChange={(e) => setShippingAddress(e.target.value)}
+                                className="bg-white rounded-lg border-[#0EA0DC]/30"
+                              />
+                              <Input
+                                placeholder="Country"
+                                value={shippingCountry}
+                                onChange={(e) => setShippingCountry(e.target.value)}
+                                className="bg-white rounded-lg border-[#0EA0DC]/30"
+                              />
+                            </div>
+
                             <Button
                               onClick={generateOrderRequest}
-                              className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] hover:bg-[#0c80b3] transition-all duration-200 h-12 rounded-lg"
+                              disabled={!shippingPhone || !shippingAddress || !shippingCountry || isSubmitting}
+                              className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] hover:bg-[#0c80b3] transition-all duration-200 h-12 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               <Send className="w-4 h-4 mr-2" />
-                              Generate Order Request
+                              {isSubmitting ? "Generating..." : "Generate Order Request"}
                             </Button>
 
                             <p className="text-xs text-[#666666] mt-3 text-center">
