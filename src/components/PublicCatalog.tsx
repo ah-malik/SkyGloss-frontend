@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import api from "../api/axios";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { FileText, Droplets, Shield, Sparkles, Loader2 } from "lucide-react";
+import { FileText, Droplets, Shield, Sparkles, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 interface Product {
   _id: string;
@@ -29,6 +29,7 @@ export function PublicCatalog() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -44,6 +45,19 @@ export function PublicCatalog() {
     fetchProducts();
   }, []);
 
+  // Determine how many products to show based on screen size
+  const productsPerView = 4; // Desktop: 4 products at a time
+  const maxIndex = Math.max(0, products.length - productsPerView);
+
+  const handlePrevious = () => {
+    setCurrentIndex(prev => Math.max(0, prev - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
+  };
+
+  const visibleProducts = products.slice(currentIndex, currentIndex + productsPerView);
 
   if (loading) {
     return (
@@ -71,76 +85,96 @@ export function PublicCatalog() {
           </h2>
         </motion.div>
 
-        {/* Products List - Vertical Layout */}
-        <div className="space-y-6">
-          {products.map((product, index) => (
-            <motion.div
-              key={product._id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+        {/* Products Carousel */}
+        <div className="relative">
+          {/* Navigation Arrows */}
+          <div className="flex items-center gap-4">
+            <Button
+              onClick={handlePrevious}
+              disabled={currentIndex === 0}
+              className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border-2 border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC] hover:text-white hover:border-[#0EA0DC] disabled:opacity-30 disabled:cursor-not-allowed shadow-lg transition-all duration-200"
             >
-              <Card className="skygloss-card overflow-hidden rounded-2xl bg-white p-4 sm:p-6">
-                <div className="flex flex-col sm:flex-row gap-6">
-                  {/* Product Image */}
-                  <div className="flex-shrink-0 w-full sm:w-64 bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 flex items-center justify-center">
-                    <ImageWithFallback
-                      src={product.images?.[0]}
-                      alt={product.name}
-                      className="w-full h-48 sm:h-56 object-contain"
-                    />
-                  </div>
+              <ChevronLeft className="w-6 h-6" />
+            </Button>
 
-                  {/* Product Info */}
-                  <div className="flex-1 flex flex-col justify-between">
-                    <div>
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-xl sm:text-2xl text-[#272727] font-semibold">
-                          {product.name}
-                        </h3>
-                        {/* Features Icons */}
-                        <div className="flex gap-2">
-                          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#0EA0DC]/10" title="Eco-friendly">
-                            <Droplets className="w-4 h-4 text-[#0EA0DC]" />
-                          </div>
-                          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#0EA0DC]/10" title="Protection">
-                            <Shield className="w-4 h-4 text-[#0EA0DC]" />
-                          </div>
-                          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#0EA0DC]/10" title="Gloss Finish">
-                            <Sparkles className="w-4 h-4 text-[#0EA0DC]" />
-                          </div>
+            {/* Products Grid */}
+            <div className="w-full overflow-hidden">
+              <motion.div
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <AnimatePresence mode="popLayout">
+                  {visibleProducts.map((product, index) => (
+                    <motion.div
+                      key={product._id}
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -50 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                    >
+                      <Card className="skygloss-card overflow-hidden rounded-2xl h-full flex flex-col bg-white">
+                        {/* Product Image */}
+                        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-gray-50 to-white p-4">
+                          <ImageWithFallback
+                            src={product.images?.[0]}
+                            alt={product.name}
+                            className="w-full h-full object-contain"
+                          />
                         </div>
-                      </div>
-                      <p className="text-base text-[#666666] mb-6 line-clamp-3">
-                        {product.description}
-                      </p>
-                    </div>
 
-                    <div className="flex flex-col sm:flex-row items-center gap-4 mt-auto">
-                      <Button
-                        variant="outline"
-                        onClick={() => setSelectedProduct(product)}
-                        className="w-full sm:w-auto border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/10 hover:border-[#0EA0DC] transition-all duration-200 h-12 px-8"
-                      >
-                        <FileText className="w-4 h-4 mr-2" />
-                        View Details
-                      </Button>
-                      <p className="text-xs text-[#999999] italic">
-                        Login as a certified shop to see pricing and order.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          ))}
+                        {/* Product Info */}
+                        <div className="p-5 flex flex-col flex-1">
+                          <h3 className="text-[#272727] mb-2">
+                            {product.name}
+                          </h3>
+                          <p className="text-sm text-[#666666] mb-4 line-clamp-2 flex-1">
+                            {product.description}
+                          </p>
 
-          {products.length === 0 && (
-            <div className="text-center py-20 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-              <p className="text-gray-500">No products available in the catalog yet.</p>
+                          {/* Features Icons */}
+                          <div className="flex gap-2 mb-4">
+                            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#0EA0DC]/10">
+                              <Droplets className="w-4 h-4 text-[#0EA0DC]" />
+                            </div>
+                            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#0EA0DC]/10">
+                              <Shield className="w-4 h-4 text-[#0EA0DC]" />
+                            </div>
+                            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#0EA0DC]/10">
+                              <Sparkles className="w-4 h-4 text-[#0EA0DC]" />
+                            </div>
+                          </div>
+
+                          <Button
+                            variant="outline"
+                            onClick={() => setSelectedProduct(product)}
+                            className="w-full border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/10 hover:border-[#0EA0DC] transition-all duration-200"
+                          >
+                            <FileText className="w-4 h-4 mr-2" />
+                            View Details
+                          </Button>
+                        </div>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
             </div>
-          )}
+
+            <Button
+              onClick={handleNext}
+              disabled={currentIndex >= maxIndex}
+              className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border-2 border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC] hover:text-white hover:border-[#0EA0DC] disabled:opacity-30 disabled:cursor-not-allowed shadow-lg transition-all duration-200"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </Button>
+          </div>
+
+          {/* Carousel Indicator */}
+          <div className="text-center mt-6 text-sm text-[#666666]">
+            Showing {currentIndex + 1}-{Math.min(currentIndex + productsPerView, products.length)} of {products.length} products
+          </div>
         </div>
 
         {/* Login CTA */}
@@ -202,12 +236,6 @@ export function PublicCatalog() {
                     >
                       Specifications
                     </TabsTrigger>
-                    {/* <TabsTrigger
-                      value="application"
-                      className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-3 px-4 rounded-lg transition-all duration-200"
-                    >
-                      Application
-                    </TabsTrigger> */}
                   </TabsList>
 
                   <TabsContent value="overview" className="space-y-4 pt-4">
@@ -244,29 +272,6 @@ export function PublicCatalog() {
                       </div>
                     </div>
                   </TabsContent>
-
-                  {/* <TabsContent value="application" className="space-y-3 pt-4">
-                    <h4 className="text-[#272727] mb-3">Application Guide</h4>
-                    <ol className="space-y-3">
-                      {selectedProduct.applicationGuide.map((step, idx) => (
-                        <li key={idx} className="flex items-start">
-                          <div className="flex items-center justify-center w-7 h-7 rounded-full bg-[#0EA0DC] text-white text-sm mr-3 flex-shrink-0">
-                            {idx + 1}
-                          </div>
-                          <span className="text-[#666666] pt-1">{step}</span>
-                        </li>
-                      ))}
-                    </ol>
-
-                    <div className="mt-6 p-4 bg-amber-50 rounded-xl border border-amber-200">
-                      <h5 className="font-semibold text-amber-900 mb-2">⚠️ Important Notes</h5>
-                      <ul className="text-sm text-amber-800 space-y-1">
-                        <li>• Always test on a small area first</li>
-                        <li>• Work in shaded area, not in direct sunlight</li>
-                        <li>• Use only as directed in technical sheet</li>
-                      </ul>
-                    </div>
-                  </TabsContent> */}
                 </Tabs>
 
                 {/* Login CTA */}

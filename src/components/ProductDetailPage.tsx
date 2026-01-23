@@ -366,7 +366,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
 
               {/* Application Guidelines Section */}
               <Card className="skygloss-card p-4 sm:p-10 rounded-2xl">
-                <h3 className="text-xl sm:text-2xl text-[#272727] mb-6">Application Guidelines</h3>
+                <h3 className="text-xl sm:text-2xl text-[#272727] mb-6">Instruction</h3>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Step 1 */}
                   <div className="flex gap-4 p-4 rounded-xl bg-gradient-to-br from-gray-50 to-white border border-[#0EA0DC]/10">
