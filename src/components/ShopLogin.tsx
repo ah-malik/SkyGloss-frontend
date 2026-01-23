@@ -32,12 +32,30 @@ export function ShopLogin() {
   }, []);
 
   // Request Certification Form State
+  const [activeTab, setActiveTab] = useState("login");
   const [businessName, setBusinessName] = useState("");
   const [contactName, setContactName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneCountryCode, setPhoneCountryCode] = useState("+1");
   const [websiteSocialMedia, setWebsiteSocialMedia] = useState("");
   const [requestSubmitted, setRequestSubmitted] = useState(false);
+
+  const countryCodes = [
+    { code: "+1", name: "US/CA" },
+    { code: "+44", name: "UK" },
+    { code: "+61", name: "AU" },
+    { code: "+49", name: "DE" },
+    { code: "+33", name: "FR" },
+    { code: "+81", name: "JP" },
+    { code: "+971", name: "UAE" },
+    { code: "+92", name: "PK" },
+    { code: "+91", name: "IN" },
+    { code: "+86", name: "CN" },
+    { code: "+7", name: "RU" },
+    { code: "+55", name: "BR" },
+    { code: "+52", name: "MX" },
+  ];
 
   const countries = [
     "United States",
@@ -106,7 +124,7 @@ export function ShopLogin() {
         shopName: businessName,
         contactName,
         email,
-        phone,
+        phone: `${phoneCountryCode}${phone}`,
         website: websiteSocialMedia,
         country
       });
@@ -158,10 +176,13 @@ export function ShopLogin() {
 
             <div className="text-center mb-8">
               <h2 className="text-2xl text-[#272727] mb-2">Certified Shop Access</h2>
-              <p className="text-[#666666]">Interested in being SkyGloss certified? Fill out the details below.</p>
+              {activeTab === "request" && (
+                <p className="text-[#666666]">Interested in being SkyGloss Certified?</p>
+              )}
+              <p className="text-[#666666]">Fill out the details below.</p>
             </div>
 
-            <Tabs defaultValue="login" className="w-full">
+            <Tabs defaultValue="login" onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6 bg-white rounded-xl p-1.5 border-2 border-[#0EA0DC] shadow-[0_0_10px_rgba(14,160,220,0.15)] h-auto">
                 <TabsTrigger
                   value="login"
@@ -295,10 +316,34 @@ export function ShopLogin() {
                       Once you submit your details, someone will follow up on next steps.
                     </p>
 
-                    <Input required placeholder="Business Name" className="pl-10 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={businessName} onChange={(e) => setBusinessName(e.target.value)} />
-                    <Input required placeholder="Contact Name" className="pl-10 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={contactName} onChange={(e) => setContactName(e.target.value)} />
-                    <Input required type="email" placeholder="Email" className="pl-10 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <Input required type="tel" placeholder="Phone" className="pl-10 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    <Input required placeholder="Business Name" className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={businessName} onChange={(e) => setBusinessName(e.target.value)} />
+                    <Input required placeholder="Contact Name" className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={contactName} onChange={(e) => setContactName(e.target.value)} />
+                    <Input required type="email" placeholder="Email" className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={email} onChange={(e) => setEmail(e.target.value)} />
+
+                    <div className="flex gap-2">
+                      <div className="w-[110px] shrink-0">
+                        <Select value={phoneCountryCode} onValueChange={setPhoneCountryCode}>
+                          <SelectTrigger className="bg-white border-[#0EA0DC]/30 rounded-lg">
+                            <SelectValue placeholder="Code" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {countryCodes.map((c) => (
+                              <SelectItem key={c.code} value={c.code}>
+                                {c.name} ({c.code})
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <Input
+                        required
+                        type="tel"
+                        placeholder="Phone Number"
+                        className="flex-1 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                      />
+                    </div>
 
                     <div className="relative">
                       <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666] z-10 pointer-events-none" />
@@ -314,7 +359,7 @@ export function ShopLogin() {
                       </Select>
                     </div>
 
-                    <Input required type="url" placeholder="Website/Social Media" className="pl-10 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={websiteSocialMedia} onChange={(e) => setWebsiteSocialMedia(e.target.value)} />
+                    <Input required type="url" placeholder="Website/Social Media" className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={websiteSocialMedia} onChange={(e) => setWebsiteSocialMedia(e.target.value)} />
 
                     <Button type="submit" className="w-full skygloss-button h-12">Submit Request</Button>
                   </form>

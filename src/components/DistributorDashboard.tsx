@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
-import { Package, FileText, Globe, CreditCard, Send, CheckCircle, Plus, Minus, XCircle } from "lucide-react";
+import { Package, FileText, Globe, CreditCard, Send, CheckCircle, Plus, Minus, XCircle, Award } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -400,7 +400,7 @@ export function DistributorDashboard({
                 : "bg-transparent text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
                 }`}
             >
-              <FileText className="w-5 h-5 mr-2 sm:mr-3" />
+              <Award className="w-5 h-5 mr-2 sm:mr-3" />
               <span className="text-base sm:text-lg">Certified</span>
             </button>
             <button
@@ -658,7 +658,7 @@ export function DistributorDashboard({
                         Request Certification
                       </h3>
                       <p className="text-sm sm:text-base text-[#666666]">
-                        Generate a new shop certificate for your network
+                        Generate a new Certified shop Certificate
                       </p>
                       <Badge className="mt-3 bg-[#0EA0DC] text-white">
                         $25.00 Fee
@@ -666,9 +666,66 @@ export function DistributorDashboard({
                     </div>
 
                     <form onSubmit={handleCertificateRequest} className="space-y-4">
+
+
                       <div>
                         <label className="block text-sm text-[#272727] mb-2">
-                          Country
+                          Requester Name
+                        </label>
+                        <Input
+                          type="text"
+                          value={certRequester}
+                          onChange={(e) => setCertRequester(e.target.value)}
+                          placeholder="Enter your name"
+                          className="bg-white rounded-lg border-[#0EA0DC]/30"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm text-[#272727] mb-2">
+                          Shop Name
+                        </label>
+                        <Input
+                          type="text"
+                          value={certShopName}
+                          onChange={(e) => setCertShopName(e.target.value)}
+                          placeholder="Enter shop name"
+                          className="bg-white rounded-lg border-[#0EA0DC]/30"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm text-[#272727] mb-2">
+                          Shop Email
+                        </label>
+                        <Input
+                          type="email"
+                          value={certEmail}
+                          onChange={(e) => setCertEmail(e.target.value)}
+                          placeholder="Enter shop email"
+                          className="bg-white rounded-lg border-[#0EA0DC]/30"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm text-[#272727] mb-2">
+                          Shop Phone
+                        </label>
+                        <Input
+                          type="tel"
+                          value={certPhone}
+                          onChange={(e) => setCertPhone(e.target.value)}
+                          placeholder="Enter shop phone number"
+                          className="bg-white rounded-lg border-[#0EA0DC]/30"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm text-[#272727] mb-2">
+                          Shop Country
                         </label>
                         <Select value={certCountry} onValueChange={setCertCountry} required>
                           <SelectTrigger className="bg-white rounded-lg border-[#0EA0DC]/30">
@@ -799,62 +856,6 @@ export function DistributorDashboard({
                             <SelectItem value="MD">Moldova</SelectItem>
                           </SelectContent>
                         </Select>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm text-[#272727] mb-2">
-                          Requester Name
-                        </label>
-                        <Input
-                          type="text"
-                          value={certRequester}
-                          onChange={(e) => setCertRequester(e.target.value)}
-                          placeholder="Enter your name"
-                          className="bg-white rounded-lg border-[#0EA0DC]/30"
-                          required
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm text-[#272727] mb-2">
-                          Shop Name
-                        </label>
-                        <Input
-                          type="text"
-                          value={certShopName}
-                          onChange={(e) => setCertShopName(e.target.value)}
-                          placeholder="Enter shop name"
-                          className="bg-white rounded-lg border-[#0EA0DC]/30"
-                          required
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm text-[#272727] mb-2">
-                          Shop Email
-                        </label>
-                        <Input
-                          type="email"
-                          value={certEmail}
-                          onChange={(e) => setCertEmail(e.target.value)}
-                          placeholder="Enter shop email"
-                          className="bg-white rounded-lg border-[#0EA0DC]/30"
-                          required
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm text-[#272727] mb-2">
-                          Shop Phone
-                        </label>
-                        <Input
-                          type="tel"
-                          value={certPhone}
-                          onChange={(e) => setCertPhone(e.target.value)}
-                          placeholder="Enter shop phone number"
-                          className="bg-white rounded-lg border-[#0EA0DC]/30"
-                          required
-                        />
                       </div>
 
                       <div>
