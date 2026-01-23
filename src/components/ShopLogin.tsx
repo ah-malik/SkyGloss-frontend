@@ -13,6 +13,8 @@ import { ForgotPasswordModal } from "./ForgotPasswordModal";
 import { Footer } from "./Footer";
 import { useNavigate } from "react-router";
 import { useAuth } from "../AuthContext";
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 export function ShopLogin() {
   const navigate = useNavigate();
@@ -36,26 +38,9 @@ export function ShopLogin() {
   const [businessName, setBusinessName] = useState("");
   const [contactName, setContactName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [phoneCountryCode, setPhoneCountryCode] = useState("+1");
+  const [phone, setPhone] = useState<string | undefined>("");
   const [websiteSocialMedia, setWebsiteSocialMedia] = useState("");
   const [requestSubmitted, setRequestSubmitted] = useState(false);
-
-  const countryCodes = [
-    { code: "+1", name: "US/CA" },
-    { code: "+44", name: "UK" },
-    { code: "+61", name: "AU" },
-    { code: "+49", name: "DE" },
-    { code: "+33", name: "FR" },
-    { code: "+81", name: "JP" },
-    { code: "+971", name: "UAE" },
-    { code: "+92", name: "PK" },
-    { code: "+91", name: "IN" },
-    { code: "+86", name: "CN" },
-    { code: "+7", name: "RU" },
-    { code: "+55", name: "BR" },
-    { code: "+52", name: "MX" },
-  ];
 
   const countries = [
     "United States",
@@ -124,7 +109,7 @@ export function ShopLogin() {
         shopName: businessName,
         contactName,
         email,
-        phone: `${phoneCountryCode}${phone}`,
+        phone,
         website: websiteSocialMedia,
         country
       });
@@ -320,29 +305,19 @@ export function ShopLogin() {
                     <Input required placeholder="Contact Name" className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={contactName} onChange={(e) => setContactName(e.target.value)} />
                     <Input required type="email" placeholder="Email" className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={email} onChange={(e) => setEmail(e.target.value)} />
 
-                    <div className="flex gap-2">
-                      <div className="w-[110px] shrink-0">
-                        <Select value={phoneCountryCode} onValueChange={setPhoneCountryCode}>
-                          <SelectTrigger className="bg-white border-[#0EA0DC]/30 rounded-lg">
-                            <SelectValue placeholder="Code" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {countryCodes.map((c) => (
-                              <SelectItem key={c.code} value={c.code}>
-                                {c.name} ({c.code})
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                    <div className="space-y-2">
+                      <label className="block text-sm text-[#272727]">Phone Number</label>
+                      <div className="skygloss-phone-input-wrapper">
+                        <PhoneInput
+                          placeholder="Enter phone number"
+                          value={phone}
+                          onChange={setPhone}
+                          defaultCountry="US"
+                          international
+                          withCountryCallingCode
+                          className="skygloss-phone-input"
+                        />
                       </div>
-                      <Input
-                        required
-                        type="tel"
-                        placeholder="Phone Number"
-                        className="flex-1 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                      />
                     </div>
 
                     <div className="relative">
