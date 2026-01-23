@@ -197,7 +197,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
             </p>
 
             {/* FUSION Layer Selection */}
-            {isFusion && (
+            {/* {isFusion && (
               <div className="mb-8 w-full">
                 <label className="block text-sm text-[#272727] mb-3">
                   View Product Layer:
@@ -229,7 +229,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                   </button>
                 </div>
 
-                {/* Dual-Layer System Banner - Placeholder since it was an import */}
+              
                 <div className="rounded-xl overflow-hidden w-full bg-[#0EA0DC]/5 p-4 border border-[#0EA0DC]/20">
                   <div className="flex flex-col items-center">
                     <h4 className="text-sm font-bold text-[#0EA0DC] mb-1">DUAL-LAYER PROTECTION</h4>
@@ -237,7 +237,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
 
             {/* Select Size */}
             <div className="mb-6">
@@ -329,7 +329,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                 value="description"
                 className="data-[state=active]:bg-white data-[state=active]:text-[#0EA0DC] data-[state=active]:border-2 data-[state=active]:border-[#0EA0DC] data-[state=inactive]:bg-gray-100 data-[state=inactive]:text-[#666666] data-[state=inactive]:border-2 data-[state=inactive]:border-transparent rounded-xl px-4 sm:px-8 py-3 sm:py-4 text-sm sm:text-base hover:border-[#0EA0DC]/30 transition-all duration-200 w-full sm:w-auto"
               >
-                Description
+                Product Details
               </TabsTrigger>
             </TabsList>
 
@@ -508,21 +508,24 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                   <Button
                     variant="outline"
-                    className="h-auto py-3 sm:py-4 flex-col items-start border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/5 hover:border-[#0EA0DC]"
+                    className="h-auto py-3 sm:py-4 flex-col items-start border-[#0EA0DC]/30 text-[#0EA0DC] 
+                    hover:bg-[#0EA0DC] hover:border-[#0EA0DC]"
                   >
                     <Download className="w-5 h-5 mb-2" />
                     <span className="text-sm text-[rgb(255,255,255)]">Safety Data Sheet (SDS)</span>
                   </Button>
                   <Button
                     variant="outline"
-                    className="h-auto py-3 sm:py-4 flex-col items-start border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/5 hover:border-[#0EA0DC]"
+                    className="h-auto py-3 sm:py-4 flex-col items-start border-[#0EA0DC]/30 text-[#0EA0DC]
+                     hover:bg-[#0EA0DC] hover:border-[#0EA0DC]"
                   >
                     <Download className="w-5 h-5 mb-2" />
                     <span className="text-sm text-[rgb(255,255,255)]">Technical Data Sheet (TDS)</span>
                   </Button>
                   <Button
                     variant="outline"
-                    className="h-auto py-3 sm:py-4 flex-col items-start border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/5 hover:border-[#0EA0DC]"
+                    className="h-auto py-3 sm:py-4 flex-col items-start border-[#0EA0DC]/30 text-[#0EA0DC]
+                     hover:bg-[#0EA0DC] hover:border-[#0EA0DC]"
                   >
                     <Download className="w-5 h-5 mb-2" />
                     <span className="text-sm text-[rgb(255,255,255)]">Application Guide (PDF)</span>

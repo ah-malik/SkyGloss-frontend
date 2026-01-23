@@ -1,9 +1,10 @@
 import { motion } from "motion/react";
-import { LogOut, FileText, HelpCircle, Menu, X, ShoppingCart } from "lucide-react";
+import { LogOut, FileText, HelpCircle, Menu, X, ShoppingCart, ShoppingBag, Wrench, Package } from "lucide-react";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { useState } from "react";
 import logoImage from "../assets/logo.svg";
+import { useAuth } from "../AuthContext";
 
 interface NavigationProps {
   isLoggedIn: boolean;
@@ -26,7 +27,23 @@ export function Navigation({
   onCartClick,
   showCart = false
 }: NavigationProps) {
+  const { accessType } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const getRoleInfo = () => {
+    switch (accessType) {
+      case "shop":
+        return { label: "Shop", Icon: ShoppingBag };
+      case "technician":
+        return { label: "Technician", Icon: Wrench };
+      case "distributor":
+        return { label: "Distributor", Icon: Package };
+      default:
+        return { label: "Dashboard", Icon: Package };
+    }
+  };
+
+  const roleInfo = getRoleInfo();
 
   const handleNavClick = (action?: () => void) => {
     if (action) action();
@@ -65,6 +82,15 @@ export function Navigation({
           {isLoggedIn && (
             <>
               <div className="hidden md:flex items-center space-x-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onNavigateDashboard}
+                  className="text-[#0EA0DC] font-semibold hover:bg-[#0EA0DC]/5 transition-all duration-200"
+                >
+                  <roleInfo.Icon className="w-4 h-4 mr-2" />
+                  {roleInfo.label}
+                </Button>
                 {showCart && (
                   <Button
                     variant="ghost"
@@ -152,6 +178,14 @@ export function Navigation({
             className="md:hidden py-4 border-t border-[#0EA0DC]/20"
           >
             <div className="flex flex-col space-y-2">
+              <Button
+                variant="ghost"
+                onClick={() => handleNavClick(onNavigateDashboard)}
+                className="justify-start text-[#0EA0DC] font-semibold hover:bg-[#0EA0DC]/5"
+              >
+                <roleInfo.Icon className="w-4 h-4 mr-3" />
+                {roleInfo.label}
+              </Button>
               <Button
                 variant="ghost"
                 onClick={() => handleNavClick(onNavigateResources)}
