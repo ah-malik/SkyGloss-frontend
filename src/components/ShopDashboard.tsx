@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Search, ShoppingCart, Plus, Minus, Eye, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { Search, ShoppingCart, Plus, Minus, Eye, Loader2 } from "lucide-react";
 import api from "../api/axios";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
@@ -46,7 +46,6 @@ export function ShopDashboard({
   const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: string }>({});
   const [viewingProduct, setViewingProduct] = useState<string | null>(null);
   const [showCheckout, setShowCheckout] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   // Sync viewingProduct with URL parameter
   useEffect(() => {
@@ -168,19 +167,6 @@ export function ShopDashboard({
     product.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Carousel logic for filtered products
-  const productsPerView = 2; // Show 2 products at a time
-  const maxIndex = Math.max(0, filteredProducts.length - productsPerView);
-
-  const handlePrevious = () => {
-    setCurrentIndex(prev => Math.max(0, prev - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
-  };
-
-  const visibleProducts = filteredProducts.slice(currentIndex, currentIndex + productsPerView);
 
 
   if (showCheckout) {
@@ -255,121 +241,112 @@ export function ShopDashboard({
                 </div>
               </motion.div>
 
-              {/* Products Carousel */}
-              <div className="relative">
-                {/* Navigation Arrows */}
-                <Button
-                  onClick={handlePrevious}
-                  disabled={currentIndex === 0}
-                  className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border-2 border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC] hover:text-white hover:border-[#0EA0DC] disabled:opacity-30 disabled:cursor-not-allowed shadow-lg transition-all duration-200 p-0"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </Button>
+              {/* Products List - Vertical Layout */}
+              <div className="space-y-6">
+                {filteredProducts.map((product, index) => {
+                  const currentSizeStr = selectedSizes[product._id] || product.sizes[0]?.size;
+                  const currentSizeData = product.sizes.find((s: any) => s.size === currentSizeStr);
+                  const currentPrice = currentSizeData ? currentSizeData.price : 0;
 
-                <div className="grid sm:grid-cols-2 gap-6">
-                  {visibleProducts.map((product, index) => {
-                    const currentSizeStr = selectedSizes[product._id] || product.sizes[0]?.size;
-                    const currentSizeData = product.sizes.find((s: any) => s.size === currentSizeStr);
-                    const currentPrice = currentSizeData ? currentSizeData.price : 0;
-
-                    return (
-                      <motion.div
-                        key={product._id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <Card className="skygloss-card p-6 rounded-2xl">
+                  return (
+                    <motion.div
+                      key={product._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <Card className="skygloss-card p-4 sm:p-6 rounded-2xl">
+                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                          {/* Image Section */}
                           <div
-                            className="cursor-pointer bg-gradient-to-br from-gray-50 to-white rounded-xl mb-4 p-4 hover:opacity-90 transition-opacity"
+                            className="flex-shrink-0 w-full sm:w-48 cursor-pointer bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 hover:opacity-90 transition-opacity flex items-center justify-center"
                             onClick={() => handleOpenProduct(product._id)}
                           >
                             <ImageWithFallback
                               src={product.images?.[0]}
                               alt={product.name}
-                              className="w-full h-48 object-contain"
+                              className="w-full h-40 sm:h-40 object-contain"
                             />
                           </div>
 
-                          <div className="flex items-start justify-between mb-2">
-                            <div>
-                              <h3 className="text-[#272727]">{product.name}</h3>
-                              <p className="text-sm text-[#666666] mt-1 line-clamp-2">{product.description}</p>
-                            </div>
-                            <Badge
-                              variant="secondary"
-                              className={`${product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
-                            >
-                              {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
-                            </Badge>
-                          </div>
-
-                          {/* Size Selection */}
-                          <div className="mb-4">
-                            <label className="text-xs text-[#666666] mb-2 block font-medium">
-                              Select Size:
-                            </label>
-                            <div className="flex flex-wrap gap-2">
-                              {product.sizes?.map((s: any) => (
-                                <button
-                                  key={s.size}
-                                  onClick={() => setSelectedSizes({ ...selectedSizes, [product._id]: s.size })}
-                                  className={`px-3 py-1.5 rounded-lg text-xs transition-all duration-200 text-center leading-tight ${currentSizeStr === s.size
-                                    ? "bg-[#272727] text-white shadow-md"
-                                    : "bg-gray-100 text-[#666666] hover:bg-gray-200"
-                                    }`}
-                                >
-                                  {s.size}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Price and Actions */}
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <span className="text-2xl font-bold text-[#0EA0DC]">
-                                ${currentPrice.toFixed(2)}
-                              </span>
-                            </div>
-                            <div className="flex gap-2">
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => handleOpenProduct(product._id)}
-                                className="rounded-lg border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/10"
+                          {/* Content Section */}
+                          <div className="flex-1 min-w-0 flex flex-col">
+                            <div className="flex items-start justify-between mb-2">
+                              <div>
+                                <h3 className="text-lg sm:text-xl text-[#272727] font-semibold">{product.name}</h3>
+                                <p className="text-sm text-[#666666] mt-1 line-clamp-2">{product.description}</p>
+                              </div>
+                              <Badge
+                                variant="secondary"
+                                className={`shrink-0 ${product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
                               >
-                                <Eye className="w-4 h-4" />
-                              </Button>
-                              <Button
-                                size="sm"
-                                disabled={product.stock === 0}
-                                onClick={() => addToCart(product)}
-                                className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] transition-all duration-200 rounded-lg"
-                              >
-                                <ShoppingCart className="w-4 h-4 mr-1" />
-                                Add
-                              </Button>
+                                {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                              </Badge>
+                            </div>
+
+                            <div className="mt-auto pt-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                              {/* Size Selection */}
+                              <div>
+                                <label className="text-xs text-[#666666] mb-2 block font-medium">
+                                  Select Size:
+                                </label>
+                                <div className="flex flex-wrap gap-2">
+                                  {product.sizes?.map((s: any) => (
+                                    <button
+                                      key={s.size}
+                                      onClick={() => setSelectedSizes({ ...selectedSizes, [product._id]: s.size })}
+                                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${currentSizeStr === s.size
+                                        ? "bg-[#272727] text-white shadow-md"
+                                        : "bg-gray-100 text-[#666666] hover:bg-gray-200"
+                                        }`}
+                                    >
+                                      {s.size}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {/* Price and Actions */}
+                              <div className="flex items-center gap-4">
+                                <div className="text-right">
+                                  <span className="text-2xl font-bold text-[#0EA0DC]">
+                                    ${currentPrice.toFixed(2)}
+                                  </span>
+                                </div>
+                                <div className="flex gap-2">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => handleOpenProduct(product._id)}
+                                    className="rounded-lg border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/10 h-10 px-4"
+                                  >
+                                    <Eye className="w-4 h-4 mr-2" />
+                                    Details
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    disabled={product.stock === 0}
+                                    onClick={() => addToCart(product)}
+                                    className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] transition-all duration-200 rounded-lg h-10 px-4"
+                                  >
+                                    <ShoppingCart className="w-4 h-4 mr-2" />
+                                    Add to Cart
+                                  </Button>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </Card>
-                      </motion.div>
-                    );
-                  })}
-                </div>
+                        </div>
+                      </Card>
+                    </motion.div>
+                  );
+                })}
 
-                <Button
-                  onClick={handleNext}
-                  disabled={currentIndex >= maxIndex}
-                  className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border-2 border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC] hover:text-white hover:border-[#0EA0DC] disabled:opacity-30 disabled:cursor-not-allowed shadow-lg transition-all duration-200 p-0"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </Button>
-
-                {/* Carousel Indicator */}
-                <div className="text-center mt-4 text-sm text-[#666666]">
-                  Showing {currentIndex + 1}-{Math.min(currentIndex + productsPerView, filteredProducts.length)} of {filteredProducts.length} products
-                </div>
+                {filteredProducts.length === 0 && (
+                  <div className="text-center py-20 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                    <p className="text-gray-500">No products found matching your search.</p>
+                  </div>
+                )}
               </div>
             </div>
 

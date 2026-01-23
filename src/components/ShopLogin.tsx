@@ -244,7 +244,7 @@ export function ShopLogin() {
                         </>
                       ) : (
                         <div>
-                          <label className="block text-sm text-[#272727] mb-2">Access Code</label>
+                          <label className="block text-sm text-[#272727] mb-2">Certificate Number</label>
                           <div className="relative">
                             <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
                             <Input
