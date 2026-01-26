@@ -1,3 +1,4 @@
+// Last Updated: 2026-01-26
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
 import { ArrowLeft, ShoppingCart, Download, Play, CheckCircle2, Plus, Minus } from "lucide-react";
@@ -14,9 +15,10 @@ import { Loader2 } from "lucide-react";
 interface ProductDetailPageProps {
   productId: string;
   onBack: () => void;
-  onAddToCart: (size: string, quantity: number, price?: number) => void;
+  onAddToCart: (size: string, quantity: number, price?: number, orderType?: "unit" | "case") => void;
   showPrice?: boolean;
   onOpenCart?: () => void;
+  initialProduct?: any;
 }
 
 const videos = [
@@ -26,15 +28,18 @@ const videos = [
   { title: "Maintenance Guide", duration: "6:15", thumbnail: "https://via.placeholder.com/600x400?text=Maintenance" }
 ];
 
-export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = true, onOpenCart }: ProductDetailPageProps) {
-  const [product, setProduct] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = true, onOpenCart, initialProduct }: ProductDetailPageProps) {
+  const [product, setProduct] = useState<any>(initialProduct || null);
+  const [loading, setLoading] = useState(!initialProduct);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedImage, setSelectedImage] = useState(0);
   const [showBottomBar, setShowBottomBar] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showAether, setShowAether] = useState(false); // false = Element, true = Aether
   const [quantity, setQuantity] = useState(1);
+  const [orderType, setOrderType] = useState<"unit" | "case">("unit");
+
+  const isDistributor = product?.id && !product._id; // Simple check for distributor hardcoded products
 
   const fetchProduct = async () => {
     try {
@@ -53,8 +58,16 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
   };
 
   useEffect(() => {
-    fetchProduct();
-  }, [productId]);
+    if (!initialProduct) {
+      fetchProduct();
+    } else {
+      setProduct(initialProduct);
+      setLoading(false);
+      if (initialProduct.sizes?.length > 0) {
+        setSelectedSize(typeof initialProduct.sizes[0] === 'string' ? initialProduct.sizes[0] : initialProduct.sizes[0].size);
+      }
+    }
+  }, [productId, initialProduct]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -91,12 +104,23 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
     );
   }
 
+
   const sizes = product.sizes || [];
-  const productImageList = product.images || [];
-  const currentPrice = sizes.find((s: any) => s.size === selectedSize)?.price || 0;
+  const productImageList = isDistributor
+    ? [product.image, product.additionalImage, product.additionalImage2, ...(product.additionalImages || [])].filter(Boolean)
+    : (product.images || []);
+
+  const currentPrice = isDistributor
+    ? (orderType === "unit" ? product.unitPrices[selectedSize] : product.casePrices[selectedSize])
+    : (sizes.find((s: any) => s.size === selectedSize)?.price || 0);
+
+  const unitsInSelected = isDistributor && orderType === "case"
+    ? (product.unitsPerCase[selectedSize] || 1)
+    : 1;
+
 
   const handleAddToCart = () => {
-    onAddToCart(selectedSize, quantity, showPrice ? currentPrice : undefined);
+    onAddToCart(selectedSize, quantity, showPrice ? currentPrice : undefined, isDistributor ? orderType : undefined);
     setShowConfirmDialog(true);
   };
 
@@ -245,21 +269,57 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                 {isFusion ? "Select Size (Element + Aether)" : "Select Size"}
               </label>
               <div className="flex flex-wrap gap-3">
-                {sizes.map(({ size, price }: any) => (
+                {sizes.map((s: any) => {
+                  const size = typeof s === 'string' ? s : s.size;
+                  const price = typeof s === 'string' ? null : s.price;
+                  return (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`flex-1 min-w-[100px] px-4 py-3 rounded-lg border-2 transition-all duration-200 ${selectedSize === size
+                        ? "bg-[#272727] text-white border-[#272727]"
+                        : "bg-white text-[#666666] border-gray-300 hover:border-[#0EA0DC]"
+                        }`}
+                    >
+                      <div className="text-sm font-medium">{size}</div>
+                      {showPrice && price !== null && <div className="text-xs mt-1">${price}</div>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Distributor Order Type Selection */}
+            {isDistributor && (
+              <div className="mb-6">
+                <label className="block text-sm text-[#272727] mb-3">
+                  Select Order Type:
+                </label>
+                <div className="flex gap-3">
                   <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`flex-1 min-w-[100px] px-4 py-3 rounded-lg border-2 transition-all duration-200 ${selectedSize === size
-                      ? "bg-[#272727] text-white border-[#272727]"
+                    onClick={() => setOrderType("unit")}
+                    className={`flex-1 px-4 py-3 rounded-lg border-2 transition-all duration-200 ${orderType === "unit"
+                      ? "bg-[#0EA0DC] text-white border-[#0EA0DC]"
                       : "bg-white text-[#666666] border-gray-300 hover:border-[#0EA0DC]"
                       }`}
                   >
-                    <div className="text-sm font-medium">{size}</div>
-                    {showPrice && <div className="text-xs mt-1">${price}</div>}
+                    Unit (${product.unitPrices[selectedSize]?.toFixed(2)})
                   </button>
-                ))}
+                  <button
+                    onClick={() => setOrderType("case")}
+                    className={`flex-1 px-4 py-3 rounded-lg border-2 transition-all duration-200 ${orderType === "case"
+                      ? "bg-[#0EA0DC] text-white border-[#0EA0DC]"
+                      : "bg-white text-[#666666] border-gray-300 hover:border-[#0EA0DC]"
+                      }`}
+                  >
+                    Case (${product.casePrices[selectedSize]?.toFixed(2)})
+                    <div className="text-[10px] opacity-80">
+                      {product.unitsPerCase[selectedSize]} units/case
+                    </div>
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Price */}
             {showPrice && (
@@ -267,9 +327,16 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                 <div className="text-3xl text-[#0EA0DC] mb-2">
                   ${currentPrice.toFixed(2)}
                 </div>
-                <Badge variant="secondary" className={`border-0 ${product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                  {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
-                </Badge>
+                {!isDistributor && (
+                  <Badge variant="secondary" className={`border-0 ${product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                    {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                  </Badge>
+                )}
+                {isDistributor && (
+                  <Badge variant="secondary" className="border-0 bg-blue-100 text-blue-800">
+                    Distributor Exclusive
+                  </Badge>
+                )}
               </div>
             )}
 
@@ -307,11 +374,11 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
             {/* Add to Cart Button - Central */}
             <Button
               onClick={handleAddToCart}
-              disabled={product.stock === 0}
+              disabled={!isDistributor && product.stock === 0}
               className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] h-14 rounded-lg text-lg disabled:bg-gray-400"
             >
               <ShoppingCart className="w-5 h-5 mr-2" />
-              {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+              {isDistributor ? 'Add to Order' : (product.stock > 0 ? 'Add to Cart' : 'Out of Stock')}
             </Button>
           </motion.div>
         </div>
@@ -634,15 +701,24 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                   </div>
                 </div>
 
-                {/* Add to Cart Button */}
-                <Button
-                  onClick={handleAddToCart}
-                  disabled={product.stock === 0}
-                  className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20_px_rgba(14,160,220,0.4)] h-11 sm:h-12 px-6 sm:px-8 rounded-lg w-full sm:w-auto text-sm sm:text-base disabled:bg-gray-400"
-                >
-                  <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                  {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
-                </Button>
+                {/* Price and Add Button */}
+                <div className="flex items-center gap-4">
+                  {showPrice && (
+                    <div className="text-right">
+                      <span className="text-2xl font-bold text-[#0EA0DC]">
+                        ${currentPrice.toFixed(2)}
+                      </span>
+                    </div>
+                  )}
+                  <Button
+                    onClick={handleAddToCart}
+                    disabled={!isDistributor && product.stock === 0}
+                    className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] h-11 sm:h-12 px-6 sm:px-8 rounded-lg w-full sm:w-auto text-sm sm:text-base disabled:bg-gray-400"
+                  >
+                    <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                    {isDistributor ? 'Add to Order' : (product.stock > 0 ? 'Add to Cart' : 'Out of Stock')}
+                  </Button>
+                </div>
               </div>
             </div>
           </motion.div>

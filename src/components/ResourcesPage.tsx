@@ -1,3 +1,4 @@
+// Last Updated: 2026-01-26
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -404,7 +405,7 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
               </div>
             </Button>
 
-            <Button
+            {/* <Button
               variant="outline"
               className="justify-start h-auto py-4 border-[#0EA0DC]/30 hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200 rounded-xl"
               onClick={() => window.open("#", "_blank")}
@@ -418,7 +419,7 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
                   <div className="text-xs text-[#666666]">Video tutorials and learning materials</div>
                 </div>
               </div>
-            </Button>
+            </Button> */}
           </div>
         </motion.div>
 
@@ -510,7 +511,7 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
                           </div>
 
                           {/* Action Buttons */}
-                          <div className={`flex items-center gap-2 transition-all duration-200 ${hoveredFile === file.id ? "opacity-100" : "opacity-0"
+                          <div className={`flex items-center gap-2 transition-all duration-200 ${hoveredFile === file.id ? "opacity-0" : "opacity-0"
                             }`}>
                             {file.assetPath ? (
                               <>

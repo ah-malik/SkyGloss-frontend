@@ -1,3 +1,4 @@
+// Last Updated: 2026-01-26
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
@@ -245,7 +246,7 @@ export function TechnicianDashboard({
                   animate={{ opacity: 1, y: 0 }}
                 >
                   <div className="mb-10">
-                    <h2 className="text-2xl text-[#272727] mb-2">Shop Catalog</h2>
+                    <h2 className="text-2xl text-[#272727] mb-2">Shop</h2>
                     <p className="text-[#666666] mb-6">Browse and order SkyGloss products</p>
 
                     {/* Search Bar */}

@@ -1,3 +1,4 @@
+// Last Updated: 2026-01-26
 import { motion } from "motion/react";
 import { LogOut, FileText, HelpCircle, Menu, X, ShoppingCart, ShoppingBag, Wrench, Package } from "lucide-react";
 import { Button } from "./ui/button";
@@ -86,7 +87,7 @@ export function Navigation({
                   variant="ghost"
                   size="sm"
                   onClick={onNavigateDashboard}
-                  className="text-[#0EA0DC] font-semibold hover:bg-[#0EA0DC]/5 transition-all duration-200"
+                  className="text-[#666666] hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200 relative"
                 >
                   <roleInfo.Icon className="w-4 h-4 mr-2" />
                   {roleInfo.label}
