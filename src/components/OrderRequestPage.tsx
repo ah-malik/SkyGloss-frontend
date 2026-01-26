@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
-import { ArrowLeft, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, Check, Send, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
@@ -8,28 +8,31 @@ import { Separator } from "./ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { toast } from "sonner";
-import { type CartItem } from "../AuthContext";
+import { type CartItem, useAuth } from "../AuthContext";
 import api from "../api/axios";
 
 
-interface CheckoutPageProps {
+interface OrderRequestPageProps {
   cart: CartItem[];
   onBack: () => void;
   onComplete: () => void;
 }
 
-export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
-  // We only need shipping step now, payment is handled by Stripe
+export function OrderRequestPage({ cart, onBack, onComplete }: OrderRequestPageProps) {
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  
+  // Pre-fill from user profile if available
+  const [email, setEmail] = useState(user?.email || "");
+  const [firstName, setFirstName] = useState(user?.firstName || "");
+  const [lastName, setLastName] = useState(user?.lastName || "");
+  const [country, setCountry] = useState(user?.country || "");
+  
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [country, setCountry] = useState("US");
+  const [shippingPhone, setShippingPhone] = useState(user?.phoneNumber || "");
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -41,7 +44,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
 
-  const handleCheckout = async (e: React.FormEvent) => {
+  const handleRequestSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
@@ -64,21 +67,21 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
           state,
           zipCode,
           country,
-          phoneNumber
+          phoneNumber: shippingPhone
         }
       };
 
-      const response = await api.post('/orders/checkout-session', orderData);
+      await api.post('/orders/request', orderData);
 
-      if (response.data.url) {
-        window.location.href = response.data.url;
-      } else {
-        toast.error("Failed to initiate checkout");
-        setLoading(false);
-      }
+      toast.success("Order Request Submitted!", {
+        description: "Our admin team will review your request and contact you shortly."
+      });
+      
+      onComplete(); // Clears cart and shows Thank You in parent
+      
     } catch (error: any) {
-      console.error("Checkout error:", error);
-      toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
+      console.error("Order request error:", error);
+      toast.error(error.response?.data?.message || "Failed to submit order request. Please try again.");
       setLoading(false);
     }
   };
@@ -87,7 +90,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50/50">
         <Loader2 className="w-12 h-12 text-[#0EA0DC] animate-spin mb-4" />
-        <p className="text-[#666666] font-medium">Redirecting to Payment...</p>
+        <p className="text-[#666666] font-medium">Submitting Order Request...</p>
       </div>
     )
   }
@@ -109,7 +112,10 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Cart
           </Button>
-          <h1 className="text-3xl text-[#272727]">Checkout</h1>
+          <h1 className="text-3xl text-[#272727]">Request Order</h1>
+          <p className="text-[#666666] mt-2">
+            Submit your order request for review. No payment is required at this stage.
+          </p>
         </motion.div>
 
         <div className="grid lg:grid-cols-3 gap-8">
@@ -125,12 +131,12 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl text-[#272727]">Shipping Information</h2>
                   <div className="text-sm text-[#666666] flex items-center gap-2">
-                    <Check className="w-4 h-4 text-green-500" />
-                    Secure Checkout via Stripe
+                    <Send className="w-4 h-4 text-[#0EA0DC]" />
+                    Order Request
                   </div>
                 </div>
 
-                <form onSubmit={handleCheckout} className="space-y-4">
+                <form onSubmit={handleRequestSubmit} className="space-y-4">
                   <div>
                     <label className="block text-sm text-[#272727] mb-2">Email</label>
                     <Input
@@ -180,7 +186,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                     />
                   </div>
 
-                  <div className="grid md:grid-cols-3 gap-4">
+                   <div className="grid md:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-sm text-[#272727] mb-2">City</label>
                       <Input
@@ -218,28 +224,28 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">Country</label>
-                      <Select value={country} onValueChange={setCountry}>
-                        <SelectTrigger className="border-[#0EA0DC]/30 rounded-lg">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="US">United States</SelectItem>
-                          <SelectItem value="CA">Canada</SelectItem>
-                          <SelectItem value="MX">Mexico</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        <label className="block text-sm text-[#272727] mb-2">Country</label>
+                        <Input
+                            type="text"
+                            value={country}
+                            onChange={(e) => setCountry(e.target.value)}
+                            className="border-[#0EA0DC]/30 rounded-lg bg-gray-50"
+                            placeholder="Country"
+                            required
+                            readOnly={!!user?.country} // Read-only if coming from user profile to prevent switching logic bypass? No, let them edit if they moved, but the logic depends on LOGIN country, not shipping country usually. User said "kisi aur country se login hota he".
+                        />
+                         {/* Note: We allow editing country for shipping, but the *Access* logic was handled at dashboard entry. */}
                     </div>
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">Phone Number</label>
-                      <Input
-                        type="tel"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        placeholder="+1 (555) 000-0000"
-                        className="border-[#0EA0DC]/30 rounded-lg"
-                        required
-                      />
+                        <label className="block text-sm text-[#272727] mb-2">Phone Number</label>
+                        <Input 
+                            type="tel"
+                            value={shippingPhone}
+                            onChange={(e) => setShippingPhone(e.target.value)}
+                            placeholder="+1 (555) 000-0000"
+                            className="border-[#0EA0DC]/30 rounded-lg"
+                            required
+                        />
                     </div>
                   </div>
 
@@ -248,11 +254,8 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                     disabled={loading}
                     className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] h-12 rounded-lg mt-6"
                   >
-                    Proceed to Payment
+                    Submit Order Request
                   </Button>
-                  <p className="text-center text-xs text-[#666666] mt-4">
-                    You will be redirected to Stripe to securely complete your payment.
-                  </p>
                 </form>
               </Card>
             </motion.div>
@@ -266,7 +269,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
               className="sticky top-24"
             >
               <Card className="skygloss-card p-6 rounded-2xl">
-                <h3 className="text-lg text-[#272727] mb-4">Order Summary</h3>
+                <h3 className="text-lg text-[#272727] mb-4">Request Summary</h3>
 
                 <div className="space-y-4 mb-6">
                   {cart.map((item) => (
@@ -304,7 +307,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                   </div>
                   <Separator />
                   <div className="flex justify-between text-lg text-[#272727]">
-                    <span>Total</span>
+                    <span>Total Value</span>
                     <span className="text-[#0EA0DC]">${total.toFixed(2)}</span>
                   </div>
                 </div>

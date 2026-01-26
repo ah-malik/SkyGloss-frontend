@@ -14,6 +14,7 @@ import { ResourcesPage } from "./components/ResourcesPage";
 import { SupportPage } from "./components/SupportPage";
 import { ThankYouPage } from "./components/ThankYouPage";
 import { ReceiptPage } from "./components/ReceiptPage";
+import { ResetPassword } from "./components/ResetPassword";
 import { PublicRoute, ProtectedRoute } from "./components/AuthRoutes";
 
 export const router = createBrowserRouter([
@@ -30,6 +31,7 @@ export const router = createBrowserRouter([
           { path: "login/technician", element: <TechnicianLogin /> },
           { path: "login/shop", element: <ShopLogin /> },
           { path: "login/distributor", element: <DistributorLogin /> },
+          { path: "reset-password", element: <ResetPassword /> },
         ]
       },
 

@@ -13,6 +13,7 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { CoursePlayer } from "./CoursePlayer";
 import { ProductDetailPage } from "./ProductDetailPage";
 import { CheckoutPage } from "./CheckoutPage";
+import { OrderRequestPage } from "./OrderRequestPage";
 import { toast } from "sonner";
 import { useAuth } from "../AuthContext";
 import api from "../api/axios";
@@ -34,7 +35,8 @@ export function TechnicianDashboard({
     updateQuantity,
     clearCart,
     showCartSheet,
-    setShowCartSheet
+    setShowCartSheet,
+    user
   } = useAuth();
   const navigate = useNavigate();
 
@@ -157,19 +159,37 @@ export function TechnicianDashboard({
   }
 
   if (showCheckout) {
-    return (
-      <CheckoutPage
-        cart={cart}
-        onBack={() => setShowCheckout(false)}
-        onComplete={() => {
-          setShowCheckout(false);
-          clearCart();
-          if (onShowThankYou) {
-            onShowThankYou();
-          }
-        }}
-      />
-    );
+    if (user?.country === "United States") {
+      return (
+        <CheckoutPage
+          cart={cart}
+          onBack={() => setShowCheckout(false)}
+          onComplete={() => {
+            setShowCheckout(false);
+            clearCart();
+            if (onShowThankYou) {
+              onShowThankYou();
+            }
+          }}
+        />
+      );
+    } else {
+      return (
+        <OrderRequestPage
+          cart={cart}
+          onBack={() => setShowCheckout(false)}
+          onComplete={() => {
+            setShowCheckout(false);
+            clearCart();
+             // Optional: Navigate to success page
+             navigate('/dashboard/technician'); // or receipt page if we want to show it
+            if (onShowThankYou) {
+              onShowThankYou();
+            }
+          }}
+        />
+      );
+    }
   }
 
   return (
@@ -481,7 +501,7 @@ export function TechnicianDashboard({
                             onClick={handleCheckout}
                             className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] hover:bg-[#0c80b3] transition-all duration-200 h-12 rounded-lg"
                           >
-                            Complete Purchase
+                            {user?.country === "United States" ? "Complete Purchase" : "Generate Order Request"}
                           </Button>
                         </>
                       )}
@@ -719,7 +739,7 @@ export function TechnicianDashboard({
                     }}
                     className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] hover:bg-[#0c80b3] transition-all duration-200 h-12 rounded-lg"
                   >
-                    Complete Purchase
+                    {user?.country === "United States" ? "Complete Purchase" : "Generate Order Request"}
                   </Button>
                 </div>
               </>

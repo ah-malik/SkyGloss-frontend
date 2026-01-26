@@ -13,6 +13,7 @@ import { Sheet, SheetContent, SheetTitle } from "./ui/sheet";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ProductDetailPage } from "./ProductDetailPage";
 import { CheckoutPage } from "./CheckoutPage";
+import { OrderRequestPage } from "./OrderRequestPage";
 import { toast } from "sonner";
 import { useAuth } from "../AuthContext";
 
@@ -35,7 +36,8 @@ export function ShopDashboard({
     updateQuantity,
     clearCart,
     showCartSheet,
-    setShowCartSheet
+    setShowCartSheet,
+    user
   } = useAuth();
   const navigate = useNavigate();
   const { productId } = useParams();
@@ -170,19 +172,37 @@ export function ShopDashboard({
 
 
   if (showCheckout) {
-    return (
-      <CheckoutPage
-        cart={cart}
-        onBack={() => setShowCheckout(false)}
-        onComplete={() => {
-          setShowCheckout(false);
-          clearCart();
-          if (onShowThankYou) {
-            onShowThankYou();
-          }
-        }}
-      />
-    );
+    if (user?.country === "United States") {
+      return (
+        <CheckoutPage
+          cart={cart}
+          onBack={() => setShowCheckout(false)}
+          onComplete={() => {
+            setShowCheckout(false);
+            clearCart();
+            if (onShowThankYou) {
+              onShowThankYou();
+            }
+          }}
+        />
+      );
+    } else {
+      return (
+        <OrderRequestPage
+          cart={cart}
+          onBack={() => setShowCheckout(false)}
+          onComplete={() => {
+            setShowCheckout(false);
+            clearCart();
+            // Optional: Navigate to a success page or just show "Thank You"
+            navigate('/dashboard/shop/my-orders'); 
+            if (onShowThankYou) {
+              onShowThankYou();
+            }
+          }}
+        />
+      );
+    }
   }
 
   return (
@@ -460,7 +480,7 @@ export function ShopDashboard({
                           onClick={handleCheckout}
                           className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] hover:bg-[#0c80b3] transition-all duration-200 h-12 rounded-lg"
                         >
-                          Proceed to Checkout
+                          {user?.country === "United States" ? "Proceed to Checkout" : "Generate Order Request"}
                         </Button>
                       </>
                     )}
@@ -581,7 +601,7 @@ export function ShopDashboard({
                     }}
                     className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] hover:bg-[#0c80b3] transition-all duration-200 h-12 rounded-lg"
                   >
-                    Proceed to Checkout
+                    {user?.country === "United States" ? "Proceed to Checkout" : "Generate Order Request"}
                   </Button>
                 </div>
               </>

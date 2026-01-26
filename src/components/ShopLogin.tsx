@@ -40,6 +40,8 @@ export function ShopLogin() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState<string | undefined>("");
   const [websiteSocialMedia, setWebsiteSocialMedia] = useState("");
+  const [reqUsername, setReqUsername] = useState("");
+  const [reqPassword, setReqPassword] = useState("");
   const [requestSubmitted, setRequestSubmitted] = useState(false);
 
   const countries = [
@@ -111,7 +113,9 @@ export function ShopLogin() {
         email,
         phone,
         website: websiteSocialMedia,
-        country
+        country,
+        username: isUSA ? reqUsername : undefined,
+        password: isUSA ? reqPassword : undefined
       });
       setRequestSubmitted(true);
     } catch (err: any) {
@@ -333,6 +337,38 @@ export function ShopLogin() {
                         </SelectContent>
                       </Select>
                     </div>
+
+                    {isUSA && (
+                      <div className="space-y-4 pt-2">
+                        <div className="p-3 bg-blue-50 rounded-lg border border-blue-100 mb-4">
+                          <p className="text-sm text-blue-800">
+                            <strong>Note:</strong> Since you are in the USA, please create your login credentials now.
+                            These will be active once your account is approved.
+                          </p>
+                        </div>
+                        <div>
+                          <label className="block text-sm text-[#272727] mb-2">Create Username</label>
+                          <Input 
+                            required 
+                            placeholder="Choose a username" 
+                            className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" 
+                            value={reqUsername} 
+                            onChange={(e) => setReqUsername(e.target.value)} 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm text-[#272727] mb-2">Create Password</label>
+                          <Input 
+                            required 
+                            type="password"
+                            placeholder="Choose a password" 
+                            className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" 
+                            value={reqPassword} 
+                            onChange={(e) => setReqPassword(e.target.value)} 
+                          />
+                        </div>
+                      </div>
+                    )}
 
                     <Input required type="url" placeholder="Website/Social Media" className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={websiteSocialMedia} onChange={(e) => setWebsiteSocialMedia(e.target.value)} />
 
