@@ -35,21 +35,21 @@ const distributorProducts = [
     id: 1,
     name: "FUSION SYSTEM",
     description: "Complete dual-layer coating (Element + Aether)",
-    sizes: ["100ml", "250ml", "500ml"],
+    sizes: ["250ml", "500ml", "2L"],
     unitPrices: {
-      "100ml": 130.98,
-      "250ml": 248.98,
-      "500ml": 277.98
+      "250ml": 90.00,
+      "500ml": 160.00,
+      "2L": 600.00
     },
     casePrices: {
-      "100ml": 1255.00,
-      "250ml": 2380.00,
-      "500ml": 2660.00
+      "250ml": 900.00,
+      "500ml": 960.00,
+      "2L": 3600.00
     },
     unitsPerCase: {
-      "100ml": 10,
       "250ml": 10,
-      "500ml": 10
+      "500ml": 6,
+      "2L": 6
     },
     image: fusionMainImage,
     additionalImage: fusionElementImage,
@@ -59,53 +59,62 @@ const distributorProducts = [
     id: 3,
     name: "RESIN FILM",
     sizes: ["60ml"],
-    unitPrices: { "60ml": 119.99 },
-    casePrices: { "60ml": 1140.00 },
+    unitPrices: { "60ml": 90.00 },
+    casePrices: { "60ml": 900.00 },
     unitsPerCase: { "60ml": 10 },
     image: resinFilmImage
-  },
-  {
-    id: 4,
-    name: "SEAL",
-    sizes: ["250ml"],
-    unitPrices: { "250ml": 64.99 },
-    casePrices: { "250ml": 625.00 },
-    unitsPerCase: { "250ml": 10 },
-    image: sealImage
-  },
-  {
-    id: 5,
-    name: "MATTE",
-    sizes: ["30ml"],
-    unitPrices: { "30ml": 94.99 },
-    casePrices: { "30ml": 910.00 },
-    unitsPerCase: { "30ml": 10 },
-    image: matteBoxImage
   },
   {
     id: 6,
     name: "SHINE",
     sizes: ["30ml"],
-    unitPrices: { "30ml": 72.99 },
-    casePrices: { "30ml": 700.00 },
+    unitPrices: { "30ml": 60.00 },
+    casePrices: { "30ml": 600.00 },
     unitsPerCase: { "30ml": 10 },
     image: shineBoxImage
+  },
+  {
+    id: 5,
+    name: "MATTE",
+    sizes: ["30ml"],
+    unitPrices: { "30ml": 60.00 },
+    casePrices: { "30ml": 600.00 },
+    unitsPerCase: { "30ml": 10 },
+    image: matteBoxImage
+  },
+  {
+    id: 4,
+    name: "SEAL",
+    sizes: ["250ml"],
+    unitPrices: { "250ml": 30.00 },
+    casePrices: { "250ml": 300.00 },
+    unitsPerCase: { "250ml": 10 },
+    image: sealImage
+  },
+  {
+    id: 9,
+    name: "APPLICATORS (2-Pack)",
+    sizes: ["2-Pack"],
+    unitPrices: { "2-Pack": 2.00 },
+    casePrices: { "2-Pack": 40.00 },
+    unitsPerCase: { "2-Pack": 20 },
+    image: "" // Placeholder as no image provided
   },
   {
     id: 7,
     name: "APPLICATOR BOTTLE",
     sizes: ["1pc"],
-    unitPrices: { "1pc": 7.49 },
-    casePrices: { "1pc": 70.00 },
-    unitsPerCase: { "1pc": 10 },
+    unitPrices: { "1pc": 50.00 },
+    casePrices: { "1pc": 1000.00 },
+    unitsPerCase: { "1pc": 20 },
     image: applicatorBottleImage
   },
   {
     id: 8,
     name: "EDGE BLADE",
     sizes: ["1pc"],
-    unitPrices: { "1pc": 36.99 },
-    casePrices: { "1pc": 350.00 },
+    unitPrices: { "1pc": 2.00 },
+    casePrices: { "1pc": 20.00 },
     unitsPerCase: { "1pc": 10 },
     image: edgeBladeBox1Image,
     additionalImages: [edgeBladeBox2Image]
@@ -114,8 +123,8 @@ const distributorProducts = [
     id: 10,
     name: "PAINT PEN",
     sizes: ["1pc"],
-    unitPrices: { "1pc": 22.49 },
-    casePrices: { "1pc": 210.00 },
+    unitPrices: { "1pc": 30.00 },
+    casePrices: { "1pc": 300.00 },
     unitsPerCase: { "1pc": 10 },
     image: paintPenBoxImage,
     additionalImages: [paintPenToolsImage]
@@ -518,7 +527,12 @@ export function DistributorDashboard({
                                           size="sm"
                                           variant="outline"
                                           onClick={() => addToOrder(product, size, "unit")}
-                                          className="rounded-lg border-[#0EA0DC]/30 text-[rgb(255,255,255)] hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 flex-1 sm:flex-none"
+                                          className="rounded-lg 
+                                          border-[#0EA0DC]/30 text-[rgb(255,255,255)] 
+                                          hover:border-[#0EA0DC] 
+                                          hover:bg-[#0EA0DC]/5
+                                          hover:text-[#0EA0DC] 
+                                          flex-1 sm:flex-none"
                                         >
                                           + Unit
                                         </Button>

@@ -246,12 +246,26 @@ export function PublicCatalog() {
                   </TabsContent>
 
                   <TabsContent value="specifications" className="space-y-3 pt-4">
-                    {selectedProduct.specifications.map((spec, idx) => (
-                      <div key={idx} className="flex justify-between items-center py-3 border-b border-[#0EA0DC]/10">
-                        <span className="text-[#272727]">{spec.label}</span>
-                        <span className="text-[#666666]">{spec.value}</span>
-                      </div>
-                    ))}
+                    {/* Handle String (HTML) Specifications */}
+                    {typeof selectedProduct.specifications === 'string' ? (
+                      <div
+                        className="specifications-rich text-[#666666] [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-[#272727] [&_h1]:mb-3 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-[#272727] [&_h2]:mb-3 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-[#272727] [&_h3]:mb-2 [&_h4]:text-base [&_h4]:font-bold [&_h4]:text-[#272727] [&_h4]:mb-2 [&_p]:mb-3 [&_strong]:text-[#272727] [&_li]:mb-1"
+                        dangerouslySetInnerHTML={{ __html: selectedProduct.specifications }}
+                      />
+                    ) : (
+                      /* Handle Array (Legacy) Specifications */
+                      Array.isArray(selectedProduct.specifications) && selectedProduct.specifications.length > 0 ? (
+                        selectedProduct.specifications.map((spec, idx) => (
+                          <div key={idx} className="flex justify-between items-center py-3 border-b border-[#0EA0DC]/10">
+                            <span className="text-[#272727]">{spec.label}</span>
+                            <span className="text-[#666666]">{spec.value}</span>
+                          </div>
+                        ))
+                      ) : (
+                         /* Fallback / Technical Specs check could go here if needed, or just show empty message */
+                         <p className="text-gray-500">No specifications available.</p>
+                      )
+                    )}
 
                     <div className="mt-6 p-4 bg-[#0EA0DC]/5 rounded-xl border border-[#0EA0DC]/20">
                       <div className="flex items-start">

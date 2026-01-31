@@ -338,7 +338,7 @@ export function ShopDashboard({
                                     size="sm"
                                     variant="outline"
                                     onClick={() => handleOpenProduct(product._id)}
-                                    className="rounded-lg border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/10 h-10 px-4"
+                                    className="rounded-lg border-[#0EA0DC]/30 hover:text-[#0EA0DC]  text-[#0EA0DC] hover:bg-[#0EA0DC]/10 h-10 px-4"
                                   >
                                     <Eye className="w-4 h-4 mr-2" />
                                     Details

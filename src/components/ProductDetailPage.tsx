@@ -394,7 +394,20 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
             <TabsList className="w-full flex-col sm:flex-row justify-start bg-transparent h-auto p-0 mb-8 sm:mb-12 gap-2 sm:gap-4">
               <TabsTrigger
                 value="description"
-                className="data-[state=active]:bg-white data-[state=active]:text-[#0EA0DC] data-[state=active]:border-2 data-[state=active]:border-[#0EA0DC] data-[state=inactive]:bg-gray-100 data-[state=inactive]:text-[#666666] data-[state=inactive]:border-2 data-[state=inactive]:border-transparent rounded-xl px-4 sm:px-8 py-3 sm:py-4 text-sm sm:text-base hover:border-[#0EA0DC]/30 transition-all duration-200 w-full sm:w-auto"
+                style={{
+                 fontSize:"23px"
+                }}  
+                className="data-[state=active]:bg-white 
+                data-[state=active]:text-[#0EA0DC] 
+                data-[state=active]:border-2 
+                
+                 data-[state=inactive]:bg-gray-100 
+                 data-[state=inactive]:text-[#666666]
+                  data-[state=inactive]:border-92 
+                  data-[state=inactive]:border-transparent
+                   rounded-xl px-4 sm:px-8 py-3 sm:py-4 
+                   text-sm sm:text-base
+                    transition-all duration-200 w-full sm:w-auto"
               >
                 Product Details
               </TabsTrigger>
@@ -403,32 +416,43 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
             {/* Description Tab */}
             <TabsContent value="description" className="space-y-8">
               {/* Technical Specifications Section */}
+              {/* Specifications Section (Rich Text) */}
+              {/* {typeof product.specifications === 'string' && product.specifications && (
+                <Card className="skygloss-card p-4 sm:p-10 rounded-2xl mb-8">
+                  <h3 className="text-xl sm:text-2xl text-[#272727] mb-6 sm:mb-8">Specifications</h3>
+                  <div
+                    className="text-[#666666] [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 
+                    [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-[#272727] [&_h1]:mb-3 [&_h2]:text-xl 
+                    [&_h2]:font-bold [&_h2]:text-[#272727] [&_h2]:mb-3 [&_h3]:text-lg [&_h3]:font-bold 
+                    [&_h3]:text-[#272727] [&_h3]:mb-2 [&_h4]:text-base [&_h4]:font-bold [&_h4]:text-[#272727] 
+                    [&_h4]:mb-2 [&_p]:mb-3 [&_strong]:text-[#272727] [&_li]:mb-1"
+                    dangerouslySetInnerHTML={{ __html: product.specifications }}
+                  />
+                </Card>
+              )} */}
+
+              {/* Technical Specifications Section */}
               <Card className="skygloss-card p-4 sm:p-10 rounded-2xl">
                 <h3 className="text-xl sm:text-2xl text-[#272727] mb-6 sm:mb-8">Technical Specifications</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 sm:gap-x-12 gap-y-4">
-                  {product.specifications && product.specifications.length > 0 ? (
-                    product.specifications.map((spec: any, idx: number) => (
-                      <div key={idx} className="flex justify-between py-4 border-b border-[#0EA0DC]/10">
-                        <span className="text-[#666666]">{spec.label}</span>
-                        <span className="text-[#272727]">{spec.value}</span>
-                      </div>
-                    ))
-                  ) : (
-                    [
-                      { label: "Volume Options", value: "100ml / 250ml / 500ml" },
-                      { label: "Coverage", value: "3-4 vehicles (100ml)" },
-                      { label: "Cure Time", value: "4 hours" },
-                      { label: "Durability", value: "18 months" },
-                      { label: "Application Temp", value: "15-30°C" },
-                      { label: "Technology", value: "Hybrid Fusion" }
-                    ].map((spec, idx) => (
-                      <div key={idx} className="flex justify-between py-4 border-b border-[#0EA0DC]/10">
-                        <span className="text-[#666666]">{spec.label}</span>
-                        <span className="text-[#272727]">{spec.value}</span>
-                      </div>
-                    ))
-                  )}
-                </div>
+                {product.technicalSpecifications ? (
+                  <div
+                    className="technical-specifications-rich  text-[#666666] [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-[#272727] [&_h1]:mb-3 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-[#272727] [&_h2]:mb-3 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-[#272727] [&_h3]:mb-2 [&_h4]:text-base [&_h4]:font-bold [&_h4]:text-[#272727] [&_h4]:mb-2 [&_p]:mb-3 [&_strong]:text-[#272727] [&_li]:mb-1"
+                    dangerouslySetInnerHTML={{ __html: product.technicalSpecifications }}
+                  />
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 sm:gap-x-12 gap-y-4">
+                    {Array.isArray(product.specifications) && product.specifications.length > 0 ? (
+                      product.specifications.map((spec: any, idx: number) => (
+                        <div key={idx} className="flex justify-between py-4 border-b border-[#0EA0DC]/10">
+                          <span className="text-[#666666]">{spec.label}</span>
+                          <span className="text-[#272727]">{spec.value}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-gray-500">No technical specifications available.</div>
+                    )}
+                  </div>
+                )}
               </Card>
 
               {/* Application Guidelines Section */}
@@ -683,7 +707,8 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                   <div className="flex  items-center gap-3 bg-gray-100 rounded-lg p-1.5 border border-gray-200">
                     <button
                       onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
-                      className="w-8 h-8 rounded-md bg-white hover:bg-[#0EA0DC] hover:text-white transition-all flex items-center justify-center shadow-sm disabled:opacity-50"
+                      className="w-8 h-8 rounded-md bg-white hover:bg-[#0EA0DC] text-[#0EA0DC]
+                      hover:text-white transition-all flex items-center justify-center shadow-sm disabled:opacity-50"
                       disabled={quantity <= 1 || product.stock === 0}
                     >
                       <Minus className="w-3.5 h-3.5" />
@@ -693,7 +718,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                     </span>
                     <button
                       onClick={() => setQuantity(prev => prev + 1)}
-                      className="w-8 h-8 rounded-md bg-white hover:bg-[#0EA0DC] hover:text-white transition-all flex items-center justify-center shadow-sm"
+                      className="w-8 h-8 rounded-md bg-white hover:bg-[#0EA0DC]   text-[#0EA0DC] hover:text-white transition-all flex items-center justify-center shadow-sm"
                       disabled={product.stock === 0}
                     >
                       <Plus className="w-3.5 h-3.5" />

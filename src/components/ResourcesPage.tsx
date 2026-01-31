@@ -76,54 +76,46 @@ const resourceCategories: ResourceCategory[] = [
     title: "Branding & Visual Assets",
     description: "Official SkyGloss logos, color palettes, typography, and brand guidelines",
     icon: Palette,
-    files: mockFiles.branding,
+    files: mockFiles.photography,
     filterType: "branding",
-    driveUrl: "https://drive.google.com/drive/folders/1dCMBekDy7HTlWZP0kxsGM7f64zL3HNlk?usp=drive_link",
+    driveUrl: "https://drive.google.com/drive/folders/1dCMBekDy7HTlWZP0kxsGM7f64zL3HNlk",
   },
-  {
-    id: "marketing",
-    title: "Catalog",
-    description: "Official SkyGloss product catalogs and brochures",
-    icon: FileText,
-    files: mockFiles.marketing,
-    filterType: "marketing",
-    driveUrl: "https://drive.google.com/drive/folders/1lClixrZVE7zDQnVK2ivwoRTxWG5Ep_ny?usp=drive_link",
-  },
-  {
-    id: "sales",
-    title: "Presentation",
-    description: "SkyGloss corporate and master distributor presentations",
-    icon: Briefcase,
-    files: mockFiles.sales,
-    filterType: "documents",
-    driveUrl: "https://drive.google.com/drive/folders/1v4xnxJ4qw0ZJzrDjBjgd13mo1Ui4r436?usp=drive_link",
-  },
-  {
-    id: "training",
-    title: "Training Media",
-    description: "Training videos, installation guides, and best practices documentation",
-    icon: Video,
-    files: mockFiles.training,
-    filterType: "videos",
-    driveUrl: "#",
-  },
-  {
-    id: "technical",
-    title: "Technical Documents",
-    description: "SDS, TDS, certifications, and technical specifications",
-    icon: FileSpreadsheet,
-    files: mockFiles.technical,
-    filterType: "documents",
-    driveUrl: "#",
-  },
-  {
+    {
     id: "photography",
     title: "Product Media",
     description: "High-resolution product images, lifestyle shots, and application photos",
     icon: Image,
     files: mockFiles.photography,
     filterType: "images",
-    driveUrl: "https://drive.google.com/drive/folders/1bH8uyvV4rI1x4yBKeXDYSVJbTZC9flpk?usp=drive_link",
+    driveUrl: "https://drive.google.com/drive/folders/1bH8uyvV4rI1x4yBKeXDYSVJbTZC9flpk",
+  },
+  {
+    id: "Marketing Collaterals",
+    title: "Marketing Collaterals",
+    description: "Official SkyGloss product catalogs and brochures",
+    icon: FileText,
+    files:mockFiles.photography,
+    filterType: "marketing",
+    driveUrl: "https://drive.google.com/drive/folders/1WDd-UIiG6lmSCEGi9ur4x0gkSOPX-eKq",
+  },
+  {
+    id: "Shop Documents",
+    title: "Shop Documents",
+    description: "SkyGloss corporate and master distributor presentations",
+    icon: Briefcase,
+    files: mockFiles.photography,
+    filterType: "documents",
+    driveUrl: "https://drive.google.com/drive/folders/1YMeEukEF5WEy14Kb414ykWc6N5GRn78E",
+  },
+
+    {
+    id: "Support Resources",
+    title: "Support Resources",
+    description: "SkyGloss corporate and master distributor presentations",
+    icon: Briefcase,
+    files: mockFiles.photography,
+    filterType: "documents",
+    driveUrl: "https://drive.google.com/drive/folders/1IvqoGF2kknjkONEQzhrB9xprkJaQXwgG",
   },
 ];
 
@@ -359,15 +351,18 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
           <div className="grid md:grid-cols-2 gap-4">
             <Button
               variant="outline"
-              className="justify-start h-auto py-4 border-[#0EA0DC]/30 hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200 rounded-xl"
+              className="justify-start h-auto py-4 border-[#0EA0DC]/30
+          
+               hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200 rounded-xl"
               onClick={() => window.open("#", "_blank")}
             >
               <div className="flex items-start gap-4 text-left">
-                <div className="w-10 h-10 rounded-lg bg-[#0EA0DC]/10 flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-lg bg-[#0EA0DC]/10 
+                flex items-center justify-center      hover:text-[#0EA0DC] flex-shrink-0">
                   <FolderOpen className="w-5 h-5 text-[#0EA0DC]" />
                 </div>
                 <div>
-                  <div className="text-[rgb(255,255,255)] mb-1">Main Resource Drive</div>
+                  <div className="text-[#0EA0DC] mb-1">Main Resource Drive</div>
                   <div className="text-xs text-[#666666]">Access all SkyGloss resources in one place</div>
                 </div>
               </div>
@@ -383,7 +378,7 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
                   <Palette className="w-5 h-5 text-[#0EA0DC]" />
                 </div>
                 <div>
-                  <div className="text-[rgb(255,255,255)] mb-1">Brand Guidelines Portal</div>
+                  <div className="text-[#0EA0DC] mb-1">Brand Guidelines Portal</div>
                   <div className="text-xs text-[#666666]">Official branding standards and usage guidelines</div>
                 </div>
               </div>
@@ -392,14 +387,14 @@ export function ResourcesPage({ onBack }: ResourcesPageProps = {}) {
             <Button
               variant="outline"
               className="justify-start h-auto py-4 border-[#0EA0DC]/30 hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200 rounded-xl"
-              onClick={() => window.open("https://drive.google.com/drive/folders/1bH8uyvV4rI1x4yBKeXDYSVJbTZC9flpk?usp=drive_link", "_blank")}
+              onClick={() => window.open("https://drive.google.com/drive/folders/1bH8uyvV4rI1x4yBKeXDYSVJbTZC9flpk", "_blank")}
             >
               <div className="flex items-start gap-4 text-left">
                 <div className="w-10 h-10 rounded-lg bg-[#0EA0DC]/10 flex items-center justify-center flex-shrink-0">
                   <Image className="w-5 h-5 text-[#0EA0DC]" />
                 </div>
                 <div>
-                  <div className="text-[rgb(255,255,255)] mb-1">Media Library</div>
+                  <div className="text-[#0EA0DC] mb-1">Media Library</div>
                   <div className="text-xs text-[#666666]">High-resolution photos and videos</div>
                 </div>
               </div>
