@@ -1,7 +1,7 @@
 // Last Updated: 2026-01-26
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
-import { ArrowLeft, ShoppingCart, Download, Play, CheckCircle2, Plus, Minus } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Download, CheckCircle2, Plus, Minus } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
@@ -21,12 +21,6 @@ interface ProductDetailPageProps {
   initialProduct?: any;
 }
 
-const videos = [
-  { title: "Product Overview", duration: "5:24", thumbnail: "https://via.placeholder.com/600x400?text=Overview" },
-  { title: "Application Tutorial", duration: "12:45", thumbnail: "https://via.placeholder.com/600x400?text=Tutorial" },
-  { title: "Surface Preparation", duration: "8:30", thumbnail: "https://via.placeholder.com/600x400?text=Prep" },
-  { title: "Maintenance Guide", duration: "6:15", thumbnail: "https://via.placeholder.com/600x400?text=Maintenance" }
-];
 
 export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = true, onOpenCart, initialProduct }: ProductDetailPageProps) {
   const [product, setProduct] = useState<any>(initialProduct || null);
@@ -35,7 +29,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
   const [selectedImage, setSelectedImage] = useState(0);
   const [showBottomBar, setShowBottomBar] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [showAether, setShowAether] = useState(false); // false = Element, true = Aether
+  const [showAether] = useState(false); // false = Element, true = Aether
   const [quantity, setQuantity] = useState(1);
   const [orderType, setOrderType] = useState<"unit" | "case">("unit");
 
@@ -114,9 +108,6 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
     ? (orderType === "unit" ? product.unitPrices[selectedSize] : product.casePrices[selectedSize])
     : (sizes.find((s: any) => s.size === selectedSize)?.price || 0);
 
-  const unitsInSelected = isDistributor && orderType === "case"
-    ? (product.unitsPerCase[selectedSize] || 1)
-    : 1;
 
 
   const handleAddToCart = () => {
@@ -395,8 +386,8 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
               <TabsTrigger
                 value="description"
                 style={{
-                 fontSize:"23px"
-                }}  
+                  fontSize: "23px"
+                }}
                 className="data-[state=active]:bg-white 
                 data-[state=active]:text-[#0EA0DC] 
                 data-[state=active]:border-2 
@@ -455,143 +446,6 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                 )}
               </Card>
 
-              {/* Application Guidelines Section */}
-              <Card className="skygloss-card p-4 sm:p-10 rounded-2xl">
-                <h3 className="text-xl sm:text-2xl text-[#272727] mb-6">Instruction</h3>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* Step 1 */}
-                  <div className="flex gap-4 p-4 rounded-xl bg-gradient-to-br from-gray-50 to-white border border-[#0EA0DC]/10">
-                    <div className="flex-shrink-0">
-                      <div className="w-10 h-10 rounded-full bg-[#0EA0DC] flex items-center justify-center text-white">
-                        1
-                      </div>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-lg text-[#272727] mb-2">Surface Preparation</h4>
-                      <p className="text-sm text-[#666666] mb-3">
-                        Clean and decontaminate surface thoroughly. Ensure surface is completely dry and free from contaminants.
-                      </p>
-                      <div className="aspect-video rounded-lg bg-[#272727] flex items-center justify-center overflow-hidden relative group cursor-pointer mb-2">
-                        <ImageWithFallback
-                          src={videos[2].thumbnail}
-                          alt={videos[2].title}
-                          className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-12 h-12 rounded-full bg-[#0EA0DC] flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Play className="w-6 h-6 text-white ml-0.5" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-[#666666]">{videos[2].duration}</span>
-                        <Button size="sm" className="h-7 text-xs bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)]">
-                          Watch Video
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Step 2 */}
-                  <div className="flex gap-4 p-4 rounded-xl bg-gradient-to-br from-gray-50 to-white border border-[#0EA0DC]/10">
-                    <div className="flex-shrink-0">
-                      <div className="w-10 h-10 rounded-full bg-[#0EA0DC] flex items-center justify-center text-white">
-                        2
-                      </div>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-lg text-[#272727] mb-2">Application</h4>
-                      <p className="text-sm text-[#666666] mb-3">
-                        Apply thin, even layer with foam applicator. Work in 2x2 ft sections for best results.
-                      </p>
-                      <div className="aspect-video rounded-lg bg-[#272727] flex items-center justify-center overflow-hidden relative group cursor-pointer mb-2">
-                        <ImageWithFallback
-                          src={videos[1].thumbnail}
-                          alt={videos[1].title}
-                          className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-12 h-12 rounded-full bg-[#0EA0DC] flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Play className="w-6 h-6 text-white ml-0.5" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-[#666666]">{videos[1].duration}</span>
-                        <Button size="sm" className="h-7 text-xs bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)]">
-                          Watch Video
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Step 3 */}
-                  <div className="flex gap-4 p-4 rounded-xl bg-gradient-to-br from-gray-50 to-white border border-[#0EA0DC]/10">
-                    <div className="flex-shrink-0">
-                      <div className="w-10 h-10 rounded-full bg-[#0EA0DC] flex items-center justify-center text-white">
-                        3
-                      </div>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-lg text-[#272727] mb-2">Leveling</h4>
-                      <p className="text-sm text-[#666666] mb-3">
-                        Level coating after 2-3 minutes using clean microfiber towel. Ensure even coverage.
-                      </p>
-                      <div className="aspect-video rounded-lg bg-[#272727] flex items-center justify-center overflow-hidden relative group cursor-pointer mb-2">
-                        <ImageWithFallback
-                          src={videos[0].thumbnail}
-                          alt={videos[0].title}
-                          className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-12 h-12 rounded-full bg-[#0EA0DC] flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Play className="w-6 h-6 text-white ml-0.5" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-[#666666]">{videos[0].duration}</span>
-                        <Button size="sm" className="h-7 text-xs bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)]">
-                          Watch Video
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Step 4 */}
-                  <div className="flex gap-4 p-4 rounded-xl bg-gradient-to-br from-gray-50 to-white border border-[#0EA0DC]/10">
-                    <div className="flex-shrink-0">
-                      <div className="w-10 h-10 rounded-full bg-[#0EA0DC] flex items-center justify-center text-white">
-                        4
-                      </div>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-lg text-[#272727] mb-2">Curing</h4>
-                      <p className="text-sm text-[#666666] mb-3">
-                        Allow 4 hours cure time before water exposure. Full cure achieved in 24 hours for maximum protection.
-                      </p>
-                      <div className="aspect-video rounded-lg bg-[#272727] flex items-center justify-center overflow-hidden relative group cursor-pointer mb-2">
-                        <ImageWithFallback
-                          src={videos[3].thumbnail}
-                          alt={videos[3].title}
-                          className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-12 h-12 rounded-full bg-[#0EA0DC] flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Play className="w-6 h-6 text-white ml-0.5" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-[#666666]">{videos[3].duration}</span>
-                        <Button size="sm" className="h-7 text-xs bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)]">
-                          Watch Video
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Card>
 
               {/* Downloads Section */}
               <Card className="skygloss-card p-4 sm:p-10 rounded-2xl">

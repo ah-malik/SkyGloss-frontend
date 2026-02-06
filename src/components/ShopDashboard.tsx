@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Search, ShoppingCart, Plus, Minus, Eye, Loader2 } from "lucide-react";
+import { Search, ShoppingCart, Plus, Minus, Eye, Loader2, GraduationCap, ShoppingBag } from "lucide-react";
 import api from "../api/axios";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
@@ -12,6 +12,7 @@ import { Sheet, SheetContent, SheetTitle } from "./ui/sheet";
 
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ProductDetailPage } from "./ProductDetailPage";
+import { CoursePlayer } from "./CoursePlayer";
 import { CheckoutPage } from "./CheckoutPage";
 import { OrderRequestPage } from "./OrderRequestPage";
 import { toast } from "sonner";
@@ -47,6 +48,8 @@ export function ShopDashboard({
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: string }>({});
   const [viewingProduct, setViewingProduct] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"shop" | "courses">("shop");
+  const [viewingCourse, setViewingCourse] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
 
   // Sync viewingProduct with URL parameter
@@ -119,7 +122,7 @@ export function ShopDashboard({
   // Scroll to top when viewing changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [viewingProduct, showCheckout]);
+  }, [viewingProduct, showCheckout, viewingCourse]);
 
   // Update cart count in parent - although count is also in AuthContext
   useEffect(() => {
@@ -171,6 +174,14 @@ export function ShopDashboard({
 
 
 
+  if (viewingCourse) {
+    const product = products.find(p => p._id === viewingProduct) || {};
+    return <CoursePlayer productName={product.name || "Product"} onBack={() => {
+      setViewingCourse(false);
+      setViewingProduct(null);
+    }} />;
+  }
+
   if (showCheckout) {
     if (user?.country === "United States") {
       return (
@@ -195,7 +206,7 @@ export function ShopDashboard({
             setShowCheckout(false);
             clearCart();
             // Optional: Navigate to a success page or just show "Thank You"
-            navigate('/dashboard/shop/my-orders'); 
+            navigate('/dashboard/shop/my-orders');
             if (onShowThankYou) {
               onShowThankYou();
             }
@@ -234,261 +245,367 @@ export function ShopDashboard({
               Shop Catalog
             </h1>
             <p className="text-[#666666]">
-              Browse and order SkyGloss products
+              {activeTab === "shop" ? "Browse and order SkyGloss products" : "Access product training and resources"}
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-2 w-full">
+          {/* Main Tab Toggle - Only for USA Shops */}
+          {user?.country === "United States" && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="mb-8"
+            >
+              <div className="inline-flex rounded-xl border-2 border-[#0EA0DC] p-1 bg-white shadow-[0_0_10px_rgba(14,160,220,0.1)]">
+                <button
+                  onClick={() => setActiveTab("shop")}
+                  className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "shop"
+                    ? "bg-[#272727] text-white shadow-lg"
+                    : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
+                    }`}
+                >
+                  <ShoppingBag className="w-5 h-5 mr-3" />
+                  <span className="text-lg">Shop</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab("courses")}
+                  className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "courses"
+                    ? "bg-[#272727] text-white shadow-lg"
+                    : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
+                    }`}
+                >
+                  <GraduationCap className="w-5 h-5 mr-3" />
+                  <span className="text-lg">Courses</span>
+                </button>
+              </div>
+            </motion.div>
+          )}
 
-              {/* Search */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="mb-6"
-              >
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                  <Input
-                    type="text"
-                    placeholder="Search products..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 bg-white rounded-lg border-[#0EA0DC]/30"
-                  />
+          {activeTab === "shop" ? (
+            <div className="grid lg:grid-cols-3 gap-8">
+              {/* Main Content */}
+              <div className="lg:col-span-2 w-full">
+
+                {/* Search */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="mb-6"
+                >
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                    <Input
+                      type="text"
+                      placeholder="Search products..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 bg-white rounded-lg border-[#0EA0DC]/30"
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Products List - Vertical Layout */}
+                <div className="space-y-6">
+                  {filteredProducts.map((product, index) => {
+                    const currentSizeStr = selectedSizes[product._id] || product.sizes[0]?.size;
+                    const currentSizeData = product.sizes.find((s: any) => s.size === currentSizeStr);
+                    const currentPrice = currentSizeData ? currentSizeData.price : 0;
+
+                    return (
+                      <motion.div
+                        key={product._id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <Card className="skygloss-card p-4 sm:p-6 rounded-2xl">
+                          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                            {/* Image Section */}
+                            <div
+                              className="flex-shrink-0 w-full sm:w-48 cursor-pointer bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 hover:opacity-90 transition-opacity flex items-center justify-center"
+                              onClick={() => handleOpenProduct(product._id)}
+                            >
+                              <ImageWithFallback
+                                src={product.images?.[0]}
+                                alt={product.name}
+                                className="w-full h-40 sm:h-40 object-contain"
+                              />
+                            </div>
+
+                            {/* Content Section */}
+                            <div className="flex-1 min-w-0 flex flex-col">
+                              <div className="flex items-start justify-between mb-2">
+                                <div>
+                                  <h3 className="text-lg sm:text-xl text-[#272727] font-semibold">{product.name}</h3>
+                                  <p className="text-sm text-[#666666] mt-1 line-clamp-2">{product.description}</p>
+                                </div>
+                                <Badge
+                                  variant="secondary"
+                                  className={`shrink-0 ${product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
+                                >
+                                  {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                                </Badge>
+                              </div>
+
+                              <div className="mt-auto pt-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                                {/* Size Selection */}
+                                <div>
+                                  <label className="text-xs text-[#666666] mb-2 block font-medium">
+                                    Select Size:
+                                  </label>
+                                  <div className="flex flex-wrap gap-2">
+                                    {product.sizes?.map((s: any) => (
+                                      <button
+                                        key={s.size}
+                                        onClick={() => setSelectedSizes({ ...selectedSizes, [product._id]: s.size })}
+                                        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${currentSizeStr === s.size
+                                          ? "bg-[#272727] text-white shadow-md"
+                                          : "bg-gray-100 text-[#666666] hover:bg-gray-200"
+                                          }`}
+                                      >
+                                        {s.size}
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                {/* Price and Actions */}
+                                <div className="flex items-center gap-4">
+                                  <div className="text-right">
+                                    <span className="text-2xl font-bold text-[#0EA0DC]">
+                                      ${currentPrice.toFixed(2)}
+                                    </span>
+                                  </div>
+                                  <div className="flex gap-2">
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => handleOpenProduct(product._id)}
+                                      className="rounded-lg border-[#0EA0DC]/30 hover:text-[#0EA0DC]  text-[#0EA0DC] hover:bg-[#0EA0DC]/10 h-10 px-4"
+                                    >
+                                      <Eye className="w-4 h-4 mr-2" />
+                                      Details
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      disabled={product.stock === 0}
+                                      onClick={() => addToCart(product)}
+                                      className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] transition-all duration-200 rounded-lg h-10 px-4"
+                                    >
+                                      <ShoppingCart className="w-4 h-4 mr-2" />
+                                      Add to Cart
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </Card>
+                      </motion.div>
+                    );
+                  })}
+
+                  {filteredProducts.length === 0 && (
+                    <div className="text-center py-20 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                      <p className="text-gray-500">No products found matching your search.</p>
+                    </div>
+                  )}
                 </div>
-              </motion.div>
+              </div>
 
-              {/* Products List - Vertical Layout */}
-              <div className="space-y-6">
-                {filteredProducts.map((product, index) => {
-                  const currentSizeStr = selectedSizes[product._id] || product.sizes[0]?.size;
-                  const currentSizeData = product.sizes.find((s: any) => s.size === currentSizeStr);
-                  const currentPrice = currentSizeData ? currentSizeData.price : 0;
+              {/* Cart Sidebar - Desktop Only */}
+              <div className="hidden lg:block lg:col-span-1">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="sticky top-24"
+                >
+                  <Card className="skygloss-card p-0 rounded-2xl overflow-hidden">
+                    {/* Header */}
+                    <div className="bg-gradient-to-br from-[#0EA0DC] to-[#0c80b3] p-6">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-lg text-white">Shopping Cart</h3>
+                        <Badge className="bg-white/20 text-white border-0 backdrop-blur-sm">
+                          {cartCount} {cartCount === 1 ? "item" : "items"}
+                        </Badge>
+                      </div>
+                    </div>
 
-                  return (
+                    <div className="p-6">
+                      {cart.length === 0 ? (
+                        <div className="text-center py-12">
+                          <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                            <ShoppingCart className="w-8 h-8 text-gray-400" />
+                          </div>
+                          <p className="text-[#666666]">Your cart is empty</p>
+                          <p className="text-sm text-[#999999] mt-1">Add products to get started</p>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="space-y-3 mb-6 max-h-96 overflow-y-auto pr-2">
+                            {cart.map((item) => (
+                              <div key={`${item.id}-${item.size}`} className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow">
+                                <div className="flex gap-3">
+                                  {/* Product Image */}
+                                  <div className="w-16 h-16 flex-shrink-0 bg-gradient-to-br from-gray-50 to-white rounded-lg p-2 border border-gray-200">
+                                    <ImageWithFallback
+                                      src={item.image}
+                                      alt={item.name}
+                                      className="w-full h-full object-contain"
+                                    />
+                                  </div>
+
+                                  {/* Product Info */}
+                                  <div className="flex-1 min-w-0">
+                                    <div className="mb-2">
+                                      <h4 className="text-sm text-[#272727] truncate mb-1">{item.name}</h4>
+                                      <p className="text-xs text-[#999999] bg-gray-100 rounded px-2 py-0.5 inline-block">
+                                        {item.size}
+                                      </p>
+                                    </div>
+
+                                    {/* Price and Quantity Controls */}
+                                    <div className="flex items-center justify-between mt-3">
+                                      <div className="text-sm text-[#0EA0DC]">
+                                        ${(item.price * item.quantity).toFixed(2)}
+                                        {item.quantity > 1 && (
+                                          <span className="text-xs text-[#999999] block">
+                                            ${item.price.toFixed(2)} each
+                                          </span>
+                                        )}
+                                      </div>
+
+                                      {/* Quantity Controls */}
+                                      <div className="flex items-center gap-1.5 bg-gray-100 rounded-lg p-1">
+                                        <button
+                                          onClick={() => updateQuantity(item.id, item.size, -1)}
+                                          className="w-7 h-7 rounded-md bg-white hover:bg-[#0EA0DC] hover:text-white transition-all flex items-center justify-center shadow-sm"
+                                        >
+                                          <Minus className="w-3 h-3" />
+                                        </button>
+                                        <span className="text-sm text-[#272727] w-6 text-center">
+                                          {item.quantity}
+                                        </span>
+                                        <button
+                                          onClick={() => updateQuantity(item.id, item.size, 1)}
+                                          className="w-7 h-7 rounded-md bg-white hover:bg-[#0EA0DC] hover:text-white transition-all flex items-center justify-center shadow-sm"
+                                        >
+                                          <Plus className="w-3 h-3" />
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          <Separator className="my-4 bg-gray-300" />
+
+                          <div className="space-y-3 mb-6">
+                            <div className="flex justify-between text-[#666666]">
+                              <span>Subtotal</span>
+                              <span className="text-[#272727]">${cartTotal.toFixed(2)}</span>
+                            </div>
+                            <div className="flex justify-between text-sm text-[#999999]">
+                              <span>Shipping</span>
+                              <span>At checkout</span>
+                            </div>
+                            <Separator className="bg-gray-300" />
+                            <div className="flex justify-between items-baseline">
+                              <span className="text-[#272727]">Total</span>
+                              <span className="text-xl text-[#0EA0DC]">${cartTotal.toFixed(2)}</span>
+                            </div>
+                          </div>
+
+                          <Button
+                            onClick={handleCheckout}
+                            className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] hover:bg-[#0c80b3] transition-all duration-200 h-12 rounded-lg"
+                          >
+                            {user?.country === "United States" ? "Proceed to Checkout" : "Generate Order Request"}
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  </Card>
+                </motion.div>
+              </div>
+            </div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <div className="mb-8">
+                <h2 className="text-2xl text-[#272727] mb-4">Available Training Courses</h2>
+                <p className="text-[#666666] mb-6">
+                  Complete comprehensive training for each SkyGloss product line
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {products
+                  .filter(p => !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN']
+                    .includes(p.name.toUpperCase()))
+                  .map((product, index) => (
                     <motion.div
                       key={product._id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
                     >
-                      <Card className="skygloss-card p-4 sm:p-6 rounded-2xl">
-                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-                          {/* Image Section */}
-                          <div
-                            className="flex-shrink-0 w-full sm:w-48 cursor-pointer bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 hover:opacity-90 transition-opacity flex items-center justify-center"
-                            onClick={() => handleOpenProduct(product._id)}
-                          >
-                            <ImageWithFallback
-                              src={product.images?.[0]}
-                              alt={product.name}
-                              className="w-full h-40 sm:h-40 object-contain"
-                            />
-                          </div>
-
-                          {/* Content Section */}
-                          <div className="flex-1 min-w-0 flex flex-col">
-                            <div className="flex items-start justify-between mb-2">
-                              <div>
-                                <h3 className="text-lg sm:text-xl text-[#272727] font-semibold">{product.name}</h3>
-                                <p className="text-sm text-[#666666] mt-1 line-clamp-2">{product.description}</p>
-                              </div>
-                              <Badge
-                                variant="secondary"
-                                className={`shrink-0 ${product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
-                              >
-                                {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
-                              </Badge>
-                            </div>
-
-                            <div className="mt-auto pt-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                              {/* Size Selection */}
-                              <div>
-                                <label className="text-xs text-[#666666] mb-2 block font-medium">
-                                  Select Size:
-                                </label>
-                                <div className="flex flex-wrap gap-2">
-                                  {product.sizes?.map((s: any) => (
-                                    <button
-                                      key={s.size}
-                                      onClick={() => setSelectedSizes({ ...selectedSizes, [product._id]: s.size })}
-                                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${currentSizeStr === s.size
-                                        ? "bg-[#272727] text-white shadow-md"
-                                        : "bg-gray-100 text-[#666666] hover:bg-gray-200"
-                                        }`}
-                                    >
-                                      {s.size}
-                                    </button>
-                                  ))}
-                                </div>
-                              </div>
-
-                              {/* Price and Actions */}
-                              <div className="flex items-center gap-4">
-                                <div className="text-right">
-                                  <span className="text-2xl font-bold text-[#0EA0DC]">
-                                    ${currentPrice.toFixed(2)}
-                                  </span>
-                                </div>
-                                <div className="flex gap-2">
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => handleOpenProduct(product._id)}
-                                    className="rounded-lg border-[#0EA0DC]/30 hover:text-[#0EA0DC]  text-[#0EA0DC] hover:bg-[#0EA0DC]/10 h-10 px-4"
-                                  >
-                                    <Eye className="w-4 h-4 mr-2" />
-                                    Details
-                                  </Button>
-                                  <Button
-                                    size="sm"
-                                    disabled={product.stock === 0}
-                                    onClick={() => addToCart(product)}
-                                    className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] transition-all duration-200 rounded-lg h-10 px-4"
-                                  >
-                                    <ShoppingCart className="w-4 h-4 mr-2" />
-                                    Add to Cart
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
-                    </motion.div>
-                  );
-                })}
-
-                {filteredProducts.length === 0 && (
-                  <div className="text-center py-20 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-                    <p className="text-gray-500">No products found matching your search.</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Cart Sidebar - Desktop Only */}
-            <div className="hidden lg:block lg:col-span-1">
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
-                className="sticky top-24"
-              >
-                <Card className="skygloss-card p-0 rounded-2xl overflow-hidden">
-                  {/* Header */}
-                  <div className="bg-gradient-to-br from-[#0EA0DC] to-[#0c80b3] p-6">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-lg text-white">Shopping Cart</h3>
-                      <Badge className="bg-white/20 text-white border-0 backdrop-blur-sm">
-                        {cartCount} {cartCount === 1 ? "item" : "items"}
-                      </Badge>
-                    </div>
-                  </div>
-
-                  <div className="p-6">
-                    {cart.length === 0 ? (
-                      <div className="text-center py-12">
-                        <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                          <ShoppingCart className="w-8 h-8 text-gray-400" />
-                        </div>
-                        <p className="text-[#666666]">Your cart is empty</p>
-                        <p className="text-sm text-[#999999] mt-1">Add products to get started</p>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="space-y-3 mb-6 max-h-96 overflow-y-auto pr-2">
-                          {cart.map((item) => (
-                            <div key={`${item.id}-${item.size}`} className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow">
-                              <div className="flex gap-3">
-                                {/* Product Image */}
-                                <div className="w-16 h-16 flex-shrink-0 bg-gradient-to-br from-gray-50 to-white rounded-lg p-2 border border-gray-200">
-                                  <ImageWithFallback
-                                    src={item.image}
-                                    alt={item.name}
-                                    className="w-full h-full object-contain"
-                                  />
-                                </div>
-
-                                {/* Product Info */}
-                                <div className="flex-1 min-w-0">
-                                  <div className="mb-2">
-                                    <h4 className="text-sm text-[#272727] truncate mb-1">{item.name}</h4>
-                                    <p className="text-xs text-[#999999] bg-gray-100 rounded px-2 py-0.5 inline-block">
-                                      {item.size}
-                                    </p>
-                                  </div>
-
-                                  {/* Price and Quantity Controls */}
-                                  <div className="flex items-center justify-between mt-3">
-                                    <div className="text-sm text-[#0EA0DC]">
-                                      ${(item.price * item.quantity).toFixed(2)}
-                                      {item.quantity > 1 && (
-                                        <span className="text-xs text-[#999999] block">
-                                          ${item.price.toFixed(2)} each
-                                        </span>
-                                      )}
-                                    </div>
-
-                                    {/* Quantity Controls */}
-                                    <div className="flex items-center gap-1.5 bg-gray-100 rounded-lg p-1">
-                                      <button
-                                        onClick={() => updateQuantity(item.id, item.size, -1)}
-                                        className="w-7 h-7 rounded-md bg-white hover:bg-[#0EA0DC] hover:text-white transition-all flex items-center justify-center shadow-sm"
-                                      >
-                                        <Minus className="w-3 h-3" />
-                                      </button>
-                                      <span className="text-sm text-[#272727] w-6 text-center">
-                                        {item.quantity}
-                                      </span>
-                                      <button
-                                        onClick={() => updateQuantity(item.id, item.size, 1)}
-                                        className="w-7 h-7 rounded-md bg-white hover:bg-[#0EA0DC] hover:text-white transition-all flex items-center justify-center shadow-sm"
-                                      >
-                                        <Plus className="w-3 h-3" />
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
+                      <Card className="skygloss-card p-6 rounded-2xl h-full flex flex-col">
+                        <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg mb-4 p-4">
+                          <ImageWithFallback
+                            src={product.images?.[0]}
+                            alt={product.name}
+                            className="w-full h-40 object-contain"
+                          />
                         </div>
 
-                        <Separator className="my-4 bg-gray-300" />
+                        <Badge className="mb-3 bg-[#0EA0DC]/10 text-[#0EA0DC] border-[#0EA0DC]/20 w-fit">
+                          {product.category || 'Course'}
+                        </Badge>
 
-                        <div className="space-y-3 mb-6">
-                          <div className="flex justify-between text-[#666666]">
-                            <span>Subtotal</span>
-                            <span className="text-[#272727]">${cartTotal.toFixed(2)}</span>
+                        <h4 className="text-lg text-[#272727] mb-2">{product.name}</h4>
+
+                        <p className="text-sm text-[#666666] mb-4 flex-1">
+                          Complete training course with comprehensive lessons covering application techniques, safety procedures, and best practices.
+                        </p>
+
+                        <div className="grid grid-cols-3 gap-2 mb-4 p-3 bg-gray-50 rounded-lg">
+                          <div className="text-center">
+                            <div className="text-xs text-[#666666]">Lessons</div>
+                            <div className="text-sm text-[#272727]">10</div>
                           </div>
-                          <div className="flex justify-between text-sm text-[#999999]">
-                            <span>Shipping</span>
-                            <span>At checkout</span>
+                          <div className="text-center">
+                            <div className="text-xs text-[#666666]">Duration</div>
+                            <div className="text-sm text-[#272727]">2h 30m</div>
                           </div>
-                          <Separator className="bg-gray-300" />
-                          <div className="flex justify-between items-baseline">
-                            <span className="text-[#272727]">Total</span>
-                            <span className="text-xl text-[#0EA0DC]">${cartTotal.toFixed(2)}</span>
+                          <div className="text-center">
+                            <div className="text-xs text-[#666666]">Level</div>
+                            <div className="text-sm text-[#272727]">All</div>
                           </div>
                         </div>
 
                         <Button
-                          onClick={handleCheckout}
-                          className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] hover:bg-[#0c80b3] transition-all duration-200 h-12 rounded-lg"
+                          onClick={() => {
+                            setViewingProduct(product._id);
+                            setViewingCourse(true);
+                          }}
+                          className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] h-11 rounded-lg"
                         >
-                          {user?.country === "United States" ? "Proceed to Checkout" : "Generate Order Request"}
+                          Start Course
                         </Button>
-                      </>
-                    )}
-                  </div>
-                </Card>
-              </motion.div>
-            </div>
-          </div>
+                      </Card>
+                    </motion.div>
+                  ))}
+              </div>
+            </motion.div>
+          )}
         </div>
       )}
 

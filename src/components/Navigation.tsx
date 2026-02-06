@@ -1,6 +1,6 @@
 // Last Updated: 2026-01-26
 import { motion } from "motion/react";
-import { LogOut, FileText, HelpCircle, Menu, X, ShoppingCart, ShoppingBag, Wrench, Package } from "lucide-react";
+import { LogOut, FileText, HelpCircle, Menu, X, ShoppingCart, ShoppingBag, Package } from "lucide-react";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { useState } from "react";
@@ -35,8 +35,6 @@ export function Navigation({
     switch (accessType) {
       case "shop":
         return { label: "Shop", Icon: ShoppingBag };
-      case "technician":
-        return { label: "Technician", Icon: Wrench };
       case "distributor":
         return { label: "Distributor", Icon: Package };
       default:

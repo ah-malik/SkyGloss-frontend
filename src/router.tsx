@@ -2,11 +2,9 @@ import { createBrowserRouter } from "react-router";
 import App from "./App";
 
 import { LandingPage } from "./components/LandingPage";
-import { TechnicianLogin } from "./components/TechnicianLogin";
 import { ShopLogin } from "./components/ShopLogin";
 import { DistributorLogin } from "./components/DistributorLogin";
 
-import { TechnicianDashboard } from "./components/TechnicianDashboard";
 import { ShopDashboard } from "./components/ShopDashboard";
 import { DistributorDashboard } from "./components/DistributorDashboard";
 
@@ -28,7 +26,6 @@ export const router = createBrowserRouter([
       {
         element: <PublicRoute />,
         children: [
-          { path: "login/technician", element: <TechnicianLogin /> },
           { path: "login/shop", element: <ShopLogin /> },
           { path: "login/distributor", element: <DistributorLogin /> },
           { path: "reset-password", element: <ResetPassword /> },
@@ -36,14 +33,6 @@ export const router = createBrowserRouter([
       },
 
       // Dashboard Pages (Protected from non-logged-in users)
-      // Dashboard Pages (Protected from non-logged-in users)
-      {
-        element: <ProtectedRoute allowedRole="technician" />,
-        children: [
-          { path: "dashboard/technician", element: <TechnicianDashboard /> },
-          { path: "dashboard/technician/receipt/:orderId", element: <ReceiptPage /> },
-        ]
-      },
       {
         element: <ProtectedRoute allowedRole="shop" />,
         children: [

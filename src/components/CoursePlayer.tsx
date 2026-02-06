@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
-import { ArrowLeft, Play, CheckCircle, ChevronRight, Download, MessageSquare, Clock } from "lucide-react";
+import { ArrowLeft, Play, CheckCircle, ChevronRight, Download, MessageSquare, Clock, FileText } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Progress } from "./ui/progress";
@@ -11,99 +11,56 @@ import { toast } from "sonner";
 
 interface CoursePlayerProps {
   onBack: () => void;
+  productName?: string;
 }
 
-const course = {
+const getCourseForProduct = (productName: string) => ({
   id: 1,
-  title: "SkyGloss Shield - Complete Application Guide",
-  description: "Master the complete application process for SkyGloss Shield clear coating",
+  title: `${productName} - Professional Mastery`,
+  description: `Master the complete application process for ${productName}`,
   instructor: "Carlos Martinez, Master Trainer",
   duration: "2h 30m",
+  writtenInstructions: `
+    ### Professional Application Guide for ${productName}
+    
+    1. **Surface Preparation**: Ensure the surface is completely clean and decontaminated. Use SkyGloss surface prep solution.
+    2. **Environment Control**: Optimal application temperature is between 15°C and 25°C. Avoid direct sunlight.
+    3. **Application Technique**: Apply in small sections (50cm x 50cm). Use a cross-hatch pattern for even coverage.
+    4. **Leveling**: Wait for the appropriate flash time (varies by humidity) before leveling with a clean microfiber towel.
+    5. **Curing**: Allow the product to cure for at least 12 hours before exposing to moisture.
+  `,
   lessons: [
     {
       id: 1,
-      title: "Introduction to SkyGloss Shield",
-      duration: "8:24",
-      type: "video",
+      title: `Introduction to ${productName}`,
+      duration: "0",
+      type: "content",
       completed: true,
-      description: "Overview of the product, its benefits, and what you'll learn"
+      description: "Overview of the product and its core benefits"
     },
     {
       id: 2,
-      title: "Safety and Preparation",
-      duration: "12:15",
-      type: "video",
+      title: "Written Instructions & Theory",
+      duration: "0",
+      type: "document",
       completed: true,
-      description: "Essential safety protocols and workspace preparation"
+      description: "Detailed step-by-step written guide for the product"
     },
     {
       id: 3,
-      title: "Surface Decontamination",
+      title: "Video Tutorial (Pro Application)",
       duration: "15:30",
-      type: "video",
+      type: productName.toUpperCase().includes('FUSION') ? "video" : "content",
       completed: false,
-      description: "Step-by-step surface cleaning and preparation techniques"
-    },
-    {
-      id: 4,
-      title: "Panel Wiping Technique",
-      duration: "10:45",
-      type: "video",
-      completed: false,
-      description: "Proper panel preparation using IPA solution"
-    },
-    {
-      id: 5,
-      title: "Application Method - Cross-Hatch Pattern",
-      duration: "18:20",
-      type: "video",
-      completed: false,
-      description: "Master the professional cross-hatch application technique"
-    },
-    {
-      id: 6,
-      title: "Leveling and Buffing",
-      duration: "14:35",
-      type: "video",
-      completed: false,
-      description: "Achieve perfect finish through proper leveling"
-    },
-    {
-      id: 7,
-      title: "Common Mistakes and Fixes",
-      duration: "16:50",
-      type: "video",
-      completed: false,
-      description: "Troubleshooting high spots, streaking, and other issues"
-    },
-    {
-      id: 8,
-      title: "Curing Process",
-      duration: "9:15",
-      type: "video",
-      completed: false,
-      description: "Understanding cure times and post-application care"
-    },
-    {
-      id: 9,
-      title: "Customer Communication",
-      duration: "11:40",
-      type: "video",
-      completed: false,
-      description: "How to educate customers on maintenance and care"
-    },
-    {
-      id: 10,
-      title: "Technical Data Sheet Review",
-      duration: "7:30",
-      type: "document",
-      completed: false,
-      description: "Deep dive into technical specifications"
+      description: productName.toUpperCase().includes('FUSION')
+        ? "Professional application video demonstrating the perfect technique"
+        : "Video tutorials are currently only available for the FUSION system. Please refer to written instructions."
     }
   ]
-};
+});
 
-export function CoursePlayer({ onBack }: CoursePlayerProps) {
+export function CoursePlayer({ onBack, productName = "FUSION" }: CoursePlayerProps) {
+  const course = getCourseForProduct(productName);
   const [currentLesson, setCurrentLesson] = useState(3); // Starting at lesson 3 (first incomplete)
   const [completedLessons, setCompletedLessons] = useState([1, 2]);
   const [comment, setComment] = useState("");
@@ -207,8 +164,43 @@ export function CoursePlayer({ onBack }: CoursePlayerProps) {
               transition={{ delay: 0.1 }}
             >
               <Card className="skygloss-card overflow-hidden rounded-2xl">
-                <div className="aspect-video bg-[#272727] flex items-center justify-center">
-                  <Play className="w-20 h-20 text-white opacity-70" />
+                {lesson.type === "video" ? (
+                  <div className="aspect-video bg-[#272727] flex items-center justify-center">
+                    <Play className="w-20 h-20 text-white opacity-70" />
+                  </div>
+                ) : (
+                  <div className="aspect-video bg-gray-50 flex flex-col items-center justify-center p-8 text-center">
+                    <div className="w-16 h-16 rounded-full bg-[#0EA0DC]/10 flex items-center justify-center mb-4">
+                      {lesson.type === "document" ? (
+                        <Download className="w-8 h-8 text-[#0EA0DC]" />
+                      ) : (
+                        <FileText className="w-8 h-8 text-[#0EA0DC]" />
+                      )}
+                    </div>
+                    <h3 className="text-xl font-bold text-[#272727] mb-2">{lesson.title}</h3>
+                    <p className="text-[#666666] max-w-md">{lesson.description}</p>
+                  </div>
+                )}
+              </Card>
+            </motion.div>
+
+            {/* Written Instructions Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+            >
+              <Card className="skygloss-card p-8 rounded-2xl border-l-4 border-l-[#0EA0DC]">
+                <h3 className="text-xl font-bold text-[#272727] mb-6 flex items-center gap-3">
+                  <FileText className="w-6 h-6 text-[#0EA0DC]" />
+                  Official Written Instructions
+                </h3>
+                <div className="prose prose-skygloss max-w-none text-[#666666] leading-relaxed">
+                  {course.writtenInstructions.split('\n').map((line, i) => (
+                    <p key={i} className={line.trim().startsWith('###') ? 'text-lg font-bold text-[#272727] mt-4 mb-2' : 'mb-3'}>
+                      {line.replace('###', '').trim()}
+                    </p>
+                  ))}
                 </div>
               </Card>
             </motion.div>
@@ -362,35 +354,30 @@ export function CoursePlayer({ onBack }: CoursePlayerProps) {
                       <button
                         key={l.id}
                         onClick={() => setCurrentLesson(l.id)}
-                        className={`w-full p-3 rounded-lg text-left transition-all duration-200 ${
-                          currentLesson === l.id
-                            ? "bg-[#0EA0DC] text-white"
-                            : completedLessons.includes(l.id)
+                        className={`w-full p-3 rounded-lg text-left transition-all duration-200 ${currentLesson === l.id
+                          ? "bg-[#0EA0DC] text-white"
+                          : completedLessons.includes(l.id)
                             ? "bg-green-50 hover:bg-green-100"
                             : "bg-gray-50 hover:bg-gray-100"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-start gap-3">
                           <div className="flex-shrink-0 mt-1">
                             {completedLessons.includes(l.id) ? (
-                              <CheckCircle className={`w-4 h-4 ${
-                                currentLesson === l.id ? "text-white" : "text-green-600"
-                              }`} />
+                              <CheckCircle className={`w-4 h-4 ${currentLesson === l.id ? "text-white" : "text-green-600"
+                                }`} />
                             ) : (
-                              <Play className={`w-4 h-4 ${
-                                currentLesson === l.id ? "text-white" : "text-[#666666]"
-                              }`} />
+                              <Play className={`w-4 h-4 ${currentLesson === l.id ? "text-white" : "text-[#666666]"
+                                }`} />
                             )}
                           </div>
                           <div className="flex-1">
-                            <div className={`text-sm mb-1 ${
-                              currentLesson === l.id ? "text-white" : "text-[#272727]"
-                            }`}>
+                            <div className={`text-sm mb-1 ${currentLesson === l.id ? "text-white" : "text-[#272727]"
+                              }`}>
                               {l.id}. {l.title}
                             </div>
-                            <div className={`text-xs ${
-                              currentLesson === l.id ? "text-white/80" : "text-[#666666]"
-                            }`}>
+                            <div className={`text-xs ${currentLesson === l.id ? "text-white/80" : "text-[#666666]"
+                              }`}>
                               {l.duration}
                             </div>
                           </div>

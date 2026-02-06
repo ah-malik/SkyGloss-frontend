@@ -149,7 +149,7 @@ export function PublicCatalog() {
                           <Button
                             variant="outline"
                             onClick={() => setSelectedProduct(product)}
-                            className="w-full border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/10 hover:border-[#0EA0DC] transition-all duration-200"
+                            className="w-full border-[#0EA0DC]/30 hover:text-[#0EA0DC]  text-[#0EA0DC] hover:bg-[#0EA0DC]/10 hover:border-[#0EA0DC] transition-all duration-200"
                           >
                             <FileText className="w-4 h-4 mr-2" />
                             View Details
@@ -182,7 +182,7 @@ export function PublicCatalog() {
 
       {/* Product Detail Dialog */}
       <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-h-[90vh] overflow-y-auto" style={{ width: "90%", maxWidth: "650px" }}>
           {selectedProduct && (
             <>
               <DialogHeader>
@@ -262,11 +262,11 @@ export function PublicCatalog() {
                           </div>
                         ))
                       ) : (
-                         /* Fallback / Technical Specs check could go here if needed, or just show empty message */
-                         <p className="text-gray-500">No specifications available.</p>
+                        /* Fallback / Technical Specs check could go here if needed, or just show empty message */
+                        <p className="text-gray-500">No specifications available.</p>
                       )
                     )}
-
+                    {/* 
                     <div className="mt-6 p-4 bg-[#0EA0DC]/5 rounded-xl border border-[#0EA0DC]/20">
                       <div className="flex items-start">
                         <FileText className="w-5 h-5 text-[#0EA0DC] mr-3 mt-0.5" />
@@ -284,7 +284,7 @@ export function PublicCatalog() {
                           </Button>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </TabsContent>
                 </Tabs>
 

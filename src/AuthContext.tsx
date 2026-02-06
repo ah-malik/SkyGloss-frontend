@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 
-export type AccessType = "technician" | "shop" | "distributor" | null;
+export type AccessType = "shop" | "distributor" | null;
 
 export interface CartItem {
   id: string;

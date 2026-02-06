@@ -109,13 +109,24 @@ export function Footer() {
           </div>
         </div>
 
-        <Button
-          variant="secondary"
-          className="bg-white text-[#0EA0DC] hover:bg-white/90 rounded-full px-6 py-2 group transition-all duration-200"
-        >
-          <span>Warrenty Portal</span>
-          <ArrowUpRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
-        </Button>
+        <div className="flex flex-wrap gap-4">
+          <Button
+            variant="secondary"
+            className="bg-white text-[#0EA0DC] hover:bg-white/90 rounded-full px-6 py-2 group transition-all duration-200"
+            onClick={() => window.open("#", "_blank")}
+          >
+            <span>Warranty Portal</span>
+            <ArrowUpRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+          </Button>
+          <Button
+            variant="secondary"
+            className="bg-white text-[#0EA0DC] hover:bg-white/90 rounded-full px-6 py-2 group transition-all duration-200"
+            onClick={() => window.open("#", "_blank")}
+          >
+            <span>Partner Portal</span>
+            <ArrowUpRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+          </Button>
+        </div>
         {/* Divider */}
         <div className="border-t border-white/30 mb-4 hidden"></div>
       </div>
@@ -134,11 +145,11 @@ export function Footer() {
         {/* Legal Links */}
         <div className="flex items-center justify-end gap-4 text-sm text-white/80 px-6 sm:px-8 lg:px-12">
           <a href="#" className="hover:text-white transition-colors duration-200">
-            Term & Conditions
+            Terms & Conditions
           </a>
           <span>|</span>
           <a href="#" className="hover:text-white transition-colors duration-200">
-            Privacy and Policy
+            Privacy Policy
           </a>
         </div>
       </div>
