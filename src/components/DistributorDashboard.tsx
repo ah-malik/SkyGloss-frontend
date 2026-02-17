@@ -1,7 +1,7 @@
 // Last Updated: 2026-02-02
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useLocation } from "react-router";
 import { Package, FileText, Globe, CreditCard, Send, CheckCircle, Plus, Minus, XCircle, Award, GraduationCap, Clock } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
@@ -160,6 +160,7 @@ export function DistributorDashboard({
   const { showCartSheet, setShowCartSheet, user } = useAuth();
   const { section, courseId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeSection, setActiveSection] = useState<"shop" | "certified" | "network" | "courses">("shop");
   const [viewingCourse, setViewingCourse] = useState<string | null>(null);
 
@@ -179,7 +180,7 @@ export function DistributorDashboard({
     } else {
       setViewingCourse(null);
     }
-  }, [section, courseId]);
+  }, [section, courseId, location.pathname]);
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
 
   // Certification States

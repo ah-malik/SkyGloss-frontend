@@ -420,7 +420,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             <div className="flex flex-col gap-8">
                                                 <div className="w-full">
                                                     <Badge variant="outline" className="mb-4 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 uppercase tracking-widest text-[9px] font-bold px-3">{step.badge}</Badge>
-                                                    <div className="text-5xl font-bold text-gray-50 mb-2 tracking-tighter">0{i + 1}</div>
+                                                    {/* <div className="text-5xl font-bold text-gray-50 mb-2 tracking-tighter">0{i + 1}</div> */}
                                                     <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">{step.title}</h3>
                                                     <p className="text-sm text-[#666666] font-medium leading-relaxed italic mb-6">"{step.purpose}"</p>
                                                 </div>
@@ -469,7 +469,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                 <div id="step8" className="scroll-mt-32">
                                     <Card className="p-8 rounded-lg border-l-4 border-l-amber-500">
-                                        <h3 className="text-3xl font-bold text-[#272727] mb-6 tracking-tighter italic uppercase">STEP 8: MIXING FUSION</h3>
+                                        <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">STEP 8: MIXING FUSION</h3>
                                         <div className="grid md:grid-cols-2 gap-8 mb-8">
                                             <div className="p-6 rounded-2xl bg-amber-50 border border-amber-100">
                                                 <h4 className="text-[10px] font-bold text-amber-600 uppercase mb-3">Ratio Activation</h4>
@@ -488,7 +488,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                 <div id="step9" className="scroll-mt-32">
                                     <Card className="p-8 rounded-lg mt-8 border border-gray-100">
-                                        <h3 className="text-xl font-bold text-[#272727] mb-4 tracking-tighter italic uppercase">STEP 9: FIRST POUR (SATURATION)</h3>
+                                        <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">STEP 9: FIRST POUR (SATURATION)</h3>
                                         <div className="flex items-start gap-4 mb-6">
                                             <Droplets className="w-8 h-8 text-[#0EA0DC] shrink-0" />
                                             <p className="text-sm text-[#666666] font-medium leading-relaxed italic">
@@ -518,7 +518,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
                                             <PenTool className="w-64 h-64 text-[#0EA0DC]" />
                                         </div>
-                                        <h3 className="text-4xl font-bold mb-8 uppercase italic tracking-tighter text-[#0EA0DC]">STEP 11: Deployment Protocol</h3>
+                                        <h3 className="text-xl font-bold mb-8 uppercase italic tracking-tighter text-[#0EA0DC]">STEP 11: Deployment Protocol</h3>
                                         <div className="grid md:grid-cols-2 gap-12 mb-10">
                                             <div className="space-y-6">
                                                 <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
@@ -550,7 +550,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <div id="step12" className="scroll-mt-32 mt-8 mb-8">
                                     <div className="p-10  pb-8 rounded-3xl  border border-gray-100 text-center relative overflow-hidden">
                                         <Badge className="bg-rose-500 text-white font-bold mb-4">CRITICAL CHECKPOINT</Badge>
-                                        <h3 className="text-2xl font-bold text-[#272727] mb-4 uppercase italic">STEP 12: QUALITY AUDIT</h3>
+                                        <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">STEP 12: QUALITY AUDIT</h3>
                                         <p className="text-xs text-[#666666] font-medium leading-relaxed max-w-2xl mx-auto italic mb-10">
                                             "You have a maximum of 1 hour to remove FUSION should you see an issue. Never leave a poor application to cure. Strip and redo immediately."
                                         </p>
@@ -587,10 +587,10 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-8 sm:p-14 rounded-lg border-none bg-emerald-50 relative overflow-hidden">
                                     <div className="flex items-center gap-4 mb-10">
                                         <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-emerald-500 shadow-sm border border-emerald-100">
-                                            <ShieldCheck className="w-8 h-8" />
+                                            <ShieldCheck className="w-8 h-8 text-[#0EA0DC]" />
                                         </div>
                                         <div>
-                                            <Badge className="bg-emerald-500 text-white font-bold mb-1">Section E: Protection</Badge>
+                                            <Badge className="bg-[#0EA0DC] text-white font-bold mb-1">Section E: Protection</Badge>
                                             <h2 className="text-3xl font-bold text-emerald-900 tracking-tighter uppercase italic">Aftercare Protocol</h2>
                                         </div>
                                     </div>
@@ -641,7 +641,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <div className="absolute inset-0 bg-gradient-to-tr from-[#0EA0DC]/10 to-transparent" />
                                         <div className="relative z-10 space-y-8">
                                             <div className="flex items-center gap-4">
-                                                <ShieldAlert className="w-10 h-10 text-amber-500" />
+                                                <ShieldAlert className="w-10 h-10 text-[#0EA0DC]" />
                                                 <h3 className="text-xl font-bold text-rose-600 mb-6 uppercase tracking-tighter italic">Sticky Application Mitigations</h3>
                                             </div>
                                             <div className="space-y-4">

@@ -485,7 +485,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <Button onClick={onBack} className="rounded-xl p-4 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all">
                                         EXIT TERMINAL
                                     </Button>
-                                    <Button variant="outline" className="rounded-xl  p-4 h-14 text-white hover:bg-gray-50 font-bold border-gray-200 text-xs uppercase tracking-widest">
+                                    <Button variant="outline" className="rounded-xl p-4 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all">
                                         DOWNLOAD PDF
                                     </Button>
                                 </div>

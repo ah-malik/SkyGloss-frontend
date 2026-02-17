@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useLocation } from "react-router";
 import { Search, ShoppingCart, Plus, Minus, Eye, Loader2, GraduationCap, ShoppingBag } from "lucide-react";
 import api from "../api/axios";
 import { Input } from "./ui/input";
@@ -46,6 +46,7 @@ export function ShopDashboard({
     user
   } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { productId, courseId } = useParams();
 
   const [products, setProducts] = useState<any[]>([]);
@@ -78,7 +79,7 @@ export function ShopDashboard({
       }
       setViewingCourse(false);
     }
-  }, [productId, courseId]);
+  }, [productId, courseId, location.pathname]);
 
   useEffect(() => {
     fetchProducts();
