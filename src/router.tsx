@@ -38,6 +38,8 @@ export const router = createBrowserRouter([
         children: [
           { path: "dashboard/shop", element: <ShopDashboard /> },
           { path: "dashboard/shop/:productId", element: <ShopDashboard /> },
+          { path: "dashboard/shop/courses", element: <ShopDashboard /> },
+          { path: "dashboard/shop/courses/:courseId", element: <ShopDashboard /> },
           { path: "dashboard/shop/receipt/:orderId", element: <ReceiptPage /> },
         ]
       },
@@ -45,6 +47,8 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute allowedRole="distributor" />,
         children: [
           { path: "dashboard/distributor", element: <DistributorDashboard /> },
+          { path: "dashboard/distributor/:section", element: <DistributorDashboard /> },
+          { path: "dashboard/distributor/courses/:courseId", element: <DistributorDashboard /> },
         ]
       },
       {

@@ -25,7 +25,12 @@ interface ProductDetailPageProps {
 export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = true, onOpenCart, initialProduct }: ProductDetailPageProps) {
   const [product, setProduct] = useState<any>(initialProduct || null);
   const [loading, setLoading] = useState(!initialProduct);
-  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedSize, setSelectedSize] = useState(() => {
+    if (initialProduct?.sizes?.length > 0) {
+      return typeof initialProduct.sizes[0] === 'string' ? initialProduct.sizes[0] : initialProduct.sizes[0].size;
+    }
+    return "";
+  });
   const [selectedImage, setSelectedImage] = useState(0);
   const [showBottomBar, setShowBottomBar] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -102,10 +107,10 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
   const sizes = product.sizes || [];
   const productImageList = isDistributor
     ? [product.image, product.additionalImage, product.additionalImage2, ...(product.additionalImages || [])].filter(Boolean)
-    : (product.images || []);
+    : (product.shopImages?.length > 0 ? product.shopImages : (product.images || []));
 
   const currentPrice = isDistributor
-    ? (orderType === "unit" ? product.unitPrices[selectedSize] : product.casePrices[selectedSize])
+    ? (orderType === "unit" ? product.unitPrices?.[selectedSize] : product.casePrices?.[selectedSize]) || 0
     : (sizes.find((s: any) => s.size === selectedSize)?.price || 0);
 
 
@@ -294,7 +299,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                       : "bg-white text-[#666666] border-gray-300 hover:border-[#0EA0DC]"
                       }`}
                   >
-                    Unit (${product.unitPrices[selectedSize]?.toFixed(2)})
+                    Unit (${(product.unitPrices?.[selectedSize] || 0).toFixed(2)})
                   </button>
                   <button
                     onClick={() => setOrderType("case")}
@@ -303,9 +308,9 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                       : "bg-white text-[#666666] border-gray-300 hover:border-[#0EA0DC]"
                       }`}
                   >
-                    Case (${product.casePrices[selectedSize]?.toFixed(2)})
+                    Case (${(product.casePrices?.[selectedSize] || 0).toFixed(2)})
                     <div className="text-[10px] opacity-80">
-                      {product.unitsPerCase[selectedSize]} units/case
+                      {product.unitsPerCase?.[selectedSize] || 0} units/case
                     </div>
                   </button>
                 </div>

@@ -267,21 +267,21 @@ export function CoursePlayer({ onBack, productName = "FUSION" }: CoursePlayerPro
                     variant="outline"
                     className="w-full justify-between border-[#0EA0DC]/30 hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5"
                   >
-                    <span className="text-[rgb(255,255,255)]">Lesson Notes (PDF)</span>
+                    <span className="text-[#0EA0DC]">Lesson Notes (PDF)</span>
                     <Download className="w-4 h-4 text-[#0EA0DC]" />
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full justify-between border-[#0EA0DC]/30 hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5"
                   >
-                    <span className="text-[rgb(255,255,255)]">Application Checklist (PDF)</span>
+                    <span className="text-[#0EA0DC]">Application Checklist (PDF)</span>
                     <Download className="w-4 h-4 text-[#0EA0DC]" />
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full justify-between border-[#0EA0DC]/30 hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5"
                   >
-                    <span className="text-[rgb(255,255,255)]">Technical Data Sheet (PDF)</span>
+                    <span className="text-[#0EA0DC]">Technical Data Sheet (PDF)</span>
                     <Download className="w-4 h-4 text-[#0EA0DC]" />
                   </Button>
                 </div>

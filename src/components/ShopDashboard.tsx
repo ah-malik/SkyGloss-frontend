@@ -13,6 +13,11 @@ import { Sheet, SheetContent, SheetTitle } from "./ui/sheet";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ProductDetailPage } from "./ProductDetailPage";
 import { CoursePlayer } from "./CoursePlayer";
+import { FusionGuide } from "./FusionGuide";
+import { ResinFilmGuide } from "./ResinFilmGuide";
+import { SealGuide } from "./SealGuide";
+import { MatteGuide } from "./MatteGuide";
+import { ShineGuide } from "./ShineGuide";
 import { CheckoutPage } from "./CheckoutPage";
 import { OrderRequestPage } from "./OrderRequestPage";
 import { toast } from "sonner";
@@ -41,7 +46,7 @@ export function ShopDashboard({
     user
   } = useAuth();
   const navigate = useNavigate();
-  const { productId } = useParams();
+  const { productId, courseId } = useParams();
 
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,14 +57,28 @@ export function ShopDashboard({
   const [viewingCourse, setViewingCourse] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
 
-  // Sync viewingProduct with URL parameter
+  // Sync state with URL
   useEffect(() => {
-    if (productId) {
-      setViewingProduct(productId);
+    const path = window.location.pathname;
+    if (path.includes('/courses')) {
+      setActiveTab("courses");
+      if (courseId) {
+        setViewingCourse(true);
+        setViewingProduct(courseId);
+      } else {
+        setViewingCourse(false);
+        setViewingProduct(null);
+      }
     } else {
-      setViewingProduct(null);
+      setActiveTab("shop");
+      if (productId) {
+        setViewingProduct(productId);
+      } else {
+        setViewingProduct(null);
+      }
+      setViewingCourse(false);
     }
-  }, [productId]);
+  }, [productId, courseId]);
 
   useEffect(() => {
     fetchProducts();
@@ -176,9 +195,44 @@ export function ShopDashboard({
 
   if (viewingCourse) {
     const product = products.find(p => p._id === viewingProduct) || {};
+    const isFusion = product.name?.toUpperCase().includes('FUSION');
+    const isResinFilm = product.name?.toUpperCase().includes('RESIN FILM');
+
+    if (isFusion) {
+      return <FusionGuide onBack={() => {
+        navigate('/dashboard/shop/courses');
+      }} />;
+    }
+
+    if (isResinFilm) {
+      return <ResinFilmGuide onBack={() => {
+        navigate('/dashboard/shop/courses');
+      }} />;
+    }
+
+    const isSeal = product.name?.toUpperCase().includes('SEAL');
+    if (isSeal) {
+      return <SealGuide onBack={() => {
+        navigate('/dashboard/shop/courses');
+      }} />;
+    }
+
+    const isMatte = product.name?.toUpperCase().includes('MATTE');
+    if (isMatte) {
+      return <MatteGuide onBack={() => {
+        navigate('/dashboard/shop/courses');
+      }} />;
+    }
+
+    const isShine = product.name?.toUpperCase().includes('SHINE');
+    if (isShine) {
+      return <ShineGuide onBack={() => {
+        navigate('/dashboard/shop/courses');
+      }} />;
+    }
+
     return <CoursePlayer productName={product.name || "Product"} onBack={() => {
-      setViewingCourse(false);
-      setViewingProduct(null);
+      navigate('/dashboard/shop/courses');
     }} />;
   }
 
@@ -259,7 +313,7 @@ export function ShopDashboard({
             >
               <div className="inline-flex rounded-xl border-2 border-[#0EA0DC] p-1 bg-white shadow-[0_0_10px_rgba(14,160,220,0.1)]">
                 <button
-                  onClick={() => setActiveTab("shop")}
+                  onClick={() => navigate("/dashboard/shop")}
                   className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "shop"
                     ? "bg-[#272727] text-white shadow-lg"
                     : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
@@ -269,7 +323,7 @@ export function ShopDashboard({
                   <span className="text-lg">Shop</span>
                 </button>
                 <button
-                  onClick={() => setActiveTab("courses")}
+                  onClick={() => navigate("/dashboard/shop/courses")}
                   className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "courses"
                     ? "bg-[#272727] text-white shadow-lg"
                     : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
@@ -328,7 +382,7 @@ export function ShopDashboard({
                               onClick={() => handleOpenProduct(product._id)}
                             >
                               <ImageWithFallback
-                                src={product.images?.[0]}
+                                src={product.shopImages?.[0] || product.images?.[0]}
                                 alt={product.name}
                                 className="w-full h-40 sm:h-40 object-contain"
                               />
@@ -560,7 +614,7 @@ export function ShopDashboard({
                       <Card className="skygloss-card p-6 rounded-2xl h-full flex flex-col">
                         <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg mb-4 p-4">
                           <ImageWithFallback
-                            src={product.images?.[0]}
+                            src={product.shopImages?.[0] || product.images?.[0]}
                             alt={product.name}
                             className="w-full h-40 object-contain"
                           />
@@ -593,8 +647,7 @@ export function ShopDashboard({
 
                         <Button
                           onClick={() => {
-                            setViewingProduct(product._id);
-                            setViewingCourse(true);
+                            navigate(`/dashboard/shop/courses/${product._id}`);
                           }}
                           className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] h-11 rounded-lg"
                         >

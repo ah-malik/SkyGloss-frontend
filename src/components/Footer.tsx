@@ -26,7 +26,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-[#0EA0DC] text-white rounded-t-[32px] sm:rounded-t-[48px]">
+    <footer style={{ marginTop: "20px" }} className="bg-[#0EA0DC]  text-white rounded-t-[32px] sm:rounded-t-[48px]">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
         {/* Top Section - Social Media on left, Signature on right */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-12">

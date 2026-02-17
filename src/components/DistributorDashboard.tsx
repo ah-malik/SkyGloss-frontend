@@ -1,6 +1,7 @@
 // Last Updated: 2026-02-02
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router";
 import { Package, FileText, Globe, CreditCard, Send, CheckCircle, Plus, Minus, XCircle, Award, GraduationCap, Clock } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
@@ -13,6 +14,11 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { NetworkDashboard } from "./NetworkDashboard";
 import { ProductDetailPage } from "./ProductDetailPage";
 import { CoursePlayer } from "./CoursePlayer";
+import { FusionGuide } from "./FusionGuide";
+import { ResinFilmGuide } from "./ResinFilmGuide";
+import { SealGuide } from "./SealGuide";
+import { MatteGuide } from "./MatteGuide";
+import { ShineGuide } from "./ShineGuide";
 import { useAuth } from "../AuthContext";
 import api from "../api/axios";
 import { toast } from "sonner";
@@ -29,7 +35,7 @@ import edgeBladeBox1Image from "../assets/Master_Distributor_Dashboard/7 Edge Bl
 import edgeBladeBox2Image from "../assets/Master_Distributor_Dashboard/7 Edge Blade.png";
 import paintPenBoxImage from "../assets/Master_Distributor_Dashboard/8 Paint Pen.png";
 import paintPenToolsImage from "../assets/Master_Distributor_Dashboard/8 Paint Pen.png";
-
+import applicatorsImage from "../assets/Master_Distributor_Dashboard/8 Applicator.png";
 const distributorProducts = [
   {
     id: 1,
@@ -98,7 +104,7 @@ const distributorProducts = [
     unitPrices: { "2-Pack": 2.00 },
     casePrices: { "2-Pack": 40.00 },
     unitsPerCase: { "2-Pack": 20 },
-    image: "" // Placeholder as no image provided
+    image: applicatorsImage // Placeholder as no image provided
   },
   {
     id: 7,
@@ -152,8 +158,28 @@ export function DistributorDashboard({
   onCartCountChange,
 }: DistributorDashboardProps) {
   const { showCartSheet, setShowCartSheet, user } = useAuth();
+  const { section, courseId } = useParams();
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState<"shop" | "certified" | "network" | "courses">("shop");
   const [viewingCourse, setViewingCourse] = useState<string | null>(null);
+
+  // Sync state with URL
+  useEffect(() => {
+    if (section) {
+      if (["shop", "certified", "network", "courses"].includes(section)) {
+        setActiveSection(section as any);
+      }
+    } else if (!courseId) {
+      setActiveSection("shop");
+    }
+
+    if (courseId) {
+      setActiveSection("courses");
+      setViewingCourse(courseId);
+    } else {
+      setViewingCourse(null);
+    }
+  }, [section, courseId]);
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
 
   // Certification States
@@ -203,7 +229,7 @@ export function DistributorDashboard({
       const response = await api.get(`/certifications/verify-payment/${sessionId}`);
       if (response.data.success) {
         toast.success("Payment successful! Status updated.");
-        setActiveSection("certified");
+        navigate("/dashboard/distributor/certified");
         fetchMyRequests();
       } else {
         toast.error("Payment verification failed. Please check back later.");
@@ -373,7 +399,33 @@ export function DistributorDashboard({
   };
 
   if (viewingCourse) {
-    return <CoursePlayer productName={viewingCourse} onBack={() => setViewingCourse(null)} />;
+    const isFusion = viewingCourse.toUpperCase().includes('FUSION');
+    const isResinFilm = viewingCourse.toUpperCase().includes('RESIN FILM');
+
+    if (isFusion) {
+      return <FusionGuide onBack={() => navigate('/dashboard/distributor/courses')} />;
+    }
+
+    if (isResinFilm) {
+      return <ResinFilmGuide onBack={() => navigate('/dashboard/distributor/courses')} />;
+    }
+
+    const isSeal = viewingCourse.toUpperCase().includes('SEAL');
+    if (isSeal) {
+      return <SealGuide onBack={() => navigate('/dashboard/distributor/courses')} />;
+    }
+
+    const isMatte = viewingCourse.toUpperCase().includes('MATTE');
+    if (isMatte) {
+      return <MatteGuide onBack={() => navigate('/dashboard/distributor/courses')} />;
+    }
+
+    const isShine = viewingCourse.toUpperCase().includes('SHINE');
+    if (isShine) {
+      return <ShineGuide onBack={() => navigate('/dashboard/distributor/courses')} />;
+    }
+
+    return <CoursePlayer productName={viewingCourse} onBack={() => navigate('/dashboard/distributor/courses')} />;
   }
 
   const getStatusIcon = (status: string) => {
@@ -427,7 +479,7 @@ export function DistributorDashboard({
         >
           <div className="inline-flex flex-col sm:flex-row rounded-xl border-2 border-[#0EA0DC] p-1.5 bg-white shadow-[0_0_10px_rgba(14,160,220,0.15)] w-full sm:w-auto">
             <button
-              onClick={() => setActiveSection("shop")}
+              onClick={() => navigate("/dashboard/distributor/shop")}
               className={`flex items-center justify-center px-4 sm:px-10 py-3 sm:py-4 rounded-lg transition-all duration-200 ${activeSection === "shop"
                 ? "bg-[#272727] text-white shadow-lg"
                 : "bg-transparent text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
@@ -437,7 +489,7 @@ export function DistributorDashboard({
               <span className="text-base sm:text-lg">Shop</span>
             </button>
             <button
-              onClick={() => setActiveSection("certified")}
+              onClick={() => navigate("/dashboard/distributor/certified")}
               className={`flex items-center justify-center px-4 sm:px-10 py-3 sm:py-4 rounded-lg transition-all duration-200 ${activeSection === "certified"
                 ? "bg-[#272727] text-white shadow-lg"
                 : "bg-transparent text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
@@ -447,7 +499,7 @@ export function DistributorDashboard({
               <span className="text-base sm:text-lg">Certified</span>
             </button>
             <button
-              onClick={() => setActiveSection("network")}
+              onClick={() => navigate("/dashboard/distributor/network")}
               className={`flex items-center justify-center px-4 sm:px-10 py-3 sm:py-4 rounded-lg transition-all duration-200 ${activeSection === "network"
                 ? "bg-[#272727] text-white shadow-lg"
                 : "bg-transparent text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
@@ -457,7 +509,7 @@ export function DistributorDashboard({
               <span className="text-base sm:text-lg">Dashboard</span>
             </button>
             <button
-              onClick={() => setActiveSection("courses")}
+              onClick={() => navigate("/dashboard/distributor/courses")}
               className={`flex items-center justify-center px-4 sm:px-10 py-3 sm:py-4 rounded-lg transition-all duration-200 ${activeSection === "courses"
                 ? "bg-[#272727] text-white shadow-lg"
                 : "bg-transparent text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
@@ -510,7 +562,7 @@ export function DistributorDashboard({
                                       : product.image}
                                     alt={product.name}
                                     className="w-full h-64 sm:w-48 sm:h-48 object-contain mx-auto cursor-pointer hover:scale-105 transition-transform duration-300"
-                                    onClick={() => setViewingProduct(product.id)}
+                                  // onClick={() => setViewingProduct(product.id)}
                                   />
                                 </div>
                               </div>
@@ -1092,7 +1144,7 @@ export function DistributorDashboard({
                         </div>
 
                         <Button
-                          onClick={() => setViewingCourse(product.name)}
+                          onClick={() => navigate(`/dashboard/distributor/courses/${product.name}`)}
                           className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
                         >
                           Launch Course

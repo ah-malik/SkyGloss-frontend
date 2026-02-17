@@ -1,13 +1,55 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>my-app</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>my-app</title>
+</head>
+
+<body>
+  <script type="text/javascript">
+    // Monkey-patch removeChild to prevent Google Translate from crashing React
+    if (typeof Node === 'function' && Node.prototype) {
+      const originalRemoveChild = Node.prototype.removeChild;
+      Node.prototype.removeChild = function (child) {
+        if (child.parentNode !== this) {
+          if (console) {
+            console.warn('Cannot remove a child from a different parent!', child, this);
+          }
+          return child;
+        }
+        return originalRemoveChild.apply(this, arguments);
+      }
+      const originalInsertBefore = Node.prototype.insertBefore;
+      Node.prototype.insertBefore = function (newNode, referenceNode) {
+        if (referenceNode && referenceNode.parentNode !== this) {
+          if (console) {
+            console.warn('Cannot insertBefore a reference node from a different parent!', referenceNode, this);
+          }
+          return newNode;
+        }
+        return originalInsertBefore.apply(this, arguments);
+      }
+    }
+  </script>
+  <div id="root"></div>
+  <div id="google_translate_element" style="position: absolute; opacity: 0; pointer-events: none; top: 0; left: 0;">
+  </div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      console.log("Google Translate Init called");
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,es,fr,de,it,az,nl,be,pt,ar,el,id,ja,tl,tr,uz',
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript"
+    src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
