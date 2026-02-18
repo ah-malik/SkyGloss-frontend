@@ -15,7 +15,8 @@ import {
     BookOpen,
     Check,
     MessageSquare,
-    Clock
+    Clock,
+    Play
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
@@ -23,6 +24,20 @@ import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { ScrollArea } from "./ui/scroll-area";
 import { Separator } from "./ui/separator";
+
+const VideoPlayer = ({ url }: { url: string }) => (
+    <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-gray-900 mb-8 border border-gray-100 group shadow-lg">
+        <video
+            src={url}
+            controls
+            className="w-full h-full object-cover"
+            poster="https://res.cloudinary.com/dknnqrpgv/image/upload/v1739818324/fusion_thumb_q9gzzx.jpg"
+        >
+            Your browser does not support the video tag.
+        </video>
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+    </div>
+);
 
 interface Section {
     id: string;
@@ -419,6 +434,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <Card className="skygloss-card p-8 rounded-[32px] border-l-4 border-l-[#0EA0DC]/20 hover:border-l-[#0EA0DC] transition-all duration-300">
                                             <div className="flex flex-col gap-8">
                                                 <div className="w-full">
+                                                    <VideoPlayer
+                                                        url={
+                                                            step.id === 'step1' ? "https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411487/Step_1_Light_Wash_nszzj0.mp4" :
+                                                                step.id === 'step2' ? "https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411487/Step_2_Vehicle_Inspectioin_stbz7x.mp4" :
+                                                                    step.id === 'step3' ? "https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411479/Step_3_Remove_Attachments_re64pv.mp4" :
+                                                                        step.id === 'step4' ? "https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411496/Step_4_Exfoliate_njuvqd.mp4" :
+                                                                            step.id === 'step5' ? "https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411468/Step_5_Heavy_Wash_usilnv.mp4" :
+                                                                                step.id === 'step6' ? "https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411482/Step_6_Etch_oscdyt.mp4" :
+                                                                                    "https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411454/Step_12_Quality_Check_hf90jk.mp4" // Step 7
+                                                        }
+                                                    />
                                                     <Badge variant="outline" className="mb-4 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 uppercase tracking-widest text-[9px] font-bold px-3">{step.badge}</Badge>
                                                     {/* <div className="text-5xl font-bold text-gray-50 mb-2 tracking-tighter">0{i + 1}</div> */}
                                                     <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">{step.title}</h3>
@@ -469,6 +495,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                 <div id="step8" className="scroll-mt-32">
                                     <Card className="p-8 rounded-lg border-l-4 border-l-amber-500">
+                                        <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411429/Step_8_Mixing_Fusion_qktbaz.mp4" />
                                         <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">STEP 8: MIXING FUSION</h3>
                                         <div className="grid md:grid-cols-2 gap-8 mb-8">
                                             <div className="p-6 rounded-2xl bg-amber-50 border border-amber-100">
@@ -488,6 +515,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                 <div id="step9" className="scroll-mt-32">
                                     <Card className="p-8 rounded-lg mt-8 border border-gray-100">
+                                        <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411427/Step_9_First_Pour_uduqeg.mp4" />
                                         <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">STEP 9: FIRST POUR (SATURATION)</h3>
                                         <div className="flex items-start gap-4 mb-6">
                                             <Droplets className="w-8 h-8 text-[#0EA0DC] shrink-0" />
@@ -507,6 +535,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <Badge className="bg-[#272727] px-6 py-2 rounded-full uppercase tracking-[0.3em] font-bold text-[9px]">STEP 10: TACK CLOTH</Badge>
                                         <Separator className="flex-1" />
                                     </div>
+                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411418/Step_10_Tack_Cloth_y9gzzx.mp4" />
                                     <p className="text-sm text-center text-[#666666] italic mb-10 max-w-xl mx-auto">"To remove the last bit of fallen lint and debris right before application. Light pass only — avoid leaving residue."</p>
                                     <div className="flex justify-center">
                                         <Button onClick={() => markComplete('step10')} className={`rounded-xl px-12 h-14 font-bold p-4 mb-8 ${completedSteps.includes('step10') ? 'bg-[#0EA0DC]' : 'bg-[#272727]'}`}>Surface Verified</Button>
@@ -515,9 +544,10 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                 <div id="step11" className="scroll-mt-32">
                                     <Card className="p-8 sm:p-14 rounded-lg border-none bg-[#272727] text-white relative overflow-hidden">
-                                        <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+                                        {/* <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
                                             <PenTool className="w-64 h-64 text-[#0EA0DC]" />
-                                        </div>
+                                        </div> */}
+                                        <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411411/Step_11_Apply_Fusion_qjonbg.mp4" />
                                         <h3 className="text-xl font-bold mb-8 uppercase italic tracking-tighter text-[#0EA0DC]">STEP 11: Deployment Protocol</h3>
                                         <div className="grid md:grid-cols-2 gap-12 mb-10">
                                             <div className="space-y-6">
@@ -549,6 +579,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                 <div id="step12" className="scroll-mt-32 mt-8 mb-8">
                                     <div className="p-10  pb-8 rounded-3xl  border border-gray-100 text-center relative overflow-hidden">
+                                        <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411454/Step_12_Quality_Check_hf90jk.mp4" />
                                         <Badge className="bg-rose-500 text-white font-bold mb-4">CRITICAL CHECKPOINT</Badge>
                                         <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">STEP 12: QUALITY AUDIT</h3>
                                         <p className="text-xs text-[#666666] font-medium leading-relaxed max-w-2xl mx-auto italic mb-10">
@@ -562,6 +593,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                 <div id="step13" className="scroll-mt-32">
                                     <Card className="p-8 rounded-lg border border-gray-100">
+                                        <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411464/Step_13_Clean_Applicator_Bottle_yapl9s.mp4" />
                                         <h3 className="text-xl font-bold text-[#272727] mb-4 tracking-tighter italic uppercase">STEP 13: BOTTLE MAINTENANCE</h3>
                                         <div className="grid md:grid-cols-2 gap-8 text-xs font-medium text-[#666666]">
                                             <ul className="space-y-3">
@@ -594,6 +626,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             <h2 className="text-3xl font-bold text-emerald-900 tracking-tighter uppercase italic">Aftercare Protocol</h2>
                                         </div>
                                     </div>
+                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411502/Aftercare_xjyv47.mp4" />
                                     <div className="grid md:grid-cols-2 gap-8 mb-10">
                                         <div className="p-6 rounded-2xl bg-white border border-emerald-100 space-y-4">
                                             <h4 className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Immediate Guard</h4>
@@ -620,6 +653,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                 <div id="removal" className="scroll-mt-32">
                                     <Card className="skygloss-card p-8  rounded-lg mb-8 border-l-4 border-l-rose-500">
+                                        <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411491/Troubleshooting_Removing_Fusion_pn0itl.mp4" />
                                         <h3 className="text-xl font-bold text-rose-600 mb-6 uppercase tracking-tighter italic">Removing FUSION</h3>
                                         <div className="grid md:grid-cols-2 gap-10 text-xs text-[#666666] font-medium leading-relaxed italic">
                                             <div>
@@ -642,10 +676,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <div className="relative z-10 space-y-8">
                                             <div className="flex items-center gap-4">
                                                 <ShieldAlert className="w-10 h-10 text-[#0EA0DC]" />
-                                                <h3 className="text-xl font-bold text-rose-600 mb-6 uppercase tracking-tighter italic">Sticky Application Mitigations</h3>
+                                                <h3 className="text-xl font-bold text-rose-600 mb-6 uppercase tracking-tighter italic">Application Issue Redemptioin</h3>
                                             </div>
+                                            <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411480/Troubleshooting_Correcting_Application_Issues_zasrj3.mp4" />
                                             <div className="space-y-4">
                                                 <p className="text-xs  leading-relaxed font-medium italic italic">"Due to soft or chemically weak clearcoat, the applicator may stick to the panel."</p>
+                                                <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411468/Troubleshooting_Sticky_Application_vztdru.mp4" />
                                                 <div className="p-4 rounded-xl bg-white/5 border border-white/10 text-[11px] font-medium leading-relaxed ">
                                                     If reaction is light, load more FUSION to create a barrier and slide applicator over the surface. If heavy, cure fully, then re-assess or polish off.
                                                 </div>
