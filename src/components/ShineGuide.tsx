@@ -208,20 +208,19 @@ export function ShineGuide({ onBack }: { onBack: () => void }) {
                                 </Card>
                             </div>
 
-                            <div id="wash" className="scroll-mt-32 mt-8">
+                            <div id="residue" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         2. Remove Wax & Silicone Residue
-
                                     </Badge>
                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
                                         Remove Wax & <span className="text-[#0EA0DC]">Silicone Residue</span>
                                     </h2>
                                     <div className="space-y-6 mb-10">
                                         {[
-                                            " If previous wax or silicone products were used, strip them off using a degreasing agent",
-                                            " The surface must be completely clean and residue-free for proper bonding",
-                                            " Clean surface with IPA before application."
+                                            "If previous wax or silicone products were used, strip them off using a degreasing agent.",
+                                            "The surface must be completely clean and residue-free for proper bonding.",
+                                            "Clean surface with IPA before application."
                                         ].map((step, i) => (
                                             <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
                                                 <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div>
@@ -231,15 +230,15 @@ export function ShineGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('wash')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('wash') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                            onClick={() => markComplete('residue')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('residue') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                         >
-                                            {completedSteps.includes('wash') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('residue') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
-                            <div id="wash" className="scroll-mt-32 mt-8">
+                            <div id="conditions" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         3. Ideal Working Conditions
@@ -250,8 +249,8 @@ export function ShineGuide({ onBack }: { onBack: () => void }) {
                                     <div className="space-y-6 mb-10">
                                         {[
                                             "Apply indoors or in a controlled, dust-free environment.",
-                                            " Avoid direct sunlight, wind, or high humidity.",
-                                            " Ensure the engine is cool — heat from a running engine can affect leveling and curing."
+                                            "Avoid direct sunlight, wind, or high humidity.",
+                                            "Ensure the engine is cool — heat from a running engine can affect leveling and curing."
                                         ].map((step, i) => (
                                             <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
                                                 <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div>
@@ -261,10 +260,10 @@ export function ShineGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('wash')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('wash') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                            onClick={() => markComplete('conditions')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('conditions') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                         >
-                                            {completedSteps.includes('wash') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('conditions') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                         </Button>
                                     </div>
                                 </Card>

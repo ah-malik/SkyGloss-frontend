@@ -172,18 +172,18 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
 
                         {/* Content Sections */}
                         <div className="space-y-16">
-                            <div id="wash" className="scroll-mt-32 mt-8">
+                            <div id="clean" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         1. Ensure Vehicle is Clean and Free from Contamination
                                     </Badge>
                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
-                                        Ensure Vehicle is Clean and Free from  <span className="text-[#0EA0DC]">Contaminatione</span>
+                                        Ensure Vehicle is Clean and Free from <span className="text-[#0EA0DC]">Contamination</span>
                                     </h2>
                                     <div className="space-y-6 mb-10">
                                         {[
-                                            " If applying after FUSION, wait at least 12 hours before proceeding.",
-                                            " Thoroughly wash the vehicle to remove all dirt, grease, and debris.",
+                                            "If applying after FUSION, wait at least 12 hours before proceeding.",
+                                            "Thoroughly wash the vehicle to remove all dirt, grease, and debris.",
                                         ].map((step, i) => (
                                             <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
                                                 <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div>
@@ -193,14 +193,14 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('wash')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('wash') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                            onClick={() => markComplete('clean')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('clean') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                         >
-                                            {completedSteps.includes('wash') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('clean') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                         </Button>
                                     </div>
                                 </Card>
-                            </div>  <div id="wash" className="scroll-mt-32 mt-8">
+                            </div>  <div id="residue" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         2. Remove Residue if Necessary
@@ -210,9 +210,9 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                                     </h2>
                                     <div className="space-y-6 mb-10">
                                         {[
-                                            " If any wax, silicone, or other residues are present, strip them off using a degreasing agent.",
+                                            "If any wax, silicone, or other residues are present, strip them off using a degreasing agent.",
                                             "The surface must be completely clean for optimal bonding and performance.",
-                                            " Clean surface with IPA before application if needed."
+                                            "Clean surface with IPA before application if needed."
                                         ].map((step, i) => (
                                             <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
                                                 <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div>
@@ -222,14 +222,14 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('wash')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('wash') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                            onClick={() => markComplete('residue')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('residue') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                         >
-                                            {completedSteps.includes('wash') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('residue') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                         </Button>
                                     </div>
                                 </Card>
-                            </div>  <div id="wash" className="scroll-mt-32 mt-8">
+                            </div>  <div id="conditions" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         3. Ideal Working Conditions
@@ -240,8 +240,8 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                                     <div className="space-y-6 mb-10">
                                         {[
                                             "Apply indoors or in a controlled, dust-free environment.",
-                                            "Avoid direct sunlight, wind, or high humidity",
-                                            " Ensure the engine is cool — heat from a running engine can affect leveling and curing"
+                                            "Avoid direct sunlight, wind, or high humidity.",
+                                            "Ensure the engine is cool — heat from a running engine can affect leveling and curing."
                                         ].map((step, i) => (
                                             <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
                                                 <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div>
@@ -251,10 +251,10 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('wash')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('wash') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                            onClick={() => markComplete('conditions')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('conditions') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                         >
-                                            {completedSteps.includes('wash') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('conditions') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -265,7 +265,7 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
 
                         </div>
 
-                        <div id="step1-apply" className="scroll-mt-32 space-y-12 mt-8">
+                        <div id="apply" className="scroll-mt-32 space-y-12 mt-8">
                             {/* <div className="text-center space-y-4 mt-8 mb-8">
                                     <Badge variant="outline" className="border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 uppercase tracking-[0.4em] px-6 py-1 font-bold text-[10px]">Matrix_Phase_03</Badge>
                                     <h2 className="text-4xl font-bold text-[#272727] tracking-tighter uppercase italic">RESIN COAT Deployment</h2>
@@ -297,7 +297,7 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
 
                                 </div>
                             </Card>
-                            <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
+                            <Card id="maintenance" className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
                                 <div className="flex flex-col  gap-8">
                                     <div className="md:w-[40%]">
                                         <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
