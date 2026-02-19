@@ -176,10 +176,11 @@ export function MatteGuide({ onBack }: { onBack: () => void }) {
                         {/* Content Sections */}
                         <div className="space-y-16">
                             {/* Prep Section */}
-                            <div id="wash" className="scroll-mt-32">
+
+                            <div id="wash" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
-                                        Phase 01: Preparation
+                                        1. Wash & Decontaminate
                                     </Badge>
                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
                                         Wash & <span className="text-[#0EA0DC]">Decontaminate</span>
@@ -206,216 +207,146 @@ export function MatteGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                 </Card>
                             </div>
-
-                            <div id="residue" className="scroll-mt-32 mt-8">
-                                <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-rose-500 bg-rose-50/5">
+                            <div id="wash" className="scroll-mt-32 mt-8">
+                                <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
-                                        Phase 02: Residue removal
+                                        2. Remove Wax & Silicone Residue
                                     </Badge>
                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
-                                        Remove <span className="text-rose-500">Wax & Silicone</span>
+                                        Remove Wax & <span className="text-[#0EA0DC]">Silicone Residue</span>
                                     </h2>
-                                    <div className="grid md:grid-cols-2 gap-6 mb-10">
-                                        <div className="p-6 rounded-2xl bg-white border border-rose-100">
-                                            <ShieldAlert className="w-8 h-8 text-[#0EA0DC] mb-4" />
-                                            <p className="text-xs text-[#666666] font-medium leading-relaxed">
-                                                If previous wax or silicone products were used, strip them off using a degreasing agent.
-                                            </p>
-                                        </div>
-                                        <div className="p-6 rounded-2xl bg-white border border-rose-100">
-                                            <Droplets className="w-8 h-8 text-[#0EA0DC] mb-4" />
-                                            <p className="text-xs text-[#666666] font-medium leading-relaxed">
-                                                The surface must be completely clean and residue-free for proper bonding. Clean with IPA.
-                                            </p>
-                                        </div>
+                                    <div className="space-y-6 mb-10">
+                                        {[
+                                            " If previous wax or silicone products were used, strip them off using a degreasing agent.",
+                                            "The surface must be completely clean and residue-free for proper bonding.",
+                                            " Clean surface with IPA before application."
+                                        ].map((step, i) => (
+                                            <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                                                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div>
+                                                <p className="text-sm text-[#666666] font-medium leading-relaxed">{step}</p>
+                                            </div>
+                                        ))}
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('residue')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('residue') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                            onClick={() => markComplete('wash')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('wash') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                         >
-                                            {completedSteps.includes('residue') ? 'Residue Stripped' : 'Verify Residue-Free'}
+                                            {completedSteps.includes('wash') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
-                            <div id="conditions" className="scroll-mt-32 mt-8">
-                                <div className="flex items-center gap-4 mb-8">
-                                    <div className="h-[1px] flex-1 bg-gray-200" />
-                                    <h3 className="text-xs font-bold text-[#0EA0DC] uppercase tracking-[0.3em] flex items-center gap-3 italic">
-                                        <Wind className="w-4 h-4 text-[#0EA0DC]" /> Environmental Control
-                                    </h3>
-                                    <div className="h-[1px] flex-1 bg-gray-200" />
-                                </div>
-                                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {[
-                                        { title: "Atmosphere", desc: "Apply indoors or in a controlled, dust-free environment.", icon: Wind },
-                                        { title: "Solar Shield", desc: "Avoid direct sunlight, wind, or high humidity.", icon: Zap },
-                                        { title: "Thermal Audit", desc: "Ensure engine is cool — heat affects leveling and curing.", icon: Clock }
-                                    ].map((item, i) => (
-                                        <Card key={i} className="skygloss-card p-8 rounded-2xl border-gray-100 bg-white hover:border-[#0EA0DC]/30 transition-all duration-300">
-                                            <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center mb-6 border border-gray-100 text-[#0EA0DC]">
-                                                <item.icon className="w-6 h-6" />
+                            <div id="wash" className="scroll-mt-32 mt-8">
+                                <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
+                                    <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
+                                        3. Ideal Working Conditions
+                                    </Badge>
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                        Ideal Working Conditions
+                                    </h2>
+                                    <div className="space-y-6 mb-10">
+                                        {[
+                                            "Apply indoors or in a controlled, dust-free environment.",
+                                            "Avoid direct sunlight, wind, or high humidity.",
+                                            " Ensure the engine is cool — heat from a running engine can affect leveling and curing."
+                                        ].map((step, i) => (
+                                            <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                                                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div>
+                                                <p className="text-sm text-[#666666] font-medium leading-relaxed">{step}</p>
                                             </div>
-                                            <h4 className="font-bold text-sm text-[#272727] mb-3 uppercase tracking-wider">{item.title}</h4>
-                                            <p className="text-xs text-[#666666] font-medium leading-relaxed">{item.desc}</p>
-                                        </Card>
-                                    ))}
-                                </div>
-                                <div className="mt-8 flex justify-end">
-                                    <Button
-                                        onClick={() => markComplete('conditions')}
-                                        className={`rounded-xl px-8 h-12 font-bold text-xs uppercase tracking-widest transition-all ${completedSteps.includes('conditions') ? 'bg-[#0EA0DC] text-emerald-700 border border-emerald-200' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
-                                    >
-                                        {completedSteps.includes('conditions') ? 'Conditions Verified' : 'Confirm Environment'}
-                                    </Button>
-                                </div>
+                                        ))}
+                                    </div>
+                                    <div className="flex justify-end">
+                                        <Button
+                                            onClick={() => markComplete('wash')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('wash') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                        >
+                                            {completedSteps.includes('wash') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                        </Button>
+                                    </div>
+                                </Card>
                             </div>
 
-                            <Separator className="bg-gray-100 mt-8 mb-8" />
 
-                            {/* Application Protocol */}
-                            <div id="step1-apply" className="scroll-mt-32 space-y-12">
-                                <div className="text-center space-y-4 mb-8">
-                                    <Badge variant="outline" className="border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 uppercase tracking-[0.4em] px-6 py-1 font-bold text-[10px]">Matrix_Phase_04</Badge>
-                                    <h2 className="text-4xl font-bold text-[#272727] tracking-tighter uppercase italic">MATTE COAT Deployment</h2>
-                                </div>
+
+
+                            <div id="step1-apply" className="scroll-mt-32 space-y-12 mt-8">
+                                {/* <div className="text-center space-y-4 mt-8 mb-8">
+                                    <Badge variant="outline" className="border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 uppercase tracking-[0.4em] px-6 py-1 font-bold text-[10px]">Matrix_Phase_03</Badge>
+                                    <h2 className="text-4xl font-bold text-[#272727] tracking-tighter uppercase italic">RESIN COAT Deployment</h2>
+                                </div> */}
 
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <div className="flex flex-col  gap-8">
                                         <div className="md:w-[40%]">
-                                            <div className="text-5xl font-bold text-gray-50 mb-4 tracking-tighter italic uppercase">SINGLE</div>
-                                            <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">One-Layer Protocol</h3>
+                                            <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
+                                                Step 1 – Apply MATTE (1 Layer only)</h3>
+                                            <h6>You may put 2 layers if needed (optional)
+                                            </h6>
                                             <div className="p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
-                                                <p className="text-[10px] font-bold text-[#0EA0DC] uppercase tracking-widest mb-1">OPTIONAL</p>
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">"You may apply a second layer if additional thickness is desired."</p>
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    1. Shake the bottle well before use.</p>
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    2. Apply 5–7 drops of MATTE COAT onto the microfiber applicator pad.</p>
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    3. Spread evenly using straight, overlapping motions — work in sections of 50–70 cm² at a time.</p>
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    4. Allow the coating to flash for 2–4 minutes.</p>
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    5. Buff gently with the provided microfiber cloth until clear and streak-free.</p>
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    6. Continue panel-by-panel until the entire vehicle is coated.</p>
                                             </div>
+                                            <h6>Pro Tip: Maintain consistent lighting to easily spot high or uneven spots during application.
+
+                                            </h6>
                                         </div>
-                                        <div className="flex-1 space-y-6">
-                                            <div className="grid sm:grid-cols-2 gap-6">
-                                                <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                                                    <h4 className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-[0.2em] mb-4">Preparation</h4>
-                                                    <div className="space-y-3">
-                                                        <div className="text-xs text-[#666666] font-medium flex items-center gap-2">
-                                                            <Wrench className="w-3.5 h-3.5 text-[#0EA0DC]" /> Shake bottle well
-                                                        </div>
-                                                        <div className="text-xs text-[#666666] font-medium flex items-center gap-2">
-                                                            <Droplets className="w-3.5 h-3.5 text-[#0EA0DC]" /> 5–7 drops on pad
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                                                    <h4 className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-[0.2em] mb-4">Technique</h4>
-                                                    <div className="space-y-3">
-                                                        <div className="text-xs text-[#666666] font-medium flex items-center gap-2">
-                                                            <PenTool className="w-3.5 h-3.5 text-[#0EA0DC]" /> Straight overlapping
-                                                        </div>
-                                                        <div className="text-xs text-[#666666] font-medium flex items-center gap-2">
-                                                            <Zap className="w-3.5 h-3.5 text-[#0EA0DC]" /> Section: 50–70 cm²
-                                                        </div>
-                                                    </div>
-                                                </div>
+
+                                    </div>
+                                </Card>
+                                <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
+                                    <div className="flex flex-col  gap-8">
+                                        <div className="md:w-[40%]">
+                                            <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
+                                                Step 2 – Drying & Hardening</h3>
+                                            <div className="p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    •  Infrared lamps may be used to accelerate curing</p>
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    • Full curing occurs within 14 days</p>
+
                                             </div>
-                                            <div className="p-5 rounded-2xl bg-[#272727] text-white">
-                                                <h4 className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-3">Flash & Buff</h4>
-                                                <p className="text-xs leading-relaxed font-medium mb-3">Allow the coating to flash for <span className="text-[#0EA0DC]">2–4 minutes</span>.</p>
-                                                <p className="text-xs leading-relaxed font-medium">Buff gently with the provided microfiber cloth until clear and streak-free.</p>
-                                            </div>
-                                            <div className="flex justify-end">
-                                                <Button onClick={() => markComplete('step1-apply')} className={`rounded-xl px-10 h-14 font-bold transition-all ${completedSteps.includes('step1-apply') ? 'bg-[#0EA0DC] hover:bg-emerald-600 shadow-emerald-500/20 shadow-lg' : 'bg-[#272727] hover:bg-[#0c80b3] shadow-lg shadow-[#0EA0DC]/20'}`}>
-                                                    {completedSteps.includes('step1-apply') ? 'MATTE Verified' : 'Confirm Deployment'}
-                                                </Button>
-                                            </div>
+                                            <h6>You’ve now completed the full SkyGloss MATTE System — forming a deep-gloss, factory-grade
+                                                finish.</h6>
                                         </div>
+
+                                    </div>
+                                </Card>
+                                <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
+                                    <div className="flex flex-col  gap-8">
+                                        <div className="md:w-[40%]">
+                                            <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
+                                                Aftercare – Protect the Perfection</h3>
+                                            <div className="p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    • Avoid water contact or washing for 24 hours after application.</p>
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    Full curing occurs within 14 days.
+                                                    <br />◦ Do not use automatic car washes.
+                                                    <br />◦ Avoid detergents with strong alkalis or harsh chemicals.</p>
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
                                 </Card>
                             </div>
 
-                            <div id="step2-cure" className="scroll-mt-32">
-                                <Card className="p-8 sm:p-14 rounded-lg border-gray-100 bg-white relative overflow-hidden shadow-sm mt-8">
-                                    <div className="flex items-center justify-between mb-12">
-                                        <div>
-                                            <Badge className="bg-amber-500 text-white font-bold text-[10px] uppercase tracking-[0.2em] mb-4">CURE_SEQUENCE</Badge>
-                                            <h2 className="text-3xl font-bold text-[#272727] uppercase tracking-tighter italic text-amber-500">Drying & Hardening</h2>
-                                        </div>
-                                        <div className="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-500">
-                                            <Flame className="w-8 h-8" />
-                                        </div>
-                                    </div>
 
-                                    <div className="grid md:grid-cols-2 gap-8 mb-12">
-                                        <div className="space-y-4 p-6 rounded-2xl bg-gray-50 border border-gray-100">
-                                            <h4 className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-[0.3em]">Terminal Cure</h4>
-                                            <div className="flex items-baseline gap-4">
-                                                <span className="text-4xl font-bold text-[#272727]">14</span>
-                                                <span className="text-lg font-bold text-[#666666]">DAYS</span>
-                                            </div>
-                                            <p className="text-xs text-[#666666] font-medium leading-relaxed">Full curing occurs within 14 days. Avoid chemical wash during this window.</p>
-                                        </div>
-                                        <div className="space-y-4 p-6 rounded-2xl bg-amber-50 border border-amber-100">
-                                            <h4 className="text-[10px] font-bold text-amber-600 uppercase tracking-[0.3em]">Acceleration</h4>
-                                            <div className="flex items-center gap-3 text-amber-700">
-                                                <Zap className="w-5 h-5" />
-                                                <span className="text-sm font-bold uppercase">Infrared Lamps</span>
-                                            </div>
-                                            <p className="text-xs text-amber-800/70 font-medium leading-relaxed">Infrared lamps may be used to accelerate the initial hardening process.</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex justify-end pt-4">
-                                        <Button
-                                            onClick={() => markComplete('step2-cure')}
-                                            className="bg-[#272727] text-white hover:bg-[#0c80b3] shadow-lg rounded-xl px-10 h-14 font-bold"
-                                        >
-                                            Verify Cure Sequence
-                                        </Button>
-                                    </div>
-                                </Card>
-                            </div>
 
-                            {/* Aftercare */}
-                            <div id="protection" className="scroll-mt-32">
-                                <Card className="p-8 sm:p-14 rounded-lg border-none bg-[#272727] text-white relative overflow-hidden shadow-2xl mt-8">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-[#0EA0DC]/10 to-transparent pointer-events-none" />
-                                    <div className="relative z-10 flex flex-col  gap-12 items-center">
-                                        <div className="md:w-[45%] text-center md:text-left space-y-6">
-                                            <Badge className="bg-emerald-500 text-white border-none px-4 py-1.5 font-bold uppercase tracking-widest text-[10px]">Guard Strategy</Badge>
-                                            <h2 className="text-4xl font-bold uppercase italic tracking-tighter leading-[1]">Protect the <br />Perfection</h2>
-                                            <p className="text-white/40 font-medium leading-relaxed italic text-sm">
-                                                Maintaining the matte aesthetic requires strict adherence to cleaning protocols.
-                                            </p>
-                                        </div>
-                                        <div className="flex-1 grid gap-4 w-full">
-                                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-4">
-                                                <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-[#0EA0DC] shrink-0">
-                                                    <Clock className="w-6 h-6" />
-                                                </div>
-                                                <div>
-                                                    <h4 className="text-xs font-bold uppercase tracking-wider mb-2">24H Lockdown</h4>
-                                                    <p className="text-[11px] text-white/50 leading-relaxed">Avoid water contact or washing for 24 hours after application.</p>
-                                                </div>
-                                            </div>
-                                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-4">
-                                                <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-[#0EA0DC] shrink-0">
-                                                    <ShieldAlert className="w-6 h-6" />
-                                                </div>
-                                                <div>
-                                                    <h4 className="text-xs font-bold uppercase tracking-wider mb-2">RESTRICTIONS</h4>
-                                                    <p className="text-[11px] text-white/50 leading-relaxed">Do not use automatic car washes or detergents with strong alkalis.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="mt-12 flex justify-center md:justify-end">
-                                        <Button
-                                            onClick={() => markComplete('protection')}
-                                            className="bg-white p-4 text-[#272727] hover:bg-gray-100 shadow-xl rounded-xl px-12 h-14 font-bold text-xs uppercase tracking-widest"
-                                        >
-                                            Verify Aftercare Protocol
-                                        </Button>
-                                    </div>
-                                </Card>
-                            </div>
                         </div>
 
                         {/* Completion Footer */}
