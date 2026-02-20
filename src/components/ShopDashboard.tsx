@@ -304,38 +304,36 @@ export function ShopDashboard({
             </p>
           </motion.div>
 
-          {/* Main Tab Toggle - Only for USA Shops */}
-          {user?.country === "United States" && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="mb-8"
-            >
-              <div className="inline-flex rounded-xl border-2 border-[#0EA0DC] p-1 bg-white shadow-[0_0_10px_rgba(14,160,220,0.1)]">
-                <button
-                  onClick={() => navigate("/dashboard/shop")}
-                  className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "shop"
-                    ? "bg-[#272727] text-white shadow-lg"
-                    : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
-                    }`}
-                >
-                  <ShoppingBag className="w-5 h-5 mr-3" />
-                  <span className="text-lg">Shop</span>
-                </button>
-                <button
-                  onClick={() => navigate("/dashboard/shop/courses")}
-                  className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "courses"
-                    ? "bg-[#272727] text-white shadow-lg"
-                    : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
-                    }`}
-                >
-                  <GraduationCap className="w-5 h-5 mr-3" />
-                  <span className="text-lg">Courses</span>
-                </button>
-              </div>
-            </motion.div>
-          )}
+          {/* Main Tab Toggle - Visible for all Shops */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mb-8"
+          >
+            <div className="inline-flex rounded-xl border-2 border-[#0EA0DC] p-1 bg-white shadow-[0_0_10px_rgba(14,160,220,0.1)]">
+              <button
+                onClick={() => navigate("/dashboard/shop")}
+                className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "shop"
+                  ? "bg-[#272727] text-white shadow-lg"
+                  : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
+                  }`}
+              >
+                <ShoppingBag className="w-5 h-5 mr-3" />
+                <span className="text-lg">Shop</span>
+              </button>
+              <button
+                onClick={() => navigate("/dashboard/shop/courses")}
+                className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "courses"
+                  ? "bg-[#272727] text-white shadow-lg"
+                  : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
+                  }`}
+              >
+                <GraduationCap className="w-5 h-5 mr-3" />
+                <span className="text-lg">Courses</span>
+              </button>
+            </div>
+          </motion.div>
 
           {activeTab === "shop" ? (
             <div className="grid lg:grid-cols-3 gap-8">
