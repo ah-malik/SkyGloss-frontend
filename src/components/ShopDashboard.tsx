@@ -602,7 +602,7 @@ export function ShopDashboard({
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {products
                   .filter(p => !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN']
-                    .includes(p.name.toUpperCase()))
+                    .includes(p.name.toUpperCase()) && !p.name.includes('APPLICATORS'))
                   .map((product, index) => (
                     <motion.div
                       key={product._id}
@@ -610,37 +610,37 @@ export function ShopDashboard({
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
                     >
-                      <Card className="skygloss-card p-6 rounded-2xl h-full flex flex-col">
-                        <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg mb-4 p-4">
+                      <Card className="skygloss-card p-6 rounded-2xl h-full flex flex-col group hover:shadow-xl transition-all border-0 shadow-lg">
+                        <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl mb-4 p-4 border border-gray-50">
                           <ImageWithFallback
                             src={product.shopImages?.[0] || product.images?.[0]}
                             alt={product.name}
-                            className="w-full h-40 object-contain"
+                            className="w-full h-40 object-contain mx-auto group-hover:scale-105 transition-transform"
                           />
                         </div>
 
-                        <Badge className="mb-3 bg-[#0EA0DC]/10 text-[#0EA0DC] border-[#0EA0DC]/20 w-fit">
-                          {product.category || 'Course'}
+                        <Badge className="mb-3 bg-[#0EA0DC]/10 text-[#0EA0DC] border-0 w-fit font-bold">
+                          Training Course
                         </Badge>
 
-                        <h4 className="text-lg text-[#272727] mb-2">{product.name}</h4>
+                        <h4 className="text-lg font-bold text-[#272727] mb-2">{product.name}</h4>
 
-                        <p className="text-sm text-[#666666] mb-4 flex-1">
-                          Complete training course with comprehensive lessons covering application techniques, safety procedures, and best practices.
+                        <p className="text-sm text-[#666666] mb-6 flex-1 leading-relaxed">
+                          Comprehensive masterclass covering professional application, surface prep, and advanced maintenance for the {product.name} system.
                         </p>
 
-                        <div className="grid grid-cols-3 gap-2 mb-4 p-3 bg-gray-50 rounded-lg">
+                        <div className="grid grid-cols-3 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
                           <div className="text-center">
-                            <div className="text-xs text-[#666666]">Lessons</div>
-                            <div className="text-sm text-[#272727]">10</div>
+                            <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Lessons</div>
+                            <div className="text-sm font-bold text-[#272727]">12</div>
+                          </div>
+                          <div className="text-center border-x border-gray-200">
+                            <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Duration</div>
+                            <div className="text-sm font-bold text-[#272727]">3h 15m</div>
                           </div>
                           <div className="text-center">
-                            <div className="text-xs text-[#666666]">Duration</div>
-                            <div className="text-sm text-[#272727]">2h 30m</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-xs text-[#666666]">Level</div>
-                            <div className="text-sm text-[#272727]">All</div>
+                            <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Level</div>
+                            <div className="text-sm font-bold text-[#272727]">Master</div>
                           </div>
                         </div>
 
@@ -648,9 +648,9 @@ export function ShopDashboard({
                           onClick={() => {
                             navigate(`/dashboard/shop/courses/${product._id}`);
                           }}
-                          className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] h-11 rounded-lg"
+                          className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
                         >
-                          Start Course
+                          Launch Course
                         </Button>
                       </Card>
                     </motion.div>
