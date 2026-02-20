@@ -67,7 +67,7 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
             setRoomId(room._id);
 
             // Connect to Socket.IO
-            const socketUrl = import.meta.env.VITE_SOCKET_URL || 'https://skygloss-backend-production.up.railway.app';
+            const socketUrl = import.meta.env.VITE_SOCKET_URL || 'https://skygloss-backend-production-3b96.up.railway.app';
             const newSocket = io(socketUrl);
             socketRef.current = newSocket;
 

@@ -113,7 +113,7 @@ export function Footer() {
           <Button
             variant="secondary"
             className="bg-white text-[#0EA0DC] hover:bg-white/90 rounded-full px-6 py-2 group transition-all duration-200"
-            onClick={() => window.open("#", "_blank")}
+            onClick={() => window.open("https://skygloss.com/warranty-registration-portal/", "_blank")}
           >
             <span>Warranty Portal</span>
             <ArrowUpRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
