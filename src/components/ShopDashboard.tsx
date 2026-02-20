@@ -23,6 +23,17 @@ import { OrderRequestPage } from "./OrderRequestPage";
 import { toast } from "sonner";
 import { useAuth } from "../AuthContext";
 
+// Master Distributor Dashboard Assets for Courses
+import fusionMainImage from "../assets/Master_Distributor_Dashboard/1 Fusion.png";
+import resinFilmImage from "../assets/Master_Distributor_Dashboard/2 Resin Film.png";
+import sealImage from "../assets/Master_Distributor_Dashboard/3 Seal.png";
+import matteBoxImage from "../assets/Master_Distributor_Dashboard/4 Matte.png";
+import shineBoxImage from "../assets/Master_Distributor_Dashboard/5 Shine.png";
+import applicatorBottleImage from "../assets/Master_Distributor_Dashboard/6 Applicator Bottle.png";
+import edgeBladeBox1Image from "../assets/Master_Distributor_Dashboard/7 Edge Blade.png";
+import paintPenBoxImage from "../assets/Master_Distributor_Dashboard/8 Paint Pen.png";
+import applicatorsImage from "../assets/Master_Distributor_Dashboard/8 Applicator.png";
+
 
 
 interface ShopDashboardProps {
@@ -31,6 +42,20 @@ interface ShopDashboardProps {
   showCartSheet?: boolean;
   onCartSheetChange?: (show: boolean) => void;
 }
+
+const getCourseImage = (productName: string) => {
+  const name = productName.toUpperCase();
+  if (name.includes('FUSION')) return fusionMainImage;
+  if (name.includes('RESIN FILM')) return resinFilmImage;
+  if (name.includes('SEAL')) return sealImage;
+  if (name.includes('MATTE')) return matteBoxImage;
+  if (name.includes('SHINE')) return shineBoxImage;
+  if (name.includes('APPLICATOR BOTTLE')) return applicatorBottleImage;
+  if (name.includes('EDGE BLADE')) return edgeBladeBox1Image;
+  if (name.includes('PAINT PEN')) return paintPenBoxImage;
+  if (name.includes('APPLICATOR')) return applicatorsImage;
+  return null;
+};
 
 export function ShopDashboard({
   onShowThankYou,
@@ -602,7 +627,7 @@ export function ShopDashboard({
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {products
                   .filter(p => !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN']
-                    .includes(p.name.toUpperCase()) && !p.name.includes('APPLICATORS'))
+                    .includes(p.name.toUpperCase()) && !p.name.includes('APPLICATORS') && !p.name.includes('Applicators (2-Pack)'))
                   .map((product, index) => (
                     <motion.div
                       key={product._id}
@@ -613,7 +638,7 @@ export function ShopDashboard({
                       <Card className="skygloss-card p-6 rounded-2xl h-full flex flex-col group hover:shadow-xl transition-all border-0 shadow-lg">
                         <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl mb-4 p-4 border border-gray-50">
                           <ImageWithFallback
-                            src={product.shopImages?.[0] || product.images?.[0]}
+                            src={getCourseImage(product.name) || product.shopImages?.[0] || product.images?.[0]}
                             alt={product.name}
                             className="w-full h-40 object-contain mx-auto group-hover:scale-105 transition-transform"
                           />
