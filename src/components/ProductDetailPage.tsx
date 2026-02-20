@@ -12,6 +12,60 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import api from "../api/axios";
 import { Loader2 } from "lucide-react";
 
+const currencies = [
+  { code: 'USD', symbol: '$', name: 'US Dollar' },
+  { code: 'EUR', symbol: '€', name: 'Euro' },
+  { code: 'GBP', symbol: '£', name: 'British Pound' },
+  { code: 'CAD', symbol: 'CA$', name: 'Canadian Dollar' },
+  { code: 'AUD', symbol: 'A$', name: 'Australian Dollar' },
+  { code: 'AED', symbol: 'AED', name: 'UAE Dirham' },
+  { code: 'PKR', symbol: 'Rs.', name: 'Pakistani Rupee' },
+  { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
+  { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
+  { code: 'CNY', symbol: '¥', name: 'Chinese Yuan' },
+  { code: 'SAR', symbol: 'SR', name: 'Saudi Riyal' },
+  { code: 'QAR', symbol: 'QR', name: 'Qatari Rial' },
+  { code: 'KWD', symbol: 'KD', name: 'Kuwaiti Dinar' },
+  { code: 'BHD', symbol: 'BD', name: 'Bahraini Dinar' },
+  { code: 'OMR', symbol: 'OR', name: 'Omani Rial' },
+  { code: 'TRY', symbol: '₺', name: 'Turkish Lira' },
+  { code: 'ZAR', symbol: 'R', name: 'South African Rand' },
+  { code: 'NZD', symbol: 'NZ$', name: 'New Zealand Dollar' },
+  { code: 'SGD', symbol: 'S$', name: 'Singapore Dollar' },
+  { code: 'HKD', symbol: 'HK$', name: 'Hong Kong Dollar' },
+  { code: 'CHF', symbol: 'CHF', name: 'Swiss Franc' },
+  { code: 'SEK', symbol: 'kr', name: 'Swedish Krona' },
+  { code: 'NOK', symbol: 'kr', name: 'Norwegian Krone' },
+  { code: 'DKK', symbol: 'kr', name: 'Danish Krone' },
+  { code: 'RUB', symbol: '₽', name: 'Russian Ruble' },
+  { code: 'BRL', symbol: 'R$', name: 'Brazilian Real' },
+  { code: 'MXN', symbol: 'Mex$', name: 'Mexican Peso' },
+  { code: 'IDR', symbol: 'Rp', name: 'Indonesian Rupiah' },
+  { code: 'MYR', symbol: 'RM', name: 'Malaysian Ringgit' },
+  { code: 'PHP', symbol: '₱', name: 'Philippine Peso' },
+  { code: 'THB', symbol: '฿', name: 'Thai Baht' },
+  { code: 'VND', symbol: '₫', name: 'Vietnamese Dong' },
+  { code: 'EGP', symbol: 'E£', name: 'Egyptian Pound' },
+  { code: 'NGN', symbol: '₦', name: 'Nigerian Naira' },
+  { code: 'KES', symbol: 'KSh', name: 'Kenyan Shilling' },
+  { code: 'GHS', symbol: 'GH₵', name: 'Ghanaian Cedi' },
+  { code: 'MAD', symbol: 'DH', name: 'Moroccan Dirham' },
+  { code: 'KZT', symbol: '₸', name: 'Kazakhstani Tenge' },
+  { code: 'UAH', symbol: '₴', name: 'Ukrainian Hryvnia' },
+  { code: 'PLN', symbol: 'zł', name: 'Polish Zloty' },
+  { code: 'CZK', symbol: 'Kč', name: 'Czech Koruna' },
+  { code: 'HUF', symbol: 'Ft', name: 'Hungarian Forint' },
+  { code: 'ILS', symbol: '₪', name: 'Israeli New Shekel' },
+  { code: 'CLP', symbol: 'CLP$', name: 'Chilean Peso' },
+  { code: 'COP', symbol: 'COL$', name: 'Colombian Peso' },
+  { code: 'ARS', symbol: 'ARS$', name: 'Argentine Peso' },
+  { code: 'PEN', symbol: 'S/', name: 'Peruvian Sol' },
+  { code: 'BDT', symbol: '৳', name: 'Bangladeshi Taka' },
+  { code: 'LKR', symbol: 'Rs', name: 'Sri Lankan Rupee' },
+].sort((a, b) => a.code.localeCompare(b.code));
+
+const getSymbol = (code: string) => currencies.find(c => c.code === code)?.symbol || '$';
+
 interface ProductDetailPageProps {
   productId: string;
   onBack: () => void;
@@ -278,7 +332,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                         }`}
                     >
                       <div className="text-sm font-medium">{size}</div>
-                      {showPrice && price !== null && <div className="text-xs mt-1">${price}</div>}
+                      {showPrice && price !== null && <div className="text-xs mt-1">{getSymbol(product.currency)}{price}</div>}
                     </button>
                   );
                 })}
@@ -299,7 +353,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                       : "bg-white text-[#666666] border-gray-300 hover:border-[#0EA0DC]"
                       }`}
                   >
-                    Unit (${(product.unitPrices?.[selectedSize] || 0).toFixed(2)})
+                    Unit ({getSymbol(product.currency)}{(product.unitPrices?.[selectedSize] || 0).toFixed(2)})
                   </button>
                   <button
                     onClick={() => setOrderType("case")}
@@ -308,7 +362,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                       : "bg-white text-[#666666] border-gray-300 hover:border-[#0EA0DC]"
                       }`}
                   >
-                    Case (${(product.casePrices?.[selectedSize] || 0).toFixed(2)})
+                    Case ({getSymbol(product.currency)}{(product.casePrices?.[selectedSize] || 0).toFixed(2)})
                     <div className="text-[10px] opacity-80">
                       {product.unitsPerCase?.[selectedSize] || 0} units/case
                     </div>
@@ -321,7 +375,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
             {showPrice && (
               <div className="mb-8">
                 <div className="text-3xl text-[#0EA0DC] mb-2">
-                  ${currentPrice.toFixed(2)}
+                  {getSymbol(product.currency)}{currentPrice.toFixed(2)}
                 </div>
                 {!isDistributor && (
                   <Badge variant="secondary" className={`border-0 ${product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
@@ -361,7 +415,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                 </div>
                 {showPrice && (
                   <span className="text-sm text-[#666666]">
-                    Total: <span className="text-[#0EA0DC] font-semibold">${(currentPrice * quantity).toFixed(2)}</span>
+                    Total: <span className="text-[#0EA0DC] font-semibold">{getSymbol(product.currency)}{(currentPrice * quantity).toFixed(2)}</span>
                   </span>
                 )}
               </div>
@@ -540,7 +594,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                       <h3 className="text-sm sm:text-lg text-[#272727] truncate">{product.name}</h3>
                       {showPrice && (
                         <div className="text-base sm:text-xl text-[#666666]">
-                          ${currentPrice.toFixed(2)}
+                          {getSymbol(product.currency)}{currentPrice.toFixed(2)}
                         </div>
                       )}
                     </div>
@@ -590,7 +644,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                   {showPrice && (
                     <div className="text-right">
                       <span className="text-2xl font-bold text-[#0EA0DC]">
-                        ${currentPrice.toFixed(2)}
+                        {getSymbol(product.currency)}{currentPrice.toFixed(2)}
                       </span>
                     </div>
                   )}

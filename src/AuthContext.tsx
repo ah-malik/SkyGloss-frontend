@@ -9,6 +9,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   image: string;
+  currency?: string;
 }
 
 interface AuthContextType {
@@ -97,7 +98,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         size: selectedSizeStr,
         price,
         quantity,
-        image: product.images[0]
+        image: product.images[0],
+        currency: product.currency
       }]);
     }
   };
