@@ -1,6 +1,6 @@
 // Last Updated: 2026-02-02
 import { motion, AnimatePresence } from "motion/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams, useLocation } from "react-router";
 import { Package, FileText, Globe, CreditCard, Send, CheckCircle, Plus, Minus, XCircle, Award, GraduationCap, Clock } from "lucide-react";
 import { Card } from "./ui/card";
@@ -163,6 +163,79 @@ export function DistributorDashboard({
   const location = useLocation();
   const [activeSection, setActiveSection] = useState<"shop" | "certified" | "network" | "courses">("shop");
   const [viewingCourse, setViewingCourse] = useState<string | null>(null);
+  const [apiProducts, setApiProducts] = useState<any[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await api.get('/products?status=published');
+      setApiProducts(res.data);
+    } catch (err) {
+      console.error("Failed to fetch products", err);
+    } finally {
+      setLoadingProducts(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const mergedProducts = useMemo(() => {
+    if (apiProducts.length === 0) return [];
+
+    return apiProducts.map(apiProd => {
+      const hardcoded = distributorProducts.find(p =>
+        p.name.toUpperCase() === apiProd.name.toUpperCase() ||
+        apiProd.name.toUpperCase().includes(p.name.toUpperCase())
+      );
+
+      // Map API sizes/prices to unitPrices
+      const unitPrices: Record<string, number> = {};
+      apiProd.sizes?.forEach((s: any) => {
+        unitPrices[s.size] = s.price;
+      });
+
+      // Calculate case prices if not hardcoded
+      const casePrices: Record<string, number> = {};
+      const unitsPerCase: Record<string, number> = {};
+
+      apiProd.sizes?.forEach((s: any) => {
+        const sizeKey = s.size.toLowerCase();
+
+        // Find UPC from hardcoded, case-insensitive
+        let upc = 10;
+        if (hardcoded?.unitsPerCase) {
+          const found = Object.entries(hardcoded.unitsPerCase).find(([k]) => k.toLowerCase() === sizeKey);
+          if (found) upc = found[1] as number;
+        }
+        unitsPerCase[s.size] = upc;
+
+        // Find Case Price from hardcoded, case-insensitive, or calculate
+        let cp = s.price * upc;
+        if (hardcoded?.casePrices) {
+          const found = Object.entries(hardcoded.casePrices).find(([k]) => k.toLowerCase() === sizeKey);
+          if (found) cp = found[1] as number;
+        }
+        casePrices[s.size] = cp;
+      });
+
+      return {
+        ...apiProd,
+        id: apiProd._id, // Use API ID
+        dbId: apiProd._id,
+        name: apiProd.name,
+        description: apiProd.description,
+        sizes: apiProd.sizes?.map((s: any) => s.size) || [],
+        unitPrices,
+        casePrices,
+        unitsPerCase,
+        image: hardcoded?.image || apiProd.images?.[0],
+        additionalImage: hardcoded?.additionalImage,
+        additionalImage2: hardcoded?.additionalImage2
+      };
+    });
+  }, [apiProducts]);
 
   // Sync state with URL
   useEffect(() => {
@@ -274,10 +347,10 @@ export function DistributorDashboard({
     }
   }, [orderCount, onCartCountChange]);
 
-  const addToOrder = (product: typeof distributorProducts[0], size: string, orderType: "unit" | "case") => {
+  const addToOrder = (product: any, size: string, orderType: "unit" | "case") => {
     const price = orderType === "unit"
-      ? product.unitPrices[size as keyof typeof product.unitPrices]
-      : product.casePrices[size as keyof typeof product.casePrices];
+      ? product.unitPrices[size]
+      : product.casePrices[size];
 
     const existingItem = orderItems.find(
       item => item.productId === product.id && item.size === size && item.orderType === orderType
@@ -442,7 +515,7 @@ export function DistributorDashboard({
   };
 
   const handleAddFromProductPage = (size: string, quantity: number, _price?: number, oType?: "unit" | "case") => {
-    const product = distributorProducts.find(p => p.id === viewingProduct);
+    const product = mergedProducts.find(p => p.id === viewingProduct);
     if (!product) return;
 
     for (let i = 0; i < quantity; i++) {
@@ -536,7 +609,7 @@ export function DistributorDashboard({
               {viewingProduct !== null ? (
                 <ProductDetailPage
                   productId={viewingProduct.toString()}
-                  initialProduct={distributorProducts.find(p => p.id === viewingProduct)}
+                  initialProduct={mergedProducts.find(p => p.id === viewingProduct)}
                   onBack={handleBackFromProduct}
                   onAddToCart={handleAddFromProductPage}
                   showPrice={true}
@@ -546,7 +619,7 @@ export function DistributorDashboard({
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 pb-12">
                   <div className="lg:col-span-2 order-2 lg:order-1">
                     <div className="space-y-4 lg:space-y-6">
-                      {distributorProducts.map((product, index) => (
+                      {mergedProducts.map((product, index) => (
                         <motion.div
                           key={product.id}
                           initial={{ opacity: 0, y: 20 }}
@@ -584,12 +657,12 @@ export function DistributorDashboard({
                                         <div className="flex flex-col sm:flex-row sm:gap-4 gap-1">
                                           <span className="text-xs sm:text-sm text-[#666666]">
                                             Unit: <span className="text-[#0EA0DC] font-semibold">
-                                              ${product.unitPrices[size as keyof typeof product.unitPrices].toFixed(2)}
+                                              ${product.unitPrices[size].toFixed(2)}
                                             </span>
                                           </span>
                                           <span className="text-xs sm:text-sm text-[#666666]">
-                                            Case ({product.unitsPerCase[size as keyof typeof product.unitsPerCase]} units): <span className="text-[#0EA0DC] font-semibold">
-                                              ${product.casePrices[size as keyof typeof product.casePrices].toFixed(2)}
+                                            Case ({product.unitsPerCase[size]} units): <span className="text-[#0EA0DC] font-semibold">
+                                              ${product.casePrices[size].toFixed(2)}
                                             </span>
                                           </span>
                                         </div>
@@ -1100,7 +1173,7 @@ export function DistributorDashboard({
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {distributorProducts
+                {mergedProducts
                   .filter(p => !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN']
                     .includes(p.name.toUpperCase()) && !p.name.includes('APPLICATORS'))
                   .map((product, index) => (
