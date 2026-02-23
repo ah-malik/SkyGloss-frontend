@@ -374,7 +374,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                       : "bg-white text-[#666666] border-gray-300 hover:border-[#0EA0DC]"
                       }`}
                   >
-                    Unit ({getSymbol(product.currency)}{(product.unitPrices?.[selectedSize] || 0).toFixed(2)})
+                    Unit {showPrice && `(${getSymbol(product.currency)}{(product.unitPrices?.[selectedSize] || 0).toFixed(2)})`}
                   </button>
                   <button
                     onClick={() => setOrderType("case")}
@@ -383,10 +383,12 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                       : "bg-white text-[#666666] border-gray-300 hover:border-[#0EA0DC]"
                       }`}
                   >
-                    Case ({getSymbol(product.currency)}{(product.casePrices?.[selectedSize] || 0).toFixed(2)})
-                    <div className="text-[10px] opacity-80">
-                      {product.unitsPerCase?.[selectedSize] || 0} units/case
-                    </div>
+                    Case {showPrice && `(${getSymbol(product.currency)}{(product.casePrices?.[selectedSize] || 0).toFixed(2)})`}
+                    {showPrice && (
+                      <div className="text-[10px] opacity-80">
+                        {product.unitsPerCase?.[selectedSize] || 0} units/case
+                      </div>
+                    )}
                   </button>
                 </div>
               </div>

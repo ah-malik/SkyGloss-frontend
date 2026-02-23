@@ -137,6 +137,8 @@ export function ShopDashboard({
   const [viewingCourse, setViewingCourse] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
 
+  const showPrice = user?.country === "United States";
+
   // Sync state with URL
   useEffect(() => {
     const path = window.location.pathname;
@@ -362,7 +364,7 @@ export function ShopDashboard({
           productId={viewingProduct}
           onBack={handleBackFromProduct}
           onAddToCart={handleAddFromProductPage}
-          showPrice={true}
+          showPrice={showPrice}
           onOpenCart={() => {
             setShowCartSheet(true);
           }}
@@ -505,11 +507,13 @@ export function ShopDashboard({
 
                                 {/* Price and Actions */}
                                 <div className="flex items-center gap-4">
-                                  <div className="text-right">
-                                    <span className="text-2xl font-bold text-[#0EA0DC]">
-                                      {getSymbol(product.currency)}{currentPrice.toFixed(2)}
-                                    </span>
-                                  </div>
+                                  {showPrice && (
+                                    <div className="text-right">
+                                      <span className="text-2xl font-bold text-[#0EA0DC]">
+                                        {getSymbol(product.currency)}{currentPrice.toFixed(2)}
+                                      </span>
+                                    </div>
+                                  )}
                                   <div className="flex gap-2">
                                     <Button
                                       size="sm"
@@ -601,14 +605,16 @@ export function ShopDashboard({
 
                                     {/* Price and Quantity Controls */}
                                     <div className="flex items-center justify-between mt-3">
-                                      <div className="text-sm text-[#0EA0DC]">
-                                        {getSymbol(item.currency || 'USD')} {(item.price * item.quantity).toFixed(2)}
-                                        {item.quantity > 1 && (
-                                          <span className="text-xs text-[#999999] block">
-                                            {getSymbol(item.currency || 'USD')}{item.price.toFixed(2)} each
-                                          </span>
-                                        )}
-                                      </div>
+                                      {showPrice && (
+                                        <div className="text-sm text-[#0EA0DC]">
+                                          {getSymbol(item.currency || 'USD')} {(item.price * item.quantity).toFixed(2)}
+                                          {item.quantity > 1 && (
+                                            <span className="text-xs text-[#999999] block">
+                                              {getSymbol(item.currency || 'USD')}{item.price.toFixed(2)} each
+                                            </span>
+                                          )}
+                                        </div>
+                                      )}
 
                                       {/* Quantity Controls */}
                                       <div className="flex items-center gap-1.5 bg-gray-100 rounded-lg p-1">
@@ -638,19 +644,23 @@ export function ShopDashboard({
                           <Separator className="my-4 bg-gray-300" />
 
                           <div className="space-y-3 mb-6">
-                            <div className="flex justify-between text-[#666666]">
-                              <span>Subtotal</span>
-                              <span className="text-[#272727]">{getSymbol(products[0]?.currency)}{(cartTotal).toFixed(2)}</span>
-                            </div>
-                            <div className="flex justify-between text-sm text-[#999999]">
-                              <span>Shipping</span>
-                              <span>At checkout</span>
-                            </div>
-                            <Separator className="bg-gray-300" />
-                            <div className="flex justify-between items-baseline">
-                              <span className="text-[#272727]">Total</span>
-                              <span className="text-xl text-[#0EA0DC]">{getSymbol(products[0]?.currency)}{(cartTotal).toFixed(2)}</span>
-                            </div>
+                            {showPrice && (
+                              <>
+                                <div className="flex justify-between text-[#666666]">
+                                  <span>Subtotal</span>
+                                  <span className="text-[#272727]">{getSymbol(products[0]?.currency)}{(cartTotal).toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between text-sm text-[#999999]">
+                                  <span>Shipping</span>
+                                  <span>At checkout</span>
+                                </div>
+                                <Separator className="bg-gray-300" />
+                                <div className="flex justify-between items-baseline">
+                                  <span className="text-[#272727]">Total</span>
+                                  <span className="text-xl text-[#0EA0DC]">{getSymbol(products[0]?.currency)}{(cartTotal).toFixed(2)}</span>
+                                </div>
+                              </>
+                            )}
                           </div>
 
                           <Button
@@ -790,14 +800,16 @@ export function ShopDashboard({
 
                           {/* Price and Quantity Controls */}
                           <div className="flex items-center justify-between mt-3">
-                            <div className="text-[#0EA0DC]">
-                              {getSymbol(item.currency || 'USD')}{(item.price * item.quantity).toFixed(2)}
-                              {item.quantity > 1 && (
-                                <span className="text-xs text-[#999999] ml-1">
-                                  ({getSymbol(item.currency || 'USD')}{item.price.toFixed(2)} each)
-                                </span>
-                              )}
-                            </div>
+                            {showPrice && (
+                              <div className="text-[#0EA0DC]">
+                                {getSymbol(item.currency || 'USD')}{(item.price * item.quantity).toFixed(2)}
+                                {item.quantity > 1 && (
+                                  <span className="text-xs text-[#999999] ml-1">
+                                    ({getSymbol(item.currency || 'USD')}{item.price.toFixed(2)} each)
+                                  </span>
+                                )}
+                              </div>
+                            )}
 
                             {/* Quantity Controls */}
                             <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
