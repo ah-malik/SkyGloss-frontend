@@ -36,6 +36,60 @@ import edgeBladeBox2Image from "../assets/Master_Distributor_Dashboard/7 Edge Bl
 import paintPenBoxImage from "../assets/Master_Distributor_Dashboard/8 Paint Pen.png";
 import paintPenToolsImage from "../assets/Master_Distributor_Dashboard/8 Paint Pen.png";
 import applicatorsImage from "../assets/Master_Distributor_Dashboard/8 Applicator.png";
+const getSymbol = (code: string) => currencies.find(c => c.code === code)?.symbol || '$';
+
+const currencies = [
+  { code: 'USD', symbol: '$', name: 'US Dollar' },
+  { code: 'EUR', symbol: '€', name: 'Euro' },
+  { code: 'GBP', symbol: '£', name: 'British Pound' },
+  { code: 'CAD', symbol: 'CA$', name: 'Canadian Dollar' },
+  { code: 'AUD', symbol: 'A$', name: 'Australian Dollar' },
+  { code: 'AED', symbol: 'AED', name: 'UAE Dirham' },
+  { code: 'PKR', symbol: 'Rs.', name: 'Pakistani Rupee' },
+  { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
+  { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
+  { code: 'CNY', symbol: '¥', name: 'Chinese Yuan' },
+  { code: 'SAR', symbol: 'SR', name: 'Saudi Riyal' },
+  { code: 'QAR', symbol: 'QR', name: 'Qatari Rial' },
+  { code: 'KWD', symbol: 'KD', name: 'Kuwaiti Dinar' },
+  { code: 'BHD', symbol: 'BD', name: 'Bahraini Dinar' },
+  { code: 'OMR', symbol: 'OR', name: 'Omani Rial' },
+  { code: 'TRY', symbol: '₺', name: 'Turkish Lira' },
+  { code: 'ZAR', symbol: 'R', name: 'South African Rand' },
+  { code: 'NZD', symbol: 'NZ$', name: 'New Zealand Dollar' },
+  { code: 'SGD', symbol: 'S$', name: 'Singapore Dollar' },
+  { code: 'HKD', symbol: 'HK$', name: 'Hong Kong Dollar' },
+  { code: 'CHF', symbol: 'CHF', name: 'Swiss Franc' },
+  { code: 'SEK', symbol: 'kr', name: 'Swedish Krona' },
+  { code: 'NOK', symbol: 'kr', name: 'Norwegian Krone' },
+  { code: 'DKK', symbol: 'kr', name: 'Danish Krone' },
+  { code: 'RUB', symbol: '₽', name: 'Russian Ruble' },
+  { code: 'BRL', symbol: 'R$', name: 'Brazilian Real' },
+  { code: 'MXN', symbol: 'Mex$', name: 'Mexican Peso' },
+  { code: 'IDR', symbol: 'Rp', name: 'Indonesian Rupiah' },
+  { code: 'MYR', symbol: 'RM', name: 'Malaysian Ringgit' },
+  { code: 'PHP', symbol: '₱', name: 'Philippine Peso' },
+  { code: 'THB', symbol: '฿', name: 'Thai Baht' },
+  { code: 'VND', symbol: '₫', name: 'Vietnamese Dong' },
+  { code: 'EGP', symbol: 'E£', name: 'Egyptian Pound' },
+  { code: 'NGN', symbol: '₦', name: 'Nigerian Naira' },
+  { code: 'KES', symbol: 'KSh', name: 'Kenyan Shilling' },
+  { code: 'GHS', symbol: 'GH₵', name: 'Ghanaian Cedi' },
+  { code: 'MAD', symbol: 'DH', name: 'Moroccan Dirham' },
+  { code: 'KZT', symbol: '₸', name: 'Kazakhstani Tenge' },
+  { code: 'UAH', symbol: '₴', name: 'Ukrainian Hryvnia' },
+  { code: 'PLN', symbol: 'zł', name: 'Polish Zloty' },
+  { code: 'CZK', symbol: 'Kč', name: 'Czech Koruna' },
+  { code: 'HUF', symbol: 'Ft', name: 'Hungarian Forint' },
+  { code: 'ILS', symbol: '₪', name: 'Israeli New Shekel' },
+  { code: 'CLP', symbol: 'CLP$', name: 'Chilean Peso' },
+  { code: 'COP', symbol: 'COL$', name: 'Colombian Peso' },
+  { code: 'ARS', symbol: 'ARS$', name: 'Argentine Peso' },
+  { code: 'PEN', symbol: 'S/', name: 'Peruvian Sol' },
+  { code: 'BDT', symbol: '৳', name: 'Bangladeshi Taka' },
+  { code: 'LKR', symbol: 'Rs', name: 'Sri Lankan Rupee' },
+].sort((a, b) => a.code.localeCompare(b.code));
+
 const distributorProducts = [
   {
     id: 1,
@@ -144,6 +198,7 @@ interface OrderItem {
   orderType: "unit" | "case";
   quantity: number;
   price: number;
+  currency: string;
 }
 
 interface DistributorDashboardProps {
@@ -232,7 +287,8 @@ export function DistributorDashboard({
         unitsPerCase,
         image: hardcoded?.image || apiProd.images?.[0],
         additionalImage: hardcoded?.additionalImage,
-        additionalImage2: hardcoded?.additionalImage2
+        additionalImage2: hardcoded?.additionalImage2,
+        currency: apiProd.currency || 'USD'
       };
     });
   }, [apiProducts]);
@@ -369,7 +425,8 @@ export function DistributorDashboard({
         size,
         orderType,
         quantity: 1,
-        price: price || 0
+        price: price || 0,
+        currency: product.currency || 'USD'
       }]);
     }
 
@@ -657,12 +714,12 @@ export function DistributorDashboard({
                                         <div className="flex flex-col sm:flex-row sm:gap-4 gap-1">
                                           <span className="text-xs sm:text-sm text-[#666666]">
                                             Unit: <span className="text-[#0EA0DC] font-semibold">
-                                              ${product.unitPrices[size].toFixed(2)}
+                                              {getSymbol(product.currency)}{product.unitPrices[size].toFixed(2)}
                                             </span>
                                           </span>
                                           <span className="text-xs sm:text-sm text-[#666666]">
                                             Case ({product.unitsPerCase[size]} units): <span className="text-[#0EA0DC] font-semibold">
-                                              ${product.casePrices[size].toFixed(2)}
+                                              {getSymbol(product.currency)}{product.casePrices[size].toFixed(2)}
                                             </span>
                                           </span>
                                         </div>
@@ -738,10 +795,10 @@ export function DistributorDashboard({
 
                                     <div className="flex items-center justify-between">
                                       <div className="text-sm font-bold text-[#0EA0DC]">
-                                        ${(item.price * item.quantity).toFixed(2)}
+                                        {getSymbol(item.currency)}{(item.price * item.quantity).toFixed(2)}
                                         {item.quantity > 1 && (
                                           <span className="text-[10px] text-[#999999] block font-normal">
-                                            ${item.price.toFixed(2)} each
+                                            {getSymbol(item.currency)}{item.price.toFixed(2)} each
                                           </span>
                                         )}
                                       </div>
@@ -773,7 +830,10 @@ export function DistributorDashboard({
                               <div className="space-y-3 mb-6">
                                 <div className="flex justify-between items-baseline">
                                   <span className="text-[#666666] font-medium">Total Amount</span>
-                                  <span className="text-2xl font-bold text-[#0EA0DC]">${orderTotal.toFixed(2)}</span>
+                                  <span className="text-2xl font-bold text-[#0EA0DC]">
+                                    {orderItems.length > 0 ? getSymbol(orderItems[0].currency) : '$'}
+                                    {orderTotal.toFixed(2)}
+                                  </span>
                                 </div>
                               </div>
 
@@ -1270,7 +1330,7 @@ export function DistributorDashboard({
 
                       <div className="flex items-center justify-between">
                         <div className="text-lg font-bold text-[#0EA0DC]">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          {getSymbol(item.currency)}{(item.price * item.quantity).toFixed(2)}
                         </div>
 
                         <div className="flex items-center gap-2 bg-gray-50 rounded-xl p-1.5 border border-gray-100 shadow-inner">
@@ -1299,7 +1359,10 @@ export function DistributorDashboard({
                   <div className="flex justify-between items-baseline">
                     <span className="text-gray-400 font-bold uppercase tracking-wider text-xs">Subtotal</span>
                     <div className="text-right">
-                      <span className="text-3xl font-bold text-[#272727]">${orderTotal.toFixed(2)}</span>
+                      <span className="text-3xl font-bold text-[#272727]">
+                        {orderItems.length > 0 ? getSymbol(orderItems[0].currency) : '$'}
+                        {orderTotal.toFixed(2)}
+                      </span>
                     </div>
                   </div>
 

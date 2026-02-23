@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
 
       // Dashboard Pages (Protected from non-logged-in users)
       {
-        element: <ProtectedRoute allowedRole="shop" />,
+        element: <ProtectedRoute allowedRole="certified_shop" />,
         children: [
           { path: "dashboard/shop", element: <ShopDashboard /> },
           { path: "dashboard/shop/:productId", element: <ShopDashboard /> },
@@ -44,7 +44,7 @@ export const router = createBrowserRouter([
         ]
       },
       {
-        element: <ProtectedRoute allowedRole="distributor" />,
+        element: <ProtectedRoute allowedRole={["master_distributor", "regional_distributor"]} />,
         children: [
           { path: "dashboard/distributor", element: <DistributorDashboard /> },
           { path: "dashboard/distributor/:section", element: <DistributorDashboard /> },
