@@ -363,7 +363,7 @@ export function MatteGuide({ onBack }: { onBack: () => void }) {
                                 </div>
                                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6 relative z-10 pt-4">
                                     <Button onClick={onBack} className="rounded-xl p-4 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all">
-                                        EXIT TERMINAL
+                                        Finished
                                     </Button>
                                     <Button variant="outline" className="rounded-xl p-4 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all">
                                         DOWNLOAD PDF

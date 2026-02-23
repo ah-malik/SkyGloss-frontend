@@ -1,11 +1,9 @@
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
-import { ArrowLeft, Check, Send, Loader2 } from "lucide-react";
+import { ArrowLeft, Send, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
-import { Separator } from "./ui/separator";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { toast } from "sonner";
 import { type CartItem, useAuth } from "../AuthContext";
@@ -21,13 +19,13 @@ interface OrderRequestPageProps {
 export function OrderRequestPage({ cart, onBack, onComplete }: OrderRequestPageProps) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  
+
   // Pre-fill from user profile if available
   const [email, setEmail] = useState(user?.email || "");
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
   const [country, setCountry] = useState(user?.country || "");
-  
+
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
@@ -38,11 +36,6 @@ export function OrderRequestPage({ cart, onBack, onComplete }: OrderRequestPageP
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
-
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = 15.00;
-  const tax = subtotal * 0.08;
-  const total = subtotal + shipping + tax;
 
   const handleRequestSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,9 +69,9 @@ export function OrderRequestPage({ cart, onBack, onComplete }: OrderRequestPageP
       toast.success("Order Request Submitted!", {
         description: "Our admin team will review your request and contact you shortly."
       });
-      
+
       onComplete(); // Clears cart and shows Thank You in parent
-      
+
     } catch (error: any) {
       console.error("Order request error:", error);
       toast.error(error.response?.data?.message || "Failed to submit order request. Please try again.");
@@ -186,7 +179,7 @@ export function OrderRequestPage({ cart, onBack, onComplete }: OrderRequestPageP
                     />
                   </div>
 
-                   <div className="grid md:grid-cols-3 gap-4">
+                  <div className="grid md:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-sm text-[#272727] mb-2">City</label>
                       <Input
@@ -224,28 +217,28 @@ export function OrderRequestPage({ cart, onBack, onComplete }: OrderRequestPageP
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm text-[#272727] mb-2">Country</label>
-                        <Input
-                            type="text"
-                            value={country}
-                            onChange={(e) => setCountry(e.target.value)}
-                            className="border-[#0EA0DC]/30 rounded-lg bg-gray-50"
-                            placeholder="Country"
-                            required
-                            readOnly={!!user?.country} // Read-only if coming from user profile to prevent switching logic bypass? No, let them edit if they moved, but the logic depends on LOGIN country, not shipping country usually. User said "kisi aur country se login hota he".
-                        />
-                         {/* Note: We allow editing country for shipping, but the *Access* logic was handled at dashboard entry. */}
+                      <label className="block text-sm text-[#272727] mb-2">Country</label>
+                      <Input
+                        type="text"
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)}
+                        className="border-[#0EA0DC]/30 rounded-lg bg-gray-50"
+                        placeholder="Country"
+                        required
+                        readOnly={!!user?.country} // Read-only if coming from user profile to prevent switching logic bypass? No, let them edit if they moved, but the logic depends on LOGIN country, not shipping country usually. User said "kisi aur country se login hota he".
+                      />
+                      {/* Note: We allow editing country for shipping, but the *Access* logic was handled at dashboard entry. */}
                     </div>
                     <div>
-                        <label className="block text-sm text-[#272727] mb-2">Phone Number</label>
-                        <Input 
-                            type="tel"
-                            value={shippingPhone}
-                            onChange={(e) => setShippingPhone(e.target.value)}
-                            placeholder="+1 (555) 000-0000"
-                            className="border-[#0EA0DC]/30 rounded-lg"
-                            required
-                        />
+                      <label className="block text-sm text-[#272727] mb-2">Phone Number</label>
+                      <Input
+                        type="tel"
+                        value={shippingPhone}
+                        onChange={(e) => setShippingPhone(e.target.value)}
+                        placeholder="+1 (555) 000-0000"
+                        className="border-[#0EA0DC]/30 rounded-lg"
+                        required
+                      />
                     </div>
                   </div>
 
@@ -282,34 +275,9 @@ export function OrderRequestPage({ cart, onBack, onComplete }: OrderRequestPageP
                       <div className="flex-1">
                         <h4 className="text-sm text-[#272727]">{item.name}</h4>
                         <p className="text-xs text-[#666666]">{item.size} × {item.quantity}</p>
-                        <p className="text-sm text-[#0EA0DC] mt-1">
-                          ${(item.price * item.quantity).toFixed(2)}
-                        </p>
                       </div>
                     </div>
                   ))}
-                </div>
-
-                <Separator className="my-4" />
-
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm text-[#666666]">
-                    <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm text-[#666666]">
-                    <span>Shipping</span>
-                    <span>${shipping.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm text-[#666666]">
-                    <span>Tax (Est.)</span>
-                    <span>${tax.toFixed(2)}</span>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between text-lg text-[#272727]">
-                    <span>Total Value</span>
-                    <span className="text-[#0EA0DC]">${total.toFixed(2)}</span>
-                  </div>
                 </div>
               </Card>
             </motion.div>

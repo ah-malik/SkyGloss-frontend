@@ -444,10 +444,10 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Tools & Materials</h4>
                                         <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• 3-5 clean blue microfibers</li>
-                                            <li>• Degreaser or heavy dish soap, with little to no fragrances, dye or silicones.</li>
+                                            <li>• Alkaline degreaser or heavy dish soap, with little to no fragrances, dye or silicones.</li>
                                             <li>• Alcohol</li>
                                             <li>• Spray or pump bottle</li>
-                                            <li>• Mix in a spray or pump bottle, three cap full of degreaser, 90% water, and 10% alcohol</li>
+                                            {/* <li>• Mix in a spray or pump bottle, three cap full of degreaser, 90% water, and 10% alcohol</li> */}
                                         </ul>
                                     </div>
 
@@ -506,14 +506,14 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Tools & Materials</h4>
                                         <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Paper towel</li>
-                                            <li>• Acetone</li>
+                                            <li>• Etch</li>
                                         </ul>
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
 
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Process</h4>
                                         <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
-                                            <li>• Using acetone on a folded paper towel, check sections of panels around the vehicle for a chemical reaction.</li>
+                                            <li>• Using Etch on a folded paper towel, check sections of panels around the vehicle for a chemical reaction.</li>
                                             <li>• Rub the soaked paper towel and see if you see any reaction taking place where that the clearcoat is heating up and become tacky or is scratches very, very easy.</li>
                                             <li>• This indicates that there is very little to know resistance to that particular panel.</li>
                                             <li>• Always make sure to do this on areas that are low and not visually easy to see by the eye because if you do have a chemical reaction, it can strip the clearcoat even strip the paint. This is rare and only poorly repaints typically cause this, but it is something you want to watch out for.</li>
@@ -524,7 +524,9 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Pass / Fail Criteria</h4>
                                         <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Pass looks like no tackiness or major scratching took place. This indicates that it's fine to move forward with the next steps.</li>
-                                            <li>• Fail looks like a scratched panel or very tacky to the touch. If it's light tackiness, then you want to be careful on the Etch step and use minimal pressure and minimal amount of material. If it's heavy, scratching or tackiness, then that panel is better off being polished, and explained to the customer that there was not enough integrity on this panel to be able to rebuild it. Don't take the risks cautious on poorly repainted and lower integrity paint finishes.</li>
+                                            <li>• Fail looks like a heavily scratched area or very tacky to the touch. It can also start to discolor or melt the clearcoat. If it’s light tackiness or discoloration, then you want to be careful on the Etch step and use minimal pressure and minimal amount of material. If it’s heavy, scratching or tackiness, then that panel is better off being polished, and explained to the customer that there was not enough integrity on this panel to be able to rebuild it. Don’t take the risks cautious on poorly repainted and lower integrity. Paint finishes. 
+</li>
+                                            
                                             <li>• It's also important to keep in mind that during application, if there is integrity issues on the panel, your applicator will stick and not flow as there are some application techniques to overcome this, but it comes through experience.</li>
                                         </ul>
                                     </div>
@@ -607,7 +609,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 4: EXFOLIATE</h3>
 
                                     <p className="text-sm text-[#666666] mb-4 italic">
-                                        "Purpose: Using a 4000, 5000 or 6000 sanding disc, this levels out the paint and removes contaminants that are stuck onto the clearcoat. This decontaminating process helps levels the paint for a clean and consistent application."
+                                        "Purpose: Using a 3000, 5000 or 6000 sanding disc, this levels out the paint and removes contaminants that are stuck onto the clearcoat. This decontaminating process helps levels the paint for a clean and consistent application."
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
 
@@ -616,8 +618,8 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             <li>• 3mm DA (dual action) sander</li>
                                             <li>• 5'' or 6'' backing plate</li>
                                             <li>• 5'' or 6'' interface pad</li>
-                                            <li>• 4000, 5000, 6000 3M Trizact (or similar) sanding disc</li>
-                                            <li>• Degreaser</li>
+                                            <li>• 3000, 5000, 6000 3M Trizact (or similar) sanding disc</li>
+                                            <li>• Spray bottle with 90% watter and 10% alcohol sollution.</li>
                                             <li>• Blue microfibers</li>
                                         </ul>
                                     </div>
@@ -625,8 +627,8 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Process</h4>
                                         <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
-                                            <li>• Using a DA sanding with a 3 mm throw, panel by panel sand even and consistently</li>
-                                            <li>• With degreaser and microfiber wipe clean the panel before you go to the next panel.</li>
+                                            <li>• Using a DA sanding with a 5mm or 8mm throw, panel by panel sand even and consistently</li>
+                                            <li>• With water and alcohol solution and microfiber wipe clean the panel before you go to the next panel.</li>
                                             <li>• No need to get it perfect just wipe off most of the sanding residue to make the next step easier.</li>
                                             <li>• For areas that you cannot get your sander in when you're finished, remove the sanding disc and by hand go around the whole car to sand areas that we're not able to be done with the machine.</li>
                                         </ol>
@@ -650,7 +652,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             <li>• Deep scratches through the paint will need to be touched up with actual paint. But deeper clearcoat scratches can be further sanded to fix them.</li>
                                             <li>• To do this, you are going to need to take 2000 sandpaper and a backing plate and lightly sand the scratch by hand without burning through the clearcoat. This will help break down the 2000 scratch and have FUSION repair it better.</li>
                                             <li>• Once done with 2000 you will need to use a 3000 disc to remove the 2000 sanding marks.</li>
-                                            <li>• Once you've done that you will need to take the 5000 to remove the 3000 sanding marks.</li>
+                                            <li>• Once you've done that you will need to take the 5000 or 6000  to remove the 3000 sanding marks.</li>
                                         </ul>
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
@@ -661,7 +663,8 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             <li>• Skipping areas and not sanding thoroughly.</li>
                                             <li>• Too much pressure on edges and burning through the clearcoat. FUSION will not fix burn through and will have to be repainted.</li>
                                             <li>• Sanding areas that shouldn't be like moldings or trim pieces. If you concern about getting the sander too close to these areas, use some masking tape temporarily to avoid touching these areas and then peel the masking tape off when you're done.</li>
-                                            <li>• If using a 2000 sanding disc, you don't properly remove the 2000 and bring it back up to a 5000. You will see the sanding marks popping through if you don't do this thoroughly.</li>
+                                            <li>• If using a 2000 sanding disc, you don't properly remove the 2000 marks and bring it back up to a 5000. You will see the sanding marks popping through if you don't do this thoroughly.</li>
+                                                <li>• While going panel to panel, clean each panel as you go to remove most of the sanding residue, it doesn't have to be perfectly clean, but this helps prepare you for the next step. It helps the sanding residue be removed more easily during step five and not etch into the paint.</li>
                                         </ul>
                                     </div>
 
@@ -691,10 +694,10 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Tools & Materials</h4>
                                         <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• 3-5 clean blue microfibers</li>
-                                            <li>• Degreaser or heavy dish soap, with little to no fragrances, dye or silicones.</li>
-                                            <li>• Alcohol</li>
-                                            <li>• Spray or pump bottle</li>
-                                            <li>• Mix in a spray or pump bottle, three cap full of degreaser, 90% water, and 10% alcohol</li>
+                                            <li>• 50% water with 50% alcohol sollution.</li>
+                                                <li>• Alcohol</li>
+                                                <li>• Spray or pump bottle</li>
+                                                {/* <li>• Mix in a spray or pump bottle, three cap full of degreaser, 90% water, and 10% alcohol</li> */}
                                         </ul>
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
@@ -759,10 +762,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             <li>• Fold 3-5 paper towel sections into handheld square</li>
                                             <li>• Mix Etch (90% alcohol 10% acetone)</li>
                                             <li>• Panel by panel with heavy pressure and a good amount of Etch and evenly from top to bottom side to side, wipe the panel down.</li>
-                                            <li>• Flip your towel every 2 to 3 passes into a section</li>
+                                            <li>• Flip your towel every Every section you pass flip the paper towel to a clean section.</li>
                                             <li>• You're wiping off the panel just like you would be cleaning a table</li>
-                                            <li>• You should use around 250 mL of product per vehicle.</li>
-                                            <li>• After you've done the entire vehicle, you're going to take a clean white microfiber and do the same thing but not soaked the microfiber completely leaving it half dry and halfway with Etch. This is the final wipe. This is where you would get into edges and door jams and making sure every area is thoroughly clean.</li>
+                                            <li>• You should use around 400 mL of product per vehicle.</li>
+                                            <li>• Before performing the final full-vehicle prep wipe, complete an Edge Prep process. Fold a clean paper towel into a firm edge and thoroughly clean all panel gaps, edges, emblems, trim lines, door jambs, and tight areas. Follow with a clean microfiber to ensure these areas are completely free of residue. Edges and gaps often trap compound dust, polish residue, and contaminants. If not properly cleaned, these materials can later be pulled back onto the panel during application, increasing the risk of contamination in the finish. Taking the extra time to properly clean these areas significantly reduces the chance of debris being reintroduced to the surface.
+                                                Only after completing Edge Prep should you proceed with the standard final prep wipe of the entire vehicle using Etch and a clean microfiber.
+                                            </li>
                                         </ol>
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
@@ -801,9 +806,8 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Tools & Materials</h4>
                                         <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
-                                            <li>• PVC (electrical) tape</li>
+                                            <li>• High-quality quality bodyshop masking tape</li>
                                             <li>• Razor blade / utility knife</li>
-                                            <li >• We do not want to use electrical tape as there is no resistance to this can easily contaminate your applicator and panel.</li>
                                         </ul>
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
@@ -977,7 +981,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     <div className="bg-gray-50 p-6 rounded-2xl">
 
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Overlap Rule</h4>
-                                        <p className="text-sm text-[#666666] mb-2">You will overlap your lines 50% as you work your way through the panel. Do not overlap sections that have already started curing or you will leave streaks.</p>
+                                        <p className="text-sm text-[#666666] mb-2">You will overlap your lines at least 50% as you work your way through the panel. Do not overlap sections that have already started curing or you will leave streaks.</p>
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
 
@@ -987,7 +991,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             <li>Working too fast will always result in a thinner application. Do not try and speed up your application so you always have a thick proper layer.</li>
                                             <li>Leaving a panel that has issues thinking that it's going to disappear tomorrow. It is true that leveling application can correct its own mistakes like drips or lines that aren't completely leveled out. But after 30 minutes, if it doesn't have a desirable result, you must strip down the panel and redo it. Those mistakes will not go away and you will spend more time fixing the next day.</li>
                                             <li>Yes you can correct certain mistakes the next day. Like slight imperfections like little contamination issues, dry spots, absorption, or miss spots. But unless they're minor, do not think that it's going to be easier to fix the next day. Strip the panel immediately and redo it. It will always be faster.</li>
-                                            <li>After one hour - do not remove FUSION. If there is an issue that you see hours later, or the next day, these issues can be corrected, but you'll have to refer to the troubleshooting section below and they are often tedious, and time-consuming. This is why it's critically important to check your work every single panel before you go onto the next panel.</li>
+                                            <li>After 3 hours - do not remove FUSION. If there is an issue that you see hours later, or the next day, these issues can be corrected, but you'll have to refer to the troubleshooting section below and they are often tedious, and time-consuming. This is why it's critically important to check your work every single panel before you go onto the next panel.</li>
                                             <li className="font-bold text-red-600">DO NOT LEAVE MISTAKES TO CURE!</li>
                                         </ul>
                                     </div>
@@ -1010,7 +1014,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 12: QUALITY CHECK</h3>
 
                                     <p className="text-sm text-[#666666] mb-4 italic">
-                                        "Purpose: Once FUSION cures it is a permanent bond. You have maximum 1 hour to remove FUSION should you see an issue. This is why it's critical to check your work before you go onto the next panel. You will want to be checking your application after each panel, and after each section and a complete check once you finish the entire vehicle."
+                                        "Purpose: Once FUSION cures it is a permanent bond. You have maximum 3 hours to remove FUSION should you see an issue. This is why it's critical to check your work before you go onto the next panel. You will want to be checking your application after each panel, and after each section and a complete check once you finish the entire vehicle."
                                     </p>
 
                                     <p className="text-sm text-[#666666] font-bold mb-4">NEVER, leave a poor application or an application issue for another day. Remove it immediately assess the problem and redo it. This is a lot quicker than trying to fix it later.</p>
@@ -1034,14 +1038,14 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 13: CLEAN APPLICATOR BOTTLE</h3>
 
                                     <p className="text-sm text-[#666666] mb-4 italic">
-                                        "Purpose: It's critically important to thoroughly clean the applicator bottle with alcohol and multiple rinsing if you plan to use it again. We recommend never using an applicator bottle more than 10 times because no matter how clean you get it there is always potential for contamination breaking down in a used applicator bottle. The cleaning of the applicator bottle is not just critical for the inside but the outside as well every time you clean it if you do a thorough job, it should look brand new or close to it."
+                                        "Purpose: It's critically important to thoroughly clean the applicator bottle with acetone and multiple rinsing if you plan to use it again. We recommend never using an applicator bottle more than 10 times because no matter how clean you get it there is always potential for contamination breaking down in a used applicator bottle. The cleaning of the applicator bottle is not just critical for the inside but the outside as well every time you clean it if you do a thorough job, it should look brand new or close to it."
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
 
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Tools & Materials</h4>
                                         <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Gloves</li>
-                                            <li>• ETCH</li>
+                                            <li>• Acetone</li>
                                             <li>• Paper towel</li>
                                         </ul>
                                     </div>
@@ -1050,9 +1054,9 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Process</h4>
                                         <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Dump all remaining FUSION out.</li>
-                                            <li>• Put (1oz) 15 mL of ETCH into the bottle. Put cap on</li>
+                                            <li>• Put (1oz) 15 mL of acetone into the bottle. Put cap on</li>
                                             <li>• Shake and pour out. Repeat 3 times</li>
-                                            <li>• Fold paper towel with ETCH and clean outside multiple times flipping the paper towel to new sections each time until fully clean</li>
+                                            <li>• Fold paper towel with acetone and clean outside multiple times flipping the paper towel to new sections each time until fully clean</li>
                                             <li>• Turn bottle upside down on a clean table and let dry</li>
                                         </ol>
                                     </div>
@@ -1128,7 +1132,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">Removing FUSION</h3>
 
                                     <p className="text-sm text-[#666666] mb-4">
-                                        FUSION can be removed 2 different ways. In the first hour before it is too cured with chemicals or 2-weeks after full cure by sanding it off.
+                                        FUSION can be removed 2 different ways. In the 3 hours before it is too cured with chemicals or 2-weeks after full cure by sanding it off.
                                     </p>
                                     <p className="text-sm text-[#666666] mb-4">
                                         It is always best if you must sand off FUSION that it is fully cured as it is going to sand more consistently and not gum up your sanding discs.
@@ -1197,7 +1201,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
                                         <li>You can reapply FUSION over FUSION as many times as you want if it is cured before applying the next layer.</li>
                                         <li>Depending on the substrate condition, you can apply two coats of FUSION, the first one will act as a base coat and the second one will act as a finish coat.</li>
-                                        <li>Full cure is 2-weeks. However, a curing lamp can speed up the process and you can apply right after you cured it. 20 min on with the lamp, 20 mins off, 20 mins on and then a 20 min cool down, and it will be ready to reapply. Make sure to get all sections of the panel so FUSION is evenly cured.</li>
+                                        <li>Full cure is 2-weeks. However, a curing lamp can speed up the process and you can apply right after you cured it. 30 mins at 60-70C on the surface of the panel and leave it to completely cool down, and it will be ready to reapply. Make sure to get all sections of the panel so FUSION is evenly cured.</li>
                                     </ul>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
 
@@ -1253,10 +1257,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <p className="text-sm text-[#666666] mb-4">
                                     Also keep in mind, it is not whether FUSION works or doesn't work it's whether it was prepared properly and the clearcoat has integrity enough to get the results desired. You never have to oversell what FUSION can do or be concerned by the outcome because FUSION is consistent but clearcoat finishes vary. Because every vehicle needs more clearcoat, FUSION is always building integrity back to the vehicle no matter the starting point of the paint finish.
                                 </p>
-                                <div className="text-xs text-[#666666] mt-4 pt-4 border-t border-gray-200">
-                                    <p>skygloss.com</p>
-                                    <p>SKYGLOSS, INC. 21575 N 11TH PL, UNIT 120, PHOENIX, AZ 85024 UNITED STATES. 602 705 3343. INFO@SKYGLOSS.COM. SKYGLOSS.COM</p>
-                                </div>
+                                {completedSteps.length >= totalSteps && (
+                                    <div className="mt-6 pt-6 border-t border-gray-200 flex flex-col items-center justify-center text-center">
+                                        <CheckCircle className="w-16 h-16 text-green-500 mb-3" />
+                                        <h3 className="text-2xl font-extrabold text-[#272727]">Course Completed ✓</h3>
+                                        <p className="text-sm text-[#666666] mt-2">You have successfully completed the FUSION Professional Application Guide.</p>
+                                    </div>
+                                )}
                             </Card>
                         </div>
 
@@ -1266,15 +1273,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mx-auto mb-6">
                                     <CheckCircle className="w-8 h-8 text-[#0EA0DC]" />
                                 </div>
-                                <h2 className="text-2xl font-bold mb-4">Professional Deployment Complete</h2>
+                                <h2 className="text-2xl font-bold mb-4">Congratulations! You have completed training for FUSION. </h2>
                                 <p className="text-white/70 text-sm mb-8">
-                                    "Integrity is the final product. Every vehicle restored represents a commitment to chemical excellence."
-                                </p>
+                                    On site and advanced training are always available and recommended to sharpen your
+                                    technical skills.                                </p>
+                                <a href="/support" className="text-[#0EA0DC] text-sm mb-8">
+                                    Contact your distributor for more details.</a>
                                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                     <Button onClick={onBack} className="bg-white text-[#272727] hover:bg-gray-100">
-                                        EXIT TERMINAL
+                                        Finished
                                     </Button>
-                                    <Button variant="outline" className="border-white text-white hover:bg-white/10">
+                                    <Button variant="outline" className="border-white text-white hover:bg-[#0EA0DC]">
                                         DOWNLOAD PDF
                                     </Button>
                                 </div>
@@ -1328,8 +1337,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <h4 className="font-bold text-sm mb-2">Technical Support</h4>
                                 <p className="text-xs text-white/80 mb-4">24/7 support for certified technicians</p>
                                 <Button className="w-full bg-white text-[#0EA0DC] hover:bg-gray-100 text-xs h-8">
-                                    <MessageSquare className="w-3 h-3 mr-2" />
-                                    Contact Support
+                                    <a href=""></a>
                                 </Button>
                             </Card>
                         </div>

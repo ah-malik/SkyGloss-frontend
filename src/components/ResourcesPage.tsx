@@ -320,7 +320,7 @@ export function ResourcesPage({ onBack: _onBack }: ResourcesPageProps = {}) {
             <div className="text-center">
               <p className="text-[#666666]">
                 Can't find what you're looking for?{" "}
-                <a href="#" className="text-[#0EA0DC] hover:underline transition-all duration-200">
+                <a href="/support" className="text-[#0EA0DC] hover:underline transition-all duration-200">
                   Contact support
                 </a>
                 {" "}for assistance or request additional resources

@@ -8,6 +8,15 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const getDashboardPath = (role: string | null) => {
+    switch (role) {
+      case 'certified_shop': return '/dashboard/shop';
+      case 'master_distributor':
+      case 'regional_distributor': return '/dashboard/distributor';
+      default: return '/';
+    }
+  };
+
   const isLoggedIn = !!accessType;
 
   return (
@@ -21,7 +30,7 @@ export default function App() {
         onNavigateResources={() => navigate("/resources")}
         onNavigateSupport={() => navigate("/support")}
         onNavigateDashboard={() => {
-          navigate(`/dashboard/${accessType}`);
+          navigate(getDashboardPath(accessType));
         }}
         cartCount={cartCount}
         onCartClick={() => setShowCartSheet(true)}

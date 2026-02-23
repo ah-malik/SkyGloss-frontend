@@ -219,7 +219,6 @@ export function DistributorDashboard({
   const [activeSection, setActiveSection] = useState<"shop" | "certified" | "network" | "courses">("shop");
   const [viewingCourse, setViewingCourse] = useState<string | null>(null);
   const [apiProducts, setApiProducts] = useState<any[]>([]);
-  const [loadingProducts, setLoadingProducts] = useState(true);
 
   const fetchProducts = async () => {
     try {
@@ -228,7 +227,7 @@ export function DistributorDashboard({
     } catch (err) {
       console.error("Failed to fetch products", err);
     } finally {
-      setLoadingProducts(false);
+      // setLoadingProducts(false);
     }
   };
 
@@ -328,7 +327,7 @@ export function DistributorDashboard({
   const [certFacebook, setCertFacebook] = useState("");
   const [certSubmitted, setCertSubmitted] = useState(false);
 
-  const [showAether, setShowAether] = useState(false); // false = Element, true = Aether
+  // const [showAether, setShowAether] = useState(false); // false = Element, true = Aether
   const [myRequests, setMyRequests] = useState<any[]>([]);
   const [loadingRequests, setLoadingRequests] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -676,79 +675,82 @@ export function DistributorDashboard({
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 pb-12">
                   <div className="lg:col-span-2 order-2 lg:order-1">
                     <div className="space-y-4 lg:space-y-6">
-                      {mergedProducts.map((product, index) => (
-                        <motion.div
-                          key={product.id}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                        >
-                          <Card className="skygloss-card p-4 sm:p-6 rounded-2xl">
-                            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-                              <div className="flex-shrink-0 w-full sm:w-auto self-center sm:self-start">
-                                <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-3 sm:p-6">
-                                  <ImageWithFallback
-                                    src={product.id === 1 && showAether && product.additionalImage
-                                      ? product.additionalImage
-                                      : product.image}
-                                    alt={product.name}
-                                    className="w-full h-64 sm:w-48 sm:h-48 object-contain mx-auto cursor-pointer hover:scale-105 transition-transform duration-300"
-                                  // onClick={() => setViewingProduct(product.id)}
-                                  />
+                      {mergedProducts
+                        .filter(p => distributorProducts.some(dp =>
+                          p.name.toUpperCase().includes(dp.name.toUpperCase()) ||
+                          dp.name.toUpperCase().includes(p.name.toUpperCase())
+                        ))
+                        .map((product, index) => (
+                          <motion.div
+                            key={product.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                          >
+                            <Card className="skygloss-card p-4 sm:p-6 rounded-2xl">
+                              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                                <div className="flex-shrink-0 w-full sm:w-auto self-center sm:self-start">
+                                  <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-3 sm:p-6">
+                                    <ImageWithFallback
+                                      src={product.image}
+                                      alt={product.name}
+                                      className="w-full h-64 sm:w-48 sm:h-48 object-contain mx-auto cursor-pointer hover:scale-105 transition-transform duration-300"
+                                    // onClick={() => setViewingProduct(product.id)}
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <h3
-                                  className="text-base sm:text-lg font-semibold text-[#272727] mb-3 sm:mb-4 cursor-pointer hover:text-[#0EA0DC] transition-colors"
-                                  onClick={() => setViewingProduct(product.id)}
-                                >
-                                  {product.name}
-                                </h3>
-                                <div className="space-y-3">
-                                  {product.sizes.map(size => (
-                                    <div key={size} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-gray-50 rounded-lg gap-3">
-                                      <div className="flex-1 min-w-0">
-                                        <span className="text-[#272727] font-medium block mb-1">
-                                          {product.id === 1 ? `${size} (Element + Aether)` : size}
-                                        </span>
-                                        <div className="flex flex-col sm:flex-row sm:gap-4 gap-1">
-                                          <span className="text-xs sm:text-sm text-[#666666]">
-                                            Unit: <span className="text-[#0EA0DC] font-semibold">
-                                              {getSymbol(product.currency)}{product.unitPrices[size].toFixed(2)}
-                                            </span>
+                                <div className="flex-1 min-w-0">
+                                  <h3
+                                    className="text-base sm:text-lg font-semibold text-[#272727] mb-3 sm:mb-4 cursor-pointer hover:text-[#0EA0DC] transition-colors"
+                                    onClick={() => setViewingProduct(product.id)}
+                                  >
+                                    {product.name}
+                                  </h3>
+                                  <div className="space-y-3">
+                                    {product.sizes.map((size: string) => (
+                                      <div key={size} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-gray-50 rounded-lg gap-3">
+                                        <div className="flex-1 min-w-0">
+                                          <span className="text-[#272727] font-medium block mb-1">
+                                            {product.id === 1 ? `${size} (Element + Aether)` : size}
                                           </span>
-                                          <span className="text-xs sm:text-sm text-[#666666]">
-                                            Case ({product.unitsPerCase[size]} units): <span className="text-[#0EA0DC] font-semibold">
-                                              {getSymbol(product.currency)}{product.casePrices[size].toFixed(2)}
+                                          <div className="flex flex-col sm:flex-row sm:gap-4 gap-1">
+                                            <span className="text-xs sm:text-sm text-[#666666]">
+                                              Unit: <span className="text-[#0EA0DC] font-semibold">
+                                                {getSymbol(product.currency)}{product.unitPrices[size].toFixed(2)}
+                                              </span>
                                             </span>
-                                          </span>
+                                            <span className="text-xs sm:text-sm text-[#666666]">
+                                              Case ({product.unitsPerCase[size]} units): <span className="text-[#0EA0DC] font-semibold">
+                                                {getSymbol(product.currency)}{product.casePrices[size].toFixed(2)}
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                        <div className="flex gap-2">
+                                          <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => addToOrder(product, size, "unit")}
+                                            className="rounded-lg border-[#0EA0DC]/30 text-[#0EA0DC] hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 flex-1 sm:flex-none"
+                                          >
+                                            + Unit
+                                          </Button>
+                                          <Button
+                                            size="sm"
+                                            onClick={() => addToOrder(product, size, "case")}
+                                            className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] rounded-lg flex-1 sm:flex-none font-medium"
+                                          >
+                                            + Case
+                                          </Button>
                                         </div>
                                       </div>
-                                      <div className="flex gap-2">
-                                        <Button
-                                          size="sm"
-                                          variant="outline"
-                                          onClick={() => addToOrder(product, size, "unit")}
-                                          className="rounded-lg border-[#0EA0DC]/30 text-[#0EA0DC] hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 flex-1 sm:flex-none"
-                                        >
-                                          + Unit
-                                        </Button>
-                                        <Button
-                                          size="sm"
-                                          onClick={() => addToOrder(product, size, "case")}
-                                          className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] rounded-lg flex-1 sm:flex-none font-medium"
-                                        >
-                                          + Case
-                                        </Button>
-                                      </div>
-                                    </div>
-                                  ))}
+                                    ))}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </Card>
-                        </motion.div>
-                      ))}
+                            </Card>
+                          </motion.div>
+                        ))}
                     </div>
                   </div>
 
@@ -1233,9 +1235,8 @@ export function DistributorDashboard({
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {mergedProducts
-                  .filter(p => !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN']
-                    .includes(p.name.toUpperCase()) && !p.name.includes('APPLICATORS'))
+                {distributorProducts
+                  .filter(p => ['FUSION', 'RESIN FILM', 'SHINE', 'MATTE', 'SEAL'].some(name => p.name.toUpperCase().includes(name)))
                   .map((product, index) => (
                     <motion.div
                       key={product.id}
@@ -1258,30 +1259,29 @@ export function DistributorDashboard({
 
                         <h4 className="text-lg font-bold text-[#272727] mb-2">{product.name}</h4>
 
-                        <p className="text-sm text-[#666666] mb-6 flex-1 leading-relaxed">
-                          Comprehensive masterclass covering professional application, surface prep, and advanced maintenance for the {product.name} system.
+                        <p className="text-sm text-[#666666] mb-6 flex-grow leading-relaxed">
+                          Comprehensive masterclass covering professional application and maintenance for the {product.name} system.
                         </p>
 
-                        <div className="grid grid-cols-3 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                          <div className="text-center">
-                            <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Lessons</div>
-                            <div className="text-sm font-bold text-[#272727]">12</div>
+                        <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                          <div className="flex items-center gap-2 text-[#999999] text-xs">
+                            <Clock className="w-4 h-4" />
+                            <span>45 mins</span>
                           </div>
-                          <div className="text-center border-x border-gray-200">
-                            <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Duration</div>
-                            <div className="text-sm font-bold text-[#272727]">3h 15m</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Level</div>
-                            <div className="text-sm font-bold text-[#272727]">Master</div>
+                          <div className="flex items-center gap-2 text-[#999999] text-xs">
+                            <Award className="w-4 h-4" />
+                            <span>Certificate</span>
                           </div>
                         </div>
 
                         <Button
-                          onClick={() => navigate(`/dashboard/distributor/courses/${product.name}`)}
+                          onClick={() => {
+                            navigate(`/dashboard/distributor/courses/${product.name}`);
+                            setViewingCourse(product.name);
+                          }}
                           className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
                         >
-                          Launch Course
+                          Start Course
                         </Button>
                       </Card>
                     </motion.div>

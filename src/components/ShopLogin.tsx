@@ -348,23 +348,23 @@ export function ShopLogin() {
                         </div>
                         <div>
                           <label className="block text-sm text-[#272727] mb-2">Create Username</label>
-                          <Input 
-                            required 
-                            placeholder="Choose a username" 
-                            className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" 
-                            value={reqUsername} 
-                            onChange={(e) => setReqUsername(e.target.value)} 
+                          <Input
+                            required
+                            placeholder="Choose a username"
+                            className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg"
+                            value={reqUsername}
+                            onChange={(e) => setReqUsername(e.target.value)}
                           />
                         </div>
                         <div>
                           <label className="block text-sm text-[#272727] mb-2">Create Password</label>
-                          <Input 
-                            required 
+                          <Input
+                            required
                             type="password"
-                            placeholder="Choose a password" 
-                            className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" 
-                            value={reqPassword} 
-                            onChange={(e) => setReqPassword(e.target.value)} 
+                            placeholder="Choose a password"
+                            className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg"
+                            value={reqPassword}
+                            onChange={(e) => setReqPassword(e.target.value)}
                           />
                         </div>
                       </div>

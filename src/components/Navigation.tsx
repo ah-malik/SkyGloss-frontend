@@ -34,9 +34,10 @@ export function Navigation({
 
   const getRoleInfo = () => {
     switch (accessType) {
-      case "shop":
+      case "certified_shop":
         return { label: "Shop", Icon: ShoppingBag };
-      case "distributor":
+      case "master_distributor":
+      case "regional_distributor":
         return { label: "Distributor", Icon: Package };
       default:
         return { label: "Dashboard", Icon: Package };
