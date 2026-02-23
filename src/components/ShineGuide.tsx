@@ -24,6 +24,7 @@ import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { ScrollArea } from "./ui/scroll-area";
 import { Separator } from "./ui/separator";
+import ShinePdf from "../assets/pdf/Shine.pdf";
 
 interface Section {
     id: string;
@@ -365,7 +366,7 @@ export function ShineGuide({ onBack }: { onBack: () => void }) {
                                     <Button onClick={onBack} className="rounded-xl p-4 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all">
                                         Finished
                                     </Button>
-                                    <Button variant="outline" className="rounded-xl p-4 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all">
+                                    <Button variant="outline" className="rounded-xl p-4 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all" onClick={() => window.open(ShinePdf, '_blank')}>
                                         DOWNLOAD PDF
                                     </Button>
                                 </div>
