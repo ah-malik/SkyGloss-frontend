@@ -11,6 +11,27 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import api from "../api/axios";
 import { Loader2 } from "lucide-react";
+import FusionPdf from "../assets/pdf/Fusion.pdf";
+import MattePdf from "../assets/pdf/Matte.pdf";
+import ResinFilmPdf from "../assets/pdf/Resin_Film.pdf";
+import SealPdf from "../assets/pdf/Seal.pdf";
+import ShinePdf from "../assets/pdf/Shine.pdf";
+
+const productPdfMap: Record<string, string> = {
+  "FUSION": FusionPdf,
+  "MATTE": MattePdf,
+  "RESIN FILM": ResinFilmPdf,
+  "SEAL": SealPdf,
+  "SHINE": ShinePdf,
+};
+
+const getProductPdf = (productName: string): string | null => {
+  const upperName = productName?.toUpperCase() || "";
+  for (const [key, pdf] of Object.entries(productPdfMap)) {
+    if (upperName.includes(key)) return pdf;
+  }
+  return null;
+};
 
 const currencies = [
   { code: 'USD', symbol: '$', name: 'US Dollar' },
@@ -528,8 +549,13 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                   </Button>
                   <Button
                     variant="outline"
-                    className="h-auto py-3 sm:py-4 flex-col items-start border-[#0EA0DC]/30 text-[#0EA0DC]
-                     hover:bg-[#0EA0DC] hover:border-[#0EA0DC]"
+                    className={`h-auto py-3 sm:py-4 flex-col items-start border-[#0EA0DC]/30 text-[#0EA0DC]
+                     hover:bg-[#0EA0DC] hover:border-[#0EA0DC] ${!getProductPdf(product.name) ? 'opacity-40 pointer-events-none' : ''}`}
+                    onClick={() => {
+                      const pdf = getProductPdf(product.name);
+                      if (pdf) window.open(pdf, '_blank');
+                    }}
+                    disabled={!getProductPdf(product.name)}
                   >
                     <Download className="w-5 h-5 mb-2" />
                     <span className="text-sm text-[rgb(255,255,255)]">Application Guide (PDF)</span>
