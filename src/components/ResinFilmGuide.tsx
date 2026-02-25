@@ -1,29 +1,11 @@
-import { motion } from "motion/react";
 import { useState, useEffect } from "react";
-import {
-    ArrowLeft,
-    CheckCircle,
-    ChevronRight,
-    ShieldAlert,
-    Wrench,
-    Info,
-    Droplets,
-    Zap,
-    PenTool,
-    Wind,
-    BookOpen,
-    MessageSquare,
-    Clock,
-    Sparkles,
-    Flame,
-    AlertTriangle
-} from "lucide-react";
+import api from "../api/axios";
+import { ArrowLeft, CheckCircle, ChevronRight, BookOpen, Info, Droplets, Zap, Flame } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { ScrollArea } from "./ui/scroll-area";
-import { Separator } from "./ui/separator";
 import ResinFilmPdf from "../assets/pdf/Resin_Film.pdf";
 
 interface Section {
@@ -88,11 +70,29 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
         }
     };
 
-    const markComplete = (id: string) => {
+    const markComplete = async (id: string) => {
         if (!completedSteps.includes(id)) {
             setCompletedSteps([...completedSteps, id]);
+            try {
+                await api.patch('/users/me/course-progress', { courseName: 'RESIN_FILM', stepId: id });
+            } catch (err) {
+                console.error("Failed to save course progress", err);
+            }
         }
     };
+
+    useEffect(() => {
+        const fetchProgress = async () => {
+            try {
+                const response = await api.get('/auth/profile');
+                const progress = response.data.courseProgress?.RESIN_FILM || [];
+                setCompletedSteps(progress);
+            } catch (err) {
+                console.error("Failed to fetch course progress", err);
+            }
+        };
+        fetchProgress();
+    }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -118,11 +118,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
         <div className="min-h-screen bg-white pt-20 pb-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Back Button */}
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mb-8"
-                >
+                <div className="mb-8">
                     <Button
                         onClick={onBack}
                         variant="ghost"
@@ -131,38 +127,34 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Back to Courses
                     </Button>
-                </motion.div>
+                </div>
 
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Main Content Area (Left 2 columns) */}
                     <main className="lg:col-span-2 space-y-12">
                         {/* Hero Section */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="bg-gray-50 rounded-3xl p-8 sm:p-12 border border-gray-100 relative overflow-hidden group mb-3"
-                        >
+                        <div className="bg-gray-50 rounded-3xl p-8 sm:p-12 border border-gray-100 relative overflow-hidden group mb-3">
                             <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
-                                <Sparkles className="w-64 h-64 text-[#0EA0DC]" />
+                                <Flame className="w-64 h-64 text-[#0EA0DC]" />
                             </div>
                             <div className="relative z-10">
                                 <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-[#0EA0DC]/20 mb-4 px-3 py-1 font-bold">
-                                    RESIN FILM SYSTEM
+                                    PROFESSIONAL RESIN FILM APPLICATION GUIDE
                                 </Badge>
                                 <h1 className="text-4xl sm:text-5xl font-bold text-[#272727] mb-4 tracking-tighter italic uppercase">
-                                    Professional <span className="text-[#0EA0DC]">RESIN FILM</span> Guide
+                                    <span className="text-[#0EA0DC]">RESIN FILM</span> Professional Guide
                                 </h1>
-                                <p className="text-[#666666] text-lg max-w-2xl mb-8">
-                                    Achieve a flawless, factory-fresh finish by following these
-                                    precise application steps for the SkyGloss RESIN FILM System                                </p>
+                                <p className="text-[#666666] text-lg max-w-2xl mb-8 font-medium">
+                                    Master the dual-layer Resin Film system for ultimate depth, protection, and a self-healing elastic finish.
+                                </p>
                                 <div className="flex items-center gap-6 flex-wrap">
                                     <div className="flex items-center gap-2 text-sm text-[#666666] font-medium">
-                                        <BookOpen className="w-4 h-4 text-[#0EA0DC]" />
-                                        7 Technical Phases
+                                        <Zap className="w-4 h-4 text-[#0EA0DC]" />
+                                        Advanced Elasticity
                                     </div>
                                     <div className="flex items-center gap-2 text-sm text-[#666666] font-medium">
-                                        <Clock className="w-4 h-4 text-[#0EA0DC]" />
-                                        Self-Healing Tech
+                                        <Droplets className="w-4 h-4 text-[#0EA0DC]" />
+                                        Dual Layer Tech
                                     </div>
                                     <div className="flex items-center gap-2 text-sm text-[#666666] font-medium">
                                         <CheckCircle className="w-4 h-4 text-emerald-500" />
@@ -170,7 +162,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
 
                         {/* Progress Bar */}
                         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm mb-3">
@@ -207,7 +199,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <div className="flex justify-end">
                                         <Button
                                             onClick={() => markComplete('wash')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('wash') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                            className={`rounded - xl px - 10 h - 14 font - bold transition - all duration - 500 ${completedSteps.includes('wash') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'} `}
                                         >
                                             {completedSteps.includes('wash') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                         </Button>
@@ -239,9 +231,9 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <div className="flex justify-end">
                                         <Button
                                             onClick={() => markComplete('residue')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('residue') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727]  text-white hover:bg-rose-600 shadow-md'}`}
+                                            className={`rounded - xl px - 10 h - 14 font - bold transition - all duration - 500 ${completedSteps.includes('residue') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727]  text-white hover:bg-rose-600 shadow-md'} `}
                                         >
-                                            {completedSteps.includes('residue') ? 'Residue Stripped' : 'Verify Residue-Free'}
+                                            {completedSteps.includes('residue') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Residue-Free'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -271,7 +263,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <div className="flex justify-end">
                                         <Button
                                             onClick={() => markComplete('conditions')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('conditions') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727]  text-white hover:bg-rose-600 shadow-md'}`}
+                                            className={`rounded - xl px - 10 h - 14 font - bold transition - all duration - 500 ${completedSteps.includes('conditions') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727]  text-white hover:bg-rose-600 shadow-md'} `}
                                         >
                                             {completedSteps.includes('conditions') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                         </Button>
@@ -304,14 +296,14 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                 <div className="mt-8 flex justify-end">
                                     <Button
                                         onClick={() => markComplete('conditions')}
-                                        className={`rounded-xl px-8 h-12 font-bold text-xs uppercase tracking-widest transition-all ${completedSteps.includes('conditions') ? 'bg-[#0EA0DC]   border border-emerald-200' : 'bg-[#272727]  text-[#64748b]'}`}
+                                        className={`rounded - xl px - 8 h - 12 font - bold text - xs uppercase tracking - widest transition - all ${ completedSteps.includes('conditions') ? 'bg-[#0EA0DC]   border border-emerald-200' : 'bg-[#272727]  text-[#64748b]' } `}
                                     >
                                         {completedSteps.includes('conditions') ? 'Conditions Verified' : 'Confirm Environment'}
                                     </Button>
                                 </div>
                             </div> */}
 
-                            <Separator className="bg-gray-100 mb-3 mt-3" />
+                            <div className="h-px bg-gray-100 my-8" />
 
                             {/* Application Phase */}
                             <div id="step1-apply" className="scroll-mt-32 space-y-12">
@@ -322,98 +314,93 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
 
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <div className="flex flex-col  gap-8">
-                                        <div className="md:w-[40%]">
-                                            <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">Step 1 – Apply RESIN COAT (Base Layer)</h3>
-                                            <div className="p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                    1. Shake the bottle well before use.</p>
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                    2. Apply 5–7 drops of RESIN COAT onto the microfiber applicator pad.</p>
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                    3. Spread evenly using straight, overlapping motions — work in sections of 50–70 cm² at a time.</p>
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                    4. Allow the coating to flash for 2–4 minutes.</p>
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                    5. Buff gently with the provided microfiber cloth until clear and streak-free.</p>
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                    6. Continue panel-by-panel until the entire vehicle is coated.</p>
-                                            </div>
-                                            <h6>Pro Tip: Maintain consistent lighting to easily spot high or uneven spots during application.
-                                            </h6>
+                                        <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
+                                            Phase 04: Application
+                                        </Badge>
+                                        <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                            Step 1 – Apply <span className="text-[#0EA0DC]">RESIN COAT</span>
+                                        </h2>
+                                        <div className="space-y-6 mb-10">
+                                            {[
+                                                "Shake RESIN COAT well before use.",
+                                                "Apply 5–7 drops onto a clean applicator pad.",
+                                                "Spread evenly over a 50–70 cm² section of the vehicle.",
+                                                "Wait 2–4 minutes for the coating to flash, then buff gently with a clean microfiber cloth.",
+                                                "Repeat the process on all panels, ensuring complete coverage."
+                                            ].map((step, i) => (
+                                                <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                                                    <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div>
+                                                    <p className="text-sm text-[#666666] font-medium leading-relaxed">{step}</p>
+                                                </div>
+                                            ))}
                                         </div>
-                                        {/* <div className="flex-1 space-y-6">
-                                            <div className="grid sm:grid-cols-2 gap-6">
-                                                <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                                                    <h4 className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-[0.2em] mb-4">The Mix</h4>
-                                                    <div className="space-y-3">
-                                                        <div className="text-xs text-[#666666] font-medium flex items-center gap-2">
-                                                            <Wrench className="w-3.5 h-3.5 text-[#0EA0DC]" /> Shake bottle well
-                                                        </div>
-                                                        <div className="text-xs text-[#666666] font-medium flex items-center gap-2">
-                                                            <Droplets className="w-3.5 h-3.5 text-[#0EA0DC]" /> 5–7 drops on applicator
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                                                    <h4 className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-[0.2em] mb-4">Technique</h4>
-                                                    <div className="space-y-3">
-                                                        <div className="text-xs text-[#666666] font-medium flex items-center gap-2">
-                                                            <Zap className="w-3.5 h-3.5 text-[#0EA0DC]" /> Overlapping: 50–70 cm²
-                                                        </div>
-                                                        <div className="text-xs text-[#666666] font-medium flex items-center gap-2">
-                                                            <Clock className="w-3.5 h-3.5 text-[#0EA0DC]" /> Flash for 2–4 minutes
-                                                        </div>
-                                                    </div>
+                                        <div className="flex justify-end">
+                                            <Button
+                                                onClick={() => markComplete('step1-apply')}
+                                                className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('step1-apply') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                            >
+                                                {completedSteps.includes('step1-apply') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </Card>
+                                <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
+                                    <div className="flex flex-col  gap-8">
+                                        <div className="md:w-[40%] flex flex-col justify-between h-full">
+                                            <div>
+                                                <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
+                                                    Step 2 – Drying & Hardening</h3>
+                                                <div className="p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                        • Allow the RESIN COAT layer to dry naturally for 2–4 hours depending on ambient temperature.</p>
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                        • Infrared lamps may be used to accelerate curing — only on the first layer (RESIN COAT).</p>
+
                                                 </div>
                                             </div>
-                                            <div className="p-5 rounded-2xl bg-[#272727] text-white">
-                                                <h4 className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-3">Buffing protocol</h4>
-                                                <p className="text-xs leading-relaxed font-medium">Buff gently with the provided microfiber cloth until clear and streak-free. Continue panel-by-panel until the entire vehicle is coated.</p>
-                                            </div>
-                                            <div className="flex justify-end">
-                                                <Button onClick={() => markComplete('step1-apply')} className={`rounded-xl px-10 h-14 font-bold transition-all ${completedSteps.includes('step1-apply') ? 'bg-[#272727] 0 hover:bg-emerald-600 shadow-emerald-500/20 shadow-lg' : 'bg-[#0EA0DC] hover:bg-[#0c80b3] shadow-lg shadow-[#0EA0DC]/20'}`}>
-                                                    {completedSteps.includes('step1-apply') ? 'RESIN COAT Verified' : 'Confirm Base Layer'}
+
+                                            <div className="flex justify-end mt-8">
+                                                <Button
+                                                    onClick={() => markComplete('step2')}
+                                                    className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('step2') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                                >
+                                                    {completedSteps.includes('step2') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                                 </Button>
                                             </div>
-                                        </div> */}
-                                    </div>
-                                </Card>
-                                <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
-                                    <div className="flex flex-col  gap-8">
-                                        <div className="md:w-[40%]">
-                                            <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
-                                                Step 2 – Drying & Hardening</h3>
-                                            <div className="p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                    • Allow the RESIN COAT layer to dry naturally for 2–4 hours depending on ambient temperature.</p>
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                    • Infrared lamps may be used to accelerate curing — only on the first layer (RESIN COAT).</p>
-
-                                            </div>
-
                                         </div>
 
                                     </div>
                                 </Card>
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
                                     <div className="flex flex-col  gap-8">
-                                        <div className="md:w-[40%]">
-                                            <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
-                                                Step 3 – Apply FILM COAT (Top Layer)</h3>
-                                            <div className="p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                    1. Once the base layer is fully cured, proceed with FILM COAT.</p>
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                    2. Shake well, then apply 5–7 drops to a clean applicator.</p>
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                    3. Spread evenly in 50–70 cm² sections.</p>
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                    4. Wait 2–4 minutes, then buff with a clean microfiber cloth.</p>
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                    5. Repeat process on all panels.</p>
+                                        <div className="md:w-[40%] flex flex-col justify-between h-full">
+                                            <div>
+                                                <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
+                                                    Step 3 – Apply FILM COAT (Top Layer)</h3>
+                                                <div className="p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                        1. Once the base layer is fully cured, proceed with FILM COAT.</p>
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                        2. Shake well, then apply 5–7 drops to a clean applicator.</p>
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                        3. Spread evenly in 50–70 cm² sections.</p>
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                        4. Wait 2–4 minutes, then buff with a clean microfiber cloth.</p>
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                        5. Repeat process on all panels.</p>
+                                                </div>
+                                                <h6>You’ve now completed the full SkyGloss RESIN FILM System — forming a deep-gloss,
+                                                    self-healing, factory-grade finish.</h6>
                                             </div>
-                                            <h6>You’ve now completed the full SkyGloss RESIN FILM System — forming a deep-gloss,
-                                                self-healing, factory-grade finish.</h6>
+
+                                            <div className="flex justify-end mt-8">
+                                                <Button
+                                                    onClick={() => markComplete('step3')}
+                                                    className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('step3') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                                >
+                                                    {completedSteps.includes('step3') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                                </Button>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -421,26 +408,36 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                             </div>
                             <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
                                 <div className="flex flex-col  gap-8">
-                                    <div className="md:w-[40%]">
-                                        <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
-                                            Aftercare – Protect the Perfection</h3>
-                                        <div className="p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
-                                            <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                Avoid water contact or washing for 24 hours after application.</p>
-                                            <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
-                                                Full curing occurs within 14 days (Self healing properties activate after full cure) — during this
-                                                period:
-                                                <br /> ◦ Do not use automatic car washes.
-                                                <br /> ◦ Avoid detergents with strong alkalis or harsh chemicals.</p>
+                                    <div className="md:w-[40%] flex flex-col justify-between h-full">
+                                        <div>
+                                            <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
+                                                Aftercare – Protect the Perfection</h3>
+                                            <div className="p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    Avoid water contact or washing for 24 hours after application.</p>
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    Full curing occurs within 14 days (Self healing properties activate after full cure) — during this
+                                                    period:
+                                                    <br /> ◦ Do not use automatic car washes.
+                                                    <br /> ◦ Avoid detergents with strong alkalis or harsh chemicals.</p>
 
+                                            </div>
                                         </div>
 
+                                        <div className="flex justify-end mt-8">
+                                            <Button
+                                                onClick={() => markComplete('aftercare')}
+                                                className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('aftercare') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                            >
+                                                {completedSteps.includes('aftercare') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            </Button>
+                                        </div>
                                     </div>
 
                                 </div>
                             </Card>
 
-                            <Separator className="bg-gray-100" />
+                            <div className="h-px bg-gray-100 my-8" />
 
 
 
@@ -461,7 +458,17 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     </p>
                                 </div>
                                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6 relative z-10 pt-4">
-                                    <Button onClick={onBack} className="rounded-xl p-4 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all">
+                                    <Button
+                                        onClick={async () => {
+                                            try {
+                                                await api.patch('/users/me/complete-course', { courseName: 'RESIN FILM' });
+                                            } catch (err) {
+                                                console.error("Failed to mark course as complete", err);
+                                            }
+                                            onBack();
+                                        }}
+                                        className="rounded-xl p-4 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all"
+                                    >
                                         Finished
                                     </Button>
                                     <Button variant="outline" className="rounded-xl p-4 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all" onClick={() => window.open(ResinFilmPdf, '_blank')}>
@@ -476,20 +483,19 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                     <aside className="lg:col-span-1">
                         <div className="sticky top-24 space-y-6">
                             {/* Course Navigation */}
-                            <Card className="skygloss-card p-6 rounded-2xl">
-                                <div className="flex items-center gap-2 mb-6">
-                                    <BookOpen className="w-5 h-5 text-[#0EA0DC]" />
-                                    <h3 className="text-lg font-bold text-[#272727]">Guide Content</h3>
+                            <Card className="p-4 rounded-2xl">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <BookOpen className="w-4 h-4 text-[#0EA0DC]" />
+                                    <h3 className="font-bold text-[#272727]">Guide Content</h3>
                                 </div>
-                                <ScrollArea className="h-[500px] pr-4">
-                                    <div className="space-y-6">
+                                <ScrollArea className="h-[500px]">
+                                    <div className="space-y-4">
                                         {sections.map((section) => (
-                                            <div key={section.id} className="space-y-3">
-                                                <div className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-[0.2em] px-2 mb-2">
+                                            <div key={section.id} className="space-y-1">
+                                                <div className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-wider px-2">
                                                     {section.title}
                                                 </div>
-                                                <div className="space-y-1 relative">
-                                                    <div className="absolute left-[15px] top-0 bottom-0 w-[1px] bg-gray-100" />
+                                                <div className="space-y-1">
                                                     {section.subsections?.map((sub) => {
                                                         const isCompleted = completedSteps.includes(sub.id);
                                                         const isActive = activeSub === sub.id;
@@ -497,22 +503,14 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                                             <button
                                                                 key={sub.id}
                                                                 onClick={() => scrollTo(sub.id)}
-                                                                className={`w-full group flex items-start gap-3 text-left py-2 px-3 rounded-lg transition-all duration-200 ${isActive
-                                                                    ? "bg-[#0EA0DC] text-white shadow-md shadow-[#0EA0DC]/20"
-                                                                    : "hover:bg-gray-50 text-[#666666]"
-                                                                    }`}
+                                                                className={`w-full flex items-center gap-2 text-left px-2 py-1.5 rounded text-xs transition-colors ${isActive ? 'bg-[#0EA0DC] text-white' : 'hover:bg-gray-100 text-[#666666]'}`}
                                                             >
-                                                                <div className={`mt-1 flex-shrink-0 transition-colors ${isActive ? "text-white" : isCompleted ? "text-emerald-500" : "text-[#94a3b8]"}`}>
-                                                                    {isCompleted ? <CheckCircle className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-                                                                </div>
-                                                                <div className="flex-1">
-                                                                    <div className={`text-xs font-bold ${isActive ? "text-white" : "text-[#272727]"}`}>
-                                                                        {sub.title}
-                                                                    </div>
-                                                                    {isActive && (
-                                                                        <div className="text-[9px] text-white/70 font-medium tracking-tight">Active Phase</div>
-                                                                    )}
-                                                                </div>
+                                                                {isCompleted ? (
+                                                                    <CheckCircle className="w-3 h-3 text-emerald-500" />
+                                                                ) : (
+                                                                    <ChevronRight className="w-3 h-3" />
+                                                                )}
+                                                                <span className="font-medium">{sub.title}</span>
                                                             </button>
                                                         );
                                                     })}
@@ -523,28 +521,25 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                 </ScrollArea>
                             </Card>
 
-                            {/* Technical Help Card */}
-                            <Card className="skygloss-card p-6 rounded-2xl bg-gradient-to-br from-[#272727] to-black border-none  overflow-hidden group">
-                                <div className="absolute -right-4 -bottom-4 p-8 opacity-10 group-hover:scale-110 transition-transform">
-                                    <Sparkles className="w-24 h-24" style={{ fill: "white", color: "#0ea0dc1f" }} />
-                                </div>
-                                <div className="relative z-10">
-                                    <h4 className="font-bold text-md uppercase tracking-wider mb-2">Self-Healing Tech</h4>
-                                    <p className="text-sm mb-6 leading-relaxed">RESIN FILM features advanced thermal-reactive polymers that reset minor micro-marring.</p>
-                                    <Button className="w-full bg-[#0EA0DC] text-white hover:bg-[#0c80b3] font-bold py-2 rounded-xl text-[10px] uppercase tracking-widest h-10 shadow-lg shadow-[#0EA0DC]/20 border-none">
-                                        <Info className="w-3.5 h-3.5 mr-2" /> System Specs
+                            {/* Technical Help Card matched with Fusion style */}
+                            <Card className="p-4 rounded-2xl bg-[#0EA0DC] text-white">
+                                <h4 className="font-bold text-sm mb-2">Technical Support</h4>
+                                <p className="text-xs text-white/80 mb-4">24/7 support for certified technicians</p>
+                                <a href="/support">
+                                    <Button className="w-full bg-white text-[#0EA0DC] hover:bg-gray-100 text-xs h-8">
+                                        Contact Support
                                     </Button>
-                                </div>
+                                </a>
                             </Card>
 
                             {/* Help Resource */}
-                            <Card className="skygloss-card p-6 rounded-2xl flex items-center gap-4 border-gray-100">
+                            <Card className="p-4 rounded-2xl flex items-center gap-4 border-gray-100">
                                 <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-[#0EA0DC]">
-                                    <MessageSquare className="w-5 h-5" />
+                                    <Info className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <h4 className="text-xs font-bold text-[#272727] uppercase">Live Support</h4>
-                                    <p className="text-[10px] text-[#272727]/50 font-medium">Certified Support Channel.</p>
+                                    <h4 className="text-xs font-bold text-[#272727] uppercase tracking-wider">Technical Data</h4>
+                                    <p className="text-[10px] text-[#666666] font-medium">SOP Protocol V1.0</p>
                                 </div>
                             </Card>
                         </div>

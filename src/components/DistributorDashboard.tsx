@@ -19,6 +19,7 @@ import { ResinFilmGuide } from "./ResinFilmGuide";
 import { SealGuide } from "./SealGuide";
 import { MatteGuide } from "./MatteGuide";
 import { ShineGuide } from "./ShineGuide";
+import { UnderstandingSkyGloss } from "./UnderstandingSkyGloss";
 import { useAuth } from "../AuthContext";
 import api from "../api/axios";
 import { toast } from "sonner";
@@ -529,6 +530,9 @@ export function DistributorDashboard({
   };
 
   if (viewingCourse) {
+    if (viewingCourse === 'understanding-skygloss') {
+      return <UnderstandingSkyGloss onBack={() => navigate('/dashboard/distributor/courses')} />;
+    }
     const isFusion = viewingCourse.toUpperCase().includes('FUSION');
     const isResinFilm = viewingCourse.toUpperCase().includes('RESIN FILM');
 
@@ -1235,6 +1239,74 @@ export function DistributorDashboard({
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Understanding SkyGloss Course Card (First) */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0 }}
+                >
+                  <Card className="skygloss-card p-6 rounded-2xl h-full flex flex-col group hover:shadow-xl transition-all border-0 shadow-lg relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                      <GraduationCap className="w-24 h-24 text-[#0EA0DC]" />
+                    </div>
+                    <div className="bg-gradient-to-br from-[#272727] to-black rounded-xl mb-4 p-8 border border-gray-800 flex items-center justify-center">
+                      <h4 className="text-2xl font-black text-[#0EA0DC] italic uppercase tracking-tighter shadow-2xl">
+                        PHILOSOPHY
+                      </h4>
+                    </div>
+
+                    <div className="flex items-center justify-between mb-3">
+                      <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-0 w-fit font-bold">
+                        Core Masterclass
+                      </Badge>
+                      {(() => {
+                        if (user?.courseProgress?.UNDERSTANDING_SKYGLOSS) {
+                          const completedCount = user.courseProgress.UNDERSTANDING_SKYGLOSS.length;
+                          if (completedCount >= 9) {
+                            return (
+                              <span className="text-emerald-600 font-black text-xs uppercase tracking-wider italic animate-pulse">
+                                COMPLETED
+                              </span>
+                            );
+                          }
+                        }
+                        return null;
+                      })()}
+                    </div>
+
+                    <h4 className="text-lg font-bold text-[#272727] mb-2 uppercase italic tracking-tighter">Understanding SkyGloss</h4>
+
+                    <p className="text-sm text-[#666666] mb-6 flex-1 leading-relaxed">
+                      Master the SkyGloss sales philosophy. Learn how to educate customers, align expectations, and articulate the true value of paint health.
+                    </p>
+
+                    <div className="grid grid-cols-3 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                      <div className="text-center">
+                        <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Modules</div>
+                        <div className="text-sm font-bold text-[#272727]">9</div>
+                      </div>
+                      <div className="text-center border-x border-gray-200">
+                        <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Type</div>
+                        <div className="text-sm font-bold text-[#272727]">Sales</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Level</div>
+                        <div className="text-sm font-bold text-[#272727]">All</div>
+                      </div>
+                    </div>
+
+                    <Button
+                      onClick={() => {
+                        navigate(`/dashboard/distributor/courses/understanding-skygloss`);
+                        setViewingCourse('understanding-skygloss');
+                      }}
+                      className="w-full bg-[#0EA0DC] text-white hover:bg-[#272727] transition-colors h-12 rounded-xl font-bold shadow-lg shadow-[#0EA0DC]/20"
+                    >
+                      Launch Philosophy
+                    </Button>
+                  </Card>
+                </motion.div>
+
                 {distributorProducts
                   .filter(p => ['FUSION', 'RESIN FILM', 'SHINE', 'MATTE', 'SEAL'].some(name => p.name.toUpperCase().includes(name)))
                   .map((product, index) => (

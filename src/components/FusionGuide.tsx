@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import api from "../api/axios";
 import {
     ArrowLeft,
     CheckCircle,
@@ -21,7 +22,7 @@ import { Card } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { ScrollArea } from "./ui/scroll-area";
-import { Separator } from "./ui/separator";
+
 import FusionPdf from "../assets/pdf/Fusion.pdf";
 
 const VideoPlayer = ({ url }: { url: string }) => (
@@ -124,11 +125,29 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
         }
     };
 
-    const markComplete = (id: string) => {
+    const markComplete = async (id: string) => {
         if (!completedSteps.includes(id)) {
             setCompletedSteps([...completedSteps, id]);
+            try {
+                await api.patch('/users/me/course-progress', { courseName: 'FUSION', stepId: id });
+            } catch (err) {
+                console.error("Failed to save course progress", err);
+            }
         }
     };
+
+    useEffect(() => {
+        const fetchProgress = async () => {
+            try {
+                const response = await api.get('/auth/profile');
+                const progress = response.data.courseProgress?.FUSION || [];
+                setCompletedSteps(progress);
+            } catch (err) {
+                console.error("Failed to fetch course progress", err);
+            }
+        };
+        fetchProgress();
+    }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -409,7 +428,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                             </Card>
                         </div>
 
-                        <Separator className="bg-gray-100" />
+                        <div className="h-px bg-gray-100 my-8" />
 
                         {/* SECTION C: VEHICLE PREPARATION */}
                         <div className="space-y-12 mt-8">
@@ -802,7 +821,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                             </div>
                         </div>
 
-                        <Separator className="bg-gray-100" />
+                        <div className="h-px bg-gray-100 my-8" />
 
                         {/* SECTION D: FUSION APPLICATION */}
                         <div className="space-y-12 ">
@@ -1029,7 +1048,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                             </div>
                         </div>
 
-                        <Separator className="bg-gray-100" />
+                        <div className="h-px bg-gray-100 my-8" />
 
                         {/* SECTION E: AFTERCARE */}
                         <div id="care" className="scroll-mt-32 mt-8">
@@ -1204,6 +1223,21 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                 )}
                             </Card>
+                            {/* additional training resources.  */}
+                            <Card className="p-6 rounded-2xl bg-[#0ea0dc]" style={{ backgroundColor: '#0ea0dc26' }}>
+                                <h3 className="text-lg font-bold text-[#272727] mb-4">Additional Training Resources.</h3>
+                                <p className="text-sm text-[#666666] mb-4">
+                                    orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                                </p>
+
+                                {completedSteps.length >= totalSteps && (
+                                    <div className="mt-6 pt-6 border-t border-gray-200 flex flex-col items-center justify-center text-center">
+                                        <CheckCircle className="w-16 h-16 text-green-500 mb-3" />
+                                        <h3 className="text-2xl font-extrabold text-[#272727]">Course Completed ✓</h3>
+                                        <p className="text-sm text-[#666666] mt-2">You have successfully completed the FUSION Professional Application Guide.</p>
+                                    </div>
+                                )}
+                            </Card>
                         </div>
 
                         {/* Completion Footer */}
@@ -1220,7 +1254,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     Contact your distributor for more details.
                                 </a>
                                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                    <Button onClick={onBack} className="bg-white text-[#272727] hover:bg-gray-100">
+                                    <Button
+                                        onClick={async () => {
+                                            try {
+                                                await api.patch('/users/me/complete-course', { courseName: 'FUSION' });
+                                            } catch (err) {
+                                                console.error("Failed to mark course as complete", err);
+                                            }
+                                            onBack();
+                                        }}
+                                        className="bg-white text-[#272727] hover:bg-gray-100"
+                                    >
                                         Finished
                                     </Button>
                                     <Button variant="outline" className="border-white text-white hover:bg-[#0EA0DC]" onClick={() => window.open(FusionPdf, '_blank')}>
