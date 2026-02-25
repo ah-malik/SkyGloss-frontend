@@ -6,6 +6,7 @@ import { Card } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { ScrollArea } from "./ui/scroll-area";
+import { useAuth } from "../AuthContext";
 import ResinFilmPdf from "../assets/pdf/Resin_Film.pdf";
 
 interface Section {
@@ -49,6 +50,7 @@ const sections: Section[] = [
 ];
 
 export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
+    const { user, setUser } = useAuth();
     const [activeSub, setActiveSub] = useState("wash");
     const [completedSteps, setCompletedSteps] = useState<string[]>([]);
 
@@ -72,7 +74,21 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
 
     const markComplete = async (id: string) => {
         if (!completedSteps.includes(id)) {
-            setCompletedSteps([...completedSteps, id]);
+            const newSteps = [...completedSteps, id];
+            setCompletedSteps(newSteps);
+
+            // Update local user state for immediate UI feedback on dashboard
+            if (user) {
+                const updatedUser = {
+                    ...user,
+                    courseProgress: {
+                        ...user.courseProgress,
+                        'RESIN_FILM': newSteps
+                    }
+                };
+                setUser(updatedUser);
+            }
+
             try {
                 await api.patch('/users/me/course-progress', { courseName: 'RESIN_FILM', stepId: id });
             } catch (err) {
@@ -361,10 +377,10 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
 
                                             <div className="flex justify-end mt-8">
                                                 <Button
-                                                    onClick={() => markComplete('step2')}
-                                                    className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('step2') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                                    onClick={() => markComplete('step2-cure')}
+                                                    className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('step2-cure') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                                 >
-                                                    {completedSteps.includes('step2') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                                    {completedSteps.includes('step2-cure') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                                 </Button>
                                             </div>
                                         </div>
@@ -395,10 +411,10 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
 
                                             <div className="flex justify-end mt-8">
                                                 <Button
-                                                    onClick={() => markComplete('step3')}
-                                                    className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('step3') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                                    onClick={() => markComplete('step3-apply')}
+                                                    className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('step3-apply') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                                 >
-                                                    {completedSteps.includes('step3') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                                    {completedSteps.includes('step3-apply') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                                 </Button>
                                             </div>
                                         </div>
@@ -426,10 +442,10 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
 
                                         <div className="flex justify-end mt-8">
                                             <Button
-                                                onClick={() => markComplete('aftercare')}
-                                                className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('aftercare') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                                onClick={() => markComplete('protection')}
+                                                className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('protection') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                             >
-                                                {completedSteps.includes('aftercare') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                                {completedSteps.includes('protection') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                             </Button>
                                         </div>
                                     </div>

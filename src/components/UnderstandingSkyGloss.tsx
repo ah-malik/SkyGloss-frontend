@@ -6,6 +6,7 @@ import { Card } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { ScrollArea } from "./ui/scroll-area";
+import { useAuth } from "../AuthContext";
 import UnderstandingPdf from "../assets/pdf/Understanding.pdf";
 
 interface Section {
@@ -57,6 +58,7 @@ const sections: Section[] = [
 ];
 
 export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
+    const { user, setUser } = useAuth();
     const [activeSub, setActiveSub] = useState("philosophy");
     const [completedSteps, setCompletedSteps] = useState<string[]>([]);
 
@@ -82,6 +84,19 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
         if (!completedSteps.includes(id)) {
             const newSteps = [...completedSteps, id];
             setCompletedSteps(newSteps);
+
+            // Update local user state for immediate UI feedback on dashboard
+            if (user) {
+                const updatedUser = {
+                    ...user,
+                    courseProgress: {
+                        ...user.courseProgress,
+                        'UNDERSTANDING_SKYGLOSS': newSteps
+                    }
+                };
+                setUser(updatedUser);
+            }
+
             try {
                 await api.patch('/users/me/course-progress', {
                     courseName: 'UNDERSTANDING_SKYGLOSS',

@@ -6,6 +6,7 @@ import { Card } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { ScrollArea } from "./ui/scroll-area";
+import { useAuth } from "../AuthContext";
 import ShinePdf from "../assets/pdf/Shine.pdf";
 
 interface Section {
@@ -42,6 +43,7 @@ const sections: Section[] = [
 ];
 
 export function ShineGuide({ onBack }: { onBack: () => void }) {
+    const { user, setUser } = useAuth();
     const [activeSub, setActiveSub] = useState("wash");
     const [completedSteps, setCompletedSteps] = useState<string[]>([]);
 
@@ -65,7 +67,21 @@ export function ShineGuide({ onBack }: { onBack: () => void }) {
 
     const markComplete = async (id: string) => {
         if (!completedSteps.includes(id)) {
-            setCompletedSteps([...completedSteps, id]);
+            const newSteps = [...completedSteps, id];
+            setCompletedSteps(newSteps);
+
+            // Update local user state for immediate UI feedback on dashboard
+            if (user) {
+                const updatedUser = {
+                    ...user,
+                    courseProgress: {
+                        ...user.courseProgress,
+                        'SHINE': newSteps
+                    }
+                };
+                setUser(updatedUser);
+            }
+
             try {
                 await api.patch('/users/me/course-progress', { courseName: 'SHINE', stepId: id });
             } catch (err) {

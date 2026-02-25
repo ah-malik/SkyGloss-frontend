@@ -101,10 +101,11 @@ const COURSE_STEPS: { [key: string]: number } = {
 };
 
 const getCourseKey = (productName: string) => {
+  if (!productName) return null;
   const name = productName.toUpperCase();
   if (name.includes('UNDERSTANDING')) return 'UNDERSTANDING_SKYGLOSS';
   if (name.includes('FUSION')) return 'FUSION';
-  if (name.includes('RESIN FILM')) return 'RESIN_FILM';
+  if (name.includes('RESIN FILM') || name.includes('RESIN_FILM')) return 'RESIN_FILM';
   if (name.includes('SEAL')) return 'SEAL';
   if (name.includes('MATTE')) return 'MATTE';
   if (name.includes('SHINE')) return 'SHINE';
@@ -117,6 +118,16 @@ interface ShopDashboardProps {
   showCartSheet?: boolean;
   onCartSheetChange?: (show: boolean) => void;
 }
+
+const getCourseDuration = (productName: string) => {
+  const name = productName.toUpperCase();
+  if (name.includes('FUSION')) return '1h 30m';
+  if (name.includes('SHINE')) return '1 hour';
+  if (name.includes('RESIN FILM')) return '50 mins';
+  if (name.includes('MATTE')) return '50 mins';
+  if (name.includes('SEAL')) return '55 mins';
+  return '45 mins';
+};
 
 const getCourseImage = (productName: string) => {
   const name = productName.toUpperCase();
@@ -750,9 +761,17 @@ export function ShopDashboard({
                         Core Masterclass
                       </Badge>
                       {(() => {
-                        if (user?.courseProgress?.UNDERSTANDING_SKYGLOSS) {
-                          const completedCount = user.courseProgress.UNDERSTANDING_SKYGLOSS.length;
-                          const totalSteps = COURSE_STEPS['UNDERSTANDING_SKYGLOSS'];
+                        const key = 'UNDERSTANDING_SKYGLOSS';
+                        // Robust check for both formats
+                        const progress = user?.courseProgress?.[key] ||
+                          user?.courseProgress?.[key.replace('_', ' ')] ||
+                          [];
+
+                        if (progress.length > 0) {
+                          const completedCount = progress.length;
+                          const totalSteps = COURSE_STEPS[key];
+                          const percentage = Math.round((completedCount / totalSteps) * 100);
+
                           if (completedCount >= totalSteps) {
                             return (
                               <span className="text-emerald-600 font-black text-xs uppercase tracking-wider italic animate-pulse">
@@ -760,6 +779,12 @@ export function ShopDashboard({
                               </span>
                             );
                           }
+
+                          return (
+                            <span className="text-[#0EA0DC] font-black text-xs italic">
+                              {percentage}% READ
+                            </span>
+                          );
                         }
                         return null;
                       })()}
@@ -785,6 +810,36 @@ export function ShopDashboard({
                         <div className="text-sm font-bold text-[#272727]">All</div>
                       </div>
                     </div>
+
+                    {(() => {
+                      const key = 'UNDERSTANDING_SKYGLOSS';
+                      const progress = user?.courseProgress?.[key] ||
+                        user?.courseProgress?.[key.replace('_', ' ')] ||
+                        [];
+
+                      if (progress.length > 0) {
+                        const completedCount = progress.length;
+                        const totalSteps = COURSE_STEPS[key];
+                        const percentage = Math.round((completedCount / totalSteps) * 100);
+
+                        return (
+                          <div className="mb-6 space-y-2">
+                            <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
+                              <span className="text-[#666666]">Course Progress</span>
+                              <span className="text-[#0EA0DC]">{percentage}%</span>
+                            </div>
+                            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-100/50 p-[1px]">
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${percentage}%` }}
+                                className="h-full bg-gradient-to-r from-[#0EA0DC] to-[#0bcaf8] rounded-full shadow-[0_0_8px_rgba(14,160,220,0.3)]"
+                              />
+                            </div>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
 
                     <Button
                       onClick={() => {
@@ -822,13 +877,27 @@ export function ShopDashboard({
                           </Badge>
                           {(() => {
                             const key = getCourseKey(product.name);
-                            if (key && user?.courseProgress?.[key]) {
-                              const completedCount = user.courseProgress[key].length;
-                              const totalSteps = COURSE_STEPS[key];
-                              if (completedCount >= totalSteps) {
+                            if (key) {
+                              const progress = user?.courseProgress?.[key] ||
+                                user?.courseProgress?.[key.replace('_', ' ')] ||
+                                [];
+
+                              if (progress.length > 0) {
+                                const completedCount = progress.length;
+                                const totalSteps = COURSE_STEPS[key] || 1;
+                                const percentage = Math.round((completedCount / totalSteps) * 100);
+
+                                if (completedCount >= totalSteps) {
+                                  return (
+                                    <span className="text-emerald-600 font-black text-xs uppercase tracking-wider italic animate-pulse">
+                                      COMPLETED
+                                    </span>
+                                  );
+                                }
+
                                 return (
-                                  <span className="text-emerald-600 font-black text-xs uppercase tracking-wider italic animate-pulse">
-                                    COMPLETED
+                                  <span className="text-[#0EA0DC] font-black text-xs italic">
+                                    {percentage}% READ
                                   </span>
                                 );
                               }
@@ -850,13 +919,45 @@ export function ShopDashboard({
                           </div>
                           <div className="text-center border-x border-gray-200">
                             <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Duration</div>
-                            <div className="text-sm font-bold text-[#272727]">3h 15m</div>
+                            <div className="text-sm font-bold text-[#272727]">{getCourseDuration(product.name)}</div>
                           </div>
                           <div className="text-center">
                             <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Level</div>
                             <div className="text-sm font-bold text-[#272727]">Master</div>
                           </div>
                         </div>
+
+                        {(() => {
+                          const key = getCourseKey(product.name);
+                          if (key) {
+                            const progress = user?.courseProgress?.[key] ||
+                              user?.courseProgress?.[key.replace('_', ' ')] ||
+                              [];
+
+                            if (progress.length > 0) {
+                              const completedCount = progress.length;
+                              const totalSteps = COURSE_STEPS[key] || 1;
+                              const percentage = Math.round((completedCount / totalSteps) * 100);
+
+                              return (
+                                <div className="mb-6 space-y-2">
+                                  <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
+                                    <span className="text-[#666666]">Course Progress</span>
+                                    <span className="text-[#0EA0DC]">{percentage}%</span>
+                                  </div>
+                                  <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-100/50 p-[1px]">
+                                    <motion.div
+                                      initial={{ width: 0 }}
+                                      animate={{ width: `${percentage}%` }}
+                                      className="h-full bg-gradient-to-r from-[#0EA0DC] to-[#0bcaf8] rounded-full shadow-[0_0_8px_rgba(14,160,220,0.3)]"
+                                    />
+                                  </div>
+                                </div>
+                              );
+                            }
+                          }
+                          return null;
+                        })()}
 
                         <Button
                           onClick={() => {

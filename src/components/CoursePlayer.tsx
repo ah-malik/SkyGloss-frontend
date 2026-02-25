@@ -8,6 +8,8 @@ import { Badge } from "./ui/badge";
 import { Textarea } from "./ui/textarea";
 import { ScrollArea } from "./ui/scroll-area";
 import { toast } from "sonner";
+import { useAuth } from "../AuthContext";
+import api from "../api/axios";
 
 interface CoursePlayerProps {
   onBack: () => void;
@@ -60,9 +62,10 @@ const getCourseForProduct = (productName: string) => ({
 });
 
 export function CoursePlayer({ onBack, productName = "FUSION" }: CoursePlayerProps) {
+  const { user, setUser } = useAuth();
   const course = getCourseForProduct(productName);
-  const [currentLesson, setCurrentLesson] = useState(3); // Starting at lesson 3 (first incomplete)
-  const [completedLessons, setCompletedLessons] = useState([1, 2]);
+  const [currentLesson, setCurrentLesson] = useState(3);
+  const [completedLessons, setCompletedLessons] = useState<number[]>([1, 2]);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([
     {
@@ -80,12 +83,55 @@ export function CoursePlayer({ onBack, productName = "FUSION" }: CoursePlayerPro
   const lesson = course.lessons[currentLesson - 1];
   const progress = (completedLessons.length / course.lessons.length) * 100;
 
-  const handleMarkComplete = () => {
+  const handleMarkComplete = async () => {
     if (!completedLessons.includes(currentLesson)) {
-      setCompletedLessons([...completedLessons, currentLesson]);
-      toast.success("Lesson marked as complete!");
+      const newLessons = [...completedLessons, currentLesson];
+      setCompletedLessons(newLessons);
+
+      const courseKey = productName.toUpperCase().replace(/\s+/g, '_');
+
+      // Update local user state for immediate UI feedback on dashboard
+      if (user) {
+        const updatedUser = {
+          ...user,
+          courseProgress: {
+            ...user.courseProgress,
+            [courseKey]: newLessons.map(String)
+          }
+        };
+        setUser(updatedUser);
+      }
+
+      try {
+        await api.patch('/users/me/course-progress', {
+          courseName: courseKey,
+          stepId: String(currentLesson)
+        });
+        toast.success("Lesson marked as complete!");
+      } catch (err) {
+        console.error("Failed to save course progress", err);
+        toast.error("Failed to save progress to server");
+      }
     }
   };
+
+  useEffect(() => {
+    const fetchProgress = async () => {
+      try {
+        const res = await api.get('/auth/profile');
+        if (res.data) {
+          const courseKey = productName.toUpperCase().replace(/\s+/g, '_');
+          const progress = res.data.courseProgress?.[courseKey] || [];
+          if (progress.length > 0) {
+            setCompletedLessons(progress.map(Number));
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch course progress", err);
+      }
+    };
+    fetchProgress();
+  }, [productName]);
 
   const handleNextLesson = () => {
     if (currentLesson < course.lessons.length) {

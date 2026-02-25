@@ -91,6 +91,37 @@ const currencies = [
   { code: 'LKR', symbol: 'Rs', name: 'Sri Lankan Rupee' },
 ].sort((a, b) => a.code.localeCompare(b.code));
 
+const getCourseDuration = (productName: string) => {
+  const name = productName.toUpperCase();
+  if (name.includes('FUSION')) return '1h 30m';
+  if (name.includes('SHINE')) return '1 hour';
+  if (name.includes('RESIN FILM')) return '50 mins';
+  if (name.includes('MATTE')) return '50 mins';
+  if (name.includes('SEAL')) return '55 mins';
+  return '45 mins';
+};
+
+const COURSE_STEPS: { [key: string]: number } = {
+  'UNDERSTANDING_SKYGLOSS': 9,
+  'FUSION': 19,
+  'RESIN_FILM': 7,
+  'SEAL': 5,
+  'SHINE': 6,
+  'MATTE': 6
+};
+
+const getCourseKey = (productName: string) => {
+  if (!productName) return null;
+  const name = productName.toUpperCase();
+  if (name.includes('UNDERSTANDING')) return 'UNDERSTANDING_SKYGLOSS';
+  if (name.includes('FUSION')) return 'FUSION';
+  if (name.includes('RESIN FILM') || name.includes('RESIN_FILM')) return 'RESIN_FILM';
+  if (name.includes('SEAL')) return 'SEAL';
+  if (name.includes('MATTE')) return 'MATTE';
+  if (name.includes('SHINE')) return 'SHINE';
+  return null;
+};
+
 const distributorProducts = [
   {
     id: 1,
@@ -213,7 +244,7 @@ export function DistributorDashboard({
   onShowThankYou,
   onCartCountChange,
 }: DistributorDashboardProps) {
-  const { showCartSheet, setShowCartSheet, user } = useAuth();
+  const { showCartSheet, setShowCartSheet, user, setUser } = useAuth();
   const { section, courseId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -234,6 +265,7 @@ export function DistributorDashboard({
 
   useEffect(() => {
     fetchProducts();
+    fetchUserProfile();
   }, []);
 
   const mergedProducts = useMemo(() => {
@@ -328,6 +360,17 @@ export function DistributorDashboard({
   const [certFacebook, setCertFacebook] = useState("");
   const [certSubmitted, setCertSubmitted] = useState(false);
 
+  const fetchUserProfile = async () => {
+    try {
+      const res = await api.get('/auth/profile');
+      if (res.data) {
+        setUser(res.data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch user profile", err);
+    }
+  };
+
   // const [showAether, setShowAether] = useState(false); // false = Element, true = Aether
   const [myRequests, setMyRequests] = useState<any[]>([]);
   const [loadingRequests, setLoadingRequests] = useState(false);
@@ -341,6 +384,7 @@ export function DistributorDashboard({
 
   // Check for successful payment from Stripe
   useEffect(() => {
+    fetchUserProfile();
     const urlParams = new URLSearchParams(window.location.search);
     const success = urlParams.get('success');
     const sessionId = urlParams.get('session_id');
@@ -1260,9 +1304,16 @@ export function DistributorDashboard({
                         Core Masterclass
                       </Badge>
                       {(() => {
-                        if (user?.courseProgress?.UNDERSTANDING_SKYGLOSS) {
-                          const completedCount = user.courseProgress.UNDERSTANDING_SKYGLOSS.length;
-                          if (completedCount >= 9) {
+                        const key = 'UNDERSTANDING_SKYGLOSS';
+                        const progress = user?.courseProgress?.[key] ||
+                          user?.courseProgress?.[key.replace('_', ' ')] ||
+                          [];
+
+                        if (progress.length > 0) {
+                          const completedCount = progress.length;
+                          const totalSteps = COURSE_STEPS[key];
+
+                          if (completedCount >= totalSteps) {
                             return (
                               <span className="text-emerald-600 font-black text-xs uppercase tracking-wider italic animate-pulse">
                                 COMPLETED
@@ -1295,6 +1346,38 @@ export function DistributorDashboard({
                       </div>
                     </div>
 
+                    {(() => {
+                      const key = 'UNDERSTANDING_SKYGLOSS';
+                      const progress = user?.courseProgress?.[key] ||
+                        user?.courseProgress?.[key.replace('_', ' ')] ||
+                        [];
+
+                      if (progress.length > 0) {
+                        const completedCount = progress.length;
+                        const totalSteps = COURSE_STEPS[key];
+                        const percentage = Math.round((completedCount / totalSteps) * 100);
+
+                        if (completedCount < totalSteps) {
+                          return (
+                            <div className="mb-6 space-y-2">
+                              <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
+                                <span className="text-[#666666]">Course Progress</span>
+                                <span className="text-[#0EA0DC]">{percentage}%</span>
+                              </div>
+                              <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-100/50 p-[1px]">
+                                <motion.div
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${percentage}%` }}
+                                  className="h-full bg-gradient-to-r from-[#0EA0DC] to-[#0bcaf8] rounded-full shadow-[0_0_8px_rgba(14,160,220,0.3)]"
+                                />
+                              </div>
+                            </div>
+                          );
+                        }
+                      }
+                      return null;
+                    })()}
+
                     <Button
                       onClick={() => {
                         navigate(`/dashboard/distributor/courses/understanding-skygloss`);
@@ -1325,9 +1408,27 @@ export function DistributorDashboard({
                           />
                         </div>
 
-                        <Badge className="mb-3 bg-[#0EA0DC]/10 text-[#0EA0DC] border-0 w-fit font-bold">
-                          Training Course
-                        </Badge>
+                        <div className="flex items-center justify-between mb-3">
+                          <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-0 w-fit font-bold">
+                            Training Course
+                          </Badge>
+                          {(() => {
+                            const key = getCourseKey(product.name);
+                            if (key && user?.courseProgress?.[key]) {
+                              const completedCount = user.courseProgress[key].length;
+                              const totalSteps = COURSE_STEPS[key];
+
+                              if (completedCount >= totalSteps) {
+                                return (
+                                  <span className="text-emerald-600 font-black text-xs uppercase tracking-wider italic animate-pulse">
+                                    COMPLETED
+                                  </span>
+                                );
+                              }
+                            }
+                            return null;
+                          })()}
+                        </div>
 
                         <h4 className="text-lg font-bold text-[#272727] mb-2">{product.name}</h4>
 
@@ -1338,13 +1439,47 @@ export function DistributorDashboard({
                         <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
                           <div className="flex items-center gap-2 text-[#999999] text-xs">
                             <Clock className="w-4 h-4" />
-                            <span>45 mins</span>
+                            <span>{getCourseDuration(product.name)}</span>
                           </div>
                           <div className="flex items-center gap-2 text-[#999999] text-xs">
                             <Award className="w-4 h-4" />
                             <span>Certificate</span>
                           </div>
                         </div>
+
+                        {(() => {
+                          const key = getCourseKey(product.name);
+                          if (key) {
+                            const progress = user?.courseProgress?.[key] ||
+                              user?.courseProgress?.[key.replace('_', ' ')] ||
+                              [];
+
+                            if (progress.length > 0) {
+                              const completedCount = progress.length;
+                              const totalSteps = COURSE_STEPS[key] || 1;
+                              const percentage = Math.round((completedCount / totalSteps) * 100);
+
+                              if (completedCount < totalSteps) {
+                                return (
+                                  <div className="mb-6 space-y-2">
+                                    <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
+                                      <span className="text-[#666666]">Course Progress</span>
+                                      <span className="text-[#0EA0DC]">{percentage}%</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-100/50 p-[1px]">
+                                      <motion.div
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${percentage}%` }}
+                                        className="h-full bg-gradient-to-r from-[#0EA0DC] to-[#0bcaf8] rounded-full shadow-[0_0_8px_rgba(14,160,220,0.3)]"
+                                      />
+                                    </div>
+                                  </div>
+                                );
+                              }
+                            }
+                          }
+                          return null;
+                        })()}
 
                         <Button
                           onClick={() => {
