@@ -41,10 +41,13 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
     }, [messages]);
 
     useEffect(() => {
+        let isMounted = true;
+
         if (isOpen && !socketRef.current) {
-            connectToChat();
+            connectToChat(() => isMounted);
         }
         return () => {
+            isMounted = false;
             if (socketRef.current) {
                 socketRef.current.disconnect();
                 socketRef.current = null;
@@ -52,7 +55,7 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
         };
     }, [isOpen]);
 
-    const connectToChat = async () => {
+    const connectToChat = async (getIsMounted: () => boolean) => {
         setIsConnecting(true);
         try {
             // Create or get chat room
@@ -63,12 +66,20 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
                 userType,
             });
 
+            if (!getIsMounted()) return;
+
             const room = response.data;
             setRoomId(room._id);
 
             // Connect to Socket.IO
             const socketUrl = import.meta.env.VITE_SOCKET_URL || 'https://skygloss-backend-production-3b96.up.railway.app';
             const newSocket = io(socketUrl);
+
+            if (!getIsMounted()) {
+                newSocket.disconnect();
+                return;
+            }
+
             socketRef.current = newSocket;
 
             newSocket.on('connect', () => {
@@ -81,7 +92,11 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
             });
 
             newSocket.on('new_message', (message: Message) => {
-                setMessages((prev) => [...prev, message]);
+                setMessages((prev) => {
+                    // Prevent duplicate appends if multiple listeners fired
+                    if (prev.some(m => m._id === message._id)) return prev;
+                    return [...prev, message];
+                });
             });
 
             newSocket.on('user_typing', () => {
@@ -91,7 +106,7 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
         } catch (error) {
             console.error('Failed to connect to chat:', error);
         } finally {
-            setIsConnecting(false);
+            if (getIsMounted()) setIsConnecting(false);
         }
     };
 

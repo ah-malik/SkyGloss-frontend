@@ -10,6 +10,7 @@ import { Badge } from "./ui/badge";
 import { toast } from "sonner";
 import api from "../api/axios";
 import { ChatWidget } from "./ChatWidget";
+import { useAuth } from "../AuthContext";
 
 const faqs = [
   {
@@ -49,6 +50,7 @@ interface SupportPageProps {
 }
 
 export function SupportPage({ onBack }: SupportPageProps = {}) {
+  const { user } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -329,9 +331,10 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
       {/* Live Chat Widget */}
       {showChat && (
         <ChatWidget
-          userName="Guest User"
-          userEmail="guest@skygloss.com"
-          userType="guest"
+          userName={user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || "Guest User" : "Guest User"}
+          userEmail={user?.email || "guest@skygloss.com"}
+          userType={user?.role || "guest"}
+          userId={user?._id}
           onClose={() => setShowChat(false)}
         />
       )}
