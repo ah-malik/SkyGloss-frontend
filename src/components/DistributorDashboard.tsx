@@ -220,6 +220,36 @@ const distributorProducts = [
     unitsPerCase: { "1pc": 10 },
     image: paintPenBoxImage,
     additionalImages: [paintPenToolsImage]
+  },
+  {
+    id: 11,
+    name: "Advanced Technical Training",
+    description: "2-Day On-Site Course",
+    sizes: ["2-Day Course"],
+    unitPrices: { "2-Day Course": 2500.00 },
+    casePrices: { "2-Day Course": 2500.00 },
+    unitsPerCase: { "2-Day Course": 1 },
+    image: fusionMainImage
+  },
+  {
+    id: 12,
+    name: "Advanced Sales Training",
+    description: "Personalized Sales Training + Ongoing Support",
+    sizes: ["Full Session"],
+    unitPrices: { "Full Session": 1000.00 },
+    casePrices: { "Full Session": 1000.00 },
+    unitsPerCase: { "Full Session": 1 },
+    image: fusionMainImage
+  },
+  {
+    id: 13,
+    name: "Lead Generation Marketing Program",
+    description: "Real Lead Acquisition System",
+    sizes: ["Per Month"],
+    unitPrices: { "Per Month": 1000.00 },
+    casePrices: { "Per Month": 1000.00 },
+    unitsPerCase: { "Per Month": 1 },
+    image: fusionMainImage
   }
 ];
 
@@ -426,6 +456,19 @@ export function DistributorDashboard({
     if (activeSection === "certified") {
       fetchMyRequests();
     }
+  }, [activeSection]);
+
+  // Periodically refresh requests for auto-update
+  useEffect(() => {
+    let interval: any;
+    if (activeSection === "certified") {
+      interval = setInterval(() => {
+        fetchMyRequests();
+      }, 30000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [activeSection]);
 
   const fetchMyRequests = async () => {
@@ -759,19 +802,23 @@ export function DistributorDashboard({
                                       <div key={size} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-gray-50 rounded-lg gap-3">
                                         <div className="flex-1 min-w-0">
                                           <span className="text-[#272727] font-medium block mb-1">
-                                            {product.id === 1 ? `${size} (Element + Aether)` : size}
+                                            {product.id === 1 ? `${size} (Element + Aether)` :
+                                              product.id === 13 ? `Lead Generation (${size})` : size}
                                           </span>
                                           <div className="flex flex-col sm:flex-row sm:gap-4 gap-1">
                                             <span className="text-xs sm:text-sm text-[#666666]">
-                                              Unit: <span className="text-[#0EA0DC] font-semibold">
+                                              {product.id === 13 ? 'Starting at: ' : 'Unit: '}
+                                              <span className="text-[#0EA0DC] font-semibold">
                                                 {getSymbol(product.currency)}{product.unitPrices[size].toFixed(2)}
                                               </span>
                                             </span>
-                                            <span className="text-xs sm:text-sm text-[#666666]">
-                                              Case ({product.unitsPerCase[size]} units): <span className="text-[#0EA0DC] font-semibold">
-                                                {getSymbol(product.currency)}{product.casePrices[size].toFixed(2)}
+                                            {product.unitsPerCase[size] > 1 && (
+                                              <span className="text-xs sm:text-sm text-[#666666]">
+                                                Case ({product.unitsPerCase[size]} units): <span className="text-[#0EA0DC] font-semibold">
+                                                  {getSymbol(product.currency)}{product.casePrices[size].toFixed(2)}
+                                                </span>
                                               </span>
-                                            </span>
+                                            )}
                                           </div>
                                         </div>
                                         <div className="flex gap-2">
@@ -781,15 +828,17 @@ export function DistributorDashboard({
                                             onClick={() => addToOrder(product, size, "unit")}
                                             className="rounded-lg border-[#0EA0DC]/30 text-[#0EA0DC] hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5 flex-1 sm:flex-none"
                                           >
-                                            + Unit
+                                            {product.unitsPerCase[size] > 1 ? '+ Unit' : '+ Add'}
                                           </Button>
-                                          <Button
-                                            size="sm"
-                                            onClick={() => addToOrder(product, size, "case")}
-                                            className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] rounded-lg flex-1 sm:flex-none font-medium"
-                                          >
-                                            + Case
-                                          </Button>
+                                          {product.unitsPerCase[size] > 1 && (
+                                            <Button
+                                              size="sm"
+                                              onClick={() => addToOrder(product, size, "case")}
+                                              className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] rounded-lg flex-1 sm:flex-none font-medium"
+                                            >
+                                              + Case
+                                            </Button>
+                                          )}
                                         </div>
                                       </div>
                                     ))}
@@ -1200,13 +1249,23 @@ export function DistributorDashboard({
                                 </div>
 
                                 <div className="flex flex-col items-end gap-2.5">
-                                  <Badge className={
-                                    request.paymentStatus === 'paid'
-                                      ? 'bg-green-100 text-green-700 hover:bg-green-100 border-0 shadow-sm'
-                                      : 'bg-amber-100 text-amber-700 hover:bg-amber-100 border-0 shadow-sm'
-                                  }>
-                                    {request.paymentStatus === 'paid' ? 'Paid' : 'Unpaid'}
-                                  </Badge>
+                                  <div className="flex flex-col items-end gap-1">
+                                    <Badge className={
+                                      request.paymentStatus === 'paid'
+                                        ? 'bg-green-100 text-green-700 hover:bg-green-100 border-0 shadow-sm'
+                                        : 'bg-amber-100 text-amber-700 hover:bg-amber-100 border-0 shadow-sm'
+                                    }>
+                                      {request.paymentStatus === 'paid' ? 'Paid' : 'Unpaid'}
+                                    </Badge>
+                                    {request.paymentStatus !== 'paid' && request.stripeSessionId && (
+                                      <button
+                                        onClick={() => verifyAndRefresh(request.stripeSessionId)}
+                                        className="text-[10px] text-[#0EA0DC] hover:underline font-bold"
+                                      >
+                                        Verify Payment
+                                      </button>
+                                    )}
+                                  </div>
                                   <div className="flex items-center gap-1.5 text-xs font-bold">
                                     {getStatusIcon(request.requestStatus)}
                                     <span className={
