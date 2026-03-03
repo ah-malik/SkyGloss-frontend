@@ -229,7 +229,7 @@ const distributorProducts = [
     unitPrices: { "2-Day Course": 2500.00 },
     casePrices: { "2-Day Course": 2500.00 },
     unitsPerCase: { "2-Day Course": 1 },
-    image: fusionMainImage
+    image: "https://res.cloudinary.com/dxhmopbei/image/upload/v1772048373/q99t4cvoxcfjkujlox2k.jpg"
   },
   {
     id: 12,
@@ -239,7 +239,7 @@ const distributorProducts = [
     unitPrices: { "Full Session": 1000.00 },
     casePrices: { "Full Session": 1000.00 },
     unitsPerCase: { "Full Session": 1 },
-    image: fusionMainImage
+    image: "https://res.cloudinary.com/dxhmopbei/image/upload/v1772048722/pb8sauytdht4aecqxgaj.png"
   },
   {
     id: 13,
@@ -249,7 +249,7 @@ const distributorProducts = [
     unitPrices: { "Per Month": 1000.00 },
     casePrices: { "Per Month": 1000.00 },
     unitsPerCase: { "Per Month": 1 },
-    image: fusionMainImage
+    image: "https://res.cloudinary.com/dxhmopbei/image/upload/v1772048836/atcnitnp6onipsxgkys4.jpg"
   }
 ];
 

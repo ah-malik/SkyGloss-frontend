@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from "motion/react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
-import { Globe, MapPin, Building2, TrendingUp, Users, X, Map } from "lucide-react";
+import { Globe, MapPin, Building2, TrendingUp, Users, X, Map, Loader2 } from "lucide-react";
+import api from "../api/axios";
 
 interface Location {
   name: string;
@@ -19,189 +20,18 @@ interface Location {
   };
 }
 
-const globalLocations: Location[] = [
-  {
-    name: "Phoenix HQ",
-    country: "USA",
-    lat: 33.4484,
-    lng: -112.0740,
-    type: "headquarters",
-    stats: {
-      shops: 45,
-      revenue: "$2.4M",
-      growth: "+24%"
-    }
-  },
-  {
-    name: "Madrid",
-    country: "Spain",
-    lat: 40.4168,
-    lng: -3.7038,
-    type: "distributor",
-    stats: {
-      shops: 28,
-      revenue: "$890K",
-      growth: "+18%"
-    }
-  },
-  {
-    name: "São Paulo",
-    country: "Brazil",
-    lat: -23.5505,
-    lng: -46.6333,
-    type: "distributor",
-    stats: {
-      shops: 34,
-      revenue: "$1.2M",
-      growth: "+32%"
-    }
-  },
-  {
-    name: "Mumbai",
-    country: "India",
-    lat: 19.0760,
-    lng: 72.8777,
-    type: "distributor",
-    stats: {
-      shops: 52,
-      revenue: "$1.8M",
-      growth: "+45%"
-    }
+const headquarters: Location = {
+  name: "Phoenix HQ",
+  country: "USA",
+  lat: 33.4484,
+  lng: -112.0740,
+  type: "headquarters",
+  stats: {
+    shops: 45,
+    revenue: "$2.4M",
+    growth: "24"
   }
-];
-
-const usLocations: Location[] = [
-  {
-    name: "Phoenix",
-    country: "USA",
-    state: "Arizona",
-    lat: 33.4484,
-    lng: -112.0740,
-    type: "headquarters",
-    stats: {
-      shops: 45,
-      revenue: "$2.4M",
-      growth: "+24%"
-    }
-  },
-  {
-    name: "Los Angeles",
-    country: "USA",
-    state: "California",
-    lat: 34.0522,
-    lng: -118.2437,
-    type: "retail",
-    stats: {
-      shops: 38,
-      revenue: "$1.8M",
-      growth: "+28%"
-    }
-  },
-  {
-    name: "San Francisco",
-    country: "USA",
-    state: "California",
-    lat: 37.7749,
-    lng: -122.4194,
-    type: "retail",
-    stats: {
-      shops: 22,
-      revenue: "$1.2M",
-      growth: "+21%"
-    }
-  },
-  {
-    name: "Seattle",
-    country: "USA",
-    state: "Washington",
-    lat: 47.6062,
-    lng: -122.3321,
-    type: "retail",
-    stats: {
-      shops: 18,
-      revenue: "$950K",
-      growth: "+19%"
-    }
-  },
-  {
-    name: "Denver",
-    country: "USA",
-    state: "Colorado",
-    lat: 39.7392,
-    lng: -104.9903,
-    type: "retail",
-    stats: {
-      shops: 15,
-      revenue: "$780K",
-      growth: "+16%"
-    }
-  },
-  {
-    name: "Dallas",
-    country: "USA",
-    state: "Texas",
-    lat: 32.7767,
-    lng: -96.7970,
-    type: "retail",
-    stats: {
-      shops: 31,
-      revenue: "$1.5M",
-      growth: "+25%"
-    }
-  },
-  {
-    name: "Houston",
-    country: "USA",
-    state: "Texas",
-    lat: 29.7604,
-    lng: -95.3698,
-    type: "retail",
-    stats: {
-      shops: 27,
-      revenue: "$1.3M",
-      growth: "+22%"
-    }
-  },
-  {
-    name: "Chicago",
-    country: "USA",
-    state: "Illinois",
-    lat: 41.8781,
-    lng: -87.6298,
-    type: "retail",
-    stats: {
-      shops: 35,
-      revenue: "$1.7M",
-      growth: "+20%"
-    }
-  },
-  {
-    name: "New York",
-    country: "USA",
-    state: "New York",
-    lat: 40.7128,
-    lng: -74.0060,
-    type: "retail",
-    stats: {
-      shops: 52,
-      revenue: "$2.8M",
-      growth: "+30%"
-    }
-  },
-  {
-    name: "Miami",
-    country: "USA",
-    state: "Florida",
-    lat: 25.7617,
-    lng: -80.1918,
-    type: "retail",
-    stats: {
-      shops: 29,
-      revenue: "$1.4M",
-      growth: "+27%"
-    }
-  }
-];
+};
 
 export function InteractiveWorldMap() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -212,19 +42,55 @@ export function InteractiveWorldMap() {
   const [lastMouseX, setLastMouseX] = useState(0);
   const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
   const [lastPanPos, setLastPanPos] = useState({ x: 0, y: 0 });
-  const animationRef = useRef<number>();
+  const [locations, setLocations] = useState<Location[]>([headquarters]);
+  const [loading, setLoading] = useState(true);
+  const animationRef = useRef<number | null>(null);
 
-  const currentLocations = viewMode === "global" ? globalLocations : usLocations;
+  useEffect(() => {
+    const fetchDistributors = async () => {
+      try {
+        const res = await api.get("/users");
+        const distributors = res.data
+          .filter((user: any) =>
+            (user.role === "master_distributor" || user.role === "regional_distributor") &&
+            user.latitude != null && user.longitude != null
+          )
+          .map((user: any) => ({
+            name: user.companyName || `${user.firstName} ${user.lastName}`,
+            country: user.country || "Unknown",
+            lat: user.latitude,
+            lng: user.longitude,
+            type: user.role === "master_distributor" ? "distributor" : "retail",
+            stats: {
+              shops: user.shops || 0,
+              revenue: user.revenue || "$0",
+              growth: "0" // Default growth if not in backend
+            }
+          }));
+        setLocations([headquarters, ...distributors]);
+      } catch (err) {
+        console.error("Failed to fetch distributors for map:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDistributors();
+  }, []);
+
+  const currentLocations = locations.filter(loc => {
+    if (viewMode === "global") return true;
+    return loc.country === "USA";
+  });
 
   // Convert lat/lng to 3D sphere coordinates (for global view)
   const latLngToXYZ = (lat: number, lng: number, radius: number) => {
     const phi = (90 - lat) * (Math.PI / 180);
     const theta = (lng + 180) * (Math.PI / 180);
-    
+
     const x = -(radius * Math.sin(phi) * Math.cos(theta));
     const z = radius * Math.sin(phi) * Math.sin(theta);
     const y = radius * Math.cos(phi);
-    
+
     return { x, y, z };
   };
 
@@ -233,10 +99,10 @@ export function InteractiveWorldMap() {
     // USA bounds: roughly lat 24-50, lng -125 to -66
     const latMin = 24, latMax = 50;
     const lngMin = -125, lngMax = -66;
-    
+
     const x = ((lng - lngMin) / (lngMax - lngMin)) * width * 0.8 + width * 0.1;
     const y = ((latMax - lat) / (latMax - latMin)) * height * 0.8 + height * 0.1;
-    
+
     return { x: x + panOffset.x, y: y + panOffset.y };
   };
 
@@ -287,10 +153,10 @@ export function InteractiveWorldMap() {
     }
 
     // Draw location markers
-    globalLocations.forEach((location) => {
+    currentLocations.forEach((location) => {
       const adjustedLng = location.lng + (rotation * 180) / Math.PI;
       const pos3D = latLngToXYZ(location.lat, adjustedLng, radius);
-      
+
       // Check if point is on visible side
       if (pos3D.x > 0) {
         const screenX = centerX + pos3D.z;
@@ -311,7 +177,7 @@ export function InteractiveWorldMap() {
           markerGradient.addColorStop(0, "#FFFFFF");
           markerGradient.addColorStop(1, "#E0E0E0");
         }
-        
+
         ctx.fillStyle = markerGradient;
         ctx.beginPath();
         ctx.arc(screenX, screenY, 8, 0, Math.PI * 2);
@@ -324,8 +190,8 @@ export function InteractiveWorldMap() {
 
         // Draw pulse effect
         const pulseRadius = 8 + Math.sin(Date.now() / 300) * 3;
-        ctx.strokeStyle = location.type === "headquarters" 
-          ? "rgba(255, 215, 0, 0.4)" 
+        ctx.strokeStyle = location.type === "headquarters"
+          ? "rgba(255, 215, 0, 0.4)"
           : "rgba(14, 160, 220, 0.4)";
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -348,11 +214,11 @@ export function InteractiveWorldMap() {
     ctx.strokeStyle = "#0EA0DC";
     ctx.lineWidth = 3;
     ctx.fillStyle = "rgba(14, 160, 220, 0.05)";
-    
+
     // Simplified USA shape
     ctx.beginPath();
     const usOutline = [
-      [0.15, 0.85], [0.18, 0.75], [0.25, 0.65], [0.28, 0.55], 
+      [0.15, 0.85], [0.18, 0.75], [0.25, 0.65], [0.28, 0.55],
       [0.32, 0.45], [0.38, 0.35], [0.42, 0.28], [0.48, 0.25],
       [0.55, 0.22], [0.62, 0.20], [0.70, 0.22], [0.78, 0.25],
       [0.83, 0.30], [0.87, 0.40], [0.88, 0.50], [0.87, 0.60],
@@ -360,7 +226,7 @@ export function InteractiveWorldMap() {
       [0.55, 0.88], [0.45, 0.88], [0.35, 0.87], [0.25, 0.88],
       [0.18, 0.87]
     ];
-    
+
     usOutline.forEach(([x, y], i) => {
       const posX = x * width;
       const posY = y * height;
@@ -388,9 +254,9 @@ export function InteractiveWorldMap() {
     }
 
     // Draw location markers
-    usLocations.forEach((location) => {
+    currentLocations.forEach((location) => {
       const pos = latLngToUSMap(location.lat, location.lng, width, height);
-      
+
       // Draw marker shadow
       ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
       ctx.beginPath();
@@ -406,7 +272,7 @@ export function InteractiveWorldMap() {
         markerGradient.addColorStop(0, "#0EA0DC");
         markerGradient.addColorStop(1, "#0B7FB3");
       }
-      
+
       ctx.fillStyle = markerGradient;
       ctx.beginPath();
       ctx.arc(pos.x, pos.y, 10, 0, Math.PI * 2);
@@ -419,8 +285,8 @@ export function InteractiveWorldMap() {
 
       // Draw pulse effect
       const pulseRadius = 10 + Math.sin(Date.now() / 300) * 4;
-      ctx.strokeStyle = location.type === "headquarters" 
-        ? "rgba(255, 215, 0, 0.5)" 
+      ctx.strokeStyle = location.type === "headquarters"
+        ? "rgba(255, 215, 0, 0.5)"
         : "rgba(14, 160, 220, 0.5)";
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -494,7 +360,7 @@ export function InteractiveWorldMap() {
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isDragging) return;
-    
+
     if (viewMode === "global") {
       const deltaX = e.clientX - lastMouseX;
       setRotation((prev) => prev + deltaX * 0.01);
@@ -528,41 +394,36 @@ export function InteractiveWorldMap() {
     let clickedLocation: Location | null = null;
     let minDistance = Infinity;
 
-    if (viewMode === "global") {
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const radius = Math.min(canvas.width, canvas.height) * 0.35;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = Math.min(canvas.width, canvas.height) * 0.35;
 
-      globalLocations.forEach((location) => {
+    currentLocations.forEach((location) => {
+      let screenX, screenY;
+
+      if (viewMode === "global") {
         const adjustedLng = location.lng + (rotation * 180) / Math.PI;
         const pos3D = latLngToXYZ(location.lat, adjustedLng, radius);
-        
+
         if (pos3D.x > 0) {
-          const screenX = centerX + pos3D.z;
-          const screenY = centerY - pos3D.y;
-          const distance = Math.sqrt(
-            Math.pow(scaledClickX - screenX, 2) + Math.pow(scaledClickY - screenY, 2)
-          );
-
-          if (distance < 15 && distance < minDistance) {
-            clickedLocation = location;
-            minDistance = distance;
-          }
-        }
-      });
-    } else {
-      usLocations.forEach((location) => {
+          screenX = centerX + pos3D.z;
+          screenY = centerY - pos3D.y;
+        } else return;
+      } else {
         const pos = latLngToUSMap(location.lat, location.lng, canvas.width, canvas.height);
-        const distance = Math.sqrt(
-          Math.pow(scaledClickX - pos.x, 2) + Math.pow(scaledClickY - pos.y, 2)
-        );
+        screenX = pos.x;
+        screenY = pos.y;
+      }
 
-        if (distance < 20 && distance < minDistance) {
-          clickedLocation = location;
-          minDistance = distance;
-        }
-      });
-    }
+      const distance = Math.sqrt(
+        Math.pow(scaledClickX - screenX, 2) + Math.pow(scaledClickY - screenY, 2)
+      );
+
+      if (distance < 20 && distance < minDistance) {
+        clickedLocation = location;
+        minDistance = distance;
+      }
+    });
 
     if (clickedLocation) {
       setSelectedLocation(clickedLocation);
@@ -591,13 +452,13 @@ export function InteractiveWorldMap() {
             {viewMode === "global" ? "Global Network" : "USA Regional Network"}
           </h1>
           <p className="text-[#666666]">
-            {viewMode === "global" 
-              ? "Interactive map with SkyGloss locations worldwide" 
+            {viewMode === "global"
+              ? "Interactive map with SkyGloss locations worldwide"
               : "10 major cities across the United States"}
           </p>
           <p className="text-sm text-[#999999]">
-            {viewMode === "global" 
-              ? "Drag to rotate • Click markers for details" 
+            {viewMode === "global"
+              ? "Drag to rotate • Click markers for details"
               : "Click markers to view city details"}
           </p>
         </motion.div>
@@ -611,22 +472,20 @@ export function InteractiveWorldMap() {
         >
           <Button
             onClick={() => setViewMode("global")}
-            className={`px-4 sm:px-8 py-2 sm:py-3 rounded-xl transition-all duration-200 ${
-              viewMode === "global"
-                ? "bg-[#0EA0DC] text-white shadow-lg"
-                : "bg-[#272727] text-white hover:bg-[#272727]/90"
-            }`}
+            className={`px-4 sm:px-8 py-2 sm:py-3 rounded-xl transition-all duration-200 ${viewMode === "global"
+              ? "bg-[#0EA0DC] text-white shadow-lg"
+              : "bg-[#272727] text-white hover:bg-[#272727]/90"
+              }`}
           >
             <Globe className="w-4 h-4 mr-1 sm:mr-2" />
             <span className="text-sm sm:text-base">Global View</span>
           </Button>
           <Button
             onClick={() => setViewMode("regional")}
-            className={`px-4 sm:px-8 py-2 sm:py-3 rounded-xl transition-all duration-200 ${
-              viewMode === "regional"
-                ? "bg-[#0EA0DC] text-white shadow-lg"
-                : "bg-[#272727] text-white hover:bg-[#272727]/90"
-            }`}
+            className={`px-4 sm:px-8 py-2 sm:py-3 rounded-xl transition-all duration-200 ${viewMode === "regional"
+              ? "bg-[#0EA0DC] text-white shadow-lg"
+              : "bg-[#272727] text-white hover:bg-[#272727]/90"
+              }`}
           >
             <Map className="w-4 h-4 mr-1 sm:mr-2" />
             <span className="text-sm sm:text-base">USA Regional</span>
@@ -641,7 +500,15 @@ export function InteractiveWorldMap() {
             transition={{ delay: 0.2 }}
             className="lg:col-span-2 order-2 lg:order-1"
           >
-            <Card className="skygloss-card p-4 sm:p-8 rounded-3xl">
+            <Card className="skygloss-card p-4 sm:p-8 rounded-3xl relative overflow-hidden">
+              {loading && (
+                <div className="absolute inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center z-10">
+                  <div className="flex flex-col items-center gap-2">
+                    <Loader2 className="w-8 h-8 text-[#0EA0DC] animate-spin" />
+                    <p className="text-sm font-medium text-[#666666]">Mapping Network...</p>
+                  </div>
+                </div>
+              )}
               <div className="relative">
                 <canvas
                   ref={canvasRef}
@@ -656,8 +523,8 @@ export function InteractiveWorldMap() {
                 />
                 <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg">
                   <p className="text-xs text-[#666666]">
-                    {viewMode === "global" 
-                      ? "🖱️ Drag to rotate • Click markers for details" 
+                    {viewMode === "global"
+                      ? "🖱️ Drag to rotate • Click markers for details"
                       : "🖱️ Click markers for city details"}
                   </p>
                 </div>
@@ -689,11 +556,10 @@ export function InteractiveWorldMap() {
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <div className={`w-3 h-3 rounded-full ${
-                          location.type === "headquarters" 
-                            ? "bg-gradient-to-r from-yellow-400 to-orange-500 shadow-lg shadow-yellow-500/50" 
-                            : "bg-gradient-to-r from-[#0EA0DC] to-[#0B7FB3]"
-                        }`} />
+                        <div className={`w-3 h-3 rounded-full ${location.type === "headquarters"
+                          ? "bg-gradient-to-r from-yellow-400 to-orange-500 shadow-lg shadow-yellow-500/50"
+                          : "bg-gradient-to-r from-[#0EA0DC] to-[#0B7FB3]"
+                          }`} />
                         <div>
                           <h4 className="text-sm text-[#272727]">{location.name}</h4>
                           <p className="text-xs text-[#666666]">
@@ -756,11 +622,10 @@ export function InteractiveWorldMap() {
                   </button>
 
                   <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
-                    <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center shadow-lg ${
-                      selectedLocation.type === "headquarters"
-                        ? "bg-gradient-to-br from-yellow-400 to-orange-500"
-                        : "bg-gradient-to-br from-[#0EA0DC] to-[#0B7FB3]"
-                    }`}>
+                    <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center shadow-lg ${selectedLocation.type === "headquarters"
+                      ? "bg-gradient-to-br from-yellow-400 to-orange-500"
+                      : "bg-gradient-to-br from-[#0EA0DC] to-[#0B7FB3]"
+                      }`}>
                       {selectedLocation.type === "headquarters" ? (
                         <Building2 className="w-8 h-8 text-white" />
                       ) : (
@@ -775,16 +640,16 @@ export function InteractiveWorldMap() {
                             ? "bg-yellow-500/10 text-yellow-700 border-yellow-500/20"
                             : "bg-[#0EA0DC]/10 text-[#0EA0DC] border-[#0EA0DC]/20"
                         }>
-                          {selectedLocation.type === "headquarters" 
-                            ? "Headquarters" 
-                            : selectedLocation.type === "distributor" 
-                              ? "Master Distributor" 
+                          {selectedLocation.type === "headquarters"
+                            ? "Headquarters"
+                            : selectedLocation.type === "distributor"
+                              ? "Master Distributor"
                               : "Retail Network"}
                         </Badge>
                       </div>
                       <p className="text-[#666666]">
-                        {selectedLocation.state 
-                          ? `${selectedLocation.state}, ${selectedLocation.country}` 
+                        {selectedLocation.state
+                          ? `${selectedLocation.state}, ${selectedLocation.country}`
                           : selectedLocation.country}
                       </p>
                     </div>
@@ -818,7 +683,7 @@ export function InteractiveWorldMap() {
                     <div>
                       <h4 className="text-sm text-[#272727] mb-2">Performance Overview</h4>
                       <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className="h-full bg-gradient-to-r from-[#0EA0DC] to-[#0B7FB3] rounded-full"
                           style={{ width: `${parseInt(selectedLocation.stats.growth)}%` }}
                         />
@@ -828,7 +693,7 @@ export function InteractiveWorldMap() {
                       <Button className="flex-1 bg-[#0EA0DC] text-white hover:bg-[#0B7FB3] rounded-xl">
                         View Details
                       </Button>
-                      <Button 
+                      <Button
                         variant="outline"
                         className="flex-1 border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/5 rounded-xl"
                       >
