@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import { motion, AnimatePresence } from "framer-motion";
 import L from "leaflet";
@@ -54,6 +54,7 @@ interface Location {
   lat: number;
   lng: number;
   type: "headquarters" | "distributor" | "retail";
+  address?: string;
   stats: {
     shops: number;
     revenue: string;
@@ -71,7 +72,8 @@ const headquarters: Location = {
     shops: 45,
     revenue: "$2.4M",
     growth: "24"
-  }
+  },
+  address: "2 E Camelback Rd, Phoenix, AZ 85012, USA"
 };
 
 // Map view controller component
@@ -107,6 +109,7 @@ export function InteractiveWorldMap() {
             lat: user.latitude,
             lng: user.longitude,
             type: user.role === "master_distributor" ? "distributor" : "retail",
+            address: user.address || "",
             stats: {
               shops: user.shops || Math.floor(Math.random() * 20) + 5,
               revenue: user.revenue || `$${(Math.random() * 500 + 100).toFixed(1)}k`,
@@ -307,7 +310,7 @@ export function InteractiveWorldMap() {
                   <X className="w-5 h-5 text-gray-500" />
                 </button>
 
-                <div className="flex items-center gap-6 mb-10">
+                <div className="flex items-center gap-6 ">
                   <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg ${selectedLocation.type === "headquarters"
                     ? "bg-gradient-to-br from-yellow-400 to-orange-500"
                     : "bg-gradient-to-br from-[#0EA0DC] to-[#0B7FB3]"
@@ -329,7 +332,12 @@ export function InteractiveWorldMap() {
                     </p>
                   </div>
                 </div>
-
+                {selectedLocation.address && (
+                  <div className="mb-6 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-gray-600 text-sm">
+                    <p className="font-bold mb-1 text-xs uppercase text-gray-400 tracking-wider">Distributor Address</p>
+                    <p className="font-semibold text-[#272727]">{selectedLocation.address}</p>
+                  </div>
+                )}
                 <div className="grid grid-cols-3 gap-4 mb-10">
                   <div className="p-4 rounded-3xl bg-gray-50 border border-gray-100 text-center">
                     <div className="flex items-center justify-center gap-1 mb-2">
@@ -350,9 +358,12 @@ export function InteractiveWorldMap() {
                       <Users className="w-3 h-3 text-blue-600" />
                       <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Growth</span>
                     </div>
+
                     <p className="text-xl font-black text-green-600">+{selectedLocation.stats.growth}%</p>
                   </div>
                 </div>
+
+
 
                 <div className="space-y-4">
                   <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
@@ -363,10 +374,10 @@ export function InteractiveWorldMap() {
                     />
                   </div>
                   <div className="flex gap-4">
-                    <Button className="flex-1 bg-[#0EA0DC] hover:bg-blue-600 text-white py-6 rounded-2xl font-black shadow-xl shadow-blue-500/20">
+                    <Button className="flex-1 bg-[#0EA0DC] hover:bg-[#272727] text-white py-6 rounded-2xl font-black shadow-xl shadow-blue-500/20">
                       View Regional Analytics
                     </Button>
-                    <Button variant="outline" className="flex-1 border-gray-200 py-6 rounded-2xl font-black text-gray-600">
+                    <Button variant="outline" className="flex-1 border-gray-200 py-6 rounded-2xl font-black text-white">
                       Contact Center
                     </Button>
                   </div>
