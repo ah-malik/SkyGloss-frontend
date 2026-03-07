@@ -163,7 +163,7 @@ export function DistributorLogin() {
             </form>
           </Card>
 
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
@@ -172,7 +172,7 @@ export function DistributorLogin() {
             <p className="text-xs text-[#0EA0DC]">
               <strong>Demo:</strong> Username: "distributor", Password: "demo123"
             </p>
-          </motion.div>
+          </motion.div> */}
 
         </motion.div>
       </div>

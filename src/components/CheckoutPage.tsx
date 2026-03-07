@@ -38,8 +38,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shipping = 15.00;
-  const tax = subtotal * 0.08;
-  const total = subtotal + shipping + tax;
+  const total = subtotal + shipping;
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -297,10 +296,6 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                   <div className="flex justify-between text-sm text-[#666666]">
                     <span>Shipping</span>
                     <span>${shipping.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm text-[#666666]">
-                    <span>Tax (Est.)</span>
-                    <span>${tax.toFixed(2)}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between text-lg text-[#272727]">

@@ -158,25 +158,25 @@ export function NetworkDashboard() {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 gap-1.5 mb-8 bg-white rounded-xl p-1.5 border-2 border-[#0EA0DC] shadow-[0_0_10px_rgba(14,160,220,0.15)] h-auto">
-            <TabsTrigger 
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-2 gap-1.5 mb-8 bg-white rounded-xl p-1.5 border-2 border-[#0EA0DC] shadow-[0_0_10px_rgba(14,160,220,0.15)] h-auto">
+            <TabsTrigger
               value="overview"
               className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-2 sm:py-3 px-2 sm:px-6 rounded-lg transition-all duration-200 text-xs sm:text-sm"
             >
               Overview
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="network"
               className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-2 sm:py-3 px-2 sm:px-6 rounded-lg transition-all duration-200 text-xs sm:text-sm"
             >
               Network Map
             </TabsTrigger>
-            <TabsTrigger 
+            {/* <TabsTrigger
               value="clone"
               className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-2 sm:py-3 px-2 sm:px-6 rounded-lg transition-all duration-200 text-xs sm:text-sm"
             >
               Cloning
-            </TabsTrigger>
+            </TabsTrigger> */}
           </TabsList>
 
           {/* Overview Tab */}
@@ -230,8 +230,8 @@ export function NetworkDashboard() {
                           <div className="text-[#272727]">{cert.shop}</div>
                           <div className="text-sm text-[#666666]">{cert.country} · {cert.date}</div>
                         </div>
-                        <Badge className={cert.status === "active" 
-                          ? "bg-green-100 text-green-800" 
+                        <Badge className={cert.status === "active"
+                          ? "bg-green-100 text-green-800"
                           : "bg-yellow-100 text-yellow-800"
                         }>
                           {cert.status}
@@ -255,7 +255,7 @@ export function NetworkDashboard() {
           </TabsContent>
 
           {/* Portal Cloning Tab */}
-          <TabsContent value="clone">
+          {/* <TabsContent value="clone">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -295,7 +295,7 @@ export function NetworkDashboard() {
                 </div>
               </Card>
             </motion.div>
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </div>
     </div>

@@ -395,12 +395,12 @@ export function ShopLogin() {
             </Tabs>
           </Card>
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mt-4 p-4 bg-[#0EA0DC]/10 rounded-lg border border-[#0EA0DC]/20">
+          {/* <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mt-4 p-4 bg-[#0EA0DC]/10 rounded-lg border border-[#0EA0DC]/20">
             <p className="text-xs text-[#0EA0DC]">
               <strong>Demo USA:</strong> Username: "shop123", Password: "demo123"<br />
               <strong>Demo International:</strong> Access Code: "12345678"
             </p>
-          </motion.div>
+          </motion.div> */}
 
         </motion.div>
       </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import { motion, AnimatePresence } from "framer-motion";
 import L from "leaflet";
@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
-import { Globe, MapPin, Building2, TrendingUp, Users, X, Map as MapIcon, Loader2 } from "lucide-react";
+import { Globe, MapPin, Building2, TrendingUp, Users, X, Map as MapIcon, Loader2, Search } from "lucide-react";
 import api from "../api/axios";
 
 // Custom marker icons
@@ -47,9 +47,46 @@ const createCustomIcon = (type: "headquarters" | "distributor" | "retail") => {
   });
 };
 
+const createClusterIcon = (count: number) => {
+  return L.divIcon({
+    className: "custom-cluster-icon",
+    html: `<div style="
+      width: 32px;
+      height: 32px;
+      background: #0EA0DC;
+      border: 3px solid white;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(14, 160, 220, 0.6);
+      display: flex;
+      items-center;
+      justify-content: center;
+      color: white;
+      font-weight: 900;
+      font-size: 14px;
+      position: relative;
+      line-height: 26px;
+    ">
+      ${count}
+      <div style="
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 4px solid #0EA0DC;
+        animation: pulse 2s infinite;
+        top: -3px;
+        left: -3px;
+      "></div>
+    </div>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+  });
+};
+
 interface Location {
   name: string;
   country: string;
+  city?: string;
   state?: string;
   lat: number;
   lng: number;
@@ -62,9 +99,16 @@ interface Location {
   };
 }
 
+interface GroupedLocation {
+  country: string;
+  locations: Location[];
+  center: Location;
+}
+
 const headquarters: Location = {
   name: "Phoenix HQ",
   country: "USA",
+  city: "Phoenix",
   lat: 33.4484,
   lng: -112.0740,
   type: "headquarters",
@@ -87,7 +131,9 @@ function ChangeView({ center, zoom }: { center: [number, number], zoom: number }
 
 export function InteractiveWorldMap() {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<GroupedLocation | null>(null);
   const [viewMode, setViewMode] = useState<"global" | "regional">("global");
+  const [searchQuery, setSearchQuery] = useState("");
   const [locations, setLocations] = useState<Location[]>([headquarters]);
   const [loading, setLoading] = useState(true);
 
@@ -106,6 +152,7 @@ export function InteractiveWorldMap() {
           .map((user: any) => ({
             name: user.companyName || `${user.firstName} ${user.lastName}`,
             country: user.country || "Unknown",
+            city: user.city || "",
             lat: user.latitude,
             lng: user.longitude,
             type: user.role === "master_distributor" ? "distributor" : "retail",
@@ -127,9 +174,28 @@ export function InteractiveWorldMap() {
   }, []);
 
   const currentLocations = locations.filter(loc => {
-    if (viewMode === "global") return true;
-    return loc.country === "USA";
+    const matchesView = viewMode === "global" || loc.country === "USA";
+    const matchesSearch = !searchQuery ||
+      loc.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (loc.city && loc.city.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      loc.name.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchesView && matchesSearch;
   });
+
+  // Group locations by country
+  const groupedLocations = useMemo(() => {
+    const groups: Record<string, Location[]> = {};
+    currentLocations.forEach(loc => {
+      if (!groups[loc.country]) groups[loc.country] = [];
+      groups[loc.country].push(loc);
+    });
+    return Object.entries(groups).map(([country, locs]) => ({
+      country,
+      locations: locs,
+      center: locs[0] // Use the first location's coordinates as the center for the country
+    }));
+  }, [currentLocations]);
 
   return (
     <div className="w-full space-y-8">
@@ -187,13 +253,19 @@ export function InteractiveWorldMap() {
                 url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
               />
 
-              {currentLocations.map((location, idx) => (
+              {groupedLocations.map((group: GroupedLocation, idx: number) => (
                 <Marker
-                  key={`${location.name}-${idx}`}
-                  position={[location.lat, location.lng]}
-                  icon={createCustomIcon(location.type)}
+                  key={`${group.country}-${idx}`}
+                  position={[group.center.lat, group.center.lng]}
+                  icon={group.locations.length > 1 ? createClusterIcon(group.locations.length) : createCustomIcon(group.center.type)}
                   eventHandlers={{
-                    click: () => setSelectedLocation(location),
+                    click: () => {
+                      if (group.locations.length > 1) {
+                        setSelectedCountry(group);
+                      } else {
+                        setSelectedLocation(group.locations[0]);
+                      }
+                    },
                   }}
                 />
               ))}
@@ -221,6 +293,17 @@ export function InteractiveWorldMap() {
             <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-none font-bold">
               {currentLocations.length} Online
             </Badge>
+          </div>
+
+          <div className="relative mb-4">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search country or city..."
+              className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA0DC]/20 transition-all font-medium text-[#272727]"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
 
           <div className="!max-h-[520px] overflow-y-auto space-y-3 pr-2 custom-scrollbar">
@@ -280,6 +363,72 @@ export function InteractiveWorldMap() {
           </div>
         </motion.div>
       </div>
+
+      {/* Distributor Selection Modal (For grouped countries) */}
+      <AnimatePresence>
+        {selectedCountry && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 z-[9999]"
+            onClick={() => setSelectedCountry(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 30 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-xl"
+            >
+              <Card className="skygloss-card p-6 rounded-[2.5rem] bg-white border-none shadow-2xl relative overflow-hidden">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h3 className="text-xl font-black text-[#272727]">{selectedCountry.country} Distributors</h3>
+                    <p className="text-sm text-gray-500 font-medium">Multiple partners found in this region</p>
+                  </div>
+                  <button
+                    onClick={() => setSelectedCountry(null)}
+                    className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+                  >
+                    <X className="w-5 h-5 text-gray-500" />
+                  </button>
+                </div>
+
+                <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                  {selectedCountry.locations.map((loc: Location, idx: number) => (
+                    <div
+                      key={idx}
+                      onClick={() => {
+                        setSelectedLocation(loc);
+                        setSelectedCountry(null);
+                      }}
+                      className="p-4 bg-gray-50 hover:bg-[#0EA0DC]/5 border border-gray-100 hover:border-[#0EA0DC]/30 rounded-2xl cursor-pointer transition-all flex items-center justify-between group"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${loc.type === "headquarters" ? "bg-yellow-100" : "bg-blue-100 group-hover:bg-[#0EA0DC] group-hover:text-white"}`}>
+                          {loc.type === "headquarters" ? (
+                            <Building2 className="w-6 h-6 text-yellow-600" />
+                          ) : (
+                            <MapPin className="w-6 h-6 text-[#0EA0DC] group-hover:text-white" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-bold text-[#272727]">{loc.name}</p>
+                          <p className="text-xs text-gray-500 font-medium">{loc.address || "Live Partner"}</p>
+                        </div>
+                      </div>
+                      <Badge className="bg-white text-gray-400 border border-gray-100 font-bold group-hover:bg-[#0EA0DC] group-hover:text-white group-hover:border-transparent transition-all">
+                        View
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Premium Detail Modal - Restored */}
       <AnimatePresence>
