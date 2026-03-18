@@ -20,6 +20,7 @@ import { SealGuide } from "./SealGuide";
 import { MatteGuide } from "./MatteGuide";
 import { ShineGuide } from "./ShineGuide";
 import { UnderstandingSkyGloss } from "./UnderstandingSkyGloss";
+import { CertificationVideoUpload } from "./CertificationVideoUpload";
 import { useAuth } from "../AuthContext";
 import api from "../api/axios";
 import { toast } from "sonner";
@@ -1553,6 +1554,9 @@ export function DistributorDashboard({
                     </motion.div>
                   ))}
               </div>
+
+              {/* Dynamic Video Upload Requirement */}
+              <CertificationVideoUpload />
             </motion.div>
           )}
         </AnimatePresence>

@@ -229,7 +229,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                         Phase 02: Residue removal
                                     </Badge>
                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
-                                        Remove <span className="text-rose-500">Wax & Silicone</span>
+                                        Remove <span className="text-[#0EA0DC]">Wax & Silicone</span>
                                     </h2>
                                     <div className="space-y-6 mb-10">
                                         {[
@@ -247,7 +247,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <div className="flex justify-end">
                                         <Button
                                             onClick={() => markComplete('residue')}
-                                            className={`rounded - xl px - 10 h - 14 font - bold transition - all duration - 500 ${completedSteps.includes('residue') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727]  text-white hover:bg-rose-600 shadow-md'} `}
+                                            className={`rounded - xl px - 10 h - 14 font - bold transition - all duration - 500 ${completedSteps.includes('residue') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727]  text-white hover:bg-[#0EA0DC] shadow-md'} `}
                                         >
                                             {completedSteps.includes('residue') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Residue-Free'}
                                         </Button>
@@ -261,7 +261,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                         Phase 03: Ideal Working Conditions
                                     </Badge>
                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
-                                        Ideal Working <span className="text-rose-500">Conditions</span>
+                                        Ideal Working <span className="text-[#0EA0DC]">Conditions</span>
                                     </h2>
                                     <div className="space-y-6 mb-10">
                                         {[
@@ -279,7 +279,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <div className="flex justify-end">
                                         <Button
                                             onClick={() => markComplete('conditions')}
-                                            className={`rounded - xl px - 10 h - 14 font - bold transition - all duration - 500 ${completedSteps.includes('conditions') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727]  text-white hover:bg-rose-600 shadow-md'} `}
+                                            className={`rounded - xl px - 10 h - 14 font - bold transition - all duration - 500 ${completedSteps.includes('conditions') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727]  text-white hover:bg-[#0EA0DC] shadow-md'} `}
                                         >
                                             {completedSteps.includes('conditions') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                         </Button>
@@ -362,7 +362,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                 </Card>
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
                                     <div className="flex flex-col  gap-8">
-                                        <div className="md:w-[40%] flex flex-col justify-between h-full">
+                                        <div className=" flex flex-col justify-between h-full">
                                             <div>
                                                 <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
                                                     Step 2 – Drying & Hardening</h3>
@@ -389,7 +389,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                 </Card>
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
                                     <div className="flex flex-col  gap-8">
-                                        <div className="md:w-[40%] flex flex-col justify-between h-full">
+                                        <div className=" flex flex-col justify-between h-full">
                                             <div>
                                                 <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
                                                     Step 3 – Apply FILM COAT (Top Layer)</h3>
@@ -424,7 +424,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                             </div>
                             <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
                                 <div className="flex flex-col  gap-8">
-                                    <div className="md:w-[40%] flex flex-col justify-between h-full">
+                                    <div className=" flex flex-col justify-between h-full">
                                         <div>
                                             <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
                                                 Aftercare – Protect the Perfection</h3>

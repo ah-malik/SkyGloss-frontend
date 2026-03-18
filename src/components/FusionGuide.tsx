@@ -273,7 +273,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                 </div>
 
-                                <div className="bg-gray-900 p-8 rounded-2xl mb-12 relative overflow-hidden">
+                                <div className=" p-8 rounded-2xl mb-12 relative overflow-hidden">
                                     <h4 className="font-bold text-xs uppercase tracking-[0.2em] text-[#0EA0DC] mb-4">Intended User</h4>
                                     <ul className="space-y-4 relative z-10">
                                         <li className="text-sm font-medium flex gap-3 ">
@@ -998,7 +998,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                             {/* STEP 12: QUALITY CHECK */}
                             <div id="step12" className="scroll-mt-32 mt-8">
-                                <Card className="p-6 rounded-2xl border-l-4 border-l-red-500">
+                                <Card className="p-6 rounded-2xl border-l-4">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 12: QUALITY CHECK</h3>
 
                                     <p className="text-sm text-[#666666] mb-4 italic">
@@ -1108,7 +1108,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                             {/* Removing FUSION */}
                             <div id="removal" className="scroll-mt-32">
-                                <Card className="p-6 rounded-2xl border-l-4 border-l-red-500">
+                                <Card className="p-6 rounded-2xl border-l-4">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">Removing FUSION</h3>
 
                                     <p className="text-sm text-[#666666] mb-4">
@@ -1171,7 +1171,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                             {/* Correcting Application Issues */}
                             <div id="issues" className="scroll-mt-32">
-                                <Card className="p-6 rounded-2xl border-l-4 border-l-red-500">
+                                <Card className="p-6 rounded-2xl border-l-4">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">Correcting Application Issues</h3>
 
                                     <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">

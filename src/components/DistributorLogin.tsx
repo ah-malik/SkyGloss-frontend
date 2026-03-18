@@ -9,11 +9,13 @@ import { Progress } from "./ui/progress";
 import { DistributorIcon } from "./CustomIcons";
 import { ForgotPasswordModal } from "./ForgotPasswordModal";
 import { Footer } from "./Footer";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { useAuth } from "../AuthContext";
+import { toast } from "sonner";
 
 export function DistributorLogin() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { setUser } = useAuth();
 
   const [username, setUsername] = useState("");
@@ -24,7 +26,18 @@ export function DistributorLogin() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+
+    // Check for payment success parameter
+    const searchParams = new URLSearchParams(location.search);
+    if (searchParams.get("payment_success") === "true") {
+      toast.success("Payment Successful!", {
+        description: "Your registration is now active. Please login to access your Dashboard.",
+        duration: 8000,
+      });
+      // Optionally remove the query parameter from the URL
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location, navigate]);
 
   const handleBack = () => {
     navigate("/"); // Back to access selection

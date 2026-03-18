@@ -292,7 +292,7 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                                 </div> */}
 
                             <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
-                                <div className="md:w-[40%] flex flex-col justify-between h-full">
+                                <div className=" flex flex-col justify-between h-full">
                                     <div>
                                         <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
                                             Apply SEAL</h3>
@@ -326,7 +326,7 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                             </Card>
                             <Card id="maintenance" className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
                                 <div className="flex flex-col  gap-8">
-                                    <div className="md:w-[40%] flex flex-col justify-between h-full">
+                                    <div className=" flex flex-col justify-between h-full">
                                         <div>
                                             <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
                                                 Aftercare</h3>

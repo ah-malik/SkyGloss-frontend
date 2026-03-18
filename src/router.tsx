@@ -4,6 +4,7 @@ import App from "./App";
 import { LandingPage } from "./components/LandingPage";
 import { ShopLogin } from "./components/ShopLogin";
 import { DistributorLogin } from "./components/DistributorLogin";
+import { DistributorRegistration } from "./components/DistributorRegistration";
 
 import { ShopDashboard } from "./components/ShopDashboard";
 import { DistributorDashboard } from "./components/DistributorDashboard";
@@ -28,6 +29,7 @@ export const router = createBrowserRouter([
         children: [
           { path: "login/shop", element: <ShopLogin /> },
           { path: "login/distributor", element: <DistributorLogin /> },
+          { path: "register/distributor", element: <DistributorRegistration /> },
           { path: "reset-password", element: <ResetPassword /> },
         ]
       },

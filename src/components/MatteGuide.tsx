@@ -289,7 +289,7 @@ export function MatteGuide({ onBack }: { onBack: () => void }) {
 
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <div className="flex flex-col  gap-8">
-                                        <div className="md:w-[40%] flex flex-col justify-between h-full">
+                                        <div className=" flex flex-col justify-between h-full">
                                             <div>
                                                 <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
                                                     Step 1 – Apply MATTE (1 Layer only)</h3>
@@ -327,7 +327,7 @@ export function MatteGuide({ onBack }: { onBack: () => void }) {
                                 </Card>
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
                                     <div className="flex flex-col  gap-8">
-                                        <div className="md:w-[40%] flex flex-col justify-between h-full">
+                                        <div className=" flex flex-col justify-between h-full">
                                             <div>
                                                 <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
                                                     Step 2 – Drying & Hardening</h3>
@@ -356,7 +356,7 @@ export function MatteGuide({ onBack }: { onBack: () => void }) {
                                 </Card>
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC] mt-8">
                                     <div className="flex flex-col  gap-8">
-                                        <div className="md:w-[40%] flex flex-col justify-between h-full">
+                                        <div className=" flex flex-col justify-between h-full">
                                             <div>
                                                 <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
                                                     Aftercare – Protect the Perfection</h3>
