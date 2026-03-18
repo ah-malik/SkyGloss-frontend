@@ -138,7 +138,7 @@ export function Footer() {
           <img
             src={skyglossLogo}
             alt="SkyGloss"
-            className="w-full h-auto scale-150 sm:scale-100"
+            className="w-full h-auto scale-100"
           />
         </div>
 

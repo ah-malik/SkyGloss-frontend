@@ -30,6 +30,24 @@ export function PublicCatalog() {
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [productsPerView, setProductsPerView] = useState(4);
+
+  // Update productsPerView based on window width
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setProductsPerView(1);
+      } else if (window.innerWidth < 1024) {
+        setProductsPerView(2);
+      } else {
+        setProductsPerView(4);
+      }
+    };
+
+    handleResize(); // Set initial value
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -46,7 +64,6 @@ export function PublicCatalog() {
   }, []);
 
   // Determine how many products to show based on screen size
-  const productsPerView = 4; // Desktop: 4 products at a time
   const maxIndex = Math.max(0, products.length - productsPerView);
 
   const handlePrevious = () => {
@@ -98,9 +115,12 @@ export function PublicCatalog() {
             </Button>
 
             {/* Products Grid */}
-            <div className="w-full overflow-hidden">
+            <div className="w-full overflow-hidden px-2 sm:px-0">
               <motion.div
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                className={`grid gap-6 ${productsPerView === 1 ? 'grid-cols-1' :
+                    productsPerView === 2 ? 'grid-cols-2' :
+                      'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
+                  }`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
