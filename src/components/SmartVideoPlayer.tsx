@@ -58,7 +58,7 @@ export function SmartVideoPlayer({ url, subtitles = {}, poster, className = "" }
     // Auto-sync with Google Translate language
     useEffect(() => {
         const syncLanguage = () => {
-            const htmlLang = document.documentElement.lang;
+            const htmlLang = document.documentElement.lang?.split('-')[0]; // Handle en-US, etc.
             if (htmlLang && htmlLang !== selectedLanguage && LANGUAGE_MAP[htmlLang]) {
                 setSelectedLanguage(htmlLang);
             }
@@ -82,18 +82,20 @@ export function SmartVideoPlayer({ url, subtitles = {}, poster, className = "" }
     // Sync Subtitles
     useEffect(() => {
         const video = videoRef.current;
-        if (!video || !activeSubtitleList.length) {
-            setCurrentSubtitle(null);
-            return;
-        }
+        if (!video) return;
 
         const handleTimeUpdate = () => {
             const currentTime = video.currentTime;
+            
+            // Debug check for the first few seconds if list is empty
+            if (activeSubtitleList.length === 0) {
+                console.warn("No subtitles found for language:", selectedLanguage);
+            }
+
             const activeSubtitle = activeSubtitleList.find(
                 (s) => currentTime >= s.start && currentTime <= s.end
             );
 
-            // Only update state if the text actually changed to avoid re-renders
             if (activeSubtitle) {
                 if (currentSubtitle !== activeSubtitle.text) {
                     setCurrentSubtitle(activeSubtitle.text);
@@ -185,9 +187,9 @@ export function SmartVideoPlayer({ url, subtitles = {}, poster, className = "" }
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute bottom-20 left-1/2 -translate-x-1/2 w-[90%] text-center pointer-events-none z-20"
+                        className="absolute bottom-28 left-1/2 -translate-x-1/2 w-[90%] text-center pointer-events-none z-[60]"
                     >
-                        <span className="bg-black/80 backdrop-blur-md text-white px-6 py-2 rounded-xl text-lg md:text-xl font-medium shadow-2xl inline-block border border-white/20">
+                        <span className="bg-black/90 backdrop-blur-xl text-white px-8 py-3 rounded-2xl text-xl md:text-2xl font-bold shadow-[0_0_40px_rgba(0,0,0,0.5)] inline-block border border-white/30 leading-tight">
                             {currentSubtitle}
                         </span>
                     </motion.div>
