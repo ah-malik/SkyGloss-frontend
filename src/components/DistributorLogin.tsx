@@ -110,7 +110,7 @@ export function DistributorLogin() {
             </motion.div>
 
             <div className="text-center mb-8">
-              <h2 className="text-2xl text-[#272727] mb-2">Master Distributor Access</h2>
+              <h2 className="text-2xl text-[#272727] mb-2">Distributor Access</h2>
               <p className="text-[#666666]">Login to manage your global network</p>
             </div>
 

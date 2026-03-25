@@ -31,6 +31,7 @@ export function PublicCatalog() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [productsPerView, setProductsPerView] = useState(4);
+  const [isPaused, setIsPaused] = useState(false);
 
   // Update productsPerView based on window width
   useEffect(() => {
@@ -71,8 +72,19 @@ export function PublicCatalog() {
   };
 
   const handleNext = () => {
-    setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
+    setCurrentIndex(prev => (prev >= maxIndex ? 0 : prev + 1));
   };
+
+  // Auto-scroll effect
+  useEffect(() => {
+    if (isPaused || loading || products.length <= productsPerView) return;
+
+    const interval = setInterval(() => {
+      handleNext();
+    }, 25000); // 5 seconds
+
+    return () => clearInterval(interval);
+  }, [isPaused, loading, products.length, productsPerView, maxIndex]);
 
   const visibleProducts = products.slice(currentIndex, currentIndex + productsPerView);
 
@@ -103,7 +115,11 @@ export function PublicCatalog() {
         </motion.div>
 
         {/* Products Carousel */}
-        <div className="relative">
+        <div
+          className="relative"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
           {/* Navigation Arrows */}
           <div className="flex items-center gap-4">
             <Button
@@ -118,8 +134,8 @@ export function PublicCatalog() {
             <div className="w-full overflow-hidden px-2 sm:px-0">
               <motion.div
                 className={`grid gap-6 ${productsPerView === 1 ? 'grid-cols-1' :
-                    productsPerView === 2 ? 'grid-cols-2' :
-                      'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
+                  productsPerView === 2 ? 'grid-cols-2' :
+                    'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
                   }`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -133,8 +149,9 @@ export function PublicCatalog() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -50 }}
                       transition={{ duration: 0.3, delay: index * 0.05 }}
+                      id={product.name}
                     >
-                      <Card className="skygloss-card overflow-hidden rounded-2xl h-full flex flex-col bg-white">
+                      <Card className="skygloss-card overflow-hidden rounded-2xl h-full flex flex-col bg-white" >
                         {/* Product Image */}
                         <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-gray-50 to-white p-4">
                           <ImageWithFallback
@@ -146,7 +163,7 @@ export function PublicCatalog() {
 
                         {/* Product Info */}
                         <div className="p-5 flex flex-col flex-1">
-                          <h3 className="text-[#272727] mb-2">
+                          <h3 className="text-[#272727] mb-2" >
                             {product.name}
                           </h3>
                           <p className="text-sm text-[#666666] mb-4 line-clamp-2 flex-1">

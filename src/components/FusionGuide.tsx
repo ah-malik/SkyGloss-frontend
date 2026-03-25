@@ -5,17 +5,10 @@ import {
     CheckCircle,
     ChevronRight,
     ShieldAlert,
-    ShieldCheck,
-    Wrench,
-    Info,
-    Droplets,
     Zap,
     Wind,
     BookOpen,
-    Check,
-    MessageSquare,
-    Clock,
-    AlertTriangle
+    Clock
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
@@ -26,18 +19,7 @@ import { useAuth } from "../AuthContext";
 
 import FusionPdf from "../assets/pdf/Fusion.pdf";
 
-const VideoPlayer = ({ url }: { url: string }) => (
-    <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-gray-900 mb-8 border border-gray-100 group shadow-lg">
-        <video
-            src={url}
-            controls
-            className="w-full h-full object-cover"
-        >
-            Your browser does not support the video tag.
-        </video>
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-    </div>
-);
+// Replaced local VideoPlayer with global SmartVideoPlayer for translation support
 
 interface Section {
     id: string;
@@ -291,7 +273,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </ul>
                                 </div>
 
-                                <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411487/Step_1_Light_Wash_nszzj0.mp4" />
+                                <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                    <video
+                                        className="w-full h-full object-cover"
+                                        controls
+                                        src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411487/Step_1_Light_Wash_nszzj0.mp4"
+                                    />
+                                </div>
 
                                 <div className="flex justify-end mt-8">
                                     <Button
@@ -501,7 +489,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <p className="text-sm text-[#666666] mb-4">• If the vehicle was extremely dirty, it might be best to do a heavy power wash.</p>
                                     </div>
 
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411487/Step_1_Light_Wash_nszzj0.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411487/Step_1_Light_Wash_nszzj0.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -561,7 +555,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </ul>
                                     </div>
 
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411487/Step_2_Vehicle_Inspectioin_stbz7x.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411487/Step_2_Vehicle_Inspectioin_stbz7x.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -608,7 +608,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </ul>
                                     </div>
 
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411479/Step_3_Remove_Attachments_re64pv.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411479/Step_3_Remove_Attachments_re64pv.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -680,7 +686,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </ul>
                                     </div>
 
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411496/Step_4_Exfoliate_njuvqd.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411496/Step_4_Exfoliate_njuvqd.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -730,7 +742,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </ul>
                                     </div>
 
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411468/Step_5_Heavy_Wash_usilnv.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411468/Step_5_Heavy_Wash_usilnv.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -784,7 +802,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </ul>
                                     </div>
 
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411482/Step_6_Etch_oscdyt.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411482/Step_6_Etch_oscdyt.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -823,7 +847,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             <li>• Not clean lines with your tape and having the tape touch areas that you actually want FUSION on. Make sure to be clean and have straight lines when masking.</li>
                                         </ul>
                                     </div>
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411454/Step_12_Quality_Check_hf90jk.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411454/Step_12_Quality_Check_hf90jk.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -864,7 +894,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <p className="text-sm text-[#666666] mb-4">• Good for 2 hours after mixing</p>
                                     </div>
 
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411429/Step_8_Mixing_Fusion_qktbaz.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411429/Step_8_Mixing_Fusion_qktbaz.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -894,7 +930,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <p className="text-sm text-[#666666]">2 - 3 applicators are needed per vehicle. Your applicator will get dirty if you did not do a good preparation job. Never apply to a panel with a dirty or contaminated applicator if the applicator gets dropped or picks up contamination throw it out and get a new one.</p>
                                     </div>
 
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411427/Step_9_First_Pour_uduqeg.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411427/Step_9_First_Pour_uduqeg.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -924,7 +966,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <p className="text-sm text-[#666666]">• Pressing too much with the tack cloth can actually leave residue onto the panel. There should be a very light pass over the panel as you pick up the remaining amount of dirt and debris.</p>
                                     </div>
 
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411418/Step_10_Tack_Cloth_y9gzzx.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411418/Step_10_Tack_Cloth_y9gzzx.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -983,7 +1031,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             <li className="font-bold text-red-600">DO NOT LEAVE MISTAKES TO CURE!</li>
                                         </ul>
                                     </div>
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411411/Step_11_Apply_Fusion_qjonbg.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411411/Step_11_Apply_Fusion_qjonbg.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -1007,7 +1061,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <p className="text-sm text-[#666666] font-bold mb-4">NEVER, leave a poor application or an application issue for another day. Remove it immediately assess the problem and redo it. This is a lot quicker than trying to fix it later.</p>
 
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411454/Step_12_Quality_Check_hf90jk.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411454/Step_12_Quality_Check_hf90jk.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -1050,7 +1110,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Common Mistakes</h4>
                                         <p className="text-sm text-[#666666]">• Not doing a thorough job leaving the inside and outside building up FUSION particles each time. Once it is not cleaned good once, it will never recover. Always clean thoroughly each and every time.</p>
                                     </div>
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411464/Step_13_Clean_Applicator_Bottle_yapl9s.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411464/Step_13_Clean_Applicator_Bottle_yapl9s.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -1085,7 +1151,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                 <p className="text-sm text-[#666666]">Aftercare Handout: Make sure to give this to your customer to get the most out of their SkyGloss Service.</p>
 
-                                <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411502/Aftercare_xjyv47.mp4" />
+                                <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                    <video
+                                        className="w-full h-full object-cover"
+                                        controls
+                                        src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411502/Aftercare_xjyv47.mp4"
+                                    />
+                                </div>
 
                                 <div className="flex justify-end mt-4">
                                     <Button
@@ -1156,7 +1228,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             <li>• If this is your first time doing this, contact our Technical Team to get even more tips as this can be a long and tedious process. If not done correctly, you can sand through the original paint.</li>
                                         </ol>
                                     </div>
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411491/Troubleshooting_Removing_Fusion_pn0itl.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411491/Troubleshooting_Removing_Fusion_pn0itl.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button
@@ -1205,8 +1283,20 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </ul>
                                     </div>
 
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411480/Troubleshooting_Correcting_Application_Issues_zasrj3.mp4" />
-                                    <VideoPlayer url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411468/Troubleshooting_Sticky_Application_vztdru.mp4" />
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411480/Troubleshooting_Correcting_Application_Issues_zasrj3.mp4"
+                                        />
+                                    </div>
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            controls
+                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411468/Troubleshooting_Sticky_Application_vztdru.mp4"
+                                        />
+                                    </div>
 
                                     <div className="flex justify-end mt-4">
                                         <Button

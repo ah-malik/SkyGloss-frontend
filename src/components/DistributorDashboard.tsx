@@ -20,6 +20,8 @@ import { SealGuide } from "./SealGuide";
 import { MatteGuide } from "./MatteGuide";
 import { ShineGuide } from "./ShineGuide";
 import { UnderstandingSkyGloss } from "./UnderstandingSkyGloss";
+import { WelcomeToSkyGloss } from "./WelcomeToSkyGloss";
+import SkyGlossShopSetup from "./SkyGlossShopSetup";
 import { CertificationVideoUpload } from "./CertificationVideoUpload";
 import { useAuth } from "../AuthContext";
 import api from "../api/axios";
@@ -104,6 +106,8 @@ const getCourseDuration = (productName: string) => {
 
 const COURSE_STEPS: { [key: string]: number } = {
   'UNDERSTANDING_SKYGLOSS': 9,
+  'WELCOME_TO_SKYGLOSS': 12,
+  'SKYGLOSS_SHOP_SETUP': 5,
   'FUSION': 19,
   'RESIN_FILM': 7,
   'SEAL': 5,
@@ -115,6 +119,8 @@ const getCourseKey = (productName: string) => {
   if (!productName) return null;
   const name = productName.toUpperCase();
   if (name.includes('UNDERSTANDING')) return 'UNDERSTANDING_SKYGLOSS';
+  if (name.includes('WELCOME TO SKYGLOSS')) return 'WELCOME_TO_SKYGLOSS';
+  if (name.includes('SHOP SETUP')) return 'SKYGLOSS_SHOP_SETUP';
   if (name.includes('FUSION')) return 'FUSION';
   if (name.includes('RESIN FILM') || name.includes('RESIN_FILM')) return 'RESIN_FILM';
   if (name.includes('SEAL')) return 'SEAL';
@@ -387,8 +393,11 @@ export function DistributorDashboard({
   const [certShopState, setCertShopState] = useState("");
   const [certShopZip, setCertShopZip] = useState("");
   const [certInstagram, setCertInstagram] = useState("");
-  const [certWebsite, setCertWebsite] = useState("");
   const [certFacebook, setCertFacebook] = useState("");
+  const [certTikTok, setCertTikTok] = useState("");
+  const [certLinkedIn, setCertLinkedIn] = useState("");
+  const [certYouTube, setCertYouTube] = useState("");
+  const [certWebsite, setCertWebsite] = useState("");
   const [certSubmitted, setCertSubmitted] = useState(false);
 
   const fetchUserProfile = async () => {
@@ -409,8 +418,14 @@ export function DistributorDashboard({
   const [viewingProduct, setViewingProduct] = useState<number | null>(null);
 
   // Shipping details for Order Request
+  const [shippingName, setShippingName] = useState("");
+  const [shippingCompanyName, setShippingCompanyName] = useState("");
   const [shippingPhone, setShippingPhone] = useState("");
+  const [shippingEmail, setShippingEmail] = useState("");
   const [shippingAddress, setShippingAddress] = useState("");
+  const [shippingCity, setShippingCity] = useState("");
+  const [shippingState, setShippingState] = useState("");
+  const [shippingZipCode, setShippingZipCode] = useState("");
   const [shippingCountry, setShippingCountry] = useState("");
 
   // Check for successful payment from Stripe
@@ -537,8 +552,8 @@ export function DistributorDashboard({
       return;
     }
 
-    if (!shippingPhone || !shippingAddress || !shippingCountry) {
-      toast.error("Please fill in all shipping details");
+    if (!shippingName || !shippingPhone || !shippingEmail || !shippingAddress || !shippingCity || !shippingCountry) {
+      toast.error("Please fill in all required shipping details (*)");
       return;
     }
 
@@ -553,21 +568,28 @@ export function DistributorDashboard({
           price: item.price
         })),
         shippingAddress: {
-          email: user?.email || "",
-          firstName: user?.firstName || "",
-          lastName: user?.lastName || "",
+          email: shippingEmail,
+          firstName: shippingName.split(' ')[0] || "",
+          lastName: shippingName.split(' ').slice(1).join(' ') || "N/A",
+          companyName: shippingCompanyName,
           address: shippingAddress,
-          city: "N/A",
-          state: "N/A",
-          zipCode: "N/A",
+          city: shippingCity,
+          state: shippingState,
+          zipCode: shippingZipCode,
           country: shippingCountry,
           phoneNumber: shippingPhone
         }
       });
 
       setOrderItems([]);
+      setShippingName("");
+      setShippingCompanyName("");
       setShippingPhone("");
+      setShippingEmail("");
       setShippingAddress("");
+      setShippingCity("");
+      setShippingState("");
+      setShippingZipCode("");
       setShippingCountry("");
 
       if (onShowThankYou) {
@@ -601,8 +623,11 @@ export function DistributorDashboard({
         shopState: certShopState,
         shopZip: certShopZip,
         shopInstagram: certInstagram,
-        shopWebsite: certWebsite,
-        shopFacebook: certFacebook
+        shopFacebook: certFacebook,
+        shopTikTok: certTikTok,
+        shopLinkedIn: certLinkedIn,
+        shopYouTube: certYouTube,
+        shopWebsite: certWebsite
       });
 
       if (response.data?.url) {
@@ -620,6 +645,12 @@ export function DistributorDashboard({
   if (viewingCourse) {
     if (viewingCourse === 'understanding-skygloss') {
       return <UnderstandingSkyGloss onBack={() => navigate('/dashboard/distributor/courses')} />;
+    }
+    if (viewingCourse === 'welcome-to-skygloss') {
+      return <WelcomeToSkyGloss onBack={() => navigate('/dashboard/distributor/courses')} />;
+    }
+    if (viewingCourse === 'skygloss-shop-setup') {
+      return <SkyGlossShopSetup onBack={() => navigate('/dashboard/distributor/courses')} />;
     }
     const isFusion = viewingCourse.toUpperCase().includes('FUSION');
     const isResinFilm = viewingCourse.toUpperCase().includes('RESIN FILM');
@@ -685,7 +716,7 @@ export function DistributorDashboard({
           className="mb-6 sm:mb-8"
         >
           <h1 className="text-2xl sm:text-3xl font-bold text-[#272727] mb-2">
-            Master Distributor Dashboard
+            Distributor Dashboard
           </h1>
           <p className="text-sm sm:text-base text-[#666666]">
             Manage orders, generate certificates, and access global network tools
@@ -720,7 +751,7 @@ export function DistributorDashboard({
               <Award className="w-5 h-5 mr-2 sm:mr-3" />
               <span className="text-base sm:text-lg">Certified</span>
             </button>
-            <button
+            {/* <button
               onClick={() => navigate("/dashboard/distributor/network")}
               className={`flex items-center justify-center px-4 sm:px-10 py-3 sm:py-4 rounded-lg transition-all duration-200 ${activeSection === "network"
                 ? "bg-[#272727] text-white shadow-lg"
@@ -729,7 +760,7 @@ export function DistributorDashboard({
             >
               <Globe className="w-5 h-5 mr-2 sm:mr-3" />
               <span className="text-base sm:text-lg">Dashboard</span>
-            </button>
+            </button> */}
             <button
               onClick={() => navigate("/dashboard/distributor/courses")}
               className={`flex items-center justify-center px-4 sm:px-10 py-3 sm:py-4 rounded-lg transition-all duration-200 ${activeSection === "courses"
@@ -943,30 +974,74 @@ export function DistributorDashboard({
                                   Shipping Details
                                 </h4>
                                 <div className="space-y-3">
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <Input
+                                      placeholder="*Name"
+                                      value={shippingName}
+                                      onChange={(e) => setShippingName(e.target.value)}
+                                      className="bg-white rounded-lg border-gray-200 focus:border-[#0EA0DC]"
+                                    />
+                                    <Input
+                                      placeholder="Company Name"
+                                      value={shippingCompanyName}
+                                      onChange={(e) => setShippingCompanyName(e.target.value)}
+                                      className="bg-white rounded-lg border-gray-200 focus:border-[#0EA0DC]"
+                                    />
+                                  </div>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <Input
+                                      placeholder="*Phone Number"
+                                      value={shippingPhone}
+                                      onChange={(e) => setShippingPhone(e.target.value)}
+                                      className="bg-white rounded-lg border-gray-200 focus:border-[#0EA0DC]"
+                                    />
+                                    <Input
+                                      placeholder="*Email"
+                                      value={shippingEmail}
+                                      onChange={(e) => setShippingEmail(e.target.value)}
+                                      className="bg-white rounded-lg border-gray-200 focus:border-[#0EA0DC]"
+                                    />
+                                  </div>
                                   <Input
-                                    placeholder="Phone Number"
-                                    value={shippingPhone}
-                                    onChange={(e) => setShippingPhone(e.target.value)}
-                                    className="bg-white rounded-lg border-gray-200 focus:border-[#0EA0DC]"
-                                  />
-                                  <Input
-                                    placeholder="Shipping Street Address"
+                                    placeholder="*Street Address"
                                     value={shippingAddress}
                                     onChange={(e) => setShippingAddress(e.target.value)}
                                     className="bg-white rounded-lg border-gray-200 focus:border-[#0EA0DC]"
                                   />
-                                  <Input
-                                    placeholder="Country"
-                                    value={shippingCountry}
-                                    onChange={(e) => setShippingCountry(e.target.value)}
-                                    className="bg-white rounded-lg border-gray-200 focus:border-[#0EA0DC]"
-                                  />
+                                  <div className="grid grid-cols-2 gap-3">
+                                    <Input
+                                      placeholder="*City"
+                                      value={shippingCity}
+                                      onChange={(e) => setShippingCity(e.target.value)}
+                                      className="bg-white rounded-lg border-gray-200 focus:border-[#0EA0DC]"
+                                    />
+                                    <Input
+                                      placeholder="State"
+                                      value={shippingState}
+                                      onChange={(e) => setShippingState(e.target.value)}
+                                      className="bg-white rounded-lg border-gray-200 focus:border-[#0EA0DC]"
+                                    />
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-3">
+                                    <Input
+                                      placeholder="Zip Code"
+                                      value={shippingZipCode}
+                                      onChange={(e) => setShippingZipCode(e.target.value)}
+                                      className="bg-white rounded-lg border-gray-200 focus:border-[#0EA0DC]"
+                                    />
+                                    <Input
+                                      placeholder="*Country"
+                                      value={shippingCountry}
+                                      onChange={(e) => setShippingCountry(e.target.value)}
+                                      className="bg-white rounded-lg border-gray-200 focus:border-[#0EA0DC]"
+                                    />
+                                  </div>
                                 </div>
                               </div>
 
                               <Button
                                 onClick={generateOrderRequest}
-                                disabled={!shippingPhone || !shippingAddress || !shippingCountry || isSubmitting}
+                                disabled={!shippingName || !shippingPhone || !shippingEmail || !shippingAddress || !shippingCity || !shippingCountry || isSubmitting}
                                 className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] hover:bg-[#0c80b3] transition-all duration-200 h-12 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-bold"
                               >
                                 {isSubmitting ? (
@@ -1017,8 +1092,7 @@ export function DistributorDashboard({
                         Shop Certification Request
                       </h3>
                       <p className="text-sm sm:text-base text-[#666666] max-w-md mx-auto">
-                        Verify your shop and unlock exclusive master distributor benefits and mapping placement.
-                      </p>
+                        Fill out the details below to certification, issue a SkyGloss Certificate and get the shop login detials.                       </p>
                       <Badge className="mt-4 bg-[#0EA0DC]/10 text-[#0EA0DC] border-0 px-4 py-1.5 text-sm font-semibold">
                         $25.00 Verification Fee
                       </Badge>
@@ -1116,7 +1190,7 @@ export function DistributorDashboard({
                         />
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <label className="text-sm font-semibold text-[#272727]">City</label>
                           <Input
@@ -1128,23 +1202,21 @@ export function DistributorDashboard({
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-semibold text-[#272727]">State/Prov</label>
+                          <label className="text-sm font-semibold text-[#272727]">State/Prov (Optional)</label>
                           <Input
                             value={certShopState}
                             onChange={(e) => setCertShopState(e.target.value)}
                             placeholder="State"
                             className="bg-white rounded-xl border-gray-200 focus:border-[#0EA0DC] h-11"
-                            required
                           />
                         </div>
-                        <div className="space-y-2">
-                          <label className="text-sm font-semibold text-[#272727]">ZIP Code</label>
+                        <div className="space-y-2 sm:col-span-2">
+                          <label className="text-sm font-semibold text-[#272727]">ZIP Code (Optional)</label>
                           <Input
                             value={certShopZip}
                             onChange={(e) => setCertShopZip(e.target.value)}
                             placeholder="ZIP"
                             className="bg-white rounded-xl border-gray-200 focus:border-[#0EA0DC] h-11"
-                            required
                           />
                         </div>
                       </div>
@@ -1155,24 +1227,6 @@ export function DistributorDashboard({
                           Online Presence (Optional)
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                          <div className="space-y-2">
-                            <label className="text-xs font-semibold text-[#666666]">Instagram Handle</label>
-                            <Input
-                              value={certInstagram}
-                              onChange={(e) => setCertInstagram(e.target.value)}
-                              placeholder="@username"
-                              className="bg-white rounded-xl border-gray-100 focus:border-[#0EA0DC] h-10 text-sm"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-xs font-semibold text-[#666666]">Facebook Page</label>
-                            <Input
-                              value={certFacebook}
-                              onChange={(e) => setCertFacebook(e.target.value)}
-                              placeholder="Shop Name / URL"
-                              className="bg-white rounded-xl border-gray-100 focus:border-[#0EA0DC] h-10 text-sm"
-                            />
-                          </div>
                           <div className="space-y-2 md:col-span-2">
                             <label className="text-xs font-semibold text-[#666666]">Website URL</label>
                             <Input
@@ -1180,6 +1234,51 @@ export function DistributorDashboard({
                               value={certWebsite}
                               onChange={(e) => setCertWebsite(e.target.value)}
                               placeholder="https://www.yourshop.com"
+                              className="bg-white rounded-xl border-gray-100 focus:border-[#0EA0DC] h-10 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-xs font-semibold text-[#666666]">Instagram</label>
+                            <Input
+                              value={certInstagram}
+                              onChange={(e) => setCertInstagram(e.target.value)}
+                              placeholder="Handle or URL"
+                              className="bg-white rounded-xl border-gray-100 focus:border-[#0EA0DC] h-10 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-xs font-semibold text-[#666666]">Facebook</label>
+                            <Input
+                              value={certFacebook}
+                              onChange={(e) => setCertFacebook(e.target.value)}
+                              placeholder="Page Name or URL"
+                              className="bg-white rounded-xl border-gray-100 focus:border-[#0EA0DC] h-10 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-xs font-semibold text-[#666666]">TikTok</label>
+                            <Input
+                              value={certTikTok}
+                              onChange={(e) => setCertTikTok(e.target.value)}
+                              placeholder="Handle or URL"
+                              className="bg-white rounded-xl border-gray-100 focus:border-[#0EA0DC] h-10 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-xs font-semibold text-[#666666]">LinkedIn</label>
+                            <Input
+                              value={certLinkedIn}
+                              onChange={(e) => setCertLinkedIn(e.target.value)}
+                              placeholder="Profile or Page URL"
+                              className="bg-white rounded-xl border-gray-100 focus:border-[#0EA0DC] h-10 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-2 md:col-span-2">
+                            <label className="text-xs font-semibold text-[#666666]">YouTube</label>
+                            <Input
+                              value={certYouTube}
+                              onChange={(e) => setCertYouTube(e.target.value)}
+                              placeholder="Channel Name or URL"
                               className="bg-white rounded-xl border-gray-100 focus:border-[#0EA0DC] h-10 text-sm"
                             />
                           </div>
@@ -1355,6 +1454,8 @@ export function DistributorDashboard({
                     </div>
                     <div className="bg-gradient-to-br from-[#272727] to-black rounded-xl mb-4 p-8 border border-gray-800 flex items-center justify-center">
                       <h4 className="text-2xl font-black text-[#0EA0DC] italic uppercase tracking-tighter shadow-2xl">
+
+
                         PHILOSOPHY
                       </h4>
                     </div>
@@ -1385,24 +1486,21 @@ export function DistributorDashboard({
                       })()}
                     </div>
 
-                    <h4 className="text-lg font-bold text-[#272727] mb-2 uppercase italic tracking-tighter">Understanding SkyGloss</h4>
+                    <h4 className="text-lg font-bold text-[#272727] mb-2 uppercase italic tracking-tighter">
+                      Sales Philosophy</h4>
 
                     <p className="text-sm text-[#666666] mb-6 flex-1 leading-relaxed">
                       Master the SkyGloss sales philosophy. Learn how to educate customers, align expectations, and articulate the true value of paint health.
                     </p>
 
-                    <div className="grid grid-cols-3 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                      <div className="text-center">
-                        <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Modules</div>
-                        <div className="text-sm font-bold text-[#272727]">9</div>
+                    <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                      <div className="flex items-center gap-2 text-[#999999] text-xs">
+                        <Clock className="w-4 h-4" />
+                        <span>1h 30m</span>
                       </div>
-                      <div className="text-center border-x border-gray-200">
-                        <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Type</div>
-                        <div className="text-sm font-bold text-[#272727]">Sales</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Level</div>
-                        <div className="text-sm font-bold text-[#272727]">All</div>
+                      <div className="flex items-center gap-2 text-[#999999] text-xs">
+                        <Award className="w-4 h-4" />
+                        <span>Certificate</span>
                       </div>
                     </div>
 
@@ -1446,6 +1544,213 @@ export function DistributorDashboard({
                       className="w-full bg-[#0EA0DC] text-white hover:bg-[#272727] transition-colors h-12 rounded-xl font-bold shadow-lg shadow-[#0EA0DC]/20"
                     >
                       Launch Philosophy
+                    </Button>
+                  </Card>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <Card className="skygloss-card p-6 rounded-2xl h-full flex flex-col group hover:shadow-xl transition-all border-0 shadow-lg relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                      <GraduationCap className="w-24 h-24 text-[#0EA0DC]" />
+                    </div>
+                    <div className="bg-gradient-to-br from-[#0EA0DC] to-[#0bcaf8] rounded-xl mb-4 p-8 border border-gray-100 flex items-center justify-center">
+                      <h4 className="text-2xl font-black text-white italic uppercase tracking-tighter shadow-2xl">
+                        WELCOME
+                      </h4>
+                    </div>
+
+                    <div className="flex items-center justify-between mb-3">
+                      <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-0 w-fit font-bold">
+                        Introduction
+                      </Badge>
+                      {(() => {
+                        const key = 'WELCOME_TO_SKYGLOSS';
+                        const progress = user?.courseProgress?.[key] || [];
+
+                        if (progress.length > 0) {
+                          const completedCount = progress.length;
+                          const totalSteps = COURSE_STEPS[key] || 19;
+                          const percentage = Math.round((completedCount / totalSteps) * 100);
+
+                          if (completedCount >= totalSteps) {
+                            return (
+                              <span className="text-emerald-600 font-black text-xs uppercase tracking-wider italic animate-pulse">
+                                COMPLETED
+                              </span>
+                            );
+                          }
+
+                          return (
+                            <span className="text-[#0EA0DC] font-black text-xs italic">
+                              {percentage}% READ
+                            </span>
+                          );
+                        }
+                        return null;
+                      })()}
+                    </div>
+
+                    <h4 className="text-lg font-bold text-[#272727] mb-2 uppercase italic tracking-tighter">
+                      Welcome to SkyGloss</h4>
+
+                    <p className="text-sm text-[#666666] mb-6 flex-1 leading-relaxed">
+                      Start your journey with SkyGloss. Learn about our mission, technology, and how we are redefining automotive paint restoration.
+                    </p>
+
+                    <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                      <div className="flex items-center gap-2 text-[#999999] text-xs">
+                        <Clock className="w-4 h-4" />
+                        <span>30 mins</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[#999999] text-xs">
+                        <Award className="w-4 h-4" />
+                        <span>Certificate</span>
+                      </div>
+                    </div>
+
+                    {(() => {
+                      const key = 'WELCOME_TO_SKYGLOSS';
+                      const progress = user?.courseProgress?.[key] || [];
+
+                      if (progress.length > 0) {
+                        const completedCount = progress.length;
+                        const totalSteps = COURSE_STEPS[key] || 19;
+                        const percentage = Math.round((completedCount / totalSteps) * 100);
+
+                        return (
+                          <div className="mb-6 space-y-2">
+                            <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
+                              <span className="text-[#666666]">Course Progress</span>
+                              <span className="text-[#0EA0DC]">{percentage}%</span>
+                            </div>
+                            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-100/50 p-[1px]">
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${percentage}%` }}
+                                className="h-full bg-gradient-to-r from-[#0EA0DC] to-[#0bcaf8] rounded-full shadow-[0_0_8px_rgba(14,160,220,0.3)]"
+                              />
+                            </div>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
+
+                    <Button
+                      onClick={() => {
+                        navigate(`/dashboard/distributor/courses/welcome-to-skygloss`);
+                        setViewingCourse('welcome-to-skygloss');
+                      }}
+                      className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
+                    >
+                      Start Welcome Course
+                    </Button>
+                  </Card>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <Card className="skygloss-card p-6 rounded-2xl h-full flex flex-col group hover:shadow-xl transition-all border-0 shadow-lg relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                      <GraduationCap className="w-24 h-24 text-[#0EA0DC]" />
+                    </div>
+                    <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl mb-4 p-8 border border-gray-800 flex items-center justify-center">
+                      <h4 className="text-2xl font-black text-white italic uppercase tracking-tighter shadow-2xl">
+                        SHOP SETUP
+                      </h4>
+                    </div>
+
+                    <div className="flex items-center justify-between mb-3">
+                      <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-0 w-fit font-bold">
+                        Essentials
+                      </Badge>
+                      {(() => {
+                        const key = 'SKYGLOSS_SHOP_SETUP';
+                        const progress = user?.courseProgress?.[key] || [];
+
+                        if (progress.length > 0) {
+                          const completedCount = progress.length;
+                          const totalSteps = COURSE_STEPS[key] || 4;
+                          const percentage = Math.round((completedCount / totalSteps) * 100);
+
+                          if (completedCount >= totalSteps) {
+                            return (
+                              <span className="text-emerald-600 font-black text-xs uppercase tracking-wider italic animate-pulse">
+                                COMPLETED
+                              </span>
+                            );
+                          }
+
+                          return (
+                            <span className="text-[#0EA0DC] font-black text-xs italic">
+                              {percentage}% DONE
+                            </span>
+                          );
+                        }
+                        return null;
+                      })()}
+                    </div>
+
+                    <h4 className="text-lg font-bold text-[#272727] mb-2 uppercase italic tracking-tighter">
+                      SkyGloss Shop Setup</h4>
+
+                    <p className="text-sm text-[#666666] mb-6 flex-1 leading-relaxed">
+                      Configure your professional shop profile, connect with distributors, and set up your inventory for success.
+                    </p>
+
+                    <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                      <div className="flex items-center gap-2 text-[#999999] text-xs">
+                        <Clock className="w-4 h-4" />
+                        <span>15 mins</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[#999999] text-xs">
+                        <Award className="w-4 h-4" />
+                        <span>Certificate</span>
+                      </div>
+                    </div>
+
+                    {(() => {
+                      const key = 'SKYGLOSS_SHOP_SETUP';
+                      const progress = user?.courseProgress?.[key] || [];
+
+                      if (progress.length > 0) {
+                        const completedCount = progress.length;
+                        const totalSteps = COURSE_STEPS[key] || 4;
+                        const percentage = Math.round((completedCount / totalSteps) * 100);
+
+                        return (
+                          <div className="mb-6 space-y-2">
+                            <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
+                              <span className="text-[#666666]">Progress</span>
+                              <span className="text-[#0EA0DC]">{percentage}%</span>
+                            </div>
+                            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-100/50 p-[1px]">
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${percentage}%` }}
+                                className="h-full bg-gradient-to-r from-[#0EA0DC] to-[#0bcaf8] rounded-full shadow-[0_0_8px_rgba(14,160,220,0.3)]"
+                              />
+                            </div>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
+
+                    <Button
+                      onClick={() => {
+                        navigate(`/dashboard/distributor/courses/skygloss-shop-setup`);
+                        setViewingCourse('skygloss-shop-setup');
+                      }}
+                      className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
+                    >
+                      Open Shop Setup
                     </Button>
                   </Card>
                 </motion.div>

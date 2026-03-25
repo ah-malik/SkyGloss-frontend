@@ -24,6 +24,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { SmartVideoPlayer } from "./SmartVideoPlayer";
+import { VIDEO_SUBTITLES } from "../data/videoSubtitles";
 
 type FileType = "pdf" | "jpg" | "png" | "mp4" | "psd" | "ai" | "doc" | "xls";
 type FilterType = "all" | "documents" | "images" | "videos" | "branding" | "marketing";
@@ -325,6 +327,44 @@ export function ResourcesPage({ onBack: _onBack }: ResourcesPageProps = {}) {
                 </a>
                 {" "}for assistance or request additional resources
               </p>
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* SkyGloss Resources Videos */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="mt-8"
+        >
+          <Card className="skygloss-card p-8 rounded-3xl border-0 shadow-2xl relative overflow-hidden bg-white">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#0EA0DC]/5 rounded-full -mr-32 -mt-32 blur-3xl pointer-events-none" />
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-[#0EA0DC]/10 rounded-2xl flex items-center justify-center text-[#0EA0DC]">
+                  <FolderOpen className="w-6 h-6" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-[#272727]">SkyGloss Training Videos</h2>
+                  <p className="text-sm text-[#666666]">Professional application techniques and product walkthroughs</p>
+                </div>
+              </div>
+
+              <div className="max-w-4xl mx-auto">
+                <SmartVideoPlayer
+                  url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411487/Step_1_Light_Wash_nszzj0.mp4"
+                  subtitles={VIDEO_SUBTITLES["Step_1_Light_Wash"]}
+                />
+              </div>
+
+              <div className="mt-8 p-4 bg-[#0EA0DC]/5 rounded-2xl border border-[#0EA0DC]/10 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-[#0EA0DC] rounded-full animate-pulse" />
+                  <span className="text-sm font-medium text-[#272727]">Translation Mode Enabled</span>
+                </div>
+                <p className="text-xs text-[#666666]">Click the Globe icon in the player to translate subtitles to your language.</p>
+              </div>
             </div>
           </Card>
         </motion.div>
