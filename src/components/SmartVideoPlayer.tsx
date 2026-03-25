@@ -55,6 +55,25 @@ export function SmartVideoPlayer({ url, subtitles = {}, poster, className = "" }
     const [selectedLanguage, setSelectedLanguage] = useState("en");
     const controlsTimeoutRef = useRef<any>(null);
 
+    // Auto-sync with Google Translate language
+    useEffect(() => {
+        const syncLanguage = () => {
+            const htmlLang = document.documentElement.lang;
+            if (htmlLang && htmlLang !== selectedLanguage && LANGUAGE_MAP[htmlLang]) {
+                setSelectedLanguage(htmlLang);
+            }
+        };
+
+        // Initial check
+        syncLanguage();
+
+        // Observe attribute changes on <html>
+        const observer = new MutationObserver(syncLanguage);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+
+        return () => observer.disconnect();
+    }, [selectedLanguage]);
+
     // Memoize active subtitles to prevent unnecessary re-runs
     const activeSubtitleList = useMemo(() => {
         return subtitles[selectedLanguage] || subtitles["en"] || [];

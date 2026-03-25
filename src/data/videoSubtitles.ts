@@ -7,28 +7,28 @@ export interface Subtitle {
 export const VIDEO_SUBTITLES: Record<string, Record<string, Subtitle[]>> = {
     "Step_1_Light_Wash": {
         "en": [
-            { start: 38, end: 41, text: "Welcome to SkyGloss Professional Training." },
-            { start: 41, end: 46, text: "Step 1: The Light Wash. Essential for surface preparation." },
-            { start: 46, end: 50, text: "Gently rinse the vehicle to remove loose contaminants." },
-            { start: 50, end: 54, text: "Use our pH balanced soap for a safe, streak-free finish." },
-            { start: 54, end: 57, text: "Always wash from the top down using a microfiber mitt." },
-            { start: 57, end: 60, text: "Thoroughly rinse before moving to the decontamination stage." }
+            { start: 0, end: 5, text: "Welcome to SkyGloss Professional Training." },
+            { start: 5, end: 10, text: "Step 1: The Light Wash. Essential for surface preparation." },
+            { start: 10, end: 15, text: "Gently rinse the vehicle to remove loose contaminants." },
+            { start: 15, end: 20, text: "Use our pH balanced soap for a safe, streak-free finish." },
+            { start: 20, end: 25, text: "Always wash from the top down using a microfiber mitt." },
+            { start: 25, end: 30, text: "Thoroughly rinse before moving to the decontamination stage." }
         ],
         "ur": [
-            { start: 38, end: 41, text: "اسکائی گلوس پروفیشنل ٹریننگ میں خوش آمدید۔" },
-            { start: 41, end: 46, text: "مرحلہ 1: ہلکا واش۔ سطح کی تیاری کے لیے ضروری ہے۔" },
-            { start: 46, end: 50, text: "ڈھیلے آلودگیوں کو دور کرنے کے لیے گاڑی کو آہستہ سے دھو لیں۔" },
-            { start: 50, end: 54, text: "محفوظ اور لکیروں سے پاک فنش کے لیے ہمارا پی ایچ متوازن صابن استعمال کریں۔" },
-            { start: 54, end: 57, text: "ہمیشہ مائیکرو فائبر مٹ کا استعمال کرتے ہوئے اوپر سے نیچے تک دھو لیں۔" },
-            { start: 57, end: 60, text: "ڈیکونٹیمینیشن کے مرحلے پر جانے سے پہلے اچھی طرح دھو لیں۔" }
+            { start: 0, end: 5, text: "اسکائی گلوس پروفیشنل ٹریننگ میں خوش آمدید۔" },
+            { start: 5, end: 10, text: "مرحلہ 1: ہلکا واش۔ سطح کی تیاری کے لیے ضروری ہے۔" },
+            { start: 10, end: 15, text: "ڈھیلے آلودگیوں کو دور کرنے کے لیے گاڑی کو آہستہ سے دھو لیں۔" },
+            { start: 15, end: 20, text: "محفوظ اور لکیروں سے پاک فنش کے لیے ہمارا پی ایچ متوازن صابن استعمال کریں۔" },
+            { start: 20, end: 25, text: "ہمیشہ مائیکرو فائبر مٹ کا استعمال کرتے ہوئے اوپر سے نیچے تک دھو لیں۔" },
+            { start: 25, end: 30, text: "ڈیکونٹیمینیشن کے مرحلے پر جانے سے پہلے اچھی طرح دھو لیں۔" }
         ],
         "ar": [
-            { start: 38, end: 41, text: "مرحباً بكم في تدريب SkyGloss الاحترافي." },
-            { start: 41, end: 46, text: "الخطوة 1: الغسيل الخفيف. ضروري لتحضير السطح." },
-            { start: 46, end: 50, text: "اشطف السيارة بلطف لإزالة الملوثات السائبة." },
-            { start: 50, end: 54, text: "استخدم صابوننا المتوازن لضمان الحصول على لمسة نهائية آمنة وخالية من الخطوط." },
-            { start: 54, end: 57, text: "اغسل دائماً من الأعلى إلى الأسفل باستخدام قفاز غسيل من الألياف الدقيقة." },
-            { start: 57, end: 60, text: "اشطف جيداً قبل الانتقال إلى مرحلة إزالة التلوث." }
+            { start: 0, end: 5, text: "مرحباً بكم في تدريب SkyGloss الاحترافي." },
+            { start: 5, end: 10, text: "الخطوة 1: الغسيل الخفيف. ضروري لتحضير السطح." },
+            { start: 10, end: 15, text: "اشطف السيارة بلطف لإزالة الملوثات السائبة." },
+            { start: 15, end: 20, text: "استخدم صابوننا المتوازن لضمان الحصول على لمسة نهائية آمنة وخالية من الخطوط." },
+            { start: 20, end: 25, text: "اغسل دائماً من الأعلى إلى الأسفل باستخدام قفاز غسيل من الألياف الدقيقة." },
+            { start: 25, end: 30, text: "اشطف جيداً قبل الانتقال إلى مرحلة إزالة التلوث." }
         ]
     },
     "Step_2_Vehicle_Inspection": {

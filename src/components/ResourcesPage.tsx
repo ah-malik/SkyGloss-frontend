@@ -353,7 +353,7 @@ export function ResourcesPage({ onBack: _onBack }: ResourcesPageProps = {}) {
 
               <div className="max-w-4xl mx-auto">
                 <SmartVideoPlayer
-                  url="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411487/Step_1_Light_Wash_nszzj0.mp4"
+                  url="https://res.cloudinary.com/dxhmopbei/video/upload/v1774458384/When_your_mum_and_dad_visit_your_first_flat___My_Family_-_BBC_n9iypu.mp4"
                   subtitles={VIDEO_SUBTITLES["Step_1_Light_Wash"]}
                 />
               </div>
@@ -361,9 +361,9 @@ export function ResourcesPage({ onBack: _onBack }: ResourcesPageProps = {}) {
               <div className="mt-8 p-4 bg-[#0EA0DC]/5 rounded-2xl border border-[#0EA0DC]/10 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-[#0EA0DC] rounded-full animate-pulse" />
-                  <span className="text-sm font-medium text-[#272727]">Translation Mode Enabled</span>
+                  <span className="text-sm font-medium text-[#272727]">Smart Synchronization Active</span>
                 </div>
-                <p className="text-xs text-[#666666]">Click the Globe icon in the player to translate subtitles to your language.</p>
+                <p className="text-xs text-[#666666]">Subtitles will automatically sync with your selected website language.</p>
               </div>
             </div>
           </Card>
