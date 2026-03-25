@@ -30,7 +30,27 @@ const sections: Section[] = [
             { id: "contact-details", title: "Contact Details" }
         ]
     },
-
+    {
+        id: "products-section",
+        title: "Section B: Products",
+        subsections: [
+            { id: "restoration-products", title: "Restoration & Protection" }
+        ]
+    },
+    {
+        id: "consumables-section",
+        title: "Section C: Consumables",
+        subsections: [
+            { id: "consumables-list", title: "Consumables List" }
+        ]
+    },
+    {
+        id: "equipment-section",
+        title: "Section D: Equipment",
+        subsections: [
+            { id: "equipment-list", title: "Equipment List" }
+        ]
+    }
 ];
 
 export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
@@ -87,8 +107,8 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
         const fetchProgress = async () => {
             try {
                 const response = await api.get('/auth/profile');
-                const progress = response.data.courseProgress?.[COURSE_KEY] || [];
-                setCompletedSteps(progress);
+                const progressData = response.data.courseProgress?.[COURSE_KEY] || [];
+                setCompletedSteps(progressData);
             } catch (err) {
                 console.error("Failed to fetch course progress", err);
             }
@@ -143,7 +163,7 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                                 <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-[#0EA0DC]/20 mb-4 px-3 py-1 font-bold">
                                     Course Module
                                 </Badge>
-                                <h1 className="text-4xl sm:text-5xl font-bold text-[#272727] mb-4 tracking-tighter italic uppercase">
+                                <h1 className="text-4xl sm:text-5xl font-bold text-[#272727] mb-4 tracking-tighter uppercase">
                                     SkyGloss <span className="text-[#0EA0DC]">Shop Setup</span>
                                 </h1>
                                 <p className="text-[#666666] text-lg max-w-2xl mb-8 font-medium">
@@ -175,7 +195,7 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                             <Progress value={progress} className="h-2.5 bg-gray-100" />
                         </div>
 
-                        {/* Sections Placeholder */}
+                        {/* Sections Mapping */}
                         {sections.map((section) => (
                             <div key={section.id} className="space-y-8">
                                 {section.subsections?.map((sub) => (
@@ -184,42 +204,122 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                                             <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                                 {section.title}
                                             </Badge>
-                                            <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
-                                                Required Items
-                                            </h2>
+                                            
+                                            {section.id === 'profile' && (
+                                                <>
+                                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
+                                                        Required Items: {sub.title}
+                                                    </h2>
+                                                    <div className="space-y-6 mb-10">
+                                                        <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
+                                                            <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3">Environment First (Read This Before Anything Else)</h4>
+                                                            <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                                                Lighting and climate control are critical to achieving proper results.
+                                                            </p>
+                                                            <div className="space-y-4 mt-6">
+                                                                <div>
+                                                                    <strong className="text-[#0EA0DC]">Lighting:</strong>
+                                                                    <p className="text-sm text-[#666666] mt-1">
+                                                                        Any high-quality lighting works — overhead or rolling — as long as you can clearly identify imperfections and see exactly what you’re doing. If you can’t clearly see the surface, you can’t properly correct or apply.
+                                                                    </p>
+                                                                </div>
+                                                                <div>
+                                                                    <strong className="text-[#0EA0DC]">Temperature:</strong>
+                                                                    <p className="text-sm text-[#666666] mt-1">
+                                                                        Ideal working range: 65°F – 75°F<br />
+                                                                        Acceptable range: 60°F – 90°F
+                                                                    </p>
+                                                                </div>
+                                                                <div>
+                                                                    <strong className="text-[#0EA0DC]">Environment:</strong>
+                                                                    <p className="text-sm text-[#666666] mt-1">
+                                                                        Low dust, controlled workspace. Your results are directly tied to your environment. Control it first.
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )}
 
-                                            <div className="space-y-6 mb-10">
-                                                <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-                                                    <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3 italic">Environment First (Read This Before Anything Else)</h4>
-                                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                                        Lighting and climate control are critical to achieving proper results.
-                                                    </p>
-                                                    <p className="text-sm text-[#272727] font-medium leading-relax">  <br />
-                                                        <strong>• Lighting:</strong>
-                                                        <br />
-                                                        Any high-quality lighting works — overhead or rolling — as long as you can clearly
-                                                        identify imperfections and see exactly what you’re doing.
-                                                        <br />
-                                                        If you can’t clearly see the surface, you can’t properly correct or apply.
-                                                        <br />
+                                            {sub.id === 'restoration-products' && (
+                                                <>
+                                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
+                                                        Restoration & Protection Products
+                                                    </h2>
+                                                    <div className="bg-gray-50 p-6 rounded-2xl mb-8">
+                                                        <p className="text-sm text-[#272727] font-medium leading-relaxed mb-4">
+                                                            <strong>These are the items you will receive directly from SkyGloss:</strong>
+                                                        </p>
+                                                        <ul className="grid sm:grid-cols-2 gap-2 text-sm text-[#666666]">
+                                                            <li>• FUSION 250</li>
+                                                            <li>• FUSION 500</li>
+                                                            <li>• FUSION 2000</li>
+                                                            <li>• Applicators</li>
+                                                            <li>• Applicator Bottles</li>
+                                                            <li>• Edge Blades</li>
+                                                            <li>• Paint Pens</li>
+                                                            <li>• Resin Film</li>
+                                                            <li>• Shine</li>
+                                                            <li>• Matte</li>
+                                                            <li>• Seal</li>
+                                                        </ul>
+                                                    </div>
+                                                </>
+                                            )}
 
-                                                        <br />
-                                                        <strong>• Temperature:</strong>
-                                                        <br />
-                                                        Ideal working range: 65°F – 75°F
-                                                        <br />
-                                                        Acceptable range: 60°F – 90°F
-                                                        <br />  <br />
-                                                        <strong>• Environment:</strong>
-                                                        <br />
-                                                        Low dust
-                                                        <br />
-                                                        Controlled workspace
-                                                        <br />Your results are directly tied to your environment. Control it first.
-                                                    </p>
+                                            {sub.id === 'consumables-list' && (
+                                                <>
+                                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
+                                                        Consumables
+                                                    </h2>
+                                                    <div className="bg-gray-50 p-6 rounded-2xl mb-8">
+                                                        <p className="text-sm text-[#272727] font-medium leading-relaxed mb-4">
+                                                            <strong>Sourced from local suppliers:</strong>
+                                                        </p>
+                                                        <ul className="grid sm:grid-cols-2 gap-2 text-sm text-[#666666]">
+                                                            <li>• Nitrile Gloves (100+, Large min)</li>
+                                                            <li>• Edgeless Microfibers (Blue, White, Black)</li>
+                                                            <li>• Plastic/Metal Blades (10+ each)</li>
+                                                            <li>• Tar Remover</li>
+                                                            <li>• Unscented Dish Soap</li>
+                                                            <li>• Isopropyl Alcohol / Denatured Alcohol</li>
+                                                            <li>• Acetone</li>
+                                                            <li>• High-quality Masking Tape (10+)</li>
+                                                            <li>• Tack Cloths (5+)</li>
+                                                            <li>• Pump Sprayers (2+)</li>
+                                                            <li>• Utility Knives (2+)</li>
+                                                        </ul>
+                                                    </div>
+                                                </>
+                                            )}
 
-                                                </div>
-                                            </div>
+                                            {sub.id === 'equipment-list' && (
+                                                <>
+                                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
+                                                        Equipment
+                                                    </h2>
+                                                    <div className="bg-gray-50 p-6 rounded-2xl mb-8">
+                                                        <p className="text-sm text-[#272727] font-medium leading-relaxed mb-4">
+                                                            <strong>Required Shop Gear:</strong>
+                                                        </p>
+                                                        <ul className="grid sm:grid-cols-2 gap-2 text-sm text-[#666666]">
+                                                            <li>• DA Sander (5” or 6”) ×2</li>
+                                                            <li>• Sanding Discs (1500, 3000, 5000 grit)</li>
+                                                            <li>• DA Polisher (5” or 6”)</li>
+                                                            <li>• 3” Cordless DA Polisher (Optional)</li>
+                                                            <li>• Cordless Drill / Screwdriver Set</li>
+                                                            <li>• Socket Set</li>
+                                                            <li>• Rubber Wheel / Fishing Line</li>
+                                                            <li>• Microfiber Hamper System</li>
+                                                            <li>• Washing System for Microfibers</li>
+                                                            <li>• Carts or Cabinet/Workbench</li>
+                                                            <li>• Interface Pads (5” or 6”)</li>
+                                                            <li>• 3-stage Compounds & Pads</li>
+                                                        </ul>
+                                                    </div>
+                                                </>
+                                            )}
 
                                             <div className="flex justify-end mt-8">
                                                 <Button
@@ -234,161 +334,7 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                                 ))}
                             </div>
                         ))}
-                        <div className="h-px bg-gray-100 my-8" />
-                        <div id="data" className="scroll-mt-32">
-                            <Card className="p-8 rounded-lg border-gray-100 bg-white">
 
-
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
-                                    Restoration &amp; Protection Products
-                                </h2>
-
-
-
-                                <div id="storage" className="bg-gray-50 p-6 rounded-2xl mb-8">
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">
-
-
-                                        <strong>     These are the items you will receive directly from SkyGloss     </strong>               <br />
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• FUSION 250</li>
-                                        <li>• FUSION 500</li>
-                                        <li>• FUSION 2000</li>
-                                        <li>• Applicators</li>
-                                        <li>• FUSION 2000</li>
-                                        <li>• Applicator Bottle</li>
-                                        <li>• Edge Blade</li>
-                                        <li>• Paint Pen</li>
-                                        <li>• Resin Film</li>
-                                        <li>• Shine</li>
-                                        <li>• Matte</li>
-                                        <li>• Seal</li>
-                                    </ul>
-
-
-
-                                </div>
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('data')}
-                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
-                                    >
-                                        {completedSteps.includes('data') ? 'Data Verified' : 'Verify Technical Data'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
-                        <div className="h-px bg-gray-100 my-8" />
-                        <div id="data" className="scroll-mt-32">
-                            <Card className="p-8 rounded-lg border-gray-100 bg-white">
-
-
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
-                                    Consumables
-                                </h2>
-
-
-
-                                <div id="storage" className="bg-gray-50 p-6 rounded-2xl mb-8">
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">
-
-
-                                        <strong>   These are the items you will want to source from a reliable local supplier.   </strong>               <br />
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Gloves (100+, large minimum)</li>
-                                        <li>• Edgeless Microfibers (50+ each: blue, white, black)</li>
-
-                                        <li>• Plastic Blades (10+)</li>
-                                        <li>• Metal Blades (10+)</li>
-                                        <li>• Tar Removere</li>
-                                        <li>• Unscented, low-dye dish soap</li>
-                                        <li>• Isopropyl Alcohol</li>
-                                        <li>• Denatured Alcohol</li>
-                                        <li>• Acetone</li>
-                                        <li>• High-quality masking tape (10+)</li>
-                                        <li>• Tack cloths (5+)</li>
-                                        <li>• Pump sprayers (2+)</li>
-                                        <li>• Utility knives (2+)</li>
-                                    </ul>
-
-
-
-                                </div>
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('data')}
-                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
-                                    >
-                                        {completedSteps.includes('data') ? 'Data Verified' : 'Verify Technical Data'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
-                        <div className="h-px bg-gray-100 my-8" />
-                        <div id="data" className="scroll-mt-32">
-                            <Card className="p-8 rounded-lg border-gray-100 bg-white">
-
-
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
-                                    Equipment
-                                </h2>
-
-
-
-                                <div id="storage" className="bg-gray-50 p-6 rounded-2xl mb-8">
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">
-
-
-                                        <strong>   Most shops will already have many of these items, but make sure your shop is fully equipped
-                                            before getting started.   </strong>               <br />
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Climate-controlled environment</li>
-                                        <li>• Adequate lighting or rolling lighting racks</li>
-
-                                        <li>• Clean floors</li>
-                                        <li>• DA Sander (5” or 6”) ×2</li>
-                                        <li>• Sanding discs (1500, 3000, 5000 grit)</li>
-                                        <li>• DA Polisher (5” or 6”)</li>
-                                        <li>• 3” cordless DA polisher (optional)</li>
-                                        <li>• Extension cords</li>
-                                        <li>• Cordless drilll</li>
-                                        <li>• Screwdriver set</li>
-                                        <li>• Socket set</li>
-                                        <li>• Rubber wheel</li>
-                                        <li>• Fishing line</li>
-                                        <li>• 3-section microfiber hampers (2)</li>
-                                        <li>• System for washing microfibers</li>
-                                        <li>• Carts or cabinet/workbench</li>
-                                        <li>• Interface pads (5” or 6”)</li>
-                                        <li>• 3-stage polishing compounds</li>
-                                        <li>• 3-stage polishing pads</li>
-                                        <li>• 1500 sanding discs (10+)</li>
-                                        <li>• 3000 sanding discs (20+)</li>
-                                        <li>• 5000 sanding discs (30+)</li>
-                                    </ul>
-
-
-
-                                </div>
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('data')}
-                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
-                                    >
-                                        {completedSteps.includes('data') ? 'Data Verified' : 'Verify Technical Data'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
                         {/* Completion Footer */}
                         <div className="py-12">
                             <Card className="p-8 rounded-2xl bg-[#272727] text-white text-center">

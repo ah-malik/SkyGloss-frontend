@@ -168,7 +168,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                 <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-[#0EA0DC]/20 mb-4 px-3 py-1 font-bold">
                                     SKYGLOSS SALES PHILOSOPHY
                                 </Badge>
-                                <h1 className="text-4xl sm:text-5xl font-bold text-[#272727] mb-4 tracking-tighter italic uppercase">
+                                <h1 className="text-4xl sm:text-5xl font-bold text-[#272727] mb-4 tracking-tighter uppercase">
                                     Understanding <span className="text-[#0EA0DC]">SkyGloss</span>
                                 </h1>
                                 <p className="text-[#666666] text-lg max-w-2xl mb-8 font-medium">
@@ -208,7 +208,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 01: The Core Difference
                                     </Badge>
-                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         Sales <span className="text-[#0EA0DC]">Philosophy</span>
                                     </h2>
                                     <div className="space-y-6 mb-10 text-[#666666]">
@@ -257,7 +257,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 02: Evolution
                                     </Badge>
-                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         Reality, <span className="text-[#0EA0DC]">Clearly Explained</span>
                                     </h2>
                                     <div className="space-y-6 mb-10 text-[#666666] p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
@@ -328,7 +328,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 03: Next Evolution
                                     </Badge>
-                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         Why SkyGloss Is the <span className="text-[#0EA0DC]">Next Evolution</span>
                                     </h2>
                                     <div className="space-y-6 mb-10 text-[#666666] p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
@@ -367,7 +367,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 04: Offer Second.
                                     </Badge>
-                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         Educate First.  <span className="text-[#0EA0DC]">Offer Second.</span>
                                     </h2>
                                     <div className="space-y-6 mb-10 text-[#666666] p-4 rounded-xl bg-[#0EA0DC]/10 border border-[#0EA0DC]/10 mb-6">
@@ -408,7 +408,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 05: Satisfaction
                                     </Badge>
-                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         Expectations Create <span className="text-[#0EA0DC]">Satisfaction</span>
                                     </h2>
                                     <div className="space-y-6 mb-10 text-[#666666] p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
@@ -447,7 +447,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 06: Results Vary
                                     </Badge>
-                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         Results Vary — <span className="text-[#0EA0DC]">By Design</span>
                                     </h2>
                                     <div className="space-y-6 mb-10 text-[#666666] p-4 rounded-xl bg-[#0EA0DC]/10 border border-[#0EA0DC]/10 mb-6">
@@ -485,7 +485,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 07: Permanence & Warranty
                                     </Badge>
-                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         Permanence & <span className="text-[#0EA0DC]">Warranty</span>
                                     </h2>
                                     <div className="space-y-6 mb-10 text-[#666666] p-4 rounded-xl bg-[#0EA0DC]/10 border border-[#0EA0DC]/10 mb-6">
@@ -540,15 +540,15 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 08: Do's and Don'ts
                                     </Badge>
-                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         How SkyGloss Should Be  <span className="text-[#0EA0DC]">Articulated</span>
                                     </h2>
                                     <div className="overflow-x-auto mb-10">
                                         <table className="w-full text-left">
                                             <thead>
                                                 <tr className="border-b border-gray-100">
-                                                    <th className="py-4 font-bold text-[#0EA0DC] uppercase text-lg italic tracking-widest">Do</th>
-                                                    <th className="py-4 font-bold text-rose-500 uppercase text-lg italic tracking-widest">Don't</th>
+                                                    <th className="py-4 font-bold text-[#0EA0DC] uppercase text-lg tracking-widest">Do</th>
+                                                    <th className="py-4 font-bold text-rose-500 uppercase text-lg tracking-widest">Don't</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="text-xs text-[#666666] font-medium">
@@ -583,7 +583,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 09: The Standard
                                     </Badge>
-                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         The <span className="text-[#0EA0DC]">Standard</span>
                                     </h2>
                                     <div className="space-y-6 mb-10 text-[#666666] p-4 rounded-xl bg-[#0EA0DC]/10 border border-[#0EA0DC]/10 mb-6">
@@ -634,8 +634,8 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     <CheckCircle className="w-10 h-10 text-emerald-500" />
                                 </div>
                                 <div className="space-y-6 relative z-10">
-                                    <h2 className="text-4xl font-bold italic uppercase tracking-tighter leading-none text-[#272727]">System Deployed</h2>
-                                    <p className="text-[#666666] max-w-xl mx-auto font-medium leading-relaxed italic">
+                                    <h2 className="text-4xl font-bold uppercase tracking-tighter leading-none text-[#272727]">System Deployed</h2>
+                                    <p className="text-[#666666] max-w-xl mx-auto font-medium leading-relaxed">
                                         You’ve now completed the full Understanding SkyGloss
                                         — forming a deep-gloss, self-healing, factory-grade finish.
                                     </p>
@@ -705,8 +705,8 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
 
                             <Card className="p-6 rounded-2xl bg-gradient-to-br from-[#272727] to-black text-white relative overflow-hidden">
                                 <div className="relative z-10">
-                                    <h4 className="font-bold text-sm mb-2 uppercase tracking-tighter italic">Expert Insight</h4>
-                                    <p className="text-[11px] text-gray-400 font-medium leading-relaxed italic">
+                                    <h4 className="font-bold text-sm mb-2 uppercase tracking-tighter">Expert Insight</h4>
+                                    <p className="text-[11px] text-gray-400 font-medium leading-relaxed">
                                         "The results of SkyGloss are stunning. Customers are always so excited. That's why we never have to oversell or sensationalize."
                                     </p>
                                 </div>

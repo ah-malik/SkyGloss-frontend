@@ -1442,7 +1442,6 @@ export function DistributorDashboard({
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Understanding SkyGloss Course Card (First) */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -1452,10 +1451,218 @@ export function DistributorDashboard({
                     <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
                       <GraduationCap className="w-24 h-24 text-[#0EA0DC]" />
                     </div>
+                    <div className="bg-gradient-to-br from-[#0EA0DC] to-[#0bcaf8] rounded-xl mb-4 p-8 border border-gray-100 flex items-center justify-center">
+                      <h4 className="text-2xl font-black text-white uppercase tracking-tighter shadow-2xl">
+                        WELCOME
+                      </h4>
+                    </div>
+
+                    <div className="flex items-center justify-between mb-3">
+                      <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-0 w-fit font-bold">
+                        Introduction
+                      </Badge>
+                      {(() => {
+                        const key = 'WELCOME_TO_SKYGLOSS';
+                        const progress = user?.courseProgress?.[key] || [];
+
+                        if (progress.length > 0) {
+                          const completedCount = progress.length;
+                          const totalSteps = COURSE_STEPS[key] || 19;
+                          const percentage = Math.round((completedCount / totalSteps) * 100);
+
+                          if (completedCount >= totalSteps) {
+                            return (
+                              <span className="text-emerald-600 font-black text-xs uppercase tracking-wider animate-pulse">
+                                COMPLETED
+                              </span>
+                            );
+                          }
+
+                          return (
+                            <span className="text-[#0EA0DC] font-black text-xs">
+                              {percentage}% READ
+                            </span>
+                          );
+                        }
+                        return null;
+                      })()}
+                    </div>
+
+                    <h4 className="text-lg font-bold text-[#272727] mb-2 uppercase tracking-tighter">
+                      Welcome to SkyGloss</h4>
+
+                    <p className="text-sm text-[#666666] mb-6 flex-1 leading-relaxed">
+                      Start your journey with SkyGloss. Learn about our mission, technology, and how we are redefining automotive paint restoration.
+                    </p>
+
+                    <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                      <div className="flex items-center gap-2 text-[#999999] text-xs">
+                        <Clock className="w-4 h-4" />
+                        <span>30 mins</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[#999999] text-xs">
+                        <Award className="w-4 h-4" />
+                        <span>Certificate</span>
+                      </div>
+                    </div>
+
+                    {(() => {
+                      const key = 'WELCOME_TO_SKYGLOSS';
+                      const progress = user?.courseProgress?.[key] || [];
+
+                      if (progress.length > 0) {
+                        const completedCount = progress.length;
+                        const totalSteps = COURSE_STEPS[key] || 19;
+                        const percentage = Math.round((completedCount / totalSteps) * 100);
+
+                        return (
+                          <div className="mb-6 space-y-2">
+                            <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
+                              <span className="text-[#666666]">Course Progress</span>
+                              <span className="text-[#0EA0DC]">{percentage}%</span>
+                            </div>
+                            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-100/50 p-[1px]">
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${percentage}%` }}
+                                className="h-full bg-gradient-to-r from-[#0EA0DC] to-[#0bcaf8] rounded-full shadow-[0_0_8px_rgba(14,160,220,0.3)]"
+                              />
+                            </div>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
+
+                    <Button
+                      onClick={() => {
+                        navigate(`/dashboard/distributor/courses/welcome-to-skygloss`);
+                        setViewingCourse('welcome-to-skygloss');
+                      }}
+                      className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
+                    >
+                      Start Welcome Course
+                    </Button>
+                  </Card>
+                </motion.div>
+
+                {/* SkyGloss Shop Setup Course Card (Second) */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <Card className="skygloss-card p-6 rounded-2xl h-full flex flex-col group hover:shadow-xl transition-all border-0 shadow-lg relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                      <GraduationCap className="w-24 h-24 text-[#0EA0DC]" />
+                    </div>
+                    <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl mb-4 p-8 border border-gray-800 flex items-center justify-center">
+                      <h4 className="text-2xl font-black text-white uppercase tracking-tighter shadow-2xl">
+                        SHOP SETUP
+                      </h4>
+                    </div>
+
+                    <div className="flex items-center justify-between mb-3">
+                      <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-0 w-fit font-bold">
+                        Essentials
+                      </Badge>
+                      {(() => {
+                        const key = 'SKYGLOSS_SHOP_SETUP';
+                        const progress = user?.courseProgress?.[key] || [];
+
+                        if (progress.length > 0) {
+                          const completedCount = progress.length;
+                          const totalSteps = COURSE_STEPS[key] || 4;
+                          const percentage = Math.round((completedCount / totalSteps) * 100);
+
+                          if (completedCount >= totalSteps) {
+                            return (
+                              <span className="text-emerald-600 font-black text-xs uppercase tracking-wider animate-pulse">
+                                COMPLETED
+                              </span>
+                            );
+                          }
+
+                          return (
+                            <span className="text-[#0EA0DC] font-black text-xs">
+                              {percentage}% DONE
+                            </span>
+                          );
+                        }
+                        return null;
+                      })()}
+                    </div>
+
+                    <h4 className="text-lg font-bold text-[#272727] mb-2 uppercase tracking-tighter">
+                      SkyGloss Shop Setup</h4>
+
+                    <p className="text-sm text-[#666666] mb-6 flex-1 leading-relaxed">
+                      Configure your professional shop profile, connect with distributors, and set up your inventory for success.
+                    </p>
+
+                    <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                      <div className="flex items-center gap-2 text-[#999999] text-xs">
+                        <Clock className="w-4 h-4" />
+                        <span>15 mins</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[#999999] text-xs">
+                        <Award className="w-4 h-4" />
+                        <span>Certificate</span>
+                      </div>
+                    </div>
+
+                    {(() => {
+                      const key = 'SKYGLOSS_SHOP_SETUP';
+                      const progress = user?.courseProgress?.[key] || [];
+
+                      if (progress.length > 0) {
+                        const completedCount = progress.length;
+                        const totalSteps = COURSE_STEPS[key] || 4;
+                        const percentage = Math.round((completedCount / totalSteps) * 100);
+
+                        return (
+                          <div className="mb-6 space-y-2">
+                            <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
+                              <span className="text-[#666666]">Progress</span>
+                              <span className="text-[#0EA0DC]">{percentage}%</span>
+                            </div>
+                            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-100/50 p-[1px]">
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${percentage}%` }}
+                                className="h-full bg-gradient-to-r from-[#0EA0DC] to-[#0bcaf8] rounded-full shadow-[0_0_8px_rgba(14,160,220,0.3)]"
+                              />
+                            </div>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
+
+                    <Button
+                      onClick={() => {
+                        navigate(`/dashboard/distributor/courses/skygloss-shop-setup`);
+                        setViewingCourse('skygloss-shop-setup');
+                      }}
+                      className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
+                    >
+                      Open Shop Setup
+                    </Button>
+                  </Card>
+                </motion.div>
+
+                {/* Sales Philosophy Course Card (Third) */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <Card className="skygloss-card p-6 rounded-2xl h-full flex flex-col group hover:shadow-xl transition-all border-0 shadow-lg relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                      <GraduationCap className="w-24 h-24 text-[#0EA0DC]" />
+                    </div>
                     <div className="bg-gradient-to-br from-[#272727] to-black rounded-xl mb-4 p-8 border border-gray-800 flex items-center justify-center">
-                      <h4 className="text-2xl font-black text-[#0EA0DC] italic uppercase tracking-tighter shadow-2xl">
-
-
+                      <h4 className="text-2xl font-black text-[#0EA0DC] uppercase tracking-tighter shadow-2xl">
                         PHILOSOPHY
                       </h4>
                     </div>
@@ -1476,7 +1683,7 @@ export function DistributorDashboard({
 
                           if (completedCount >= totalSteps) {
                             return (
-                              <span className="text-emerald-600 font-black text-xs uppercase tracking-wider italic animate-pulse">
+                              <span className="text-emerald-600 font-black text-xs uppercase tracking-wider animate-pulse">
                                 COMPLETED
                               </span>
                             );
@@ -1486,7 +1693,7 @@ export function DistributorDashboard({
                       })()}
                     </div>
 
-                    <h4 className="text-lg font-bold text-[#272727] mb-2 uppercase italic tracking-tighter">
+                    <h4 className="text-lg font-bold text-[#272727] mb-2 uppercase tracking-tighter">
                       Sales Philosophy</h4>
 
                     <p className="text-sm text-[#666666] mb-6 flex-1 leading-relaxed">
@@ -1547,213 +1754,6 @@ export function DistributorDashboard({
                     </Button>
                   </Card>
                 </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  <Card className="skygloss-card p-6 rounded-2xl h-full flex flex-col group hover:shadow-xl transition-all border-0 shadow-lg relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-                      <GraduationCap className="w-24 h-24 text-[#0EA0DC]" />
-                    </div>
-                    <div className="bg-gradient-to-br from-[#0EA0DC] to-[#0bcaf8] rounded-xl mb-4 p-8 border border-gray-100 flex items-center justify-center">
-                      <h4 className="text-2xl font-black text-white italic uppercase tracking-tighter shadow-2xl">
-                        WELCOME
-                      </h4>
-                    </div>
-
-                    <div className="flex items-center justify-between mb-3">
-                      <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-0 w-fit font-bold">
-                        Introduction
-                      </Badge>
-                      {(() => {
-                        const key = 'WELCOME_TO_SKYGLOSS';
-                        const progress = user?.courseProgress?.[key] || [];
-
-                        if (progress.length > 0) {
-                          const completedCount = progress.length;
-                          const totalSteps = COURSE_STEPS[key] || 19;
-                          const percentage = Math.round((completedCount / totalSteps) * 100);
-
-                          if (completedCount >= totalSteps) {
-                            return (
-                              <span className="text-emerald-600 font-black text-xs uppercase tracking-wider italic animate-pulse">
-                                COMPLETED
-                              </span>
-                            );
-                          }
-
-                          return (
-                            <span className="text-[#0EA0DC] font-black text-xs italic">
-                              {percentage}% READ
-                            </span>
-                          );
-                        }
-                        return null;
-                      })()}
-                    </div>
-
-                    <h4 className="text-lg font-bold text-[#272727] mb-2 uppercase italic tracking-tighter">
-                      Welcome to SkyGloss</h4>
-
-                    <p className="text-sm text-[#666666] mb-6 flex-1 leading-relaxed">
-                      Start your journey with SkyGloss. Learn about our mission, technology, and how we are redefining automotive paint restoration.
-                    </p>
-
-                    <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
-                      <div className="flex items-center gap-2 text-[#999999] text-xs">
-                        <Clock className="w-4 h-4" />
-                        <span>30 mins</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-[#999999] text-xs">
-                        <Award className="w-4 h-4" />
-                        <span>Certificate</span>
-                      </div>
-                    </div>
-
-                    {(() => {
-                      const key = 'WELCOME_TO_SKYGLOSS';
-                      const progress = user?.courseProgress?.[key] || [];
-
-                      if (progress.length > 0) {
-                        const completedCount = progress.length;
-                        const totalSteps = COURSE_STEPS[key] || 19;
-                        const percentage = Math.round((completedCount / totalSteps) * 100);
-
-                        return (
-                          <div className="mb-6 space-y-2">
-                            <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
-                              <span className="text-[#666666]">Course Progress</span>
-                              <span className="text-[#0EA0DC]">{percentage}%</span>
-                            </div>
-                            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-100/50 p-[1px]">
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${percentage}%` }}
-                                className="h-full bg-gradient-to-r from-[#0EA0DC] to-[#0bcaf8] rounded-full shadow-[0_0_8px_rgba(14,160,220,0.3)]"
-                              />
-                            </div>
-                          </div>
-                        );
-                      }
-                      return null;
-                    })()}
-
-                    <Button
-                      onClick={() => {
-                        navigate(`/dashboard/distributor/courses/welcome-to-skygloss`);
-                        setViewingCourse('welcome-to-skygloss');
-                      }}
-                      className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
-                    >
-                      Start Welcome Course
-                    </Button>
-                  </Card>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <Card className="skygloss-card p-6 rounded-2xl h-full flex flex-col group hover:shadow-xl transition-all border-0 shadow-lg relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-                      <GraduationCap className="w-24 h-24 text-[#0EA0DC]" />
-                    </div>
-                    <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl mb-4 p-8 border border-gray-800 flex items-center justify-center">
-                      <h4 className="text-2xl font-black text-white italic uppercase tracking-tighter shadow-2xl">
-                        SHOP SETUP
-                      </h4>
-                    </div>
-
-                    <div className="flex items-center justify-between mb-3">
-                      <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-0 w-fit font-bold">
-                        Essentials
-                      </Badge>
-                      {(() => {
-                        const key = 'SKYGLOSS_SHOP_SETUP';
-                        const progress = user?.courseProgress?.[key] || [];
-
-                        if (progress.length > 0) {
-                          const completedCount = progress.length;
-                          const totalSteps = COURSE_STEPS[key] || 4;
-                          const percentage = Math.round((completedCount / totalSteps) * 100);
-
-                          if (completedCount >= totalSteps) {
-                            return (
-                              <span className="text-emerald-600 font-black text-xs uppercase tracking-wider italic animate-pulse">
-                                COMPLETED
-                              </span>
-                            );
-                          }
-
-                          return (
-                            <span className="text-[#0EA0DC] font-black text-xs italic">
-                              {percentage}% DONE
-                            </span>
-                          );
-                        }
-                        return null;
-                      })()}
-                    </div>
-
-                    <h4 className="text-lg font-bold text-[#272727] mb-2 uppercase italic tracking-tighter">
-                      SkyGloss Shop Setup</h4>
-
-                    <p className="text-sm text-[#666666] mb-6 flex-1 leading-relaxed">
-                      Configure your professional shop profile, connect with distributors, and set up your inventory for success.
-                    </p>
-
-                    <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
-                      <div className="flex items-center gap-2 text-[#999999] text-xs">
-                        <Clock className="w-4 h-4" />
-                        <span>15 mins</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-[#999999] text-xs">
-                        <Award className="w-4 h-4" />
-                        <span>Certificate</span>
-                      </div>
-                    </div>
-
-                    {(() => {
-                      const key = 'SKYGLOSS_SHOP_SETUP';
-                      const progress = user?.courseProgress?.[key] || [];
-
-                      if (progress.length > 0) {
-                        const completedCount = progress.length;
-                        const totalSteps = COURSE_STEPS[key] || 4;
-                        const percentage = Math.round((completedCount / totalSteps) * 100);
-
-                        return (
-                          <div className="mb-6 space-y-2">
-                            <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
-                              <span className="text-[#666666]">Progress</span>
-                              <span className="text-[#0EA0DC]">{percentage}%</span>
-                            </div>
-                            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-100/50 p-[1px]">
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${percentage}%` }}
-                                className="h-full bg-gradient-to-r from-[#0EA0DC] to-[#0bcaf8] rounded-full shadow-[0_0_8px_rgba(14,160,220,0.3)]"
-                              />
-                            </div>
-                          </div>
-                        );
-                      }
-                      return null;
-                    })()}
-
-                    <Button
-                      onClick={() => {
-                        navigate(`/dashboard/distributor/courses/skygloss-shop-setup`);
-                        setViewingCourse('skygloss-shop-setup');
-                      }}
-                      className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
-                    >
-                      Open Shop Setup
-                    </Button>
-                  </Card>
-                </motion.div>
 
                 {distributorProducts
                   .filter(p => ['FUSION', 'RESIN FILM', 'SHINE', 'MATTE', 'SEAL'].some(name => p.name.toUpperCase().includes(name)))
@@ -1785,7 +1785,7 @@ export function DistributorDashboard({
 
                               if (completedCount >= totalSteps) {
                                 return (
-                                  <span className="text-emerald-600 font-black text-xs uppercase tracking-wider italic animate-pulse">
+                                  <span className="text-emerald-600 font-black text-xs uppercase tracking-wider animate-pulse">
                                     COMPLETED
                                   </span>
                                 );

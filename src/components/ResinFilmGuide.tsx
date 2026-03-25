@@ -157,7 +157,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                 <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-[#0EA0DC]/20 mb-4 px-3 py-1 font-bold">
                                     PROFESSIONAL RESIN FILM APPLICATION GUIDE
                                 </Badge>
-                                <h1 className="text-4xl sm:text-5xl font-bold text-[#272727] mb-4 tracking-tighter italic uppercase">
+                                <h1 className="text-4xl sm:text-5xl font-bold text-[#272727] mb-4 tracking-tighter uppercase">
                                     <span className="text-[#0EA0DC]">RESIN FILM</span> Professional Guide
                                 </h1>
                                 <p className="text-[#666666] text-lg max-w-2xl mb-8 font-medium">
@@ -197,7 +197,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Phase 01: Preparation
                                     </Badge>
-                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         Wash & <span className="text-[#0EA0DC]">Decontaminate</span>
                                     </h2>
                                     <div className="space-y-6 mb-10">
@@ -228,7 +228,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Phase 02: Residue removal
                                     </Badge>
-                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         Remove <span className="text-[#0EA0DC]">Wax & Silicone</span>
                                     </h2>
                                     <div className="space-y-6 mb-10">
@@ -260,7 +260,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Phase 03: Ideal Working Conditions
                                     </Badge>
-                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         Ideal Working <span className="text-[#0EA0DC]">Conditions</span>
                                     </h2>
                                     <div className="space-y-6 mb-10">
@@ -289,7 +289,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                             {/* <div id="conditions" className="scroll-mt-32">
                                 <div className="flex items-center gap-4 mb-8 mt-8">
                                     <div className="h-[1px] flex-1 bg-gray-200" />
-                                    <h3 className="text-xs font-bold text-[#0EA0DC] uppercase tracking-[0.3em] flex items-center gap-3 italic">
+                                    <h3 className="text-xs font-bold text-[#0EA0DC] uppercase tracking-[0.3em] flex items-center gap-3">
                                         <Wind className="w-4 h-4 text-[#0EA0DC]" /> Environmental Control
                                     </h3>
                                     <div className="h-[1px] flex-1 bg-gray-200" />
@@ -325,7 +325,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                             <div id="step1-apply" className="scroll-mt-32 space-y-12">
                                 {/* <div className="text-center space-y-4 mt-8 mb-8">
                                     <Badge variant="outline" className="border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 uppercase tracking-[0.4em] px-6 py-1 font-bold text-[10px]">Matrix_Phase_03</Badge>
-                                    <h2 className="text-4xl font-bold text-[#272727] tracking-tighter uppercase italic">RESIN COAT Deployment</h2>
+                                    <h2 className="text-4xl font-bold text-[#272727] tracking-tighter uppercase">RESIN COAT Deployment</h2>
                                 </div> */}
 
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
@@ -333,7 +333,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                         <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                             Phase 04: Application
                                         </Badge>
-                                        <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                        <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                             Step 1 – Apply <span className="text-[#0EA0DC]">RESIN COAT</span>
                                         </h2>
                                         <div className="space-y-6 mb-10">
@@ -364,12 +364,12 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <div className="flex flex-col  gap-8">
                                         <div className=" flex flex-col justify-between h-full">
                                             <div>
-                                                <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
+                                                <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter">
                                                     Step 2 – Drying & Hardening</h3>
                                                 <div className="p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
-                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed">
                                                         • Allow the RESIN COAT layer to dry naturally for 2–4 hours depending on ambient temperature.</p>
-                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed">
                                                         • Infrared lamps may be used to accelerate curing — only on the first layer (RESIN COAT).</p>
 
                                                 </div>
@@ -391,18 +391,18 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <div className="flex flex-col  gap-8">
                                         <div className=" flex flex-col justify-between h-full">
                                             <div>
-                                                <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
+                                                <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter">
                                                     Step 3 – Apply FILM COAT (Top Layer)</h3>
                                                 <div className="p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
-                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed">
                                                         1. Once the base layer is fully cured, proceed with FILM COAT.</p>
-                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed">
                                                         2. Shake well, then apply 5–7 drops to a clean applicator.</p>
-                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed">
                                                         3. Spread evenly in 50–70 cm² sections.</p>
-                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed">
                                                         4. Wait 2–4 minutes, then buff with a clean microfiber cloth.</p>
-                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed">
                                                         5. Repeat process on all panels.</p>
                                                 </div>
                                                 <h6>You’ve now completed the full SkyGloss RESIN FILM System — forming a deep-gloss,
@@ -426,12 +426,12 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                 <div className="flex flex-col  gap-8">
                                     <div className=" flex flex-col justify-between h-full">
                                         <div>
-                                            <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter italic">
+                                            <h3 className="text-xl font-bold text-[#272727] mb-3 uppercase tracking-tighter">
                                                 Aftercare – Protect the Perfection</h3>
                                             <div className="p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed">
                                                     Avoid water contact or washing for 24 hours after application.</p>
-                                                <p className="text-xs text-[#666666] font-medium leading-relaxed italic">
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed">
                                                     Full curing occurs within 14 days (Self healing properties activate after full cure) — during this
                                                     period:
                                                     <br /> ◦ Do not use automatic car washes.
@@ -468,8 +468,8 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <CheckCircle className="w-10 h-10 text-emerald-500" />
                                 </div>
                                 <div className="space-y-6 relative z-10">
-                                    <h2 className="text-4xl font-bold italic uppercase tracking-tighter leading-none text-[#272727]">System Deployed</h2>
-                                    <p className="text-[#666666] max-w-xl mx-auto font-medium leading-relaxed italic">
+                                    <h2 className="text-4xl font-bold uppercase tracking-tighter leading-none text-[#272727]">System Deployed</h2>
+                                    <p className="text-[#666666] max-w-xl mx-auto font-medium leading-relaxed">
                                         You’ve now completed the full SkyGloss RESIN FILM System — forming a deep-gloss, self-healing, factory-grade finish.
                                     </p>
                                 </div>

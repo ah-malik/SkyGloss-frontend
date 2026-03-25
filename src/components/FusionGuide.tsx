@@ -194,7 +194,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-[#0EA0DC]/20 mb-4 px-3 py-1 font-bold">
                                     FUSION PROFESSIONAL APPLICATION GUIDE
                                 </Badge>
-                                <h1 className="text-4xl sm:text-5xl font-bold text-[#272727] mb-4 tracking-tighter italic uppercase">
+                                <h1 className="text-4xl sm:text-5xl font-bold text-[#272727] mb-4 tracking-tighter uppercase">
                                     <span className="text-[#0EA0DC]">FUSION</span> Professional Guide
                                 </h1>
                                 <p className="text-[#666666] text-lg max-w-2xl mb-8 font-medium">
@@ -235,13 +235,13 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                     SECTION A: PRODUCT OVERVIEW
                                 </Badge>
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                     FUSION is a 2-part chemical product
                                 </h2>
 
                                 <div className="space-y-6 mb-10">
                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-                                        <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3 italic">What FUSION Does</h4>
+                                        <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3">What FUSION Does</h4>
                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
                                             FUSION is designed to fuses an extremely high grade clearcoat, just like the manufacturer uses, into an automotive paint finish relying on a chemical adhesion to permanently bond and weld itself into the original finish. FUSION can only be applied to clearcoat with integrity.
                                         </p>
@@ -450,7 +450,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 1: LIGHT WASH</h3>
 
-                                    <p className="text-sm text-[#666666] mb-4 italic">
+                                    <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: This step is required to start the cleaning and decontamination process. Every step of the way gets you closer. We call this step LIGHT WASH because it's not about getting a perfectly clean surface but clean enough to see what is going on and examine if there are special steps that are needed or if you can treat the vehicle as normal. Because the vehicle will go through other processes that will dirty the surface again there's no point in getting a perfectly clean vehicle this step."
                                     </p>
 
@@ -513,7 +513,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 2: VEHICLE INSPECTION</h3>
 
-                                    <p className="text-sm text-[#666666] mb-4 italic">
+                                    <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: FUSION is a chemical reaction and if the clearcoat underneath does not have a chemical resistance, there's a chance that FUSION will not level out or even melt the clearcoat making things worse. This process allows us to get a good understanding of the chemical resistance and stability of the original clearcoat."
                                     </p>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
@@ -579,7 +579,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 3: REMOVE ATTACHMENTS</h3>
 
-                                    <p className="text-sm text-[#666666] mb-4 italic">
+                                    <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: Not having emblems or certain moldings around a vehicle can create a cleaner, less contaminated, finish and easier to apply not having to go around tricky obstacles. Removing attachments can be faster and perform better results, but it also can be a liability if the attachments are weak or brittle and prone to break when removing. Often times it's much faster to leave the attachments on. But another strategy is a lot of customers are happy removing attachments, and either replacing them with new fresh ones or just leaving them off entirely. In the Customer Intake Form that you fill out with a customer there is a section asking if they want their attachments removed. We strongly recommend removing attachments that the customers are okay leaving off."
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
@@ -632,7 +632,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 4: EXFOLIATE</h3>
 
-                                    <p className="text-sm text-[#666666] mb-4 italic">
+                                    <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: Using a 3000, 5000 or 6000 sanding disc, this levels out the paint and removes contaminants that are stuck onto the clearcoat. This decontaminating process helps levels the paint for a clean and consistent application."
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
@@ -710,7 +710,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 5: HEAVY WASH</h3>
 
-                                    <p className="text-sm text-[#666666] mb-4 italic">
+                                    <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: We are now completely done with the dirty work. Everything from here on out is getting the vehicle completely clean using the same materials as the Light Wash Step you are now going to do a Heavy Wash. This is where every door jam, every window, every wheel well should be cleaned and free from debris, the vehicle will have a sanded look to it but completely clean."
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
@@ -766,7 +766,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 6: ETCH</h3>
 
-                                    <p className="text-sm text-[#666666] mb-4 italic">
+                                    <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: For FUSION to adhere properly a chemical reaction needs to take place. Etch does two very important things. 1, it continues to remove debris from the pour of the clearcoat and get the surface extremely clean, and 2, it starts to heat up the original clearcoat to be ready for FUSION application. The Etch process helps promote bonding and is a critical process that can not be done haphazardly."
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
@@ -826,7 +826,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 7: MASK</h3>
 
-                                    <p className="text-sm text-[#666666] mb-4 italic">
+                                    <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: Although we're not spraying anything into the air, moldings and trim pieces are not something that you want FUSION to get on. Running a piece of tape along these areas will help guide your application. You never want to purposely touch tape with FUSION because that will cause a chemical reaction and put some contaminants onto your applicator that then can go onto your panel. But it is there to help guide you and protect areas that you might accidentally hit."
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
@@ -882,7 +882,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 8: MIXING FUSION</h3>
 
-                                    <p className="text-sm text-[#666666] mb-4 italic">
+                                    <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: Fusion needs to be mixed 10 minutes prior to when you will be ready to apply. While getting everything ready and going to the next step mix FUSION and put a timer on it for 10 minutes."
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
@@ -918,7 +918,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 9: FIRST POUR</h3>
 
-                                    <p className="text-sm text-[#666666] mb-4 italic">
+                                    <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: You want to soak your applicator on all edges because you want to make sure that there are no dry spots that will cause dry spots in your application."
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
@@ -954,7 +954,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 10: TACK CLOTH</h3>
 
-                                    <p className="text-sm text-[#666666] mb-4 italic">
+                                    <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: To remove the last bit of fallen lint and debris right before application."
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
@@ -990,7 +990,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 11: APPLY FUSION</h3>
 
-                                    <p className="text-sm text-[#666666] mb-4 italic">
+                                    <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: To apply a thick completely leveled out layer of FUSION on the panels intended to build and repair clearcoat."
                                     </p>
 
@@ -1055,7 +1055,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-6 rounded-2xl border-l-4">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 12: QUALITY CHECK</h3>
 
-                                    <p className="text-sm text-[#666666] mb-4 italic">
+                                    <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: Once FUSION cures it is a permanent bond. You have maximum 3 hours to remove FUSION should you see an issue. This is why it's critical to check your work before you go onto the next panel. You will want to be checking your application after each panel, and after each section and a complete check once you finish the entire vehicle."
                                     </p>
 
@@ -1085,7 +1085,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 13: CLEAN APPLICATOR BOTTLE</h3>
 
-                                    <p className="text-sm text-[#666666] mb-4 italic">
+                                    <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: It's critically important to thoroughly clean the applicator bottle with acetone and multiple rinsing if you plan to use it again. We recommend never using an applicator bottle more than 10 times because no matter how clean you get it there is always potential for contamination breaking down in a used applicator bottle. The cleaning of the applicator bottle is not just critical for the inside but the outside as well every time you clean it if you do a thorough job, it should look brand new or close to it."
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">

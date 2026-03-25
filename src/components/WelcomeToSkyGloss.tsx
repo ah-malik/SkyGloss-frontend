@@ -194,7 +194,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                 <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-[#0EA0DC]/20 mb-4 px-3 py-1 font-bold">
                                     Introduction
                                 </Badge>
-                                <h1 className="text-4xl sm:text-5xl font-bold text-[#272727] mb-4 tracking-tighter italic uppercase">
+                                <h1 className="text-4xl sm:text-5xl font-bold text-[#272727] mb-4 tracking-tighter uppercase">
                                     <span className="text-[#0EA0DC]">Welcome</span> to SkyGloss
                                 </h1>
                                 <p className="text-[#666666] text-lg max-w-2xl mb-8 font-medium">
@@ -239,13 +239,13 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                 <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                     SECTION A: Starting Point
                                 </Badge>
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     A Different Starting Point
                                 </h2>
 
                                 <div className="space-y-6 mb-10">
                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-                                        <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3 italic">The Old Way</h4>
+                                        <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3">The Old Way</h4>
                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
                                             For years, polishing has been the standard.
                                             <br />
@@ -296,7 +296,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                     SECTION B: The Core Idea
                                 </Badge>
 
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     The Core Idea
                                 </h2>
 
@@ -344,13 +344,13 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                 <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                     SECTION A: Foundation
                                 </Badge>
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     Foundation, Not Replacement
                                 </h2>
 
                                 <div className="space-y-6 mb-10">
                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-                                        <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3 italic">The Old Way</h4>
+                                        <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3">The Old Way</h4>
                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
                                             SkyGloss is not here to replace what you already do.
                                             <br />
@@ -391,7 +391,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
 
 
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     What is FUSION
                                 </h2>
 
@@ -442,14 +442,14 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                         <div id="intro" className="scroll-mt-32">
                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
 
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     The Reality of FUSION (Speed &amp;
                                     Consistency)
                                 </h2>
 
                                 <div className="space-y-6 mb-10">
                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-                                        <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3 italic">The reality is—FUSION is faster.</h4>
+                                        <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3">The reality is—FUSION is faster.</h4>
                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
                                             There is a learning curve, and your shop needs to be set up properly.
                                             But once that’s done, everything changes.
@@ -501,7 +501,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
 
 
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     Built for the Real World
                                 </h2>
 
@@ -550,7 +550,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                         <div id="intro" className="scroll-mt-32">
                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
 
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     A Universal Opportunity
                                 </h2>
 
@@ -601,7 +601,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
 
 
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     What You’re Getting Access To
                                 </h2>
 
@@ -646,7 +646,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                         <div id="intro" className="scroll-mt-32">
                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
 
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     SkyGloss is a Marketing Engine
                                 </h2>
 
@@ -729,7 +729,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
 
 
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     The Bigger Picture
                                 </h2>
 
@@ -786,7 +786,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
 
 
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     What Happens Next
                                 </h2>
 
@@ -835,7 +835,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                         <div id="intro" className="scroll-mt-32">
                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
 
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase italic">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     Final Thought
                                 </h2>
 
