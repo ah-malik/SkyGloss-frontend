@@ -7,17 +7,9 @@ import {
     VolumeX,
     Maximize,
     Settings,
-    Languages,
-    Subtitles,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Slider } from "./ui/slider";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
 
 interface Subtitle {
     start: number;
@@ -50,7 +42,6 @@ export function SmartVideoPlayer({ url, subtitles = {}, poster, className = "" }
     const [isMuted, setIsMuted] = useState(false);
     const [showControls, setShowControls] = useState(true);
     const [currentSubtitle, setCurrentSubtitle] = useState<string | null>(null);
-    const [isSubtitlesEnabled, setIsSubtitlesEnabled] = useState(true);
     const [_isFullscreen, setIsFullscreen] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState("en");
     const controlsTimeoutRef = useRef<any>(null);
@@ -86,12 +77,6 @@ export function SmartVideoPlayer({ url, subtitles = {}, poster, className = "" }
 
         const handleTimeUpdate = () => {
             const currentTime = video.currentTime;
-            
-            // Debug check for the first few seconds if list is empty
-            if (activeSubtitleList.length === 0) {
-                console.warn("No subtitles found for language:", selectedLanguage);
-            }
-
             const activeSubtitle = activeSubtitleList.find(
                 (s) => currentTime >= s.start && currentTime <= s.end
             );
@@ -180,16 +165,16 @@ export function SmartVideoPlayer({ url, subtitles = {}, poster, className = "" }
 
             {/* Subtitles Overlay */}
             <AnimatePresence>
-                {isSubtitlesEnabled && currentSubtitle && (
+                {currentSubtitle && (
                     <motion.div
                         key={currentSubtitle} // Keyed by subtitle to trigger exit/entry animations
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute bottom-28 left-1/2 -translate-x-1/2 w-[90%] text-center pointer-events-none z-[60]"
+                        className="absolute bottom-28 left-1/2 -translate-x-1/2 w-[90%] text-center pointer-events-none z-[60] notranslate"
                     >
-                        <span className="bg-black/90 backdrop-blur-xl text-white px-8 py-3 rounded-2xl text-xl md:text-2xl font-bold shadow-[0_0_40px_rgba(0,0,0,0.5)] inline-block border border-white/30 leading-tight">
+                        <span className="bg-black/90 backdrop-blur-xl text-white px-8 py-3 rounded-2xl text-xl md:text-2xl font-bold shadow-[0_0_40px_rgba(0,0,0,0.5)] inline-block border border-white/30 leading-tight notranslate">
                             {currentSubtitle}
                         </span>
                     </motion.div>
@@ -255,48 +240,9 @@ export function SmartVideoPlayer({ url, subtitles = {}, poster, className = "" }
 
                     <div className="flex items-center gap-2">
                         {/* Subtitles Language Indicator */}
-                        {isSubtitlesEnabled && (
-                            <span className="text-[10px] font-bold text-white/50 uppercase tracking-tighter bg-white/10 px-2 py-1 rounded">
-                                {selectedLanguage}
-                            </span>
-                        )}
-
-                        {/* Subtitles Toggle */}
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setIsSubtitlesEnabled(!isSubtitlesEnabled)}
-                            className={`text-white hover:bg-white/20 rounded-full ${isSubtitlesEnabled ? 'text-[#0EA0DC]' : ''}`}
-                            title="Toggle Subtitles"
-                        >
-                            <Subtitles className="w-5 h-5" />
-                        </Button>
-
-                        {/* Translation Menu (Independent of Website) */}
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="text-white hover:bg-white/20 rounded-full"
-                                    title="Subtitle Language"
-                                >
-                                    <Languages className="w-5 h-5" />
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="bg-[#1a1a1a] border-white/10 text-white w-48 rounded-xl shadow-2xl p-2">
-                                <div className="px-2 py-1.5 text-xs font-bold text-[#999999] uppercase tracking-wider">Subtitles:</div>
-                                {Object.entries(LANGUAGE_MAP).map(([code, name]) => (
-                                    <DropdownMenuItem
-                                        key={code}
-                                        onClick={() => setSelectedLanguage(code)}
-                                        className={`cursor-pointer rounded-lg hover:bg-[#0EA0DC] transition-colors ${selectedLanguage === code ? 'bg-[#0EA0DC]/20 text-[#0EA0DC]' : ''}`}
-                                    >
-                                        {name}
-                                    </DropdownMenuItem>
-                                ))}
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        <span className="text-[10px] font-bold text-white/50 uppercase tracking-tighter bg-white/10 px-2 py-1 rounded notranslate">
+                            {selectedLanguage}
+                        </span>
 
                         {/* Settings */}
                         <Button
