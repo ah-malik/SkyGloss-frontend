@@ -46,24 +46,34 @@ export function SmartVideoPlayer({ url, subtitles = {}, poster, className = "" }
     const [selectedLanguage, setSelectedLanguage] = useState("en");
     const controlsTimeoutRef = useRef<any>(null);
 
-    // Auto-sync with Google Translate language
-    useEffect(() => {
-        const syncLanguage = () => {
-            const htmlLang = document.documentElement.lang?.split('-')[0]; // Handle en-US, etc.
-            if (htmlLang && htmlLang !== selectedLanguage && LANGUAGE_MAP[htmlLang]) {
-                setSelectedLanguage(htmlLang);
-            }
-        };
+        // Auto-sync with Google Translate language and custom events
+        useEffect(() => {
+            const syncLanguage = (e?: any) => {
+                const newLang = e?.detail?.langCode || document.documentElement.lang?.split('-')[0];
+                if (newLang && newLang !== selectedLanguage && LANGUAGE_MAP[newLang]) {
+                    setSelectedLanguage(newLang);
+                }
+            };
+    
+            // Initial check
+            syncLanguage();
+    
+            // Listen for custom toggle events from LanguageSwitcher
+            window.addEventListener('skygloss-lang-change', syncLanguage as any);
+    
+            // Observe attribute changes on <html> as backup
+            const observer = new MutationObserver(() => syncLanguage());
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+    
+            // Periodical polling as the most robust fallback
+            const interval = setInterval(syncLanguage, 2000);
 
-        // Initial check
-        syncLanguage();
-
-        // Observe attribute changes on <html>
-        const observer = new MutationObserver(syncLanguage);
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
-
-        return () => observer.disconnect();
-    }, [selectedLanguage]);
+            return () => {
+                window.removeEventListener('skygloss-lang-change', syncLanguage as any);
+                observer.disconnect();
+                clearInterval(interval);
+            };
+        }, [selectedLanguage]);
 
     // Memoize active subtitles to prevent unnecessary re-runs
     const activeSubtitleList = useMemo(() => {

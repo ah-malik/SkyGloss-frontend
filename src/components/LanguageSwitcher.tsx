@@ -103,6 +103,8 @@ export function LanguageSwitcher() {
                 select.dispatchEvent(new Event('change'));
                 setCurrentLang(langName);
                 setCurrentFlag(flag);
+                // Dispatch custom event for cross-component sync
+                window.dispatchEvent(new CustomEvent('skygloss-lang-change', { detail: { langCode } }));
                 return true;
             }
             return false;
