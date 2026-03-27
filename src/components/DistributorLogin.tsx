@@ -50,6 +50,18 @@ export function DistributorLogin() {
 
     try {
       const response = await api.post('/auth/login', { email: username, password });
+      
+      if (response.data?.paymentRequired) {
+        setIsLoading(false);
+        toast.error("Payment Required", {
+          description: response.data.message || "Please complete your $250 registration fee payment.",
+        });
+        setTimeout(() => {
+          window.location.href = response.data.stripeUrl;
+        }, 2000);
+        return;
+      }
+
       const { access_token, user } = response.data;
 
       localStorage.setItem('token', access_token);
@@ -69,7 +81,7 @@ export function DistributorLogin() {
       }, 100);
     } catch (err: any) {
       setIsLoading(false);
-      alert(err.response?.data?.message || 'Login failed. Please check your credentials.');
+      toast.error(err.response?.data?.message || 'Login failed. Please check your credentials.');
     }
   };
 
