@@ -313,8 +313,10 @@ export function ShopDashboard({
 
   const handleAddFromProductPage = (size: string, quantity: number, price?: number) => {
     const product = products.find(p => p._id === viewingProduct);
-    if (!product || !price) return;
-    addToCartContext(product, size, quantity);
+    if (!product) return;
+    // Pass explicit price so cart always uses the correct size-based price
+    // (price may be undefined for non-US users, addToCartContext handles that gracefully)
+    addToCartContext(product, size, quantity, price);
   };
 
   // Filter products based on search query

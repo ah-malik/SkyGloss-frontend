@@ -20,7 +20,7 @@ interface AuthContextType {
   cartCount: number;
   cart: CartItem[];
   setCart: (cart: CartItem[]) => void;
-  addToCart: (product: any, selectedSizeStr: string, quantity?: number) => void;
+  addToCart: (product: any, selectedSizeStr: string, quantity?: number, explicitPrice?: number) => void;
   updateQuantity: (id: string, size: string, delta: number) => void;
   removeFromCart: (id: string, size: string) => void;
   clearCart: () => void;
@@ -77,9 +77,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-  const addToCart = (product: any, selectedSizeStr: string, quantity: number = 1) => {
-    const sizeData = product.sizes.find((s: any) => s.size === selectedSizeStr);
-    const price = sizeData ? sizeData.price : 0;
+  const addToCart = (product: any, selectedSizeStr: string, quantity: number = 1, explicitPrice?: number) => {
+    const sizeData = product.sizes?.find((s: any) => s.size === selectedSizeStr);
+    // Use explicit price if provided (from ProductDetailPage), otherwise fall back to sizeData.price
+    const price = explicitPrice !== undefined ? explicitPrice : (sizeData ? Number(sizeData.price) || 0 : 0);
+
+    // Use shopImages for shop products, fall back to images
+    const image = product.shopImages?.[0] || product.images?.[0] || '';
 
     const existingItem = cart.find(
       item => item.id === product._id && item.size === selectedSizeStr
@@ -98,7 +102,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         size: selectedSizeStr,
         price,
         quantity,
-        image: product.images[0],
+        image,
         currency: product.currency
       }]);
     }
