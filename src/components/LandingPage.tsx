@@ -40,7 +40,7 @@ export function LandingPage(_: LandingPageProps) {
   const accessTypes: AccessTypeItem[] = [
     {
       id: "distributor",
-      title: "Distributor Login",
+      title: "Partner Login",
       IconComponent: DistributorIcon,
     },
     {

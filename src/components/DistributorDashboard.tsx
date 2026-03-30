@@ -751,7 +751,7 @@ export function DistributorDashboard({
               <Award className="w-5 h-5 mr-2 sm:mr-3" />
               <span className="text-base sm:text-lg">Certified</span>
             </button>
-            {/* <button
+            <button
               onClick={() => navigate("/dashboard/distributor/network")}
               className={`flex items-center justify-center px-4 sm:px-10 py-3 sm:py-4 rounded-lg transition-all duration-200 ${activeSection === "network"
                 ? "bg-[#272727] text-white shadow-lg"
@@ -760,7 +760,7 @@ export function DistributorDashboard({
             >
               <Globe className="w-5 h-5 mr-2 sm:mr-3" />
               <span className="text-base sm:text-lg">Dashboard</span>
-            </button> */}
+            </button>
             <button
               onClick={() => navigate("/dashboard/distributor/courses")}
               className={`flex items-center justify-center px-4 sm:px-10 py-3 sm:py-4 rounded-lg transition-all duration-200 ${activeSection === "courses"
