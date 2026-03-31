@@ -23,39 +23,39 @@ interface Section {
 
 const sections: Section[] = [
     {
-        id: "profile",
+        id: "shop_profile",
         title: "Section A: Shop Profile",
         subsections: [
-            { id: "business-info", title: "Business Information" },
-            { id: "contact-details", title: "Contact Details" }
+            { id: "shop_business_info", title: "Business Information" },
+            { id: "shop_contact_details", title: "Contact Details" }
         ]
     },
     {
-        id: "products-section",
+        id: "shop_products_section",
         title: "Section B: Products",
         subsections: [
-            { id: "restoration-products", title: "Restoration & Protection" }
+            { id: "shop_restoration_products", title: "Restoration & Protection" }
         ]
     },
     {
-        id: "consumables-section",
+        id: "shop_consumables_section",
         title: "Section C: Consumables",
         subsections: [
-            { id: "consumables-list", title: "Consumables List" }
+            { id: "shop_consumables_list", title: "Consumables List" }
         ]
     },
     {
-        id: "equipment-section",
+        id: "shop_equipment_section",
         title: "Section D: Equipment",
         subsections: [
-            { id: "equipment-list", title: "Equipment List" }
+            { id: "shop_equipment_list", title: "Equipment List" }
         ]
     }
 ];
 
 export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
     const { user, setUser } = useAuth();
-    const [activeSub, setActiveSub] = useState("business-info");
+    const [activeSub, setActiveSub] = useState("shop_business_info");
     const [completedSteps, setCompletedSteps] = useState<string[]>([]);
 
     const totalSteps = sections.reduce((acc, s) => acc + (s.subsections?.length || 0), 0);
@@ -205,7 +205,7 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                                                 {section.title}
                                             </Badge>
                                             
-                                            {section.id === 'profile' && (
+                                            {section.id === 'shop_profile' && (
                                                 <>
                                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                                         Required Items: {sub.title}
@@ -242,7 +242,7 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                                                 </>
                                             )}
 
-                                            {sub.id === 'restoration-products' && (
+                                            {sub.id === 'shop_restoration_products' && (
                                                 <>
                                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                                         Restoration & Protection Products
@@ -268,7 +268,7 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                                                 </>
                                             )}
 
-                                            {sub.id === 'consumables-list' && (
+                                            {sub.id === 'shop_consumables_list' && (
                                                 <>
                                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                                         Consumables
@@ -294,7 +294,7 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                                                 </>
                                             )}
 
-                                            {sub.id === 'equipment-list' && (
+                                            {sub.id === 'shop_equipment_list' && (
                                                 <>
                                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                                         Equipment

@@ -29,6 +29,7 @@ export function ShopLogin() {
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [loginMode, setLoginMode] = useState<"credentials" | "accessCode">("credentials");
 
   // Scroll to top on mount and check for payment success
   useEffect(() => {
@@ -96,6 +97,10 @@ export function ShopLogin() {
   ];
 
   const isUSA = country === "United States";
+  const canSubmitLogin = country && (
+    (loginMode === "credentials" && (username.trim() !== "" && password.trim() !== "")) ||
+    (loginMode === "accessCode" && accessCode.trim().length === 8)
+  );
 
   const handleBack = () => {
     navigate("/"); // Back to landing page
@@ -108,7 +113,7 @@ export function ShopLogin() {
 
     try {
       let response;
-      if (isUSA) {
+      if (loginMode === "credentials") {
         response = await api.post('/auth/login', { email: username, password });
       } else {
         response = await api.post('/auth/login/access-code', {
@@ -158,9 +163,6 @@ export function ShopLogin() {
     }
   };
 
-  const canSubmitLogin = isUSA
-    ? (username && password && country)
-    : (accessCode.trim() && country);
 
   return (
     <div className="min-h-screen geometric-bg flex flex-col">
@@ -242,67 +244,93 @@ export function ShopLogin() {
                     </div>
                   </div>
 
-                  {/* Conditional Fields based on Country */}
-                  {country && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      className="space-y-4"
-                    >
-                      {isUSA ? (
-                        <>
-                          <div>
-                            <label className="block text-sm text-[#272727] mb-2">Username</label>
-                            <div className="relative">
-                              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                              <Input
-                                type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                placeholder="Enter username"
-                                className="pl-10 bg-white border-[#0EA0DC]/30 rounded-lg"
-                                disabled={isLoading}
-                              />
-                            </div>
-                          </div>
+                   {/* Conditional Fields based on Login Mode */}
+                   {country && (
+                     <motion.div
+                       initial={{ opacity: 0, height: 0 }}
+                       animate={{ opacity: 1, height: "auto" }}
+                       className="space-y-4"
+                     >
+                       {/* Mode Switcher */}
+                       <div className="flex bg-gray-100/50 p-1 rounded-xl border border-gray-200 gap-1 mb-4">
+                         <button
+                           type="button"
+                           onClick={() => setLoginMode("credentials")}
+                           className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all duration-200 ${
+                             loginMode === "credentials" 
+                               ? "bg-white text-[#0EA0DC] shadow-sm ring-1 ring-black/5" 
+                               : "text-gray-500 hover:text-gray-700"
+                           }`}
+                         >
+                           Credentials
+                         </button>
+                         <button
+                           type="button"
+                           onClick={() => setLoginMode("accessCode")}
+                           className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all duration-200 ${
+                             loginMode === "accessCode" 
+                               ? "bg-white text-[#0EA0DC] shadow-sm ring-1 ring-black/5" 
+                               : "text-gray-500 hover:text-gray-700"
+                           }`}
+                         >
+                           Access Code
+                         </button>
+                       </div>
 
-                          <div>
-                            <label className="block text-sm text-[#272727] mb-2">Password</label>
-                            <div className="relative">
-                              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                              <Input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Enter password"
-                                className="pl-10 bg-white border-[#0EA0DC]/30 rounded-lg"
-                                disabled={isLoading}
-                              />
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        <div>
-                          <label className="block text-sm text-[#272727] mb-2">Certificate Number</label>
-                          <div className="relative">
-                            <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                            <Input
-                              type="text"
-                              value={accessCode}
-                              onChange={(e) => setAccessCode(e.target.value)}
-                              placeholder="Enter your access code"
-                              className="pl-10 bg-white border-[#0EA0DC]/30 rounded-lg"
-                              disabled={isLoading}
-                              maxLength={8}
-                            />
-                          </div>
-                          <p className="text-xs text-[#666666] mt-1">
-                            Enter your 8-digit certification code
-                          </p>
-                        </div>
-                      )}
-                    </motion.div>
-                  )}
+                       {loginMode === "credentials" ? (
+                         <>
+                           <div>
+                             <label className="block text-sm text-[#272727] mb-2">Username / Email</label>
+                             <div className="relative">
+                               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                               <Input
+                                 type="text"
+                                 value={username}
+                                 onChange={(e) => setUsername(e.target.value)}
+                                 placeholder="Enter your email"
+                                 className="pl-10 bg-white border-[#0EA0DC]/30 rounded-lg"
+                                 disabled={isLoading}
+                               />
+                             </div>
+                           </div>
+ 
+                           <div>
+                             <label className="block text-sm text-[#272727] mb-2">Password</label>
+                             <div className="relative">
+                               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                               <Input
+                                 type="password"
+                                 value={password}
+                                 onChange={(e) => setPassword(e.target.value)}
+                                 placeholder="Enter password"
+                                 className="pl-10 bg-white border-[#0EA0DC]/30 rounded-lg"
+                                 disabled={isLoading}
+                               />
+                             </div>
+                           </div>
+                         </>
+                       ) : (
+                         <div>
+                           <label className="block text-sm text-[#272727] mb-2">Certificate Number</label>
+                           <div className="relative">
+                             <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                             <Input
+                               type="text"
+                               value={accessCode}
+                               onChange={(e) => setAccessCode(e.target.value)}
+                               placeholder="Enter your 8-digit code"
+                               className="pl-10 bg-white border-[#0EA0DC]/30 rounded-lg"
+                               disabled={isLoading}
+                               maxLength={8}
+                             />
+                           </div>
+                           <p className="text-xs text-[#666666] mt-1">
+                             Enter your unique 8-digit certification access code.
+                           </p>
+                         </div>
+                       )}
+                     </motion.div>
+                   )}
 
                   {isLoading && (
                     <motion.div
@@ -319,7 +347,7 @@ export function ShopLogin() {
                     {isLoading ? "Logging in..." : "Login to Shop"}
                   </Button>
 
-                    {isUSA && (
+                    {loginMode === "credentials" && (
                       <div className="text-center space-y-2">
                         <button
                           type="button"

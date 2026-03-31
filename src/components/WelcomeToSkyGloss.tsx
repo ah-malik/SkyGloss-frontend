@@ -4,9 +4,7 @@ import {
     ArrowLeft,
     CheckCircle,
     ChevronRight,
-    ShieldAlert,
     Zap,
-    Wind,
     BookOpen,
     Clock
 } from "lucide-react";
@@ -32,56 +30,18 @@ const sections: Section[] = [
         id: "overview",
         title: "Section A: Product Overview",
         subsections: [
-            { id: "intro", title: "What is FUSION?" },
-            { id: "safety", title: "Safety Summary" }
-        ]
-    },
-    {
-        id: "technical",
-        title: "Section B: Technical Product Data",
-        subsections: [
-            { id: "data", title: "Data Matrix" },
-            { id: "storage", title: "Storage & Shelf Life" }
-        ]
-    },
-    {
-        id: "prep",
-        title: "Section C: Vehicle Preparation",
-        subsections: [
-            { id: "step1", title: "Step 1: Light Wash" },
-            { id: "step2", title: "Step 2: Vehicle Inspection" },
-            { id: "step3", title: "Step 3: Remove Attachments" },
-            { id: "step4", title: "Step 4: Exfoliate" },
-            { id: "step5", title: "Step 5: Heavy Wash" },
-            { id: "step6", title: "Step 6: Etch" },
-            { id: "step7", title: "Step 7: Mask" }
-        ]
-    },
-    {
-        id: "application",
-        title: "Section D: Fusion Application",
-        subsections: [
-            { id: "step8", title: "Step 8: Mixing Fusion" },
-            { id: "step9", title: "Step 9: First Pour" },
-            { id: "step10", title: "Step 10: Tack Cloth" },
-            { id: "step11", title: "Step 11: Apply Fusion" },
-            { id: "step12", title: "Step 12: Quality Check" },
-            { id: "step13", title: "Step 13: Clean Bottle" }
-        ]
-    },
-    {
-        id: "aftercare",
-        title: "Section E: Aftercare",
-        subsections: [
-            { id: "care", title: "Aftercare Instructions" }
-        ]
-    },
-    {
-        id: "troubleshooting",
-        title: "Section F: Troubleshooting",
-        subsections: [
-            { id: "removal", title: "Removing FUSION" },
-            { id: "issues", title: "Application Issues" }
+            { id: "intro_foundation", title: "A Different Starting Point" },
+            { id: "data_core", title: "The Core Idea" },
+            { id: "intro_replacement", title: "Foundation, Not Replacement" },
+            { id: "data_fusion", title: "What is FUSION" },
+            { id: "intro_reality", title: "The Reality of FUSION" },
+            { id: "data_real_world", title: "Built for the Real World" },
+            { id: "intro_opportunity", title: "A Universal Opportunity" },
+            { id: "data_access", title: "What You’re Getting Access To" },
+            { id: "intro_engine", title: "SkyGloss is a Marketing Engine" },
+            { id: "data_bigger_picture", title: "The Bigger Picture" },
+            { id: "data_next_steps", title: "What Happens Next" },
+            { id: "intro_final", title: "Final Thought" }
         ]
     }
 ];
@@ -234,7 +194,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                         </div>
 
                         {/* SECTION A: Starting Point */}
-                        <div id="intro" className="scroll-mt-32">
+                        <div id="intro_foundation" className="scroll-mt-32">
                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                 <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                     SECTION A: Starting Point
@@ -278,10 +238,10 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
 
                                 <div className="flex justify-end mt-8">
                                     <Button
-                                        onClick={() => markComplete('intro')}
-                                        className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                        onClick={() => markComplete('intro_foundation')}
+                                        className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro_foundation') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                     >
-                                        {completedSteps.includes('intro') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
+                                        {completedSteps.includes('intro_foundation') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
                                     </Button>
                                 </div>
                             </Card>
@@ -290,588 +250,561 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
 
 
                         {/* SECTION B: TECHNICAL PRODUCT DATA */}
-                        <div id="data" className="scroll-mt-32">
-                            <Card className="p-8 rounded-lg border-gray-100 bg-white">
-                                <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
-                                    SECTION B: The Core Idea
-                                </Badge>
-
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
-                                    The Core Idea
-                                </h2>
-
-
-
-                                <div id="storage" className="bg-gray-50 p-6 rounded-2xl mb-8">
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                        Clearcoat is the protection system of a vehicle.
-                                        <br />
-                                        It determines:              <br />              <br />
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Gloss</li>
-                                        <li>• Durability</li>
-                                        <li>• Resistance to wear</li>
-                                        <li>• Long-term serviceability</li>
-                                    </ul>
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">               <br />              <br />
-                                        For over 75 years, improving paint meant cutting into that layer.
-                                        <br /><br />
-                                        SkyGloss introduces a new approach:
-                                        <br /><br />
-                                        <strong>
-                                            Build clearcoat instead of removing it.
-                                        </strong>
-                                    </p>
-                                </div>
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('data')}
-                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
-                                    >
-                                        {completedSteps.includes('data') ? 'Data Verified' : 'Verify Technical Data'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
+                        <div id="data_core" className="scroll-mt-32">
+                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
+                                 <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
+                                     SECTION B: The Core Idea
+                                 </Badge>
+ 
+                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                     The Core Idea
+                                 </h2>
+ 
+ 
+ 
+                                 <div id="storage_explanation" className="bg-gray-50 p-6 rounded-2xl mb-8">
+                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                         Clearcoat is the protection system of a vehicle.
+                                         <br />
+                                         It determines:              <br />              <br />
+                                     </p>
+                                     <ul className="space-y-2 text-sm text-[#666666]">
+                                         <li>• Gloss</li>
+                                         <li>• Durability</li>
+                                         <li>• Resistance to wear</li>
+                                         <li>• Long-term serviceability</li>
+                                     </ul>
+                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">               <br />              <br />
+                                         For over 75 years, improving paint meant cutting into that layer.
+                                         <br /><br />
+                                         SkyGloss introduces a new approach:
+                                         <br /><br />
+                                         <strong>
+                                             Build clearcoat instead of removing it.
+                                         </strong>
+                                     </p>
+                                 </div>
+ 
+ 
+                                 <div className="flex justify-end mt-8">
+                                     <Button
+                                         onClick={() => markComplete('data_core')}
+                                         className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data_core') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                     >
+                                         {completedSteps.includes('data_core') ? 'Data Verified' : 'Verify Technical Data'}
+                                     </Button>
+                                 </div>
+                             </Card>
+                         </div>
 
                         <div className="h-px bg-gray-100 my-8" />
                         {/* SECTION A: Foundation */}
-                        <div id="intro" className="scroll-mt-32">
-                            <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
-                                <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
-                                    SECTION A: Foundation
-                                </Badge>
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
-                                    Foundation, Not Replacement
-                                </h2>
-
-                                <div className="space-y-6 mb-10">
-                                    <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-                                        <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3">The Old Way</h4>
-                                        <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                            SkyGloss is not here to replace what you already do.
-                                            <br />
-                                            It works with your existing services, not against them:
-                                            <br /> <br />
-                                            • Ceramic coatings
-                                            <br />
-                                            • Paint protection film
-                                            <br />
-                                            • Existing shop systems
-
-
-                                            <br />
-                                            <br />
-                                            SkyGloss focuses on creating a better foundation for everything else to perform at its best.
-
-                                        </p>
-                                    </div>
-
-
-                                </div>
-
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('intro')}
-                                        className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
-                                    >
-                                        {completedSteps.includes('intro') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
-
-                        <div className="h-px bg-gray-100 my-8" />
-                        <div id="data" className="scroll-mt-32">
-                            <Card className="p-8 rounded-lg border-gray-100 bg-white">
-
-
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
-                                    What is FUSION
-                                </h2>
-
-
-
-                                <div id="storage" className="bg-gray-50 p-6 rounded-2xl mb-8">
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                        FUSION is the core SkyGloss service.
-                                        <br />  <br />
-                                        <strong>  It is:     </strong>               <br />
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• GA foundational processloss</li>
-                                        <li>• A replacement for traditional first-step polishing</li>
-                                        <li>• Designed to build and restore clearcoat</li>
-                                    </ul>
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">                        <br />
-                                        <strong> It is not:</strong>
-
-
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• A coating</li>
-                                        <li>• A shortcut</li>
-
-                                    </ul>
-
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">                        <br />
-                                        It requires proper preparation, understanding, and application.
-                                        <br /><br />
-                                        Because real services require skill—and skill creates value.
-                                    </p>
-                                </div>
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('data')}
-                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
-                                    >
-                                        {completedSteps.includes('data') ? 'Data Verified' : 'Verify Technical Data'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
+                        <div id="intro_replacement" className="scroll-mt-32">
+                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
+                                 <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
+                                     SECTION A: Foundation
+                                 </Badge>
+                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                     Foundation, Not Replacement
+                                 </h2>
+ 
+                                 <div className="space-y-6 mb-10">
+                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
+                                         <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3">The Old Way</h4>
+                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                             SkyGloss is not here to replace what you already do.
+                                             <br />
+                                             It works with your existing services, not against them:
+                                             <br /> <br />
+                                             • Ceramic coatings
+                                             <br />
+                                             • Paint protection film
+                                             <br />
+                                             • Existing shop systems
+ 
+ 
+                                             <br />
+                                             <br />
+                                             SkyGloss focuses on creating a better foundation for everything else to perform at its best.
+ 
+                                         </p>
+                                     </div>
+ 
+ 
+                                 </div>
+ 
+ 
+ 
+                                 <div className="flex justify-end mt-8">
+                                     <Button
+                                         onClick={() => markComplete('intro_replacement')}
+                                         className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro_replacement') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                     >
+                                         {completedSteps.includes('intro_replacement') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
+                                     </Button>
+                                 </div>
+                             </Card>
+                         </div>
 
                         <div className="h-px bg-gray-100 my-8" />
-                        <div id="intro" className="scroll-mt-32">
-                            <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
-
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
-                                    The Reality of FUSION (Speed &amp;
-                                    Consistency)
-                                </h2>
-
-                                <div className="space-y-6 mb-10">
-                                    <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-                                        <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3">The reality is—FUSION is faster.</h4>
-                                        <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                            There is a learning curve, and your shop needs to be set up properly.
-                                            But once that’s done, everything changes.
-
-                                            <br /> <br />
-                                            • No more guessing
-                                            <br />
-                                            • No more inconsistent results
-                                            <br />
-                                            • No more long correction times
-
-
-
-
-                                        </p>
-                                        <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                            Every vehicle becomes:
-
-                                            <br /> <br />
-                                            • 3–4 hours start to finish
-                                            <br />
-                                            • Repeatable process
-                                            <br />
-                                            • Consistent, factory-fresh results every time
-
-                                            <br />This is where shops unlock real efficiency and scalability.
-
-                                        </p>
-                                    </div>
-
-
-                                </div>
-
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('intro')}
-                                        className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
-                                    >
-                                        {completedSteps.includes('intro') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
+                        <div id="data_fusion" className="scroll-mt-32">
+                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
+ 
+ 
+                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                     What is FUSION
+                                 </h2>
+ 
+ 
+ 
+                                 <div id="storage_details" className="bg-gray-50 p-6 rounded-2xl mb-8">
+                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                         FUSION is the core SkyGloss service.
+                                         <br />  <br />
+                                         <strong>  It is:     </strong>               <br />
+                                     </p>
+                                     <ul className="space-y-2 text-sm text-[#666666]">
+                                         <li>• GA foundational processloss</li>
+                                         <li>• A replacement for traditional first-step polishing</li>
+                                         <li>• Designed to build and restore clearcoat</li>
+                                     </ul>
+                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">                        <br />
+                                         <strong> It is not:</strong>
+ 
+ 
+                                     </p>
+                                     <ul className="space-y-2 text-sm text-[#666666]">
+                                         <li>• A coating</li>
+                                         <li>• A shortcut</li>
+ 
+                                     </ul>
+ 
+                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">                        <br />
+                                         It requires proper preparation, understanding, and application.
+                                         <br /><br />
+                                         Because real services require skill—and skill creates value.
+                                     </p>
+                                 </div>
+ 
+ 
+                                 <div className="flex justify-end mt-8">
+                                     <Button
+                                         onClick={() => markComplete('data_fusion')}
+                                         className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data_fusion') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                     >
+                                         {completedSteps.includes('data_fusion') ? 'Data Verified' : 'Verify Technical Data'}
+                                     </Button>
+                                 </div>
+                             </Card>
+                         </div>
 
                         <div className="h-px bg-gray-100 my-8" />
-                        <div id="data" className="scroll-mt-32">
-                            <Card className="p-8 rounded-lg border-gray-100 bg-white">
-
-
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
-                                    Built for the Real World
-                                </h2>
-
-
-
-                                <div id="storage" className="bg-gray-50 p-6 rounded-2xl mb-8">
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                        SkyGloss is designed for real vehicles, not just show cars.
-                                        <br />  <br />
-                                        <strong> It works across:   </strong>               <br />
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Daily drivers</li>
-                                        <li>• High-use vehicles</li>
-                                        <li>• Modern, thinner paint systems</li>
-                                    </ul>
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">                        <br />
-                                        <strong> It is:</strong>
-
-
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Practical</li>
-                                        <li>• Scalable</li>
-                                        <li>• Easy to integrate</li>
-                                        <li>• Built to create new revenue in your shop</li>
-
-                                    </ul>
-
-
-                                </div>
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('data')}
-                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
-                                    >
-                                        {completedSteps.includes('data') ? 'Data Verified' : 'Verify Technical Data'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
+                        <div id="intro_reality" className="scroll-mt-32">
+                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
+ 
+                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                     The Reality of FUSION (Speed &amp;
+                                     Consistency)
+                                 </h2>
+ 
+                                 <div className="space-y-6 mb-10">
+                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
+                                         <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3">The reality is—FUSION is faster.</h4>
+                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                             There is a learning curve, and your shop needs to be set up properly.
+                                             But once that’s done, everything changes.
+ 
+                                             <br /> <br />
+                                             • No more guessing
+                                             <br />
+                                             • No more inconsistent results
+                                             <br />
+                                             • No more long correction times
+                                         </p>
+                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                             Every vehicle becomes:
+                                             <br /> <br />
+                                             • 3–4 hours start to finish
+                                             <br />
+                                             • Repeatable process
+                                             <br />
+                                             • Consistent, factory-fresh results every time
+                                             <br />This is where shops unlock real efficiency and scalability.
+                                         </p>
+                                     </div>
+                                 </div>
+ 
+                                 <div className="flex justify-end mt-8">
+                                     <Button
+                                         onClick={() => markComplete('intro_reality')}
+                                         className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro_reality') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                     >
+                                         {completedSteps.includes('intro_reality') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
+                                     </Button>
+                                 </div>
+                             </Card>
+                         </div>
 
                         <div className="h-px bg-gray-100 my-8" />
-                        <div id="intro" className="scroll-mt-32">
-                            <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
-
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
-                                    A Universal Opportunity
-                                </h2>
-
-                                <div className="space-y-6 mb-10">
-                                    <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-
-                                        <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                            SkyGloss is designed to work across many surfaces and industries.
-                                            <br />Be on the lookout for opportunities beyond just your standard services:
-                                            <br />   <br />
-                                            • Automotive
-                                            <br />
-                                            • Aviation
-                                            <br />
-                                            • Marine
-                                            <br />
-                                            • Industrial
-                                            <br />
-                                            • Commercial
-                                            <br />
-                                            <br />
-                                        </p>
-                                        <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                            This is not limited to one lane.
-                                            <br />
-
-                                        </p>
-                                    </div>
-
-
-                                </div>
-
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('intro')}
-                                        className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
-                                    >
-                                        {completedSteps.includes('intro') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
+                        <div id="data_real_world" className="scroll-mt-32">
+                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
+ 
+ 
+                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                     Built for the Real World
+                                 </h2>
+ 
+ 
+ 
+                                 <div id="storage_environment" className="bg-gray-50 p-6 rounded-2xl mb-8">
+                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                         SkyGloss is designed for real vehicles, not just show cars.
+                                         <br />  <br />
+                                         <strong> It works across:   </strong>               <br />
+                                     </p>
+                                     <ul className="space-y-2 text-sm text-[#666666]">
+                                         <li>• Daily drivers</li>
+                                         <li>• High-use vehicles</li>
+                                         <li>• Modern, thinner paint systems</li>
+                                     </ul>
+                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">                        <br />
+                                         <strong> It is:</strong>
+                                     </p>
+                                     <ul className="space-y-2 text-sm text-[#666666]">
+                                         <li>• Practical</li>
+                                         <li>• Scalable</li>
+                                         <li>• Easy to integrate</li>
+                                         <li>• Built to create new revenue in your shop</li>
+                                     </ul>
+                                 </div>
+ 
+ 
+                                 <div className="flex justify-end mt-8">
+                                     <Button
+                                         onClick={() => markComplete('data_real_world')}
+                                         className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data_real_world') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                     >
+                                         {completedSteps.includes('data_real_world') ? 'Data Verified' : 'Verify Technical Data'}
+                                     </Button>
+                                 </div>
+                             </Card>
+                         </div>
 
                         <div className="h-px bg-gray-100 my-8" />
-                        <div id="data" className="scroll-mt-32">
-                            <Card className="p-8 rounded-lg border-gray-100 bg-white">
-
-
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
-                                    What You’re Getting Access To
-                                </h2>
-
-
-
-                                <div id="storage" className="bg-gray-50 p-6 rounded-2xl mb-8">
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                        SkyGloss is more than just a product.
-                                        <br />  <br />
-                                        <strong> You now have access to: </strong>               <br />
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Technical training</li>
-                                        <li>• Clear service structure (FUSION / RESIN / SHIELD)</li>
-                                        <li>• Paint health understanding</li>
-                                        <li>• Customer communication guidance</li>
-                                        <li>• Marketing support</li>
-                                        <li>• Ongoing updates</li>
-                                    </ul>
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">                        <br />   <br />
-                                        This system is built to help you succeed—not just install a product.
-
-
-                                    </p>
-
-
-                                </div>
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('data')}
-                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
-                                    >
-                                        {completedSteps.includes('data') ? 'Data Verified' : 'Verify Technical Data'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
+                        <div id="intro_opportunity" className="scroll-mt-32">
+                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
+ 
+                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                     A Universal Opportunity
+                                 </h2>
+ 
+                                 <div className="space-y-6 mb-10">
+                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
+ 
+                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                             SkyGloss is designed to work across many surfaces and industries.
+                                             <br />Be on the lookout for opportunities beyond just your standard services:
+                                             <br />   <br />
+                                             • Automotive
+                                             <br />
+                                             • Aviation
+                                             <br />
+                                             • Marine
+                                             <br />
+                                             • Industrial
+                                             <br />
+                                             • Commercial
+                                         </p>
+                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                             <br />
+                                             This is not limited to one lane.
+                                         </p>
+                                     </div>
+                                 </div>
+ 
+                                 <div className="flex justify-end mt-8">
+                                     <Button
+                                         onClick={() => markComplete('intro_opportunity')}
+                                         className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro_opportunity') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                     >
+                                         {completedSteps.includes('intro_opportunity') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
+                                     </Button>
+                                 </div>
+                             </Card>
+                         </div>
 
                         <div className="h-px bg-gray-100 my-8" />
-                        <div id="intro" className="scroll-mt-32">
-                            <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
+                        <div id="data_access" className="scroll-mt-32">
+                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
+ 
+ 
+                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                     What You’re Getting Access To
+                                 </h2>
+ 
+ 
+ 
+                                 <div id="storage_access_points" className="bg-gray-50 p-6 rounded-2xl mb-8">
+                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                         SkyGloss is more than just a product.
+                                         <br />  <br />
+                                         <strong> You now have access to: </strong>               <br />
+                                     </p>
+                                     <ul className="space-y-2 text-sm text-[#666666]">
+                                         <li>• Technical training</li>
+                                         <li>• Clear service structure (FUSION / RESIN / SHIELD)</li>
+                                         <li>• Paint health understanding</li>
+                                         <li>• Customer communication guidance</li>
+                                         <li>• Marketing support</li>
+                                         <li>• Ongoing updates</li>
+                                     </ul>
+                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">                        <br />   <br />
+                                         This system is built to help you succeed—not just install a product.
+                                     </p>
+                                 </div>
+ 
+ 
+                                 <div className="flex justify-end mt-8">
+                                     <Button
+                                         onClick={() => markComplete('data_access')}
+                                         className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data_access') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                     >
+                                         {completedSteps.includes('data_access') ? 'Data Verified' : 'Verify Technical Data'}
+                                     </Button>
+                                 </div>
+                             </Card>
+                         </div>
 
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
-                                    SkyGloss is a Marketing Engine
-                                </h2>
-
-                                <div className="space-y-6 mb-10">
-                                    <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-
-                                        <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                            SkyGloss is not just a new tool—it’s a new opportunity.
-                                            <br />  <br /><strong>It will:</strong>
-                                            <br />
-                                            • Solve real problems inside your shop
-                                            <br />
-                                            • Improve your workflow
-                                            <br />
-                                            • Make your services more efficient
-                                            <br />
-                                            <br />
-                                            <strong>But just as important:</strong>
-                                            <br />
-                                            It gives you a new way to market and reach a new pool of customers.
-                                            <br />
-                                            <br />
-                                            <strong>Customers who:</strong>
-                                            <br />
-                                            • Haven’t heard this concept before
-                                            <br />
-                                            • Are tired of traditional options
-                                            <br />
-                                            • Are looking for something better and more logical
-                                            <br />
-                                            <br />
-                                            <strong>We are constantly:</strong>
-                                            <br />
-                                            • Building new ideas
-                                            <br />
-                                            • Creating new offers
-                                            <br />
-                                            • Developing new ways to use SkyGloss
-                                            <br />
-                                            • Expanding globally
-                                            <br />
-                                            <br />
-                                            <strong>You will be hearing from us often with:</strong>
-                                            <br />
-                                            • New strategies
-                                            <br />
-                                            • New opportunities
-                                            <br />
-                                            • Updates
-                                            <br />
-                                            • Ways to generate more revenue
-                                            <br />
-                                            <br />
-                                            Be on the lookout for this and take advantage of it.
-                                            <br />
-                                            The shops that engage with this the most will win.
-                                        </p>
-
-                                    </div>
-
-
-                                </div>
-
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('intro')}
-                                        className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
-                                    >
-                                        {completedSteps.includes('intro') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
+                        <div className="h-px bg-gray-100 my-8" />
+                        <div id="intro_engine" className="scroll-mt-32">
+                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
+ 
+                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                     SkyGloss is a Marketing Engine
+                                 </h2>
+ 
+                                 <div className="space-y-6 mb-10">
+                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
+ 
+                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                             SkyGloss is not just a new tool—it’s a new opportunity.
+                                             <br />  <br /><strong>It will:</strong>
+                                             <br />
+                                             • Solve real problems inside your shop
+                                             <br />
+                                             • Improve your workflow
+                                             <br />
+                                             • Make your services more efficient
+                                             <br />
+                                             <br />
+                                             <strong>But just as important:</strong>
+                                             <br />
+                                             It gives you a new way to market and reach a new pool of customers.
+                                             <br />
+                                             <br />
+                                             <strong>Customers who:</strong>
+                                             <br />
+                                             • Haven’t heard this concept before
+                                             <br />
+                                             • Are tired of traditional options
+                                             <br />
+                                             • Are looking for something better and more logical
+                                             <br />
+                                             <br />
+                                             <strong>We are constantly:</strong>
+                                             <br />
+                                             • Building new ideas
+                                             <br />
+                                             • Creating new offers
+                                             <br />
+                                             • Developing new ways to use SkyGloss
+                                             <br />
+                                             • Expanding globally
+                                             <br />
+                                             <br />
+                                             <strong>You will be hearing from us often with:</strong>
+                                             <br />
+                                             • New strategies
+                                             <br />
+                                             • New opportunities
+                                             <br />
+                                             • Updates
+                                             <br />
+                                             • Ways to generate more revenue
+                                             <br />
+                                             <br />
+                                             Be on the lookout for this and take advantage of it.
+                                             <br />
+                                             The shops that engage with this the most will win.
+                                         </p>
+ 
+                                     </div>
+ 
+ 
+                                 </div>
+ 
+ 
+ 
+                                 <div className="flex justify-end mt-8">
+                                     <Button
+                                         onClick={() => markComplete('intro_engine')}
+                                         className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro_engine') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                     >
+                                         {completedSteps.includes('intro_engine') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
+                                     </Button>
+                                 </div>
+                             </Card>
+                         </div>
 
 
                         <div className="h-px bg-gray-100 my-8" />
-                        <div id="data" className="scroll-mt-32">
-                            <Card className="p-8 rounded-lg border-gray-100 bg-white">
-
-
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
-                                    The Bigger Picture
-                                </h2>
-
-
-
-                                <div id="storage" className="bg-gray-50 p-6 rounded-2xl mb-8">
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                        SkyGloss is built on a simple, powerful idea:
-                                        <br />  <br />
-                                        <strong> You now have access to: </strong>               <br />
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• It solves a real problem</li>
-                                        <li>• It is easy to understand</li>
-                                        <li>• It creates real value for customers</li>
-
-                                    </ul>
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">                       <br />
-                                        When marketed properly, it becomes a no-brainer service for customers.
-                                        <br />
-                                        We are not chasing trends.
-                                        <br />
-                                        We are building something long-term.
-                                        <br />
-                                        <br />
-                                        <strong>
-                                            A brand built on:
-                                        </strong>
-
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Integrity</li>
-                                        <li>• Simplicity</li>
-                                        <li>• Real results</li>
-
-                                    </ul>
-
-                                </div>
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('data')}
-                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
-                                    >
-                                        {completedSteps.includes('data') ? 'Data Verified' : 'Verify Technical Data'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
-
-                        <div className="h-px bg-gray-100 my-8" />
-                        <div id="data" className="scroll-mt-32">
-                            <Card className="p-8 rounded-lg border-gray-100 bg-white">
-
-
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
-                                    What Happens Next
-                                </h2>
-
-
-
-                                <div id="storage" className="bg-gray-50 p-6 rounded-2xl mb-8">
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">
-
-                                        <strong>From here, your focus is simple: </strong>               <br />
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Learn the process</li>
-                                        <li>• Understand the system</li>
-                                        <li>• Apply it correctly</li>
-
-                                    </ul>
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">                       <br />
-
-                                        <strong>
-                                            We’ve designed this to be:
-                                        </strong>
-
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Easy to learn</li>
-                                        <li>• Easy to implement</li>
-                                        <li>• Easy to scale</li>
-
-                                    </ul>
-
-                                </div>
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('data')}
-                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
-                                    >
-                                        {completedSteps.includes('data') ? 'Data Verified' : 'Verify Technical Data'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
+                        <div id="data_bigger_picture" className="scroll-mt-32">
+                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
+ 
+ 
+                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                     The Bigger Picture
+                                 </h2>
+ 
+ 
+ 
+                                 <div id="storage_picture" className="bg-gray-50 p-6 rounded-2xl mb-8">
+                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                         SkyGloss is built on a simple, powerful idea:
+                                         <br />  <br />
+                                         <strong> You now have access to: </strong>               <br />
+                                     </p>
+                                     <ul className="space-y-2 text-sm text-[#666666]">
+                                         <li>• It solves a real problem</li>
+                                         <li>• It is easy to understand</li>
+                                         <li>• It creates real value for customers</li>
+ 
+                                     </ul>
+                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">                       <br />
+                                         When marketed properly, it becomes a no-brainer service for customers.
+                                         <br />
+                                         We are not chasing trends.
+                                         <br />
+                                         We are building something long-term.
+                                         <br />
+                                         <br />
+                                         <strong>
+                                             A brand built on:
+                                         </strong>
+ 
+                                     </p>
+                                     <ul className="space-y-2 text-sm text-[#666666]">
+                                         <li>• Integrity</li>
+                                         <li>• Simplicity</li>
+                                         <li>• Real results</li>
+ 
+                                     </ul>
+ 
+                                 </div>
+ 
+ 
+                                 <div className="flex justify-end mt-8">
+                                     <Button
+                                         onClick={() => markComplete('data_bigger_picture')}
+                                         className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data_picture') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                     >
+                                         {completedSteps.includes('data_bigger_picture') ? 'Data Verified' : 'Verify Technical Data'}
+                                     </Button>
+                                 </div>
+                             </Card>
+                         </div>
 
                         <div className="h-px bg-gray-100 my-8" />
-                        <div id="intro" className="scroll-mt-32">
-                            <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
+                        <div id="data_next_steps" className="scroll-mt-32">
+                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
+ 
+ 
+                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                     What Happens Next
+                                 </h2>
+ 
+ 
+ 
+                                 <div id="storage_next_steps" className="bg-gray-50 p-6 rounded-2xl mb-8">
+                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">
+ 
+                                         <strong>From here, your focus is simple: </strong>               <br />
+                                     </p>
+                                     <ul className="space-y-2 text-sm text-[#666666]">
+                                         <li>• Learn the process</li>
+                                         <li>• Understand the system</li>
+                                         <li>• Apply it correctly</li>
+ 
+                                     </ul>
+                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">                       <br />
+ 
+                                         <strong>
+                                             We’ve designed this to be:
+                                         </strong>
+ 
+                                     </p>
+                                     <ul className="space-y-2 text-sm text-[#666666]">
+                                         <li>• Easy to learn</li>
+                                         <li>• Easy to implement</li>
+                                         <li>• Easy to scale</li>
+ 
+                                     </ul>
+ 
+                                 </div>
+ 
+ 
+                                 <div className="flex justify-end mt-8">
+                                     <Button
+                                         onClick={() => markComplete('data_next_steps')}
+                                         className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data_next_steps') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                     >
+                                         {completedSteps.includes('data_next_steps') ? 'Data Verified' : 'Verify Technical Data'}
+                                     </Button>
+                                 </div>
+                             </Card>
+                         </div>
 
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
-                                    Final Thought
-                                </h2>
-
-                                <div className="space-y-6 mb-10">
-                                    <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-
-                                        <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                            Polishing will always exist—for the few vehicles that can afford to lose clearcoat.
-                                            <br />
-                                            The rest of the world now has SkyGloss.
-                                        </p>
-
-                                        <br />
-                                        <h3>
-                                            Welcome to SkyGloss
-                                        </h3>
-                                        <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                            We’re excited to have you with us. Let’s dive into the rest of the training.
-                                        </p>
-                                    </div>
-
-
-                                </div>
-
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('intro')}
-                                        className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
-                                    >
-                                        {completedSteps.includes('intro') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
+                        <div className="h-px bg-gray-100 my-8" />
+                        <div id="intro_final" className="scroll-mt-32">
+                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
+ 
+                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                     Final Thought
+                                 </h2>
+ 
+                                 <div className="space-y-6 mb-10">
+                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
+ 
+                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                             Polishing will always exist—for the few vehicles that can afford to lose clearcoat.
+                                             <br />
+                                             The rest of the world now has SkyGloss.
+                                         </p>
+ 
+                                         <br />
+                                         <h3>
+                                             Welcome to SkyGloss
+                                         </h3>
+                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                             We’re excited to have you with us. Let’s dive into the rest of the training.
+                                         </p>
+                                     </div>
+ 
+ 
+                                 </div>
+ 
+ 
+ 
+                                 <div className="flex justify-end mt-8">
+                                     <Button
+                                         onClick={() => markComplete('intro_final')}
+                                         className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro_final') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                     >
+                                         {completedSteps.includes('intro_final') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
+                                     </Button>
+                                 </div>
+                             </Card>
+                         </div>
 
                         {/* Completion Footer */}
                         <div className="py-12">

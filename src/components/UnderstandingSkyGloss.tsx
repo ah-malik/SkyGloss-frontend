@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../api/axios";
-import { ArrowLeft, CheckCircle, ChevronRight, BookOpen, Info, Shield, Target, Lightbulb, Check, X } from "lucide-react";
+import { ArrowLeft, CheckCircle, ChevronRight, BookOpen, Info, Shield, Target, Lightbulb } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Progress } from "./ui/progress";
@@ -17,49 +17,49 @@ interface Section {
 
 const sections: Section[] = [
     {
-        id: "core-difference",
+        id: "under_core_difference",
         title: "The Core Difference",
         subsections: [
-            { id: "philosophy", title: "1. Sales Philosophy" },
-            { id: "evolution", title: "2. Technology Evolution" }
+            { id: "under_philosophy", title: "1. Sales Philosophy" },
+            { id: "under_evolution", title: "2. Technology Evolution" }
         ]
     },
     {
-        id: "reality",
+        id: "under_reality",
         title: "Reality Explained",
         subsections: [
-            { id: "physics", title: "1. Chemistry & Physics" },
-            { id: "limitations", title: "2. Design Scope" }
+            { id: "under_physics", title: "1. Chemistry & Physics" },
+            { id: "under_limitations", title: "2. Design Scope" }
         ]
     },
     {
-        id: "strategy",
+        id: "under_strategy",
         title: "Sales Strategy",
         subsections: [
-            { id: "process", title: "1. Education Process" },
-            { id: "expectations", title: "2. Setting Expectations" }
+            { id: "under_process", title: "1. Education Process" },
+            { id: "under_expectations", title: "2. Setting Expectations" }
         ]
     },
     {
-        id: "fusion",
+        id: "under_fusion",
         title: "Permanence & Warranty",
         subsections: [
-            { id: "permanence-logic", title: "1. FUSION Permanence" },
-            { id: "do-dont", title: "2. Best Practices" }
+            { id: "under_permanence", title: "1. FUSION Permanence" },
+            { id: "under_do_dont", title: "2. Best Practices" }
         ]
     },
     {
-        id: "standard",
+        id: "under_standard_section",
         title: "The Standard",
         subsections: [
-            { id: "the-standard", title: "1. Professional Standards" }
+            { id: "under_standard", title: "1. Professional Standards" }
         ]
     }
 ];
 
 export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
     const { user, setUser } = useAuth();
-    const [activeSub, setActiveSub] = useState("philosophy");
+    const [activeSub, setActiveSub] = useState("under_philosophy");
     const [completedSteps, setCompletedSteps] = useState<string[]>([]);
 
     const totalSteps = sections.reduce((acc, s) => acc + (s.subsections?.length || 0), 0);
@@ -203,7 +203,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                         {/* Content Sections */}
                         <div className="space-y-16">
                             {/* The Core Difference */}
-                            <div id="philosophy" className="scroll-mt-32">
+                            <div id="under_philosophy" className="scroll-mt-32">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 01: The Core Difference
@@ -243,16 +243,16 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('philosophy')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('philosophy') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
+                                            onClick={() => markComplete('under_philosophy')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_philosophy') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('philosophy') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Understanding'}
+                                            {completedSteps.includes('under_philosophy') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Understanding'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
-                            <div id="evolution" className="scroll-mt-32 mt-8">
+                            <div id="under_evolution" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 02: Evolution
@@ -313,17 +313,17 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     </p>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('evolution')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('evolution') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
+                                            onClick={() => markComplete('under_evolution')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_evolution') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('evolution') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('under_evolution') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* Reality Explained */}
-                            <div id="physics" className="scroll-mt-32 mt-8">
+                            <div id="under_physics" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 03: Next Evolution
@@ -353,16 +353,16 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('physics')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('physics') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
+                                            onClick={() => markComplete('under_physics')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_physics') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('physics') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Realism'}
+                                            {completedSteps.includes('under_physics') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Realism'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
-                            <div id="limitations" className="scroll-mt-32 mt-8">
+                            <div id="under_limitations" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 04: Offer Second.
@@ -393,17 +393,17 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('limitations')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('limitations') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
+                                            onClick={() => markComplete('under_limitations')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_limitations') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('limitations') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('under_limitations') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* Sales Strategy */}
-                            <div id="process" className="scroll-mt-32 mt-8">
+                            <div id="under_process" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 05: Satisfaction
@@ -433,16 +433,16 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('process')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('process') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
+                                            onClick={() => markComplete('under_process')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_process') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('process') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Process'}
+                                            {completedSteps.includes('under_process') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Process'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
-                            <div id="expectations" className="scroll-mt-32 mt-8">
+                            <div id="under_expectations" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 06: Results Vary
@@ -470,17 +470,17 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('expectations')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('expectations') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
+                                            onClick={() => markComplete('under_expectations')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_expectations') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('expectations') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('under_expectations') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* Permanence & Warranty */}
-                            <div id="permanence-logic" className="scroll-mt-32 mt-8">
+                            <div id="under_permanence" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 07: Permanence & Warranty
@@ -526,16 +526,16 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('permanence-logic')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('permanence-logic') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
+                                            onClick={() => markComplete('under_permanence')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_permanence') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('permanence-logic') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Logic'}
+                                            {completedSteps.includes('under_permanence') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Logic'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
-                            <div id="do-dont" className="scroll-mt-32 mt-8">
+                            <div id="under_do_dont" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 08: Do's and Don'ts
@@ -569,16 +569,16 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('do-dont')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('do-dont') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
+                                            onClick={() => markComplete('under_do_dont')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_do_dont') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('do-dont') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('under_do_dont') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
                             {/* The Standard */}
-                            <div id="the-standard" className="scroll-mt-32 mt-8">
+                            <div id="under_standard" className="scroll-mt-32 mt-8">
                                 <Card className="skygloss-card p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                     <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                         Section 09: The Standard
@@ -617,10 +617,10 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="flex justify-end">
                                         <Button
-                                            onClick={() => markComplete('the-standard')}
-                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('the-standard') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
+                                            onClick={() => markComplete('under_standard')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_standard') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('the-standard') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Logic'}
+                                            {completedSteps.includes('under_standard') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Logic'}
                                         </Button>
                                     </div>
                                 </Card>

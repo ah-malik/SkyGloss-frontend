@@ -29,66 +29,66 @@ interface Section {
 
 const sections: Section[] = [
     {
-        id: "overview",
+        id: "fusion_overview",
         title: "Section A: Product Overview",
         subsections: [
-            { id: "intro", title: "What is FUSION?" },
-            { id: "safety", title: "Safety Summary" }
+            { id: "fusion_intro", title: "What is FUSION?" },
+            { id: "fusion_safety", title: "Safety Summary" }
         ]
     },
     {
-        id: "technical",
+        id: "fusion_technical",
         title: "Section B: Technical Product Data",
         subsections: [
-            { id: "data", title: "Data Matrix" },
-            { id: "storage", title: "Storage & Shelf Life" }
+            { id: "fusion_data", title: "Data Matrix" },
+            { id: "fusion_storage", title: "Storage & Shelf Life" }
         ]
     },
     {
-        id: "prep",
+        id: "fusion_prep",
         title: "Section C: Vehicle Preparation",
         subsections: [
-            { id: "step1", title: "Step 1: Light Wash" },
-            { id: "step2", title: "Step 2: Vehicle Inspection" },
-            { id: "step3", title: "Step 3: Remove Attachments" },
-            { id: "step4", title: "Step 4: Exfoliate" },
-            { id: "step5", title: "Step 5: Heavy Wash" },
-            { id: "step6", title: "Step 6: Etch" },
-            { id: "step7", title: "Step 7: Mask" }
+            { id: "fusion_step1", title: "Step 1: Light Wash" },
+            { id: "fusion_step2", title: "Step 2: Vehicle Inspection" },
+            { id: "fusion_step3", title: "Step 3: Remove Attachments" },
+            { id: "fusion_step4", title: "Step 4: Exfoliate" },
+            { id: "fusion_step5", title: "Step 5: Heavy Wash" },
+            { id: "fusion_step6", title: "Step 6: Etch" },
+            { id: "fusion_step7", title: "Step 7: Mask" }
         ]
     },
     {
-        id: "application",
+        id: "fusion_application",
         title: "Section D: Fusion Application",
         subsections: [
-            { id: "step8", title: "Step 8: Mixing Fusion" },
-            { id: "step9", title: "Step 9: First Pour" },
-            { id: "step10", title: "Step 10: Tack Cloth" },
-            { id: "step11", title: "Step 11: Apply Fusion" },
-            { id: "step12", title: "Step 12: Quality Check" },
-            { id: "step13", title: "Step 13: Clean Bottle" }
+            { id: "fusion_step8", title: "Step 8: Mixing Fusion" },
+            { id: "fusion_step9", title: "Step 9: First Pour" },
+            { id: "fusion_step10", title: "Step 10: Tack Cloth" },
+            { id: "fusion_step11", title: "Step 11: Apply Fusion" },
+            { id: "fusion_step12", title: "Step 12: Quality Check" },
+            { id: "fusion_step13", title: "Step 13: Clean Bottle" }
         ]
     },
     {
-        id: "aftercare",
+        id: "fusion_aftercare",
         title: "Section E: Aftercare",
         subsections: [
-            { id: "care", title: "Aftercare Instructions" }
+            { id: "fusion_care", title: "Aftercare Instructions" }
         ]
     },
     {
-        id: "troubleshooting",
+        id: "fusion_troubleshooting",
         title: "Section F: Troubleshooting",
         subsections: [
-            { id: "removal", title: "Removing FUSION" },
-            { id: "issues", title: "Application Issues" }
+            { id: "fusion_removal", title: "Removing FUSION" },
+            { id: "fusion_issues", title: "Application Issues" }
         ]
     }
 ];
 
 export function FusionGuide({ onBack }: { onBack: () => void }) {
     const { user, setUser } = useAuth();
-    const [activeSub, setActiveSub] = useState("intro");
+    const [activeSub, setActiveSub] = useState("fusion_intro");
     const [completedSteps, setCompletedSteps] = useState<string[]>([]);
 
     const totalSteps = sections.reduce((acc, s) => acc + (s.subsections?.length || 0), 0);
@@ -230,7 +230,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                         </div>
 
                         {/* SECTION A: PRODUCT OVERVIEW */}
-                        <div id="intro" className="scroll-mt-32">
+                        <div id="fusion_intro" className="scroll-mt-32">
                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                 <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                     SECTION A: PRODUCT OVERVIEW
@@ -283,17 +283,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                 <div className="flex justify-end mt-8">
                                     <Button
-                                        onClick={() => markComplete('intro')}
-                                        className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                        onClick={() => markComplete('fusion_intro')}
+                                        className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('fusion_intro') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                     >
-                                        {completedSteps.includes('intro') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
+                                        {completedSteps.includes('fusion_intro') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
                                     </Button>
                                 </div>
                             </Card>
                         </div>
 
                         {/* Safety Summary */}
-                        <div id="safety" className="scroll-mt-32">
+                        <div id="fusion_safety" className="scroll-mt-32">
                             <div className="flex items-center gap-4 mb-8 mt-6">
                                 <div className="h-[1px] flex-1 bg-gray-200" />
                                 <h3 className="text-xs font-bold text-[#0EA0DC] uppercase tracking-[0.3em] flex items-center gap-3">
@@ -346,16 +346,16 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                             <div className="mt-4 flex justify-end mb-8">
                                 <Button
-                                    onClick={() => markComplete('safety')}
-                                    className={`rounded-xl px-8 h-10 font-bold text-xs uppercase tracking-widest transition-all ${completedSteps.includes('safety') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                    onClick={() => markComplete('fusion_safety')}
+                                    className={`rounded-xl px-8 h-10 font-bold text-xs uppercase tracking-widest transition-all ${completedSteps.includes('fusion_safety') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                 >
-                                    {completedSteps.includes('safety') ? 'Safety Verified' : 'Confirm Safety'}
+                                    {completedSteps.includes('fusion_safety') ? 'Safety Verified' : 'Confirm Safety'}
                                 </Button>
                             </div>
                         </div>
 
                         {/* SECTION B: TECHNICAL PRODUCT DATA */}
-                        <div id="data" className="scroll-mt-32">
+                        <div id="fusion_data" className="scroll-mt-32">
                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
                                 <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                     SECTION B: TECHNICAL PRODUCT DATA
@@ -405,7 +405,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     <p className="text-sm text-[#666666]">Once mixed, FUSION is good for 2 hours before you must discard.</p>
                                 </div>
 
-                                <div id="storage" className="bg-gray-50 p-6 rounded-2xl mb-8">
+                                <div id="fusion_storage" className="bg-gray-50 p-6 rounded-2xl mb-8">
                                     <h4 className="font-bold text-sm text-[#272727] mb-3">Storage</h4>
                                     <ul className="space-y-2 text-sm text-[#666666]">
                                         <li>• Shelf life (unopened) from the date of purchase is 2 years.</li>
@@ -423,10 +423,10 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                 <div className="flex justify-end mt-8">
                                     <Button
-                                        onClick={() => markComplete('data')}
-                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                        onClick={() => markComplete('fusion_data')}
+                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('fusion_data') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                     >
-                                        {completedSteps.includes('data') ? 'Data Verified' : 'Verify Technical Data'}
+                                        {completedSteps.includes('fusion_data') ? 'Data Verified' : 'Verify Technical Data'}
                                     </Button>
                                 </div>
                             </Card>
@@ -446,7 +446,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                             </div>
 
                             {/* STEP 1: LIGHT WASH */}
-                            <div id="step1" className="scroll-mt-32">
+                            <div id="fusion_step1" className="scroll-mt-32">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 1: LIGHT WASH</h3>
 
@@ -499,17 +499,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('step1')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('step1') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_step1')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step1') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('step1') ? 'Completed' : 'Verify Step 1'}
+                                            {completedSteps.includes('fusion_step1') ? 'Completed' : 'Verify Step 1'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* STEP 2: VEHICLE INSPECTION */}
-                            <div id="step2" className="scroll-mt-32 mt-8">
+                            <div id="fusion_step2" className="scroll-mt-32 mt-8">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 2: VEHICLE INSPECTION</h3>
 
@@ -565,17 +565,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('step2')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('step2') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_step2')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step2') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('step2') ? 'Completed' : 'Verify Step 2'}
+                                            {completedSteps.includes('fusion_step2') ? 'Completed' : 'Verify Step 2'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* STEP 3: REMOVE ATTACHMENTS */}
-                            <div id="step3" className="scroll-mt-32 mt-8">
+                            <div id="fusion_step3" className="scroll-mt-32 mt-8">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 3: REMOVE ATTACHMENTS</h3>
 
@@ -618,17 +618,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('step3')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('step3') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_step3')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step3') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('step3') ? 'Completed' : 'Verify Step 3'}
+                                            {completedSteps.includes('fusion_step3') ? 'Completed' : 'Verify Step 3'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* STEP 4: EXFOLIATE */}
-                            <div id="step4" className="scroll-mt-32 mt-8">
+                            <div id="fusion_step4" className="scroll-mt-32 mt-8">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 4: EXFOLIATE</h3>
 
@@ -696,17 +696,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('step4')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('step4') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_step4')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step4') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('step4') ? 'Completed' : 'Verify Step 4'}
+                                            {completedSteps.includes('fusion_step4') ? 'Completed' : 'Verify Step 4'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* STEP 5: HEAVY WASH */}
-                            <div id="step5" className="scroll-mt-32 mt-8">
+                            <div id="fusion_step5" className="scroll-mt-32 mt-8">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 5: HEAVY WASH</h3>
 
@@ -752,17 +752,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('step5')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('step5') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_step5')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step5') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('step5') ? 'Completed' : 'Verify Step 5'}
+                                            {completedSteps.includes('fusion_step5') ? 'Completed' : 'Verify Step 5'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* STEP 6: ETCH */}
-                            <div id="step6" className="scroll-mt-32 mt-8">
+                            <div id="fusion_step6" className="scroll-mt-32 mt-8">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 6: ETCH</h3>
 
@@ -812,17 +812,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('step6')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('step6') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_step6')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step6') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('step6') ? 'Completed' : 'Verify Step 6'}
+                                            {completedSteps.includes('fusion_step6') ? 'Completed' : 'Verify Step 6'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* STEP 7: MASK */}
-                            <div id="step7" className="scroll-mt-32 mt-8">
+                            <div id="fusion_step7" className="scroll-mt-32 mt-8">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 7: MASK</h3>
 
@@ -857,10 +857,10 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('step7')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('step7') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_step7')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step7') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('step7') ? 'Completed' : 'Verify Step 7'}
+                                            {completedSteps.includes('fusion_step7') ? 'Completed' : 'Verify Step 7'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -878,7 +878,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                             </div>
 
                             {/* STEP 8: MIXING FUSION */}
-                            <div id="step8" className="scroll-mt-32">
+                            <div id="fusion_step8" className="scroll-mt-32">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 8: MIXING FUSION</h3>
 
@@ -904,17 +904,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('step8')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('step8') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_step8')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step8') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('step8') ? 'Completed' : 'Verify Step 8'}
+                                            {completedSteps.includes('fusion_step8') ? 'Completed' : 'Verify Step 8'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* STEP 9: FIRST POUR */}
-                            <div id="step9" className="scroll-mt-32 mt-8">
+                            <div id="fusion_step9" className="scroll-mt-32 mt-8">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 9: FIRST POUR</h3>
 
@@ -940,17 +940,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('step9')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('step9') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_step9')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step9') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('step9') ? 'Completed' : 'Verify Step 9'}
+                                            {completedSteps.includes('fusion_step9') ? 'Completed' : 'Verify Step 9'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* STEP 10: TACK CLOTH */}
-                            <div id="step10" className="scroll-mt-32 mt-8">
+                            <div id="fusion_step10" className="scroll-mt-32 mt-8">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 10: TACK CLOTH</h3>
 
@@ -976,17 +976,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('step10')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('step10') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_step10')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step10') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('step10') ? 'Completed' : 'Verify Step 10'}
+                                            {completedSteps.includes('fusion_step10') ? 'Completed' : 'Verify Step 10'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* STEP 11: APPLY FUSION */}
-                            <div id="step11" className="scroll-mt-32 mt-8">
+                            <div id="fusion_step11" className="scroll-mt-32 mt-8">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 11: APPLY FUSION</h3>
 
@@ -1041,17 +1041,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('step11')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('step11') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_step11')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step11') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('step11') ? 'Completed' : 'Verify Step 11'}
+                                            {completedSteps.includes('fusion_step11') ? 'Completed' : 'Verify Step 11'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* STEP 12: QUALITY CHECK */}
-                            <div id="step12" className="scroll-mt-32 mt-8">
+                            <div id="fusion_step12" className="scroll-mt-32 mt-8">
                                 <Card className="p-6 rounded-2xl border-l-4">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 12: QUALITY CHECK</h3>
 
@@ -1071,17 +1071,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('step12')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('step12') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_step12')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step12') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('step12') ? 'Completed' : 'Verify Step 12'}
+                                            {completedSteps.includes('fusion_step12') ? 'Completed' : 'Verify Step 12'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* STEP 13: CLEAN APPLICATOR BOTTLE */}
-                            <div id="step13" className="scroll-mt-32 mt-8">
+                            <div id="fusion_step13" className="scroll-mt-32 mt-8">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 13: CLEAN APPLICATOR BOTTLE</h3>
 
@@ -1120,10 +1120,10 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('step13')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('step13') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_step13')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step13') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('step13') ? 'Completed' : 'Verify Step 13'}
+                                            {completedSteps.includes('fusion_step13') ? 'Completed' : 'Verify Step 13'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -1133,7 +1133,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                         <div className="h-px bg-gray-100 my-8" />
 
                         {/* SECTION E: AFTERCARE */}
-                        <div id="care" className="scroll-mt-32 mt-8">
+                        <div id="fusion_care" className="scroll-mt-32 mt-8">
                             <div className="text-center mb-8 mt-8">
                                 <Badge variant="outline" className="border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 uppercase tracking-[0.4em] px-6 py-1 font-bold text-[10px]">
                                     SECTION E: AFTERCARE
@@ -1161,10 +1161,10 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                 <div className="flex justify-end mt-4">
                                     <Button
-                                        onClick={() => markComplete('care')}
-                                        className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('care') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                        onClick={() => markComplete('fusion_care')}
+                                        className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_care') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                     >
-                                        {completedSteps.includes('care') ? 'Completed' : 'Verify Aftercare'}
+                                        {completedSteps.includes('fusion_care') ? 'Completed' : 'Verify Aftercare'}
                                     </Button>
                                 </div>
                             </Card>
@@ -1179,7 +1179,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                             </div>
 
                             {/* Removing FUSION */}
-                            <div id="removal" className="scroll-mt-32">
+                            <div id="fusion_removal" className="scroll-mt-32">
                                 <Card className="p-6 rounded-2xl border-l-4">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">Removing FUSION</h3>
 
@@ -1238,17 +1238,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('removal')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('removal') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_removal')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_removal') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('removal') ? 'Completed' : 'Verify Removal'}
+                                            {completedSteps.includes('fusion_removal') ? 'Completed' : 'Verify Removal'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* Correcting Application Issues */}
-                            <div id="issues" className="scroll-mt-32">
+                            <div id="fusion_issues" className="scroll-mt-32">
                                 <Card className="p-6 rounded-2xl border-l-4">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">Correcting Application Issues</h3>
 
@@ -1300,10 +1300,10 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="flex justify-end mt-4">
                                         <Button
-                                            onClick={() => markComplete('issues')}
-                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('issues') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                            onClick={() => markComplete('fusion_issues')}
+                                            className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_issues') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('issues') ? 'Completed' : 'Verify Issues'}
+                                            {completedSteps.includes('fusion_issues') ? 'Completed' : 'Verify Issues'}
                                         </Button>
                                     </div>
                                 </Card>
