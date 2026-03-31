@@ -9,7 +9,7 @@ import { Card } from "./ui/card";
 interface ForgotPasswordModalProps {
   isOpen: boolean;
   onClose: () => void;
-  userType: "shop" | "distributor";
+  userType: "shop" | "partner";
 }
 
 export function ForgotPasswordModal({ isOpen, onClose, userType }: ForgotPasswordModalProps) {

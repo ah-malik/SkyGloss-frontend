@@ -80,16 +80,16 @@ const currencies = [
 
 const getSymbol = (code: string) => currencies.find(c => c.code === code)?.symbol || '$';
 
-// Master Distributor Dashboard Assets for Courses
-import fusionMainImage from "../assets/Master_Distributor_Dashboard/1 Fusion.png";
-import resinFilmImage from "../assets/Master_Distributor_Dashboard/2 Resin Film.png";
-import sealImage from "../assets/Master_Distributor_Dashboard/3 Seal.png";
-import matteBoxImage from "../assets/Master_Distributor_Dashboard/4 Matte.png";
-import shineBoxImage from "../assets/Master_Distributor_Dashboard/5 Shine.png";
-import applicatorBottleImage from "../assets/Master_Distributor_Dashboard/6 Applicator Bottle.png";
-import edgeBladeBox1Image from "../assets/Master_Distributor_Dashboard/7 Edge Blade.png";
-import paintPenBoxImage from "../assets/Master_Distributor_Dashboard/8 Paint Pen.png";
-import applicatorsImage from "../assets/Master_Distributor_Dashboard/8 Applicator.png";
+// Master Partner Dashboard Assets for Courses
+import fusionMainImage from "../assets/Master_Partner_Dashboard/1 Fusion.png";
+import resinFilmImage from "../assets/Master_Partner_Dashboard/2 Resin Film.png";
+import sealImage from "../assets/Master_Partner_Dashboard/3 Seal.png";
+import matteBoxImage from "../assets/Master_Partner_Dashboard/4 Matte.png";
+import shineBoxImage from "../assets/Master_Partner_Dashboard/5 Shine.png";
+import applicatorBottleImage from "../assets/Master_Partner_Dashboard/6 Applicator Bottle.png";
+import edgeBladeBox1Image from "../assets/Master_Partner_Dashboard/7 Edge Blade.png";
+import paintPenBoxImage from "../assets/Master_Partner_Dashboard/8 Paint Pen.png";
+import applicatorsImage from "../assets/Master_Partner_Dashboard/8 Applicator.png";
 
 
 
@@ -914,7 +914,7 @@ export function ShopDashboard({
                       SkyGloss Shop Setup</h4>
 
                     <p className="text-sm text-[#666666] mb-6 flex-1 leading-relaxed">
-                      Configure your professional shop profile, connect with distributors, and set up your inventory for success.
+                      Configure your professional shop profile, connect with Partners, and set up your inventory for success.
                     </p>
 
                     <div className="grid grid-cols-2 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">

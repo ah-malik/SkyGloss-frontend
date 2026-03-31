@@ -31,7 +31,7 @@ const faqs = [
   {
     category: "Order",
     question: "What is your return policy?",
-    answer: "Unopened products can be returned within 30 days of purchase. Contact your distributor for specific return procedures."
+    answer: "Unopened products can be returned within 30 days of purchase. Contact your Partner for specific return procedures."
   },
   {
     category: "Training",
@@ -249,7 +249,7 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
                     <SelectContent>
                       <SelectItem value="technician">Technician</SelectItem>
                       <SelectItem value="shop">Shop</SelectItem>
-                      <SelectItem value="distributor">Distributor</SelectItem>
+                      <SelectItem value="Partner">Partner</SelectItem>
                       <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                   </Select>

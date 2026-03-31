@@ -12,19 +12,20 @@ export default function App() {
   useEffect(() => {
     // Auto-redirect if user comes from WordPress about-us page
     if (document.referrer && document.referrer.includes('skygloss.com/about-us')) {
-      navigate('/register/distributor');
+      navigate('/register/shop');
     }
     // Also redirect if they navigate to /about-us within the react app
     if (location.pathname === '/about-us' || location.pathname === '/about-us/') {
-      navigate('/register/distributor');
+      navigate('/register/shop');
     }
   }, [location.pathname, navigate]);
 
   const getDashboardPath = (role: string | null) => {
     switch (role) {
       case 'certified_shop': return '/dashboard/shop';
-      case 'master_distributor':
-      case 'regional_distributor': return '/dashboard/distributor';
+      case 'master_partner':
+      case 'regional_partner':
+      case 'partner': return '/dashboard/partner';
       default: return '/';
     }
   };

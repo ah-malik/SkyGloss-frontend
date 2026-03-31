@@ -113,7 +113,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
   const [quantity, setQuantity] = useState(1);
   const [orderType, setOrderType] = useState<"unit" | "case">("unit");
 
-  const isDistributor = product?.id && !product._id; // Simple check for distributor hardcoded products
+  const isPartner = product?.id && !product._id; // Simple check for Partner hardcoded products
 
   const fetchProduct = async () => {
     try {
@@ -180,18 +180,22 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
 
 
   const sizes = product.sizes || [];
-  const productImageList = isDistributor
-    ? [product.image, product.additionalImage, product.additionalImage2, ...(product.additionalImages || [])].filter(Boolean)
-    : (product.shopImages?.length > 0 ? product.shopImages : (product.images || []));
+  const productImageList = (product.shopImages?.length > 0)
+    ? product.shopImages
+    : (product.images?.length > 0)
+      ? product.images
+      : isPartner
+        ? [product.image, product.additionalImage, product.additionalImage2, ...(product.additionalImages || [])].filter(Boolean)
+        : [];
 
-  const currentPrice = isDistributor
+  const currentPrice = isPartner
     ? (orderType === "unit" ? product.unitPrices?.[selectedSize] : product.casePrices?.[selectedSize]) || 0
     : (sizes.find((s: any) => s.size === selectedSize)?.price || 0);
 
 
 
   const handleAddToCart = () => {
-    onAddToCart(selectedSize, quantity, showPrice ? currentPrice : undefined, isDistributor ? orderType : undefined);
+    onAddToCart(selectedSize, quantity, showPrice ? currentPrice : undefined, isPartner ? orderType : undefined);
     setShowConfirmDialog(true);
   };
 
@@ -360,8 +364,8 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
               </div>
             </div>
 
-            {/* Distributor Order Type Selection */}
-            {isDistributor && (
+            {/* Partner Order Type Selection */}
+            {isPartner && (
               <div className="mb-6">
                 <label className="block text-sm text-[#272727] mb-3">
                   Select Order Type:
@@ -400,14 +404,14 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                 <div className="text-3xl text-[#0EA0DC] mb-2">
                   {getSymbol(product.currency)}{currentPrice.toFixed(2)}
                 </div>
-                {!isDistributor && (
+                {!isPartner && (
                   <Badge variant="secondary" className={`border-0 ${product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                     {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
                   </Badge>
                 )}
-                {isDistributor && (
+                {isPartner && (
                   <Badge variant="secondary" className="border-0 bg-blue-100 text-blue-800">
-                    Distributor Exclusive
+                    Partner Exclusive
                   </Badge>
                 )}
               </div>
@@ -447,11 +451,11 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
             {/* Add to Cart Button - Central */}
             <Button
               onClick={handleAddToCart}
-              disabled={!isDistributor && product.stock === 0}
+              disabled={!isPartner && product.stock === 0}
               className="w-full bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] h-14 rounded-lg text-lg disabled:bg-gray-400"
             >
               <ShoppingCart className="w-5 h-5 mr-2" />
-              {isDistributor ? 'Add to Order' : (product.stock > 0 ? 'Add to Cart' : 'Out of Stock')}
+              {isPartner ? 'Add to Order' : (product.stock > 0 ? 'Add to Cart' : 'Out of Stock')}
             </Button>
           </motion.div>
         </div>
@@ -678,11 +682,11 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                   )}
                   <Button
                     onClick={handleAddToCart}
-                    disabled={!isDistributor && product.stock === 0}
+                    disabled={!isPartner && product.stock === 0}
                     className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] h-11 sm:h-12 px-6 sm:px-8 rounded-lg w-full sm:w-auto text-sm sm:text-base disabled:bg-gray-400"
                   >
                     <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                    {isDistributor ? 'Add to Order' : (product.stock > 0 ? 'Add to Cart' : 'Out of Stock')}
+                    {isPartner ? 'Add to Order' : (product.stock > 0 ? 'Add to Cart' : 'Out of Stock')}
                   </Button>
                 </div>
               </div>

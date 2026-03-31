@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-interface Distributor {
+interface Partner {
   id: string;
   name: string;
   contact: string;
@@ -36,9 +36,9 @@ interface Distributor {
   joinedDate: string;
 }
 
-const mockDistributors: Distributor[] = [
+const mockPartners: Partner[] = [
   {
-    id: "DIST001",
+    id: "PART001",
     name: "Elite Auto Care Europe",
     contact: "Carlos Mendoza",
     email: "carlos@eliteauto.eu",
@@ -51,7 +51,7 @@ const mockDistributors: Distributor[] = [
     joinedDate: "Jan 2023"
   },
   {
-    id: "DIST002",
+    id: "PART002",
     name: "Premium Detail Brasil",
     contact: "Maria Silva",
     email: "maria@premiumdetail.br",
@@ -64,7 +64,7 @@ const mockDistributors: Distributor[] = [
     joinedDate: "Mar 2023"
   },
   {
-    id: "DIST003",
+    id: "PART003",
     name: "Gloss Masters India",
     contact: "Raj Patel",
     email: "raj@glossmasters.in",
@@ -77,7 +77,7 @@ const mockDistributors: Distributor[] = [
     joinedDate: "Jun 2022"
   },
   {
-    id: "DIST004",
+    id: "PART004",
     name: "Shine Pro Australia",
     contact: "James Wilson",
     email: "james@shinepro.au",
@@ -90,7 +90,7 @@ const mockDistributors: Distributor[] = [
     joinedDate: "Oct 2024"
   },
   {
-    id: "DIST005",
+    id: "PART005",
     name: "DetailWorks Germany",
     contact: "Hans Mueller",
     email: "hans@detailworks.de",
@@ -104,12 +104,12 @@ const mockDistributors: Distributor[] = [
   }
 ];
 
-export function ManageDistributors() {
-  const [distributors, setDistributors] = useState<Distributor[]>(mockDistributors);
+export function ManagePartners() {
+  const [Partners, setPartners] = useState<Partner[]>(mockPartners);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [filterRegion, setFilterRegion] = useState<string>("all");
-  const [selectedDistributor, setSelectedDistributor] = useState<Distributor | null>(null);
+  const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -121,27 +121,27 @@ export function ManageDistributors() {
     region: ""
   });
 
-  const filteredDistributors = distributors.filter((dist) => {
+  const filteredPartners = Partners.filter((partner) => {
     const matchesSearch = 
-      dist.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      dist.contact.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      dist.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      dist.country.toLowerCase().includes(searchQuery.toLowerCase());
+      partner.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      partner.contact.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      partner.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      partner.country.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesStatus = filterStatus === "all" || dist.status === filterStatus;
-    const matchesRegion = filterRegion === "all" || dist.region === filterRegion;
+    const matchesStatus = filterStatus === "all" || partner.status === filterStatus;
+    const matchesRegion = filterRegion === "all" || partner.region === filterRegion;
     
     return matchesSearch && matchesStatus && matchesRegion;
   });
 
-  const handleAddDistributor = () => {
+  const handleAddPartner = () => {
     if (!formData.name || !formData.email || !formData.contact) {
       toast.error("Please fill in all required fields");
       return;
     }
 
-    const newDistributor: Distributor = {
-      id: `DIST${String(distributors.length + 1).padStart(3, "0")}`,
+    const newPartner: Partner = {
+      id: `PART${String(Partners.length + 1).padStart(3, "0")}`,
       name: formData.name,
       contact: formData.contact,
       email: formData.email,
@@ -154,55 +154,55 @@ export function ManageDistributors() {
       joinedDate: new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" })
     };
 
-    setDistributors([...distributors, newDistributor]);
+    setPartners([...Partners, newPartner]);
     setShowAddModal(false);
     setFormData({ name: "", contact: "", email: "", phone: "", country: "", region: "" });
-    toast.success("Distributor added successfully!");
+    toast.success("Partner added successfully!");
   };
 
-  const handleEditDistributor = () => {
-    if (!selectedDistributor) return;
+  const handleEditPartner = () => {
+    if (!selectedPartner) return;
 
-    const updatedDistributors = distributors.map((dist) =>
-      dist.id === selectedDistributor.id
-        ? { ...dist, ...formData }
-        : dist
+    const updatedPartners = Partners.map((partner) =>
+      partner.id === selectedPartner.id
+        ? { ...partner, ...formData }
+        : partner
     );
 
-    setDistributors(updatedDistributors);
+    setPartners(updatedPartners);
     setShowEditModal(false);
-    setSelectedDistributor(null);
+    setSelectedPartner(null);
     setFormData({ name: "", contact: "", email: "", phone: "", country: "", region: "" });
-    toast.success("Distributor updated successfully!");
+    toast.success("Partner updated successfully!");
   };
 
-  const handleDeleteDistributor = (id: string) => {
-    setDistributors(distributors.filter((dist) => dist.id !== id));
-    toast.success("Distributor removed successfully!");
+  const handleDeletePartner = (id: string) => {
+    setPartners(Partners.filter((partner) => partner.id !== id));
+    toast.success("Partner removed successfully!");
   };
 
   const handleStatusChange = (id: string, newStatus: "active" | "pending" | "inactive") => {
-    const updatedDistributors = distributors.map((dist) =>
+    const updatedPartners = Partners.map((dist) =>
       dist.id === id ? { ...dist, status: newStatus } : dist
     );
-    setDistributors(updatedDistributors);
+    setPartners(updatedPartners);
     toast.success("Status updated successfully!");
   };
 
-  const openEditModal = (distributor: Distributor) => {
-    setSelectedDistributor(distributor);
+  const openEditModal = (Partner: Partner) => {
+    setSelectedPartner(Partner);
     setFormData({
-      name: distributor.name,
-      contact: distributor.contact,
-      email: distributor.email,
-      phone: distributor.phone,
-      country: distributor.country,
-      region: distributor.region
+      name: Partner.name,
+      contact: Partner.contact,
+      email: Partner.email,
+      phone: Partner.phone,
+      country: Partner.country,
+      region: Partner.region
     });
     setShowEditModal(true);
   };
 
-  const regions = Array.from(new Set(distributors.map((d) => d.region)));
+  const regions = Array.from(new Set(Partners.map((d) => d.region)));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white p-4 md:p-8 pt-20 md:pt-24">
@@ -218,8 +218,8 @@ export function ManageDistributors() {
               <Users className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h1 className="text-[#272727]">Manage Distributors</h1>
-              <p className="text-[#666666]">Add, edit, or remove distributor relationships and access</p>
+              <h1 className="text-[#272727]">Manage Partners</h1>
+              <p className="text-[#666666]">Add, edit, or remove Partner relationships and access</p>
             </div>
           </div>
         </motion.div>
@@ -230,7 +230,7 @@ export function ManageDistributors() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs sm:text-sm text-[#666666]">Total</p>
-                <p className="text-xl sm:text-2xl text-[#272727]">{distributors.length}</p>
+                <p className="text-xl sm:text-2xl text-[#272727]">{Partners.length}</p>
               </div>
               <Building2 className="w-8 sm:w-10 h-8 sm:h-10 text-[#0EA0DC] opacity-20" />
             </div>
@@ -240,7 +240,7 @@ export function ManageDistributors() {
               <div>
                 <p className="text-xs sm:text-sm text-[#666666]">Active</p>
                 <p className="text-xl sm:text-2xl text-green-600">
-                  {distributors.filter((d) => d.status === "active").length}
+                  {Partners.filter((d) => d.status === "active").length}
                 </p>
               </div>
               <CheckCircle className="w-8 sm:w-10 h-8 sm:h-10 text-green-600 opacity-20" />
@@ -251,7 +251,7 @@ export function ManageDistributors() {
               <div>
                 <p className="text-xs sm:text-sm text-[#666666]">Pending</p>
                 <p className="text-xl sm:text-2xl text-yellow-600">
-                  {distributors.filter((d) => d.status === "pending").length}
+                  {Partners.filter((d) => d.status === "pending").length}
                 </p>
               </div>
               <AlertCircle className="w-8 sm:w-10 h-8 sm:h-10 text-yellow-600 opacity-20" />
@@ -262,7 +262,7 @@ export function ManageDistributors() {
               <div>
                 <p className="text-xs sm:text-sm text-[#666666]">Shops</p>
                 <p className="text-xl sm:text-2xl text-[#272727]">
-                  {distributors.reduce((acc, d) => acc + d.shops, 0)}
+                  {Partners.reduce((acc, d) => acc + d.shops, 0)}
                 </p>
               </div>
               <MapPin className="w-8 sm:w-10 h-8 sm:h-10 text-[#0EA0DC] opacity-20" />
@@ -276,7 +276,7 @@ export function ManageDistributors() {
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#666666]" />
               <Input
-                placeholder="Search distributors..."
+                placeholder="Search Partners..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 rounded-xl border-[#0EA0DC]/30"
@@ -309,16 +309,16 @@ export function ManageDistributors() {
               className="bg-[#0EA0DC] text-white hover:bg-[#0B7FB3] rounded-xl whitespace-nowrap"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Distributor
+              Add Partner
             </Button>
           </div>
         </Card>
 
-        {/* Distributors List */}
+        {/* Partners List */}
         <div className="space-y-4">
-          {filteredDistributors.map((distributor, index) => (
+          {filteredPartners.map((Partner, index) => (
             <motion.div
-              key={distributor.id}
+              key={Partner.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
@@ -331,36 +331,36 @@ export function ManageDistributors() {
                         <Building2 className="w-6 h-6 text-[#0EA0DC]" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-base sm:text-lg text-[#272727] mb-2">{distributor.name}</h3>
+                        <h3 className="text-base sm:text-lg text-[#272727] mb-2">{Partner.name}</h3>
                         <div className="flex flex-wrap gap-2 mb-2">
                           <Badge
                             className={
-                              distributor.status === "active"
+                              Partner.status === "active"
                                 ? "bg-green-100 text-green-800 border-green-200"
-                                : distributor.status === "pending"
+                                : Partner.status === "pending"
                                 ? "bg-yellow-100 text-yellow-800 border-yellow-200"
                                 : "bg-gray-100 text-gray-800 border-gray-200"
                             }
                           >
-                            {distributor.status}
+                            {Partner.status}
                           </Badge>
                           <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-[#0EA0DC]/20">
-                            {distributor.id}
+                            {Partner.id}
                           </Badge>
                         </div>
-                        <p className="text-sm text-[#666666] mb-3">{distributor.contact}</p>
+                        <p className="text-sm text-[#666666] mb-3">{Partner.contact}</p>
                         <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-[#666666]">
                           <div className="flex items-center gap-1.5">
                             <Mail className="w-4 h-4 flex-shrink-0" />
-                            <span className="truncate">{distributor.email}</span>
+                            <span className="truncate">{Partner.email}</span>
                           </div>
                           <div className="flex items-center gap-1.5">
                             <Phone className="w-4 h-4 flex-shrink-0" />
-                            <span>{distributor.phone}</span>
+                            <span>{Partner.phone}</span>
                           </div>
                           <div className="flex items-center gap-1.5">
                             <MapPin className="w-4 h-4 flex-shrink-0" />
-                            <span>{distributor.country} · {distributor.region}</span>
+                            <span>{Partner.country} · {Partner.region}</span>
                           </div>
                         </div>
                       </div>
@@ -368,23 +368,23 @@ export function ManageDistributors() {
                     <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-4">
                       <div className="p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-[#0EA0DC]/5">
                         <p className="text-xs text-[#666666] mb-0.5">Shops</p>
-                        <p className="text-base sm:text-lg text-[#272727]">{distributor.shops}</p>
+                        <p className="text-base sm:text-lg text-[#272727]">{Partner.shops}</p>
                       </div>
                       <div className="p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-[#0EA0DC]/5">
                         <p className="text-xs text-[#666666] mb-0.5">Revenue</p>
-                        <p className="text-base sm:text-lg text-[#272727]">{distributor.revenue}</p>
+                        <p className="text-base sm:text-lg text-[#272727]">{Partner.revenue}</p>
                       </div>
                       <div className="p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-[#0EA0DC]/5">
                         <p className="text-xs text-[#666666] mb-0.5">Joined</p>
-                        <p className="text-base sm:text-lg text-[#272727]">{distributor.joinedDate}</p>
+                        <p className="text-base sm:text-lg text-[#272727]">{Partner.joinedDate}</p>
                       </div>
                     </div>
                   </div>
                   <div className="flex flex-col gap-2.5 sm:gap-3 lg:min-w-[160px]">
                     <Select
-                      value={distributor.status}
+                      value={Partner.status}
                       onValueChange={(value) =>
-                        handleStatusChange(distributor.id, value as "active" | "pending" | "inactive")
+                        handleStatusChange(Partner.id, value as "active" | "pending" | "inactive")
                       }
                     >
                       <SelectTrigger className="w-full h-11 rounded-xl border-[#0EA0DC]/30">
@@ -398,7 +398,7 @@ export function ManageDistributors() {
                     </Select>
                     <Button
                       variant="outline"
-                      onClick={() => openEditModal(distributor)}
+                      onClick={() => openEditModal(Partner)}
                       className="w-full h-11 rounded-xl border-[#0EA0DC]/30 text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
                     >
                       <Edit2 className="w-4 h-4 mr-2" />
@@ -406,7 +406,7 @@ export function ManageDistributors() {
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={() => handleDeleteDistributor(distributor.id)}
+                      onClick={() => handleDeletePartner(Partner.id)}
                       className="w-full h-11 rounded-xl border-red-300 text-red-600 hover:bg-red-50"
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
@@ -453,7 +453,7 @@ export function ManageDistributors() {
                   </button>
 
                   <h2 className="text-[#272727] mb-6">
-                    {showAddModal ? "Add New Distributor" : "Edit Distributor"}
+                    {showAddModal ? "Add New Partner" : "Edit Partner"}
                   </h2>
 
                   <div className="space-y-4">
@@ -533,10 +533,10 @@ export function ManageDistributors() {
 
                     <div className="flex gap-3 mt-6">
                       <Button
-                        onClick={showAddModal ? handleAddDistributor : handleEditDistributor}
+                        onClick={showAddModal ? handleAddPartner : handleEditPartner}
                         className="flex-1 bg-[#0EA0DC] text-white hover:bg-[#0B7FB3] rounded-xl"
                       >
-                        {showAddModal ? "Add Distributor" : "Save Changes"}
+                        {showAddModal ? "Add Partner" : "Save Changes"}
                       </Button>
                       <Button
                         variant="outline"

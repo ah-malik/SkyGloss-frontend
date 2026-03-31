@@ -318,7 +318,7 @@ export function PortalCloningWizard({ onClose, onComplete }: PortalCloningWizard
                         <Settings className="w-6 h-6 text-[#0EA0DC] mb-2" />
                         <h4 className="text-sm text-[#272727] mb-1">Full Portal</h4>
                         <p className="text-xs text-[#666666]">
-                          Complete portal with all features (Technician, Shop, Distributor)
+                          Complete portal with all features (Technician, Shop, Partner)
                         </p>
                       </button>
                       <button

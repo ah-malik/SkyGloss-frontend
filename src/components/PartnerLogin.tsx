@@ -6,14 +6,14 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
 import { Progress } from "./ui/progress";
-import { DistributorIcon } from "./CustomIcons";
+import { PartnerIcon } from "./CustomIcons";
 import { ForgotPasswordModal } from "./ForgotPasswordModal";
 import { Footer } from "./Footer";
 import { useNavigate, useLocation } from "react-router";
 import { useAuth } from "../AuthContext";
 import { toast } from "sonner";
 
-export function DistributorLogin() {
+export function PartnerLogin() {
   const navigate = useNavigate();
   const location = useLocation();
   const { setUser } = useAuth();
@@ -29,11 +29,33 @@ export function DistributorLogin() {
 
     // Check for payment success parameter
     const searchParams = new URLSearchParams(location.search);
+    const userId = searchParams.get("user_id");
+    
     if (searchParams.get("payment_success") === "true") {
-      toast.success("Payment Successful!", {
-        description: "Your registration is now active. Please login to access your Dashboard.",
-        duration: 8000,
-      });
+      const verifyPayment = async () => {
+        if (userId) {
+          try {
+            await api.get(`/auth/verify-payment/${userId}`);
+            toast.success("Payment Verified!", {
+              description: "Your registration is now active. Please login to access your Dashboard.",
+              duration: 8000,
+            });
+          } catch (err) {
+            console.error("Manual verification failed", err);
+            toast.success("Payment Successful!", {
+              description: "Your registration is complete. If you cannot login immediately, please wait a few moments for processing.",
+              duration: 8000,
+            });
+          }
+        } else {
+          toast.success("Payment Successful!", {
+            description: "Your registration is now active. Please login to access your Dashboard.",
+            duration: 8000,
+          });
+        }
+      };
+      
+      verifyPayment();
       // Optionally remove the query parameter from the URL
       navigate(location.pathname, { replace: true });
     }
@@ -72,7 +94,7 @@ export function DistributorLogin() {
           if (prev >= 100) {
             clearInterval(interval);
             setTimeout(() => {
-              navigate("/dashboard/distributor");
+              navigate("/dashboard/partner");
             }, 300);
             return 100;
           }
@@ -118,11 +140,11 @@ export function DistributorLogin() {
               transition={{ type: "spring", stiffness: 200 }}
               className="w-16 h-16 mx-auto rounded-lg bg-[#0EA0DC] flex items-center justify-center mb-6 shadow-[0_4px_16px_rgba(14,160,220,0.3)]"
             >
-              <DistributorIcon className="text-white" />
+              <PartnerIcon className="text-white" />
             </motion.div>
 
             <div className="text-center mb-8">
-              <h2 className="text-2xl text-[#272727] mb-2">Distributor Access</h2>
+              <h2 className="text-2xl text-[#272727] mb-2">Partner Access</h2>
               <p className="text-[#666666]">Login to manage your global network</p>
             </div>
 
@@ -195,7 +217,7 @@ export function DistributorLogin() {
             className="mt-4 p-4 bg-[#0EA0DC]/10 rounded-lg border border-[#0EA0DC]/20"
           >
             <p className="text-xs text-[#0EA0DC]">
-              <strong>Demo:</strong> Username: "distributor", Password: "demo123"
+              <strong>Demo:</strong> Username: "Partner", Password: "demo123"
             </p>
           </motion.div> */}
 
@@ -207,7 +229,7 @@ export function DistributorLogin() {
       <ForgotPasswordModal
         isOpen={showForgotPassword}
         onClose={() => setShowForgotPassword(false)}
-        userType="distributor"
+        userType="partner"
       />
     </div>
   );

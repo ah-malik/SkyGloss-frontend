@@ -884,7 +884,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                     On site and advanced training are always available and recommended to sharpen your technical skills.
                                 </p>
                                 <a href="/support" className="text-[#0EA0DC] text-sm mb-8 block">
-                                    Contact your distributor for more details.
+                                    Contact your Partner for more details.
                                 </a>
                                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                     <Button

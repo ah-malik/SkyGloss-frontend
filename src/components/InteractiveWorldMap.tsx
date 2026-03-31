@@ -10,7 +10,7 @@ import { Globe, MapPin, Building2, TrendingUp, Users, X, Map as MapIcon, Loader2
 import api from "../api/axios";
 
 // Custom marker icons
-const createCustomIcon = (type: "headquarters" | "distributor" | "retail") => {
+const createCustomIcon = (type: "headquarters" | "Partner" | "retail") => {
   const color = type === "headquarters" ? "#FFD700" : "#0EA0DC";
   const shadowColor = type === "headquarters" ? "rgba(255, 215, 0, 0.4)" : "rgba(14, 160, 220, 0.4)";
 
@@ -90,7 +90,7 @@ interface Location {
   state?: string;
   lat: number;
   lng: number;
-  type: "headquarters" | "distributor" | "retail";
+  type: "headquarters" | "Partner" | "retail";
   address?: string;
   stats: {
     shops: number;
@@ -141,12 +141,12 @@ export function InteractiveWorldMap() {
   const mapZoom = viewMode === "global" ? 2 : 4;
 
   useEffect(() => {
-    const fetchDistributors = async () => {
+    const fetchPartners = async () => {
       try {
         const res = await api.get("/users");
-        const distributors = res.data
+        const Partners = res.data
           .filter((user: any) =>
-            (user.role === "master_distributor" || user.role === "regional_distributor") &&
+            (user.role === "master_partner" || user.role === "regional_partner" || user.role === "partner") &&
             user.latitude != null && user.longitude != null
           )
           .map((user: any) => ({
@@ -155,7 +155,7 @@ export function InteractiveWorldMap() {
             city: user.city || "",
             lat: user.latitude,
             lng: user.longitude,
-            type: user.role === "master_distributor" ? "distributor" : "retail",
+            type: user.role === "master_partner" ? "Partner" : "retail",
             address: user.address || "",
             stats: {
               shops: user.shops || Math.floor(Math.random() * 20) + 5,
@@ -163,14 +163,14 @@ export function InteractiveWorldMap() {
               growth: (Math.random() * 15 + 5).toFixed(1)
             }
           }));
-        setLocations([headquarters, ...distributors]);
+        setLocations([headquarters, ...Partners]);
       } catch (err) {
-        console.error("Failed to fetch distributors for map:", err);
+        console.error("Failed to fetch Partners for map:", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchDistributors();
+    fetchPartners();
   }, []);
 
   const currentLocations = locations.filter(loc => {
@@ -364,7 +364,7 @@ export function InteractiveWorldMap() {
         </motion.div>
       </div>
 
-      {/* Distributor Selection Modal (For grouped countries) */}
+      {/* Partner Selection Modal (For grouped countries) */}
       <AnimatePresence>
         {selectedCountry && (
           <motion.div
@@ -384,7 +384,7 @@ export function InteractiveWorldMap() {
               <Card className="skygloss-card p-6 rounded-[2.5rem] bg-white border-none shadow-2xl relative overflow-hidden">
                 <div className="flex justify-between items-center mb-6">
                   <div>
-                    <h3 className="text-xl font-black text-[#272727]">{selectedCountry.country} Distributors</h3>
+                    <h3 className="text-xl font-black text-[#272727]">{selectedCountry.country} Partners</h3>
                     <p className="text-sm text-gray-500 font-medium">Multiple partners found in this region</p>
                   </div>
                   <button
@@ -483,7 +483,7 @@ export function InteractiveWorldMap() {
                 </div>
                 {selectedLocation.address && (
                   <div className="mb-6 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-gray-600 text-sm">
-                    <p className="font-bold mb-1 text-xs uppercase text-gray-400 tracking-wider">Distributor Address</p>
+                    <p className="font-bold mb-1 text-xs uppercase text-gray-400 tracking-wider">Partner Address</p>
                     <p className="font-semibold text-[#272727]">{selectedLocation.address}</p>
                   </div>
                 )}

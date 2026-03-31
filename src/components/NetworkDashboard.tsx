@@ -1,42 +1,70 @@
-import { motion, AnimatePresence } from "motion/react";
-import { useState } from "react";
-import { Globe, TrendingUp, Users, ShoppingBag, MapPin, Download, Plus, ArrowLeft } from "lucide-react";
+import { motion } from "motion/react";
+import { useState, useEffect } from "react";
+import { TrendingUp, MapPin, Download, Plus, ArrowLeft } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { InteractiveWorldMap } from "./InteractiveWorldMap";
-import { ManageDistributors } from "./ManageDistributors";
+import { ManagePartners } from "./ManagePartners";
 import { SalesAnalytics } from "./SalesAnalytics";
 import { GenerateReports } from "./GenerateReports";
 import { PortalCloningWizard } from "./PortalCloningWizard";
 import { toast } from "sonner";
+import api from "../api/axios";
 
-const networkStats = [
-  { label: "Total Certified Shops in Your Territory", value: "247", change: "+12%", trend: "up" },
-  { label: "Orders This Month", value: "1,234", change: "+23%", trend: "up" }
-];
-
-const topCountries = [
-  { country: "United States", shops: 98, growth: "+15%" },
-  { country: "Germany", shops: 42, growth: "+22%" },
-  { country: "United Kingdom", shops: 38, growth: "+18%" },
-  { country: "Canada", shops: 31, growth: "+12%" },
-  { country: "Australia", shops: 18, growth: "+25%" }
-];
-
-const recentCertifications = [
-  { shop: "Prestige Auto Detail", country: "USA", date: "2 days ago", status: "active" },
-  { shop: "Elite Car Care", country: "UK", date: "5 days ago", status: "active" },
-  { shop: "Gloss Masters", country: "Germany", date: "1 week ago", status: "active" },
-  { shop: "Premium Detailing Co", country: "Canada", date: "1 week ago", status: "pending" }
-];
+// Remove static placeholder data and replace with dynamic derivations where needed
 
 export function NetworkDashboard() {
-  const [selectedMap, setSelectedMap] = useState("global");
-  const [activeToolView, setActiveToolView] = useState<"main" | "distributors" | "analytics" | "reports" | "cloning">("main");
+  const [activeToolView, setActiveToolView] = useState<"main" | "Partners" | "analytics" | "reports" | "cloning">("main");
+  const [shops, setShops] = useState<any[]>([]);
+  const [isLoadingShops, setIsLoadingShops] = useState(false);
 
-  if (activeToolView === "distributors") {
+  useEffect(() => {
+    const fetchShops = async () => {
+      setIsLoadingShops(true);
+      try {
+        const response = await api.get('/users/referred-shops');
+        setShops(response.data);
+      } catch (error) {
+        console.error("Failed to fetch referred shops:", error);
+      } finally {
+        setIsLoadingShops(false);
+      }
+    };
+
+    fetchShops();
+  }, []);
+
+  // Compute live stats from shops data
+  const totalShopsCount = shops.length;
+
+  const countryBreakdown = shops.reduce((acc: any, shop) => {
+    const country = shop.country || "Unknown";
+    acc[country] = (acc[country] || 0) + 1;
+    return acc;
+  }, {});
+
+  const dynamicTopCountries = Object.entries(countryBreakdown)
+    .map(([country, count]) => ({ country, shops: count as number }))
+    .sort((a, b) => b.shops - a.shops);
+
+  const dynamicRecentCertifications = [...shops]
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 5)
+    .map(shop => ({
+      shop: `${shop.firstName} ${shop.lastName}`,
+      country: shop.country,
+      date: new Date(shop.createdAt).toLocaleDateString(),
+      status: "active"
+    }));
+
+  const dynamicNetworkStats = [
+    { label: "Total Certified Shops in Your Territory", value: totalShopsCount.toString(), change: "+0%", trend: "up" },
+    { label: "Direct Referral Shops", value: totalShopsCount.toString(), change: "+0%", trend: "up" }
+  ];
+
+  if (activeToolView === "Partners") {
     return (
       <div className="relative">
         <div className="mb-4 px-4">
@@ -49,7 +77,7 @@ export function NetworkDashboard() {
             Back to Network
           </Button>
         </div>
-        <ManageDistributors />
+        <ManagePartners />
       </div>
     );
   }
@@ -119,7 +147,7 @@ export function NetworkDashboard() {
                 Global Network Dashboard
               </h1>
               <p className="text-sm sm:text-base text-[#666666]">
-                Monitor your worldwide distributor network and performance
+                Monitor your worldwide Partner network and performance
               </p>
             </div>
             <Button className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] whitespace-nowrap">
@@ -132,7 +160,7 @@ export function NetworkDashboard() {
         {/* Stats Grid */}
         <div className="max-w-4xl mx-auto mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {networkStats.map((stat, index) => (
+            {dynamicNetworkStats.map((stat, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -158,7 +186,7 @@ export function NetworkDashboard() {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-2 gap-1.5 mb-8 bg-white rounded-xl p-1.5 border-2 border-[#0EA0DC] shadow-[0_0_10px_rgba(14,160,220,0.15)] h-auto">
+          <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 gap-1.5 mb-8 bg-white rounded-xl p-1.5 border-2 border-[#0EA0DC] shadow-[0_0_10px_rgba(14,160,220,0.15)] h-auto">
             <TabsTrigger
               value="overview"
               className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-2 sm:py-3 px-2 sm:px-6 rounded-lg transition-all duration-200 text-xs sm:text-sm"
@@ -177,6 +205,12 @@ export function NetworkDashboard() {
             >
               Cloning
             </TabsTrigger> */}
+            <TabsTrigger
+              value="shops"
+              className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-2 sm:py-3 px-2 sm:px-6 rounded-lg transition-all duration-200 text-xs sm:text-sm"
+            >
+              Certified Shops
+            </TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -192,14 +226,18 @@ export function NetworkDashboard() {
                     Certified Shops
                   </h3>
                   <div className="space-y-4">
-                    {topCountries.map((country, idx) => (
+                    {dynamicTopCountries.length === 0 ? (
+                      <div className="text-center py-8 text-[#666666] text-sm italic">
+                        No geographical data yet
+                      </div>
+                    ) : dynamicTopCountries.map((country, idx) => (
                       <div key={idx} className="flex items-center gap-3 pb-4 border-b border-[#0EA0DC]/10 last:border-0">
                         <div className="w-10 h-10 rounded-lg bg-[#0EA0DC]/10 flex items-center justify-center">
                           <MapPin className="w-5 h-5 text-[#0EA0DC]" />
                         </div>
                         <div>
-                          <div className="text-[#272727]">{country.country}</div>
-                          <div className="text-sm text-[#666666]">{country.shops} shops</div>
+                          <div className="text-[#272727] font-medium">{country.country}</div>
+                          <div className="text-sm text-[#666666]">{country.shops} {country.shops === 1 ? 'shop' : 'shops'}</div>
                         </div>
                       </div>
                     ))}
@@ -224,17 +262,18 @@ export function NetworkDashboard() {
                     </Button>
                   </div>
                   <div className="space-y-4">
-                    {recentCertifications.map((cert, idx) => (
+                    {dynamicRecentCertifications.length === 0 ? (
+                      <div className="text-center py-8 text-[#666666] text-sm italic">
+                        No recent activity
+                      </div>
+                    ) : dynamicRecentCertifications.map((cert, idx) => (
                       <div key={idx} className="flex items-center justify-between pb-4 border-b border-[#0EA0DC]/10 last:border-0">
                         <div>
-                          <div className="text-[#272727]">{cert.shop}</div>
+                          <div className="text-[#272727] font-medium">{cert.shop}</div>
                           <div className="text-sm text-[#666666]">{cert.country} · {cert.date}</div>
                         </div>
-                        <Badge className={cert.status === "active"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-yellow-100 text-yellow-800"
-                        }>
-                          {cert.status}
+                        <Badge className="bg-green-100 text-green-800 border-0">
+                          Active
                         </Badge>
                       </div>
                     ))}
@@ -242,6 +281,58 @@ export function NetworkDashboard() {
                 </Card>
               </motion.div>
             </div>
+          </TabsContent>
+
+          {/* Certified Shops Tab */}
+          <TabsContent value="shops">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <Card className="skygloss-card p-6 rounded-2xl overflow-hidden">
+                <h3 className="text-xl text-[#272727] mb-6">Linked Certified Shops</h3>
+                {isLoadingShops ? (
+                  <div className="flex justify-center p-8 text-[#0EA0DC] animate-pulse">Loading shops...</div>
+                ) : shops.length === 0 ? (
+                  <div className="text-center py-12 text-[#666666]">
+                    No certified shops registered under your ID yet.
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto -mx-6">
+                    <table className="w-full text-left">
+                      <thead>
+                        <tr className="border-b-2 border-[#0EA0DC]/10 bg-gray-50/50">
+                          <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Shop Name</th>
+                          <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Location</th>
+                          <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Registration Date</th>
+                          <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {shops.map((shop, idx) => (
+                          <tr key={idx} className="border-b border-[#0EA0DC]/10 hover:bg-[#0EA0DC]/5 transition-colors">
+                            <td className="px-6 py-4 text-[#272727] font-medium">
+                              {shop.firstName} {shop.lastName}
+                            </td>
+                            <td className="px-6 py-4 text-[#666666] text-sm">
+                              {shop.city}, {shop.country}
+                            </td>
+                            <td className="px-6 py-4 text-[#666666] text-sm">
+                              {new Date(shop.createdAt).toLocaleDateString()}
+                            </td>
+                            <td className="px-6 py-4">
+                              <Badge className="bg-green-100 text-green-800 border-0 font-semibold px-3 py-1">
+                                CERTIFIED
+                              </Badge>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </Card>
+            </motion.div>
           </TabsContent>
 
           {/* Network Map Tab */}

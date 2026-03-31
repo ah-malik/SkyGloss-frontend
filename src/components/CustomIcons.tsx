@@ -1,6 +1,6 @@
 import technicianIcon from "../assets/600x400.svg";
 import shopIcon from "../assets/shopIcon.svg";
-import distributorIcon from "../assets/distributorIcon.svg";
+import partnerIcon from "../assets/PartnerIcon.svg";
 
 export function TechnicianIcon({ className }: { className?: string }) {
   return (
@@ -24,11 +24,11 @@ export function ShopIcon({ className }: { className?: string }) {
   );
 }
 
-export function DistributorIcon({ className }: { className?: string }) {
+export function PartnerIcon({ className }: { className?: string }) {
   return (
     <img
-      src={distributorIcon}
-      alt="Distributor"
+      src={partnerIcon}
+      alt="Partner"
       className={className}
       style={{ width: '40px', height: '40px' }}
     />

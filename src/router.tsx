@@ -3,11 +3,11 @@ import App from "./App";
 
 import { LandingPage } from "./components/LandingPage";
 import { ShopLogin } from "./components/ShopLogin";
-import { DistributorLogin } from "./components/DistributorLogin";
-import { DistributorRegistration } from "./components/DistributorRegistration";
+import { PartnerLogin } from "./components/PartnerLogin";
+import { ShopRegistration } from "./components/ShopRegistration";
 
 import { ShopDashboard } from "./components/ShopDashboard";
-import { DistributorDashboard } from "./components/DistributorDashboard";
+import { PartnerDashboard } from "./components/PartnerDashboard";
 
 import { ResourcesPage } from "./components/ResourcesPage";
 import { SupportPage } from "./components/SupportPage";
@@ -28,8 +28,8 @@ export const router = createBrowserRouter([
         element: <PublicRoute />,
         children: [
           { path: "login/shop", element: <ShopLogin /> },
-          { path: "login/distributor", element: <DistributorLogin /> },
-          { path: "register/distributor", element: <DistributorRegistration /> },
+          { path: "login/partner", element: <PartnerLogin /> },
+          { path: "register/shop", element: <ShopRegistration /> },
           { path: "reset-password", element: <ResetPassword /> },
         ]
       },
@@ -46,11 +46,11 @@ export const router = createBrowserRouter([
         ]
       },
       {
-        element: <ProtectedRoute allowedRole={["master_distributor", "regional_distributor"]} />,
+        element: <ProtectedRoute allowedRole={["master_partner", "regional_partner", "partner"]} />,
         children: [
-          { path: "dashboard/distributor", element: <DistributorDashboard /> },
-          { path: "dashboard/distributor/:section", element: <DistributorDashboard /> },
-          { path: "dashboard/distributor/courses/:courseId", element: <DistributorDashboard /> },
+          { path: "dashboard/partner", element: <PartnerDashboard /> },
+          { path: "dashboard/partner/:section", element: <PartnerDashboard /> },
+          { path: "dashboard/partner/courses/:courseId", element: <PartnerDashboard /> },
         ]
       },
       {

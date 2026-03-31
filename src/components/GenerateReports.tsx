@@ -44,9 +44,9 @@ const reportHistory: ReportHistory[] = [
   },
   {
     id: "RPT002",
-    name: "Q3 Distributor Performance",
+    name: "Q3 Partner Performance",
     type: "CSV",
-    category: "Distributors",
+    category: "Partners",
     dateGenerated: "Oct 20, 2024",
     status: "completed",
     size: "1.8 MB"
@@ -86,7 +86,7 @@ export function GenerateReports() {
     { id: "revenue", label: "Revenue", icon: DollarSign },
     { id: "orders", label: "Orders", icon: Package },
     { id: "products", label: "Products", icon: Package },
-    { id: "distributors", label: "Distributors", icon: Users },
+    { id: "Partners", label: "Partners", icon: Users },
     { id: "regions", label: "Regions", icon: MapPin },
     { id: "growth", label: "Growth Trends", icon: TrendingUp }
   ];
@@ -191,7 +191,7 @@ export function GenerateReports() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="sales">Sales Performance</SelectItem>
-                      <SelectItem value="distributors">Distributor Network</SelectItem>
+                      <SelectItem value="Partners">Partner Network</SelectItem>
                       <SelectItem value="inventory">Inventory & Products</SelectItem>
                       <SelectItem value="analytics">Business Analytics</SelectItem>
                       <SelectItem value="regional">Regional Performance</SelectItem>

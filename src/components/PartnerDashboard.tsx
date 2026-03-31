@@ -27,19 +27,19 @@ import { useAuth } from "../AuthContext";
 import api from "../api/axios";
 import { toast } from "sonner";
 import { Footer } from "./Footer";
-import fusionMainImage from "../assets/Master_Distributor_Dashboard/1 Fusion.png";
-import fusionElementImage from "../assets/Master_Distributor_Dashboard/1 Fusion.png";
-import fusionAetherImage from "../assets/Master_Distributor_Dashboard/1 Fusion.png";
-import resinFilmImage from "../assets/Master_Distributor_Dashboard/2 Resin Film.png";
-import sealImage from "../assets/Master_Distributor_Dashboard/3 Seal.png";
-import matteBoxImage from "../assets/Master_Distributor_Dashboard/4 Matte.png";
-import shineBoxImage from "../assets/Master_Distributor_Dashboard/5 Shine.png";
-import applicatorBottleImage from "../assets/Master_Distributor_Dashboard/6 Applicator Bottle.png";
-import edgeBladeBox1Image from "../assets/Master_Distributor_Dashboard/7 Edge Blade.png";
-import edgeBladeBox2Image from "../assets/Master_Distributor_Dashboard/7 Edge Blade.png";
-import paintPenBoxImage from "../assets/Master_Distributor_Dashboard/8 Paint Pen.png";
-import paintPenToolsImage from "../assets/Master_Distributor_Dashboard/8 Paint Pen.png";
-import applicatorsImage from "../assets/Master_Distributor_Dashboard/8 Applicator.png";
+import fusionMainImage from "../assets/Master_Partner_Dashboard/1 Fusion.png";
+import fusionElementImage from "../assets/Master_Partner_Dashboard/1 Fusion.png";
+import fusionAetherImage from "../assets/Master_Partner_Dashboard/1 Fusion.png";
+import resinFilmImage from "../assets/Master_Partner_Dashboard/2 Resin Film.png";
+import sealImage from "../assets/Master_Partner_Dashboard/3 Seal.png";
+import matteBoxImage from "../assets/Master_Partner_Dashboard/4 Matte.png";
+import shineBoxImage from "../assets/Master_Partner_Dashboard/5 Shine.png";
+import applicatorBottleImage from "../assets/Master_Partner_Dashboard/6 Applicator Bottle.png";
+import edgeBladeBox1Image from "../assets/Master_Partner_Dashboard/7 Edge Blade.png";
+import edgeBladeBox2Image from "../assets/Master_Partner_Dashboard/7 Edge Blade.png";
+import paintPenBoxImage from "../assets/Master_Partner_Dashboard/8 Paint Pen.png";
+import paintPenToolsImage from "../assets/Master_Partner_Dashboard/8 Paint Pen.png";
+import applicatorsImage from "../assets/Master_Partner_Dashboard/8 Applicator.png";
 const getSymbol = (code: string) => currencies.find(c => c.code === code)?.symbol || '$';
 
 const currencies = [
@@ -129,7 +129,7 @@ const getCourseKey = (productName: string) => {
   return null;
 };
 
-const distributorProducts = [
+const PartnerProducts = [
   {
     id: 1,
     name: "FUSION SYSTEM",
@@ -270,17 +270,17 @@ interface OrderItem {
   currency: string;
 }
 
-interface DistributorDashboardProps {
+interface PartnerDashboardProps {
   onShowThankYou?: () => void;
   onCartCountChange?: (count: number) => void;
   showCartSheet?: boolean;
   onCartSheetChange?: (show: boolean) => void;
 }
 
-export function DistributorDashboard({
+export function PartnerDashboard({
   onShowThankYou,
   onCartCountChange,
-}: DistributorDashboardProps) {
+}: PartnerDashboardProps) {
   const { showCartSheet, setShowCartSheet, user, setUser } = useAuth();
   const { section, courseId } = useParams();
   const navigate = useNavigate();
@@ -309,7 +309,7 @@ export function DistributorDashboard({
     if (apiProducts.length === 0) return [];
 
     return apiProducts.map(apiProd => {
-      const hardcoded = distributorProducts.find(p =>
+      const hardcoded = PartnerProducts.find(p =>
         p.name.toUpperCase() === apiProd.name.toUpperCase() ||
         apiProd.name.toUpperCase().includes(p.name.toUpperCase())
       );
@@ -354,7 +354,7 @@ export function DistributorDashboard({
         unitPrices,
         casePrices,
         unitsPerCase,
-        image: hardcoded?.image || apiProd.images?.[0],
+        image: apiProd.shopImages?.[0] || apiProd.images?.[0] || hardcoded?.image,
         additionalImage: hardcoded?.additionalImage,
         additionalImage2: hardcoded?.additionalImage2,
         currency: apiProd.currency || 'USD'
@@ -383,7 +383,7 @@ export function DistributorDashboard({
 
   // Certification States
   const [certRequester, setCertRequester] = useState("");
-  const [certDistributorName, setCertDistributorName] = useState("");
+  const [certPartnerName, setCertPartnerName] = useState("");
   const [certShopName, setCertShopName] = useState("");
   const [certEmail, setCertEmail] = useState("");
   const [certPhone, setCertPhone] = useState("");
@@ -449,7 +449,7 @@ export function DistributorDashboard({
       const response = await api.get(`/certifications/verify-payment/${sessionId}`);
       if (response.data.success) {
         toast.success("Payment successful! Status updated.");
-        navigate("/dashboard/distributor/certified");
+        navigate("/dashboard/partner/certified");
         fetchMyRequests();
       } else {
         toast.error("Payment verification failed. Please check back later.");
@@ -613,7 +613,7 @@ export function DistributorDashboard({
     try {
       const response = await api.post("/certifications/checkout-session", {
         country: certCountry,
-        distributorName: certDistributorName,
+        PartnerName: certPartnerName,
         requesterName: certRequester,
         shopName: certShopName,
         shopEmail: certEmail,
@@ -644,41 +644,41 @@ export function DistributorDashboard({
 
   if (viewingCourse) {
     if (viewingCourse === 'understanding-skygloss') {
-      return <UnderstandingSkyGloss onBack={() => navigate('/dashboard/distributor/courses')} />;
+      return <UnderstandingSkyGloss onBack={() => navigate('/dashboard/partner/courses')} />;
     }
     if (viewingCourse === 'welcome-to-skygloss') {
-      return <WelcomeToSkyGloss onBack={() => navigate('/dashboard/distributor/courses')} />;
+      return <WelcomeToSkyGloss onBack={() => navigate('/dashboard/partner/courses')} />;
     }
     if (viewingCourse === 'skygloss-shop-setup') {
-      return <SkyGlossShopSetup onBack={() => navigate('/dashboard/distributor/courses')} />;
+      return <SkyGlossShopSetup onBack={() => navigate('/dashboard/partner/courses')} />;
     }
     const isFusion = viewingCourse.toUpperCase().includes('FUSION');
     const isResinFilm = viewingCourse.toUpperCase().includes('RESIN FILM');
 
     if (isFusion) {
-      return <FusionGuide onBack={() => navigate('/dashboard/distributor/courses')} />;
+      return <FusionGuide onBack={() => navigate('/dashboard/partner/courses')} />;
     }
 
     if (isResinFilm) {
-      return <ResinFilmGuide onBack={() => navigate('/dashboard/distributor/courses')} />;
+      return <ResinFilmGuide onBack={() => navigate('/dashboard/partner/courses')} />;
     }
 
     const isSeal = viewingCourse.toUpperCase().includes('SEAL');
     if (isSeal) {
-      return <SealGuide onBack={() => navigate('/dashboard/distributor/courses')} />;
+      return <SealGuide onBack={() => navigate('/dashboard/partner/courses')} />;
     }
 
     const isMatte = viewingCourse.toUpperCase().includes('MATTE');
     if (isMatte) {
-      return <MatteGuide onBack={() => navigate('/dashboard/distributor/courses')} />;
+      return <MatteGuide onBack={() => navigate('/dashboard/partner/courses')} />;
     }
 
     const isShine = viewingCourse.toUpperCase().includes('SHINE');
     if (isShine) {
-      return <ShineGuide onBack={() => navigate('/dashboard/distributor/courses')} />;
+      return <ShineGuide onBack={() => navigate('/dashboard/partner/courses')} />;
     }
 
-    return <CoursePlayer productName={viewingCourse} onBack={() => navigate('/dashboard/distributor/courses')} />;
+    return <CoursePlayer productName={viewingCourse} onBack={() => navigate('/dashboard/partner/courses')} />;
   }
 
   const getStatusIcon = (status: string) => {
@@ -716,7 +716,7 @@ export function DistributorDashboard({
           className="mb-6 sm:mb-8"
         >
           <h1 className="text-2xl sm:text-3xl font-bold text-[#272727] mb-2">
-            Distributor Dashboard
+            Partner Dashboard
           </h1>
           <p className="text-sm sm:text-base text-[#666666]">
             Manage orders, generate certificates, and access global network tools
@@ -732,7 +732,7 @@ export function DistributorDashboard({
         >
           <div className="inline-flex flex-col sm:flex-row rounded-xl border-2 border-[#0EA0DC] p-1.5 bg-white shadow-[0_0_10px_rgba(14,160,220,0.15)] w-full sm:w-auto">
             <button
-              onClick={() => navigate("/dashboard/distributor/shop")}
+              onClick={() => navigate("/dashboard/partner/shop")}
               className={`flex items-center justify-center px-4 sm:px-10 py-3 sm:py-4 rounded-lg transition-all duration-200 ${activeSection === "shop"
                 ? "bg-[#272727] text-white shadow-lg"
                 : "bg-transparent text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
@@ -742,7 +742,7 @@ export function DistributorDashboard({
               <span className="text-base sm:text-lg">Shop</span>
             </button>
             <button
-              onClick={() => navigate("/dashboard/distributor/certified")}
+              onClick={() => navigate("/dashboard/partner/certified")}
               className={`flex items-center justify-center px-4 sm:px-10 py-3 sm:py-4 rounded-lg transition-all duration-200 ${activeSection === "certified"
                 ? "bg-[#272727] text-white shadow-lg"
                 : "bg-transparent text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
@@ -752,7 +752,7 @@ export function DistributorDashboard({
               <span className="text-base sm:text-lg">Certified</span>
             </button>
             <button
-              onClick={() => navigate("/dashboard/distributor/network")}
+              onClick={() => navigate("/dashboard/partner/network")}
               className={`flex items-center justify-center px-4 sm:px-10 py-3 sm:py-4 rounded-lg transition-all duration-200 ${activeSection === "network"
                 ? "bg-[#272727] text-white shadow-lg"
                 : "bg-transparent text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
@@ -762,7 +762,7 @@ export function DistributorDashboard({
               <span className="text-base sm:text-lg">Dashboard</span>
             </button>
             <button
-              onClick={() => navigate("/dashboard/distributor/courses")}
+              onClick={() => navigate("/dashboard/partner/courses")}
               className={`flex items-center justify-center px-4 sm:px-10 py-3 sm:py-4 rounded-lg transition-all duration-200 ${activeSection === "courses"
                 ? "bg-[#272727] text-white shadow-lg"
                 : "bg-transparent text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
@@ -799,7 +799,7 @@ export function DistributorDashboard({
                   <div className="lg:col-span-2 order-2 lg:order-1">
                     <div className="space-y-4 lg:space-y-6">
                       {mergedProducts
-                        .filter(p => distributorProducts.some(dp =>
+                        .filter(p => PartnerProducts.some(dp =>
                           p.name.toUpperCase().includes(dp.name.toUpperCase()) ||
                           dp.name.toUpperCase().includes(p.name.toUpperCase())
                         ))
@@ -1111,11 +1111,11 @@ export function DistributorDashboard({
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-semibold text-[#272727]">Distributor Name</label>
+                          <label className="text-sm font-semibold text-[#272727]">Partner Name</label>
                           <Input
-                            value={certDistributorName}
-                            onChange={(e) => setCertDistributorName(e.target.value)}
-                            placeholder="Registered distributor name"
+                            value={certPartnerName}
+                            onChange={(e) => setCertPartnerName(e.target.value)}
+                            placeholder="Registered Partner name"
                             className="bg-white rounded-xl border-gray-200 focus:border-[#0EA0DC] h-11"
                             required
                           />
@@ -1536,7 +1536,7 @@ export function DistributorDashboard({
 
                     <Button
                       onClick={() => {
-                        navigate(`/dashboard/distributor/courses/welcome-to-skygloss`);
+                        navigate(`/dashboard/Partner/courses/welcome-to-skygloss`);
                         setViewingCourse('welcome-to-skygloss');
                       }}
                       className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
@@ -1597,7 +1597,7 @@ export function DistributorDashboard({
                       SkyGloss Shop Setup</h4>
 
                     <p className="text-sm text-[#666666] mb-6 flex-1 leading-relaxed">
-                      Configure your professional shop profile, connect with distributors, and set up your inventory for success.
+                      Configure your professional shop profile, connect with Partners, and set up your inventory for success.
                     </p>
 
                     <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
@@ -1641,7 +1641,7 @@ export function DistributorDashboard({
 
                     <Button
                       onClick={() => {
-                        navigate(`/dashboard/distributor/courses/skygloss-shop-setup`);
+                        navigate(`/dashboard/Partner/courses/skygloss-shop-setup`);
                         setViewingCourse('skygloss-shop-setup');
                       }}
                       className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
@@ -1745,7 +1745,7 @@ export function DistributorDashboard({
 
                     <Button
                       onClick={() => {
-                        navigate(`/dashboard/distributor/courses/understanding-skygloss`);
+                        navigate(`/dashboard/Partner/courses/understanding-skygloss`);
                         setViewingCourse('understanding-skygloss');
                       }}
                       className="w-full bg-[#0EA0DC] text-white hover:bg-[#272727] transition-colors h-12 rounded-xl font-bold shadow-lg shadow-[#0EA0DC]/20"
@@ -1755,7 +1755,7 @@ export function DistributorDashboard({
                   </Card>
                 </motion.div>
 
-                {distributorProducts
+                {PartnerProducts
                   .filter(p => ['FUSION', 'RESIN FILM', 'SHINE', 'MATTE', 'SEAL'].some(name => p.name.toUpperCase().includes(name)))
                   .map((product, index) => (
                     <motion.div
@@ -1848,7 +1848,7 @@ export function DistributorDashboard({
 
                         <Button
                           onClick={() => {
-                            navigate(`/dashboard/distributor/courses/${product.name}`);
+                            navigate(`/dashboard/Partner/courses/${product.name}`);
                             setViewingCourse(product.name);
                           }}
                           className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"

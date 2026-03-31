@@ -6,7 +6,7 @@ import { ArrowLeft, Mail, Lock, User, MapPin, Phone } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
-import { DistributorIcon } from "./CustomIcons";
+import { PartnerIcon } from "./CustomIcons";
 import { Footer } from "./Footer";
 import { useNavigate } from "react-router";
 
@@ -19,7 +19,7 @@ const normalizeName = (name: string) => {
         .replace(/İ/g, 'I'); // Special handling for Turkish dotted I
 };
 
-export function DistributorRegistration() {
+export function ShopRegistration() {
     const navigate = useNavigate();
 
     const [cities, setCities] = useState<any[]>([]);
@@ -30,11 +30,12 @@ export function DistributorRegistration() {
         lastName: "",
         email: "",
         password: "",
-        role: "regional_distributor",
+        role: "regional_partner",
         country: "",
         address: "",
         city: "",
-        phoneNumber: ""
+        phoneNumber: "",
+        referredByPartnerCode: ""
     });
     const [isLoading, setIsLoading] = useState(false);
 
@@ -55,7 +56,7 @@ export function DistributorRegistration() {
         setIsLoading(true);
 
         try {
-            const response = await api.post('/auth/register-distributor', formData);
+            const response = await api.post('/auth/register-shop', formData);
             if (response.data?.stripeUrl) {
                 window.location.href = response.data.stripeUrl;
             } else {
@@ -99,12 +100,12 @@ export function DistributorRegistration() {
                             transition={{ type: "spring", stiffness: 200 }}
                             className="w-16 h-16 mx-auto rounded-xl bg-gradient-to-br from-[#0EA0DC] to-[#0EA0DC]/80 flex items-center justify-center mb-6 shadow-[0_4px_16px_rgba(14,160,220,0.3)]"
                         >
-                            <DistributorIcon className="text-white" />
+                            <PartnerIcon className="text-white" />
                         </motion.div>
 
                         <div className="text-center mb-8">
-                            <h2 className="text-2xl text-[#272727] mb-2 font-semibold">Distributor Registration</h2>
-                            <p className="text-[#666666]">Complete your details to become a partner. A $250 fee applies.</p>
+                            <h2 className="text-2xl text-[#272727] mb-2 font-semibold">Shop Registration</h2>
+                            <p className="text-[#666666]">Complete your details to register your shop. A $250 fee applies.</p>
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-5">
@@ -139,6 +140,26 @@ export function DistributorRegistration() {
                                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
                                     <Input required type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Create secure password" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
                                 </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm text-[#272727] mb-2 font-medium">Partner ID (6-digit) <span className="text-red-500">*</span></label>
+                                <div className="relative">
+                                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                                    <Input 
+                                        required 
+                                        type="text" 
+                                        name="referredByPartnerCode" 
+                                        maxLength={6} 
+                                        pattern="\d{6}"
+                                        value={formData.referredByPartnerCode} 
+                                        onChange={handleChange} 
+                                        placeholder="Enter the 6-digit Partner ID" 
+                                        className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" 
+                                        disabled={isLoading} 
+                                    />
+                                </div>
+                                <p className="text-xs text-[#666666] mt-1">Please enter the valid 6-digit code provided by your referring Partner.</p>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -231,8 +252,8 @@ export function DistributorRegistration() {
                                 </Button>
                             </div>
                             <div className="text-center mt-6">
-                                <button type="button" onClick={() => navigate('/login/distributor')} className="text-[#0EA0DC] hover:text-[#0EA0DC]/80 font-medium hover:underline transition-colors duration-200">
-                                    Already a registered distributor? Login here
+                                <button type="button" onClick={() => navigate('/login/shop')} className="text-[#0EA0DC] hover:text-[#0EA0DC]/80 font-medium hover:underline transition-colors duration-200">
+                                    Already a registered shop? Login here
                                 </button>
                             </div>
                         </form>

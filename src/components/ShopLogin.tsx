@@ -11,13 +11,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { ShopIcon } from "./CustomIcons";
 import { ForgotPasswordModal } from "./ForgotPasswordModal";
 import { Footer } from "./Footer";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { useAuth } from "../AuthContext";
+import { toast } from "sonner";
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 
 export function ShopLogin() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { setUser } = useAuth();
 
   const [country, setCountry] = useState("");
@@ -28,10 +30,43 @@ export function ShopLogin() {
   const [progress, setProgress] = useState(0);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
 
-  // Scroll to top on mount
+  // Scroll to top on mount and check for payment success
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+
+    // Check for payment success parameter
+    const searchParams = new URLSearchParams(location.search);
+    const userId = searchParams.get("user_id");
+
+    if (searchParams.get("payment_success") === "true") {
+      const verifyPayment = async () => {
+        if (userId) {
+          try {
+            await api.get(`/auth/verify-payment/${userId}`);
+            toast.success("Payment Verified!", {
+              description: "Your registration is now active. Please login to access your Dashboard.",
+              duration: 8000,
+            });
+          } catch (err) {
+            console.error("Manual verification failed", err);
+            toast.success("Payment Successful!", {
+              description: "Your registration is complete. If you cannot login immediately, it may still be processing.",
+              duration: 8000,
+            });
+          }
+        } else {
+          toast.success("Payment Successful!", {
+            description: "Your registration is now active. Please login to access your Dashboard.",
+            duration: 8000,
+          });
+        }
+      };
+
+      verifyPayment();
+      // Optionally remove the query parameter from the URL
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location, navigate]);
 
   // Request Certification Form State
   const [activeTab, setActiveTab] = useState("login");
@@ -284,18 +319,28 @@ export function ShopLogin() {
                     {isLoading ? "Logging in..." : "Login to Shop"}
                   </Button>
 
-                  {isUSA && (
-                    <div className="text-center">
-                      <button
-                        type="button"
-                        onClick={() => setShowForgotPassword(true)}
-                        className="text-sm text-[#0EA0DC] hover:underline transition-colors duration-200"
-                      >
-                        Forgot password?
-                      </button>
-                    </div>
-                  )}
-                </form>
+                    {isUSA && (
+                      <div className="text-center space-y-2">
+                        <button
+                          type="button"
+                          onClick={() => setShowForgotPassword(true)}
+                          className="text-sm text-[#0EA0DC] hover:underline transition-colors duration-200"
+                        >
+                          Forgot password?
+                        </button>
+                        <div className="text-sm text-[#666666]">
+                          Don't have an account?{" "}
+                          <button
+                            type="button"
+                            onClick={() => navigate('/register/shop')}
+                            className="text-[#0EA0DC] font-semibold hover:underline"
+                          >
+                            Register Shop Here
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </form>
               </TabsContent>
 
               <TabsContent value="request">

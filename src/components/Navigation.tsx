@@ -29,16 +29,17 @@ export function Navigation({
   onCartClick,
   showCart = false
 }: NavigationProps) {
-  const { accessType } = useAuth();
+  const { accessType, user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const getRoleInfo = () => {
     switch (accessType) {
       case "certified_shop":
         return { label: "Shop", Icon: ShoppingBag };
-      case "master_distributor":
-      case "regional_distributor":
-        return { label: "Distributor", Icon: Package };
+      case "master_partner":
+      case "regional_partner":
+      case "partner":
+        return { label: "Partner", Icon: Package };
       default:
         return { label: "Dashboard", Icon: Package };
     }
@@ -135,6 +136,15 @@ export function Navigation({
                   <LogOut className="w-4 h-4 mr-2" />
                   Logout
                 </Button>
+                {user?.partnerCode && (
+                  <>
+                    <div className="h-6 w-px bg-[#0EA0DC]/20 mx-2" />
+                    <div className="flex items-center px-3 py-1 bg-[#0EA0DC]/5 rounded-full border border-[#0EA0DC]/20 select-none">
+                      <span className="text-[10px] font-bold text-[#0EA0DC] uppercase tracking-wider mr-1.5">Partner ID</span>
+                      <span className="text-xs font-mono font-bold text-[#272727]">{user.partnerCode}</span>
+                    </div>
+                  </>
+                )}
                 <div className="h-6 w-px bg-[#0EA0DC]/20 mx-2" />
                 <LanguageSwitcher />
               </div>

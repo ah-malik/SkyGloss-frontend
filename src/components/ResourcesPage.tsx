@@ -87,7 +87,7 @@ const resourceCategories: ResourceCategory[] = [
   {
     id: "shop_documents",
     title: "Shop Documents",
-    description: "SkyGloss corporate and master distributor presentations",
+    description: "SkyGloss corporate and master Partner presentations",
     icon: Briefcase,
     files: [],
     filterType: "documents",

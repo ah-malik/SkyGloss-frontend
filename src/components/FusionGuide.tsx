@@ -1316,7 +1316,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     Thank you for going through these instructions so carefully. This structure is intentional. Please do not simplify it. Follow every step every time, whether be a Suzuki or Bentley.
                                 </p>
                                 <p className="text-sm text-[#666666] mb-4">
-                                    SkyGloss is fully committed to providing technical support. Should you need it and when you need it. Please contact your distributor immediately if you have any technical questions or need some support navigating through anything that you're experiencing in your shop.
+                                    SkyGloss is fully committed to providing technical support. Should you need it and when you need it. Please contact your Partner immediately if you have any technical questions or need some support navigating through anything that you're experiencing in your shop.
                                 </p>
                                 <p className="text-sm text-[#666666] mb-4">
                                     Also keep in mind, it is not whether FUSION works or doesn't work it's whether it was prepared properly and the clearcoat has integrity enough to get the results desired. You never have to oversell what FUSION can do or be concerned by the outcome because FUSION is consistent but clearcoat finishes vary. Because every vehicle needs more clearcoat, FUSION is always building integrity back to the vehicle no matter the starting point of the paint finish.
@@ -1357,7 +1357,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     On site and advanced training are always available and recommended to sharpen your technical skills.
                                 </p>
                                 <a href="/support" className="text-[#0EA0DC] text-sm mb-8 block">
-                                    Contact your distributor for more details.
+                                    Contact your Partner for more details.
                                 </a>
                                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                     <Button

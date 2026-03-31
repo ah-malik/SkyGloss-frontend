@@ -6,12 +6,12 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Card } from "./ui/card";
 
-interface ContactDistributorModalProps {
+interface ContactPartnerModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function ContactDistributorModal({ isOpen, onClose }: ContactDistributorModalProps) {
+export function ContactPartnerModal({ isOpen, onClose }: ContactPartnerModalProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -112,7 +112,7 @@ export function ContactDistributorModal({ isOpen, onClose }: ContactDistributorM
                         Request Technician Access Code
                       </h3>
                       <p className="text-sm sm:text-base text-[#666666] leading-relaxed">
-                        Fill out this form and your assigned master distributor will contact you with your access code
+                        Fill out this form and your assigned master Partner will contact you with your access code
                       </p>
                     </div>
 
@@ -195,19 +195,19 @@ export function ContactDistributorModal({ isOpen, onClose }: ContactDistributorM
                         <Textarea
                           value={formData.message}
                           onChange={(e) => handleChange("message", e.target.value)}
-                          placeholder="Please provide details about your certification request, including your current certification status and distributor information if known..."
+                          placeholder="Please provide details about your certification request, including your current certification status and Partner information if known..."
                           className="bg-white border-[#0EA0DC]/30 rounded-xl min-h-[140px] resize-none"
                           required
                           disabled={isSubmitting}
                         />
                         <p className="text-xs text-[#666666] mt-2">
-                          Include any relevant certification numbers or distributor contact information
+                          Include any relevant certification numbers or Partner contact information
                         </p>
                       </div>
 
                       <div className="bg-[#0EA0DC]/5 border border-[#0EA0DC]/20 rounded-xl p-4">
                         <p className="text-xs sm:text-sm text-[#666666] leading-relaxed">
-                          <strong className="text-[#0EA0DC]">Note:</strong> Your request will be forwarded to the appropriate master distributor in your region. You should receive a response within 24-48 hours.
+                          <strong className="text-[#0EA0DC]">Note:</strong> Your request will be forwarded to the appropriate master Partner in your region. You should receive a response within 24-48 hours.
                         </p>
                       </div>
 
@@ -247,7 +247,7 @@ export function ContactDistributorModal({ isOpen, onClose }: ContactDistributorM
                         Request Submitted Successfully!
                       </h3>
                       <p className="text-sm text-[#666666] mb-4">
-                        Your access code request has been sent to your regional master distributor.
+                        Your access code request has been sent to your regional master Partner.
                       </p>
                       <div className="bg-[#0EA0DC]/5 border border-[#0EA0DC]/20 rounded-lg p-4 mb-4">
                         <p className="text-sm text-[#272727] mb-2">
@@ -256,7 +256,7 @@ export function ContactDistributorModal({ isOpen, onClose }: ContactDistributorM
                         <ul className="text-sm text-[#666666] space-y-2 text-left">
                           <li className="flex items-start gap-2">
                             <span className="text-[#0EA0DC] mt-1">•</span>
-                            <span>Your distributor will review your request</span>
+                            <span>Your Partner will review your request</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <span className="text-[#0EA0DC] mt-1">•</span>

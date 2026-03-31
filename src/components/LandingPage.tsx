@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { Card } from "./ui/card";
 import { Footer } from "./Footer";
 import { PublicCatalog } from "./PublicCatalog";
-import { DistributorIcon, ShopIcon } from "./CustomIcons";
+import { PartnerIcon, ShopIcon } from "./CustomIcons";
 import { useNavigate } from "react-router";
 
 interface LandingPageProps { }
 
-type AccessType = "shop" | "distributor";
+type AccessType = "shop" | "Partner";
 
 interface AccessTypeItem {
   id: AccessType;
@@ -39,9 +39,9 @@ export function LandingPage(_: LandingPageProps) {
 
   const accessTypes: AccessTypeItem[] = [
     {
-      id: "distributor",
+      id: "Partner",
       title: "Partner Login",
-      IconComponent: DistributorIcon,
+      IconComponent: PartnerIcon,
     },
     {
       id: "shop",

@@ -4,7 +4,7 @@ import { useAuth } from "../AuthContext";
 const getDashboardType = (role: string | null) => {
     if (!role) return "";
     if (role === 'certified_shop') return 'shop';
-    if (role === 'master_distributor' || role === 'regional_distributor') return 'distributor';
+    if (role === 'master_partner' || role === 'regional_partner') return 'Partner';
     return role;
 };
 

@@ -332,7 +332,7 @@ export function PublicCatalog() {
                       🔒 Pricing and ordering available after login
                     </p>
                     <p className="text-xs text-[#666666]">
-                      Contact your distributor for access credentials
+                      Contact your Partner for access credentials
                     </p>
                   </div>
                 </div>

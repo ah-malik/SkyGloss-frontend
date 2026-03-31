@@ -39,7 +39,7 @@ export function CertificationVideoUpload() {
         return Math.max(count, legacyCount);
     };
 
-    // Only Self-Registered distributors with 6 completed courses are eligible
+    // Only Self-Registered Partners with 6 completed courses are eligible
     const isSelfRegistered = user?.isSelfRegistered === true;
     const completedCount = getCompletedCount();
     const isEligible = isSelfRegistered && completedCount >= 6;
@@ -137,7 +137,7 @@ export function CertificationVideoUpload() {
                     Final Certification Video
                 </h2>
                 <p className="text-[#666666] leading-relaxed max-w-2xl">
-                    To finalize your Master Distributor status, please upload a short unedited video (max 100MB) demonstrating your application technique on a test panel.
+                    To finalize your Master Partner status, please upload a short unedited video (max 100MB) demonstrating your application technique on a test panel.
                 </p>
             </div>
 
