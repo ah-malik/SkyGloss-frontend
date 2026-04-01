@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams, useLocation } from "react-router";
-import { Search, ShoppingCart, Plus, Minus, Eye, Loader2, GraduationCap, ShoppingBag } from "lucide-react";
+import { Search, ShoppingCart, Plus, Minus, Eye, Loader2, GraduationCap, ShoppingBag, Lock, CheckCircle, MessageCircle } from "lucide-react";
 import api from "../api/axios";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
@@ -175,6 +175,94 @@ export function ShopDashboard({
   const [activeTab, setActiveTab] = useState<"shop" | "courses">("shop");
   const [viewingCourse, setViewingCourse] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [isSubmittingTraining, setIsSubmittingTraining] = useState(false);
+
+  // Compute if all available courses (structural + dynamic product ones) are 100% completed
+  const isAllCoursesCompleted = useMemo(() => {
+    if (!user || !user.courseProgress) return false;
+
+    // Fixed required courses that always show up
+    const requiredKeys: string[] = [
+      'WELCOME_TO_SKYGLOSS',
+      'SKYGLOSS_SHOP_SETUP',
+      'UNDERSTANDING_SKYGLOSS'
+    ];
+
+    // Determine what product-specific courses are currently rendered
+    products
+      .filter(p => !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN']
+        .includes(p.name.toUpperCase()) && !p.name.includes('APPLICATORS') && !p.name.includes('Applicators (2-Pack)'))
+      .forEach(product => {
+        const key = getCourseKey(product.name);
+        if (key && !requiredKeys.includes(key)) {
+          requiredKeys.push(key);
+        }
+      });
+
+    // Verify 100% completion for all required keys
+    for (const key of requiredKeys) {
+      const progress = user.courseProgress[key] || user.courseProgress[key.replace('_', ' ')] || [];
+      const requiredSteps = COURSE_STEPS[key] || 1;
+      if (progress.length < requiredSteps) {
+        return false;
+      }
+    }
+    return true;
+  }, [user, products]);
+  const handleDevAutoComplete = async () => {
+    setIsSubmittingTraining(true);
+    try {
+      const requiredKeys: string[] = [
+        'WELCOME_TO_SKYGLOSS',
+        'SKYGLOSS_SHOP_SETUP',
+        'UNDERSTANDING_SKYGLOSS'
+      ];
+      products.forEach(product => {
+        const key = getCourseKey(product.name);
+        if (key && !requiredKeys.includes(key) && !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN'].includes(product.name.toUpperCase()) && !product.name.includes('APPLICATORS') && !product.name.includes('Applicators (2-Pack)')) {
+          requiredKeys.push(key);
+        }
+      });
+
+      const promises = [];
+      for (const key of requiredKeys) {
+        const steps = COURSE_STEPS[key] || 1;
+        for (let i = 1; i <= steps; i++) {
+          promises.push(
+            api.patch('/users/me/course-progress', {
+              courseName: key,
+              stepId: `dev_auto_fill_${i}`
+            })
+          );
+        }
+      }
+      await Promise.all(promises);
+      toast.success("Dev Test: All courses filled 100%");
+      fetchUserProfile(); 
+    } catch (err) {
+      console.error(err);
+      toast.error("Dev Auto-Complete Failed");
+    } finally {
+      setIsSubmittingTraining(false);
+    }
+  };
+
+  const handleTrainingComplete = async () => {
+    setIsSubmittingTraining(true);
+    try {
+      await api.post('/users/me/training-complete');
+      toast.success("Training completion submitted!", {
+        description: "Your partner has been notified that you've completed all courses."
+      });
+      fetchUserProfile(); // Refresh user to reflect that isTrainingComplete is true
+    } catch (err: any) {
+      console.error('Training Error Details:', err.response?.data || err.message || err);
+      const errorMsg = err.response?.data?.message || err.message || "Unknown error";
+      toast.error(`Failed to submit: ${errorMsg}`);
+    } finally {
+      setIsSubmittingTraining(false);
+    }
+  };
 
   const showPrice = user?.country === "United States";
 
@@ -752,11 +840,23 @@ export function ShopDashboard({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <div className="mb-8">
-                <h2 className="text-2xl text-[#272727] mb-4">Available Training Courses</h2>
-                <p className="text-[#666666] mb-6">
-                  Complete comprehensive training for each SkyGloss product line
-                </p>
+              <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl text-[#272727] mb-2">Available Training Courses</h2>
+                  <p className="text-[#666666]">
+                    Complete comprehensive training for each SkyGloss product line
+                  </p>
+                </div>
+                {/* DEV TESTING BUTTON */}
+                <Button 
+                  onClick={handleDevAutoComplete} 
+                  disabled={isSubmittingTraining}
+                  variant="outline" 
+                  className="bg-yellow-50 text-yellow-700 border-yellow-300 hover:bg-yellow-100 font-bold shrink-0"
+                >
+                  {isSubmittingTraining ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                  Developer: Auto-Complete 100%
+                </Button>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1198,6 +1298,74 @@ export function ShopDashboard({
                     </motion.div>
                   ))}
               </div>
+
+              {/* Training Completion Gate */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mt-12"
+              >
+                <Card className={`p-8 rounded-2xl border-2 transition-all duration-300 shadow-lg ${user?.isTrainingComplete
+                  ? 'bg-emerald-50/50 border-emerald-200'
+                  : isAllCoursesCompleted
+                    ? 'bg-blue-50/50 border-[#0EA0DC]/30 shadow-[#0EA0DC]/10'
+                    : 'bg-gray-50 border-gray-200 opacity-70 grayscale-[0.2]'
+                  }`}>
+                  <div className="flex flex-col md:flex-col items-center gap-6 text-center md:text-left">
+                    <div className={`w-16 h-16 rounded-full flex items-center justify-center shrink-0 ${user?.isTrainingComplete
+                      ? 'bg-emerald-100 text-emerald-600'
+                      : isAllCoursesCompleted
+                        ? 'bg-[#0EA0DC]/10 text-[#0EA0DC]'
+                        : 'bg-gray-200 text-gray-500'
+                      }`}>
+                      {user?.isTrainingComplete ? (
+                        <CheckCircle className="w-8 h-8" />
+                      ) : isAllCoursesCompleted ? (
+                        <MessageCircle className="w-8 h-8" />
+                      ) : (
+                        <Lock className="w-8 h-8" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-[#272727] mb-2">
+                        {user?.isTrainingComplete
+                          ? "Training Verification Complete"
+                          : isAllCoursesCompleted
+                            ? "Ready for Certification"
+                            : "Complete All Courses to Proceed"}
+                      </h3>
+                      <p className="text-[#666666]">
+                        {user?.isTrainingComplete
+                          ? "Your partner has been notified of your 100% completion status. You can now communicate directly."
+                          : isAllCoursesCompleted
+                            ? "Congratulations! You have successfully completed 100% of all required SkyGloss training. Notify your Partner to issue your certification and unlock direct chat."
+                            : "You must reach 100% completion across all Available Training Courses above before you can notify your Partner and proceed to Shop Certification."}
+                      </p>
+                    </div>
+                    <div className="shrink-0 w-full md:w-auto mt-4 md:mt-0">
+                      <Button
+                        disabled={!isAllCoursesCompleted || user?.isTrainingComplete || isSubmittingTraining}
+                        onClick={handleTrainingComplete}
+                        className={`w-full md:w-auto h-12 px-8 font-bold rounded-xl transition-all ${user?.isTrainingComplete
+                          ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                          : isAllCoursesCompleted
+                            ? 'bg-[#0EA0DC] hover:bg-[#272727] text-white shadow-lg shadow-[#0EA0DC]/20'
+                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                          }`}
+                      >
+                        {isSubmittingTraining ? (
+                          <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Submitting</>
+                        ) : user?.isTrainingComplete ? (
+                          <><CheckCircle className="w-4 h-4 mr-2" /> Partner Notified</>
+                        ) : (
+                          "Notify Partner"
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
             </motion.div>
           )}
         </div>

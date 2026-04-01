@@ -3,13 +3,19 @@ import { useEffect } from "react";
 import { Toaster } from "./components/ui/sonner";
 import { Navigation } from "./components/Navigation";
 import { useAuth } from "./AuthContext";
+import { useChatNotifications } from "./hooks/useChatNotifications";
+import { ChatWidget } from "./components/ChatWidget";
 
 export default function App() {
-  const { cartCount, setShowCartSheet, logout, accessType } = useAuth();
+  const { cartCount, setShowCartSheet, logout, accessType, user, isChatOpen, setIsChatOpen } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Activate global chat notifications for logged in users
+  useChatNotifications(user?._id, user ? `${user.firstName} ${user.lastName}` : undefined);
+
   useEffect(() => {
+
     // Auto-redirect if user comes from WordPress about-us page
     if (document.referrer && document.referrer.includes('skygloss.com/about-us')) {
       navigate('/register/shop');
@@ -52,6 +58,17 @@ export default function App() {
 
       {/* Render the current page */}
       <Outlet />
+
+      {/* Global Chat Widget */}
+      {isChatOpen && (
+        <ChatWidget
+          userName={user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || "Guest User" : "Guest User"}
+          userEmail={user?.email || "guest@skygloss.com"}
+          userType={user?.role || "guest"}
+          userId={user?._id}
+          onClose={() => setIsChatOpen(false)}
+        />
+      )}
 
       <Toaster position="bottom-right" />
     </div>

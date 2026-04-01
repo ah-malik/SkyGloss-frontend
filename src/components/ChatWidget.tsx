@@ -32,6 +32,10 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
     const socketRef = useRef<Socket | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
+    // Determine if the local user is acting as an admin/support
+    const isAdminRole = ['admin', 'master_partner', 'regional_partner', 'partner'].includes(userType.toLowerCase());
+    const currentSenderType = isAdminRole ? 'admin' : 'user';
+
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -116,7 +120,7 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
         socketRef.current.emit('send_message', {
             roomId,
             senderName: userName,
-            senderType: 'user',
+            senderType: currentSenderType,
             message: inputMessage,
         });
 
@@ -184,10 +188,10 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
                     messages.map((msg, idx) => (
                         <div
                             key={msg._id || idx}
-                            className={`flex ${msg.senderType === 'user' ? 'justify-end' : 'justify-start'}`}
+                            className={`flex ${msg.senderType === currentSenderType ? 'justify-end' : 'justify-start'}`}
                         >
                             <div
-                                className={`max-w-[75%] px-4 py-2 rounded-2xl ${msg.senderType === 'user'
+                                className={`max-w-[75%] px-4 py-2 rounded-2xl ${msg.senderType === currentSenderType
                                     ? 'bg-[#0EA0DC] text-white rounded-br-none'
                                     : 'bg-white text-gray-800 rounded-bl-none shadow-sm'
                                     }`}
@@ -196,6 +200,7 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
                             </div>
                         </div>
                     ))
+
                 )}
                 {isTyping && (
                     <div className="flex justify-start">

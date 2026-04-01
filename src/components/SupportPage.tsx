@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
-import { useState } from "react";
-import { HelpCircle, Mail, MessageSquare, Phone, Search, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Mail, MessageSquare, Phone, Loader2 } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -9,7 +9,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Badge } from "./ui/badge";
 import { toast } from "sonner";
 import api from "../api/axios";
-import { ChatWidget } from "./ChatWidget";
 import { useAuth } from "../AuthContext";
 
 const faqs = [
@@ -50,10 +49,21 @@ interface SupportPageProps {
 }
 
 export function SupportPage({ onBack }: SupportPageProps = {}) {
-  const { user } = useAuth();
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const { user, refreshUnreadCount, setIsChatOpen } = useAuth();
+  
+  // Mark notifications as read on mount
+  useEffect(() => {
+    const markRead = async () => {
+      try {
+        await api.patch('/notifications/mark-my-chat-read');
+        refreshUnreadCount(); // Update the global badge
+      } catch (err) {
+        console.error("Failed to mark notifications as read", err);
+      }
+    };
+    markRead();
+  }, [refreshUnreadCount]);
+
 
   // Ticket Form State
   const [name, setName] = useState("");
@@ -63,7 +73,6 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
   const [message, setMessage] = useState("");
   const [ticketSubmitted, setTicketSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showChat, setShowChat] = useState(false);
 
   const handleSubmitTicket = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,16 +96,6 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
       setIsSubmitting(false);
     }
   };
-
-  const filteredFaqs = faqs.filter(faq => {
-    const matchesCategory = selectedCategory === "all" || faq.category.toLowerCase() === selectedCategory;
-    const matchesSearch = searchQuery === "" ||
-      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
-
-  const categories = ["all", ...Array.from(new Set(faqs.map(f => f.category.toLowerCase())))];
 
   return (
     <div className="min-h-screen bg-white pt-20 pb-12">
@@ -132,7 +131,7 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
               <Button
                 size="sm"
                 variant="outline"
-                className="border-[#0EA0DC]/30 text-[rgb(255,255,255)] hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5"
+                className="border-[#0EA0DC]/30 text-[#0EA0DC] hover:border-[#0EA0DC] hover:bg-[#0EA0DC]/5"
                 onClick={() => window.location.href = "mailto:support@skygloss.com"}
               >
                 Send Email
@@ -182,12 +181,10 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
               <p className="text-sm text-[#666666] mb-4 flex-grow">Average response: 2 min</p>
               <Button
                 size="sm"
-                onClick={() => setShowChat(true)}
-
+                onClick={() => setIsChatOpen(true)}
                 className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)]"
               >
                 Start Chat
-
               </Button>
             </Card>
           </motion.div>
@@ -322,23 +319,9 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
                 </Button>
               </div>
             )}
-
           </Card>
-
         </motion.div>
-        {/* </motion.div> */}
       </div>
-      {/* Live Chat Widget */}
-      {showChat && (
-        <ChatWidget
-          userName={user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || "Guest User" : "Guest User"}
-          userEmail={user?.email || "guest@skygloss.com"}
-          userType={user?.role || "guest"}
-          userId={user?._id}
-          onClose={() => setShowChat(false)}
-        />
-      )}
     </div>
   );
 }
-

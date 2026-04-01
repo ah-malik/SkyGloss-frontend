@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import api from "./api/axios";
 
 export type AccessType = "master_partner" | "regional_partner" | "partner" | "certified_shop" | "admin" | null;
+
 
 export interface CartItem {
   id: string;
@@ -27,7 +29,14 @@ interface AuthContextType {
   logout: () => void;
   showCartSheet: boolean;
   setShowCartSheet: (v: boolean) => void;
+  unreadMessages: number;
+  setUnreadMessages: (count: number) => void;
+  refreshUnreadCount: () => Promise<void>;
+  isChatOpen: boolean;
+  setIsChatOpen: (open: boolean) => void;
 }
+
+
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -45,10 +54,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return userJson ? JSON.parse(userJson) : null;
   });
   const [showCartSheet, setShowCartSheet] = useState(false);
+  const [unreadMessages, setUnreadMessages] = useState(0);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const refreshUnreadCount = async () => {
+
+    if (!user) return;
+    try {
+      // Use the newly created backend endpoint
+      const res = await api.get('/notifications/my-unread');
+      setUnreadMessages(res.data);
+    } catch (err) {
+      console.error("Failed to fetch unread count", err);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      refreshUnreadCount();
+    } else {
+      setUnreadMessages(0);
+    }
+  }, [user]);
 
   const setAccessType = (type: AccessType) => {
     setAccessTypeState(type);
   };
+
 
   const setUser = (userData: any) => {
     setUserState(userData);
@@ -143,10 +175,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         logout,
         showCartSheet,
         setShowCartSheet,
+        unreadMessages,
+        setUnreadMessages,
+        refreshUnreadCount,
+        isChatOpen,
+        setIsChatOpen,
       }}
     >
       {children}
     </AuthContext.Provider>
+
+
   );
 };
 

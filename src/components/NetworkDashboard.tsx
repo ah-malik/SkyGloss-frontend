@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
-import { TrendingUp, MapPin, Download, Plus, ArrowLeft } from "lucide-react";
+import { TrendingUp, MapPin, Download, Plus, ArrowLeft, MessageCircle } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -10,15 +10,19 @@ import { ManagePartners } from "./ManagePartners";
 import { SalesAnalytics } from "./SalesAnalytics";
 import { GenerateReports } from "./GenerateReports";
 import { PortalCloningWizard } from "./PortalCloningWizard";
+import { ChatWidget } from "./ChatWidget";
 import { toast } from "sonner";
 import api from "../api/axios";
+import { useAuth } from "../AuthContext";
 
 // Remove static placeholder data and replace with dynamic derivations where needed
 
 export function NetworkDashboard() {
+  const { user } = useAuth();
   const [activeToolView, setActiveToolView] = useState<"main" | "Partners" | "analytics" | "reports" | "cloning">("main");
   const [shops, setShops] = useState<any[]>([]);
   const [isLoadingShops, setIsLoadingShops] = useState(false);
+  const [selectedChatShop, setSelectedChatShop] = useState<any>(null);
 
   useEffect(() => {
     const fetchShops = async () => {
@@ -306,6 +310,7 @@ export function NetworkDashboard() {
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Location</th>
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Registration Date</th>
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Status</th>
+                          <th className="px-6 py-4 text-sm font-semibold text-[#272727] text-right">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -324,6 +329,22 @@ export function NetworkDashboard() {
                               <Badge className="bg-green-100 text-green-800 border-0 font-semibold px-3 py-1">
                                 CERTIFIED
                               </Badge>
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                              {shop.isTrainingComplete ? (
+                                <Button
+                                  size="sm"
+                                  onClick={() => setSelectedChatShop(shop)}
+                                  className="bg-[#0EA0DC] hover:bg-[#272727] text-white transition-all shadow-md"
+                                >
+                                  <MessageCircle className="w-4 h-4 mr-2" />
+                                  Live Chat
+                                </Button>
+                              ) : (
+                                <Badge variant="outline" className="text-gray-400 border-gray-200">
+                                  Training Pending
+                                </Badge>
+                              )}
                             </td>
                           </tr>
                         ))}
@@ -389,6 +410,16 @@ export function NetworkDashboard() {
           </TabsContent> */}
         </Tabs>
       </div>
+
+      {selectedChatShop && (
+        <ChatWidget
+          userName={`${user?.firstName} ${user?.lastName}`}
+          userEmail={user?.email || 'partner@skygloss.com'}
+          userType="admin"
+          userId={selectedChatShop._id}
+          onClose={() => setSelectedChatShop(null)}
+        />
+      )}
     </div>
   );
 }

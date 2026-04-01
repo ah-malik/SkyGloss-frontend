@@ -29,8 +29,9 @@ export function Navigation({
   onCartClick,
   showCart = false
 }: NavigationProps) {
-  const { accessType, user } = useAuth();
+  const { accessType, user, unreadMessages } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
 
   const getRoleInfo = () => {
     switch (accessType) {
@@ -122,11 +123,17 @@ export function Navigation({
                   variant="ghost"
                   size="sm"
                   onClick={onNavigateSupport}
-                  className="text-[#666666] hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200"
+                  className="text-[#666666] hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200 relative"
                 >
                   <HelpCircle className="w-4 h-4 mr-2" />
                   Support
+                  {unreadMessages > 0 && (
+                    <Badge className="ml-2 bg-red-500 text-white px-2 py-0.5 text-[10px] animate-pulse">
+                      {unreadMessages}
+                    </Badge>
+                  )}
                 </Button>
+
                 <Button
                   variant="ghost"
                   size="sm"
