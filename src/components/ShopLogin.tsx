@@ -209,19 +209,19 @@ export function ShopLogin() {
             </div>
 
             <Tabs defaultValue="login" onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6 bg-white rounded-xl p-1.5 border-2 border-[#0EA0DC] shadow-[0_0_10px_rgba(14,160,220,0.15)] h-auto">
+              <TabsList className="grid w-full grid-cols-1 mb-6 bg-white rounded-xl p-1.5 border-2 border-[#0EA0DC] shadow-[0_0_10px_rgba(14,160,220,0.15)] h-auto">
                 <TabsTrigger
                   value="login"
                   className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-3 px-6 rounded-lg transition-all duration-200"
                 >
                   Login
                 </TabsTrigger>
-                <TabsTrigger
+                {/* <TabsTrigger
                   value="request"
                   className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-3 px-6 rounded-lg transition-all duration-200"
                 >
                   Request Access
-                </TabsTrigger>
+                </TabsTrigger> */}
               </TabsList>
 
               <TabsContent value="login">

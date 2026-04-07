@@ -11,11 +11,10 @@ import { SalesAnalytics } from "./SalesAnalytics";
 import { GenerateReports } from "./GenerateReports";
 import { PortalCloningWizard } from "./PortalCloningWizard";
 import { ChatWidget } from "./ChatWidget";
+import { Checkbox } from "./ui/checkbox";
 import { toast } from "sonner";
 import api from "../api/axios";
 import { useAuth } from "../AuthContext";
-
-// Remove static placeholder data and replace with dynamic derivations where needed
 
 export function NetworkDashboard() {
   const { user } = useAuth();
@@ -39,6 +38,19 @@ export function NetworkDashboard() {
 
     fetchShops();
   }, []);
+
+  const toggleShopVisibility = async (shopId: string, isVisible: boolean) => {
+    try {
+      await api.patch(`/users/referred-shops/${shopId}/visibility`, {
+        isVisibleOnMap: isVisible,
+      });
+      setShops(prev => prev.map(s => s._id === shopId ? { ...s, isVisibleOnMap: isVisible } : s));
+      toast.success(isVisible ? "Shop visible on map" : "Shop hidden from map");
+    } catch (error) {
+      console.error("Failed to toggle shop visibility:", error);
+      toast.error("Failed to update visibility");
+    }
+  };
 
   // Compute live stats from shops data
   const totalShopsCount = shops.length;
@@ -203,12 +215,6 @@ export function NetworkDashboard() {
             >
               Network Map
             </TabsTrigger>
-            {/* <TabsTrigger
-              value="clone"
-              className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-2 sm:py-3 px-2 sm:px-6 rounded-lg transition-all duration-200 text-xs sm:text-sm"
-            >
-              Cloning
-            </TabsTrigger> */}
             <TabsTrigger
               value="shops"
               className="data-[state=active]:bg-[#272727] data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-[#0EA0DC] py-2 sm:py-3 px-2 sm:px-6 rounded-lg transition-all duration-200 text-xs sm:text-sm"
@@ -310,6 +316,7 @@ export function NetworkDashboard() {
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Location</th>
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Registration Date</th>
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Status</th>
+                          <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Show on Map</th>
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727] text-right">Actions</th>
                         </tr>
                       </thead>
@@ -329,6 +336,22 @@ export function NetworkDashboard() {
                               <Badge className="bg-green-100 text-green-800 border-0 font-semibold px-3 py-1">
                                 CERTIFIED
                               </Badge>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex items-center space-x-2">
+                                <Checkbox
+                                  id={`visibility-${shop._id}`}
+                                  checked={shop.isVisibleOnMap}
+                                  onCheckedChange={(checked) => toggleShopVisibility(shop._id, !!checked)}
+                                  className="border-[#0EA0DC] data-[state=checked]:bg-[#0EA0DC]"
+                                />
+                                <label
+                                  htmlFor={`visibility-${shop._id}`}
+                                  className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#666666]"
+                                >
+                                  {shop.isVisibleOnMap ? "Visible" : "Hidden"}
+                                </label>
+                              </div>
                             </td>
                             <td className="px-6 py-4 text-right">
                               {shop.isTrainingComplete ? (
@@ -365,49 +388,6 @@ export function NetworkDashboard() {
               <InteractiveWorldMap />
             </motion.div>
           </TabsContent>
-
-          {/* Portal Cloning Tab */}
-          {/* <TabsContent value="clone">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              <Card className="skygloss-card p-8 rounded-2xl">
-                <h3 className="text-2xl text-[#272727] mb-6">
-                  Clone Portal for Local Markets
-                </h3>
-                <p className="text-[#666666] mb-8">
-                  Create customized versions of the SkyGloss Partner Portal for your local markets.
-                  Maintain brand consistency while adapting to regional needs.
-                </p>
-
-                <div className="grid md:grid-cols-3 gap-6 mb-8">
-                  {[
-                    { step: 1, title: "Clone Base Portal", desc: "Start with SkyGloss template" },
-                    { step: 2, title: "Customize Branding", desc: "Add local language & currency" },
-                    { step: 3, title: "Connect Payment", desc: "Integrate local payment gateway" }
-                  ].map((item, idx) => (
-                    <div key={idx} className="text-center">
-                      <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-[#0EA0DC] text-white flex items-center justify-center text-lg">
-                        {item.step}
-                      </div>
-                      <h4 className="text-[#272727] mb-2">{item.title}</h4>
-                      <p className="text-sm text-[#666666]">{item.desc}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex justify-center">
-                  <Button 
-                    onClick={() => setActiveToolView("cloning")}
-                    className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] px-8"
-                  >
-                    Start Portal Cloning Process
-                  </Button>
-                </div>
-              </Card>
-            </motion.div>
-          </TabsContent> */}
         </Tabs>
       </div>
 

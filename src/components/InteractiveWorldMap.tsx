@@ -10,9 +10,9 @@ import { Globe, MapPin, Building2, TrendingUp, Users, X, Map as MapIcon, Loader2
 import api from "../api/axios";
 
 // Custom marker icons
-const createCustomIcon = (type: "headquarters" | "Partner" | "retail") => {
-  const color = type === "headquarters" ? "#FFD700" : "#0EA0DC";
-  const shadowColor = type === "headquarters" ? "rgba(255, 215, 0, 0.4)" : "rgba(14, 160, 220, 0.4)";
+const createCustomIcon = (type: "headquarters" | "Partner" | "retail" | "shop") => {
+  const color = type === "headquarters" ? "#FFD700" : type === "shop" ? "#22c55e" : "#0EA0DC";
+  const shadowColor = type === "headquarters" ? "rgba(255, 215, 0, 0.4)" : type === "shop" ? "rgba(34, 197, 94, 0.4)" : "rgba(14, 160, 220, 0.4)";
 
   return L.divIcon({
     className: "custom-div-icon",
@@ -90,7 +90,7 @@ interface Location {
   state?: string;
   lat: number;
   lng: number;
-  type: "headquarters" | "Partner" | "retail";
+  type: "headquarters" | "Partner" | "retail" | "shop";
   address?: string;
   stats: {
     shops: number;
@@ -141,21 +141,26 @@ export function InteractiveWorldMap() {
   const mapZoom = viewMode === "global" ? 2 : 4;
 
   useEffect(() => {
-    const fetchPartners = async () => {
+    const fetchLocations = async () => {
       try {
         const res = await api.get("/users");
-        const Partners = res.data
-          .filter((user: any) =>
-            (user.role === "master_partner" || user.role === "regional_partner" || user.role === "partner") &&
-            user.latitude != null && user.longitude != null
-          )
+        const allUsers = res.data;
+        
+        const mapLocations = allUsers
+          .filter((user: any) => {
+            const hasCoords = user.latitude != null && user.longitude != null;
+            const isPartner = user.role === "master_partner" || user.role === "regional_partner" || user.role === "partner";
+            const isShopOnMap = user.role === "certified_shop" && user.isVisibleOnMap === true;
+            
+            return hasCoords && (isPartner || isShopOnMap);
+          })
           .map((user: any) => ({
             name: user.companyName || `${user.firstName} ${user.lastName}`,
             country: user.country || "Unknown",
             city: user.city || "",
             lat: user.latitude,
             lng: user.longitude,
-            type: user.role === "master_partner" ? "Partner" : "retail",
+            type: user.role === "master_partner" ? "Partner" : user.role === "certified_shop" ? "shop" : "retail",
             address: user.address || "",
             stats: {
               shops: user.shops || Math.floor(Math.random() * 20) + 5,
@@ -163,14 +168,14 @@ export function InteractiveWorldMap() {
               growth: (Math.random() * 15 + 5).toFixed(1)
             }
           }));
-        setLocations([headquarters, ...Partners]);
+        setLocations([headquarters, ...mapLocations]);
       } catch (err) {
-        console.error("Failed to fetch Partners for map:", err);
+        console.error("Failed to fetch locations for map:", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchPartners();
+    fetchLocations();
   }, []);
 
   const currentLocations = locations.filter(loc => {
@@ -323,12 +328,12 @@ export function InteractiveWorldMap() {
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${location.type === "headquarters" ? "bg-yellow-100" : "bg-blue-50"
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${location.type === "headquarters" ? "bg-yellow-100" : location.type === "shop" ? "bg-green-50" : "bg-blue-50"
                         }`}>
                         {location.type === "headquarters" ? (
                           <Building2 className="w-5 h-5 text-yellow-600" />
                         ) : (
-                          <MapPin className="w-5 h-5 text-[#0EA0DC]" />
+                          <MapPin className={`w-5 h-5 ${location.type === "shop" ? "text-green-600" : "text-[#0EA0DC]"}`} />
                         )}
                       </div>
                       <div>
@@ -341,9 +346,11 @@ export function InteractiveWorldMap() {
                     <Badge className={
                       location.type === "headquarters"
                         ? "bg-yellow-100 text-yellow-700 border-none text-[8px]"
-                        : "bg-blue-100 text-blue-700 border-none text-[8px]"
+                        : location.type === "shop"
+                          ? "bg-green-100 text-green-700 border-none text-[8px]"
+                          : "bg-blue-100 text-blue-700 border-none text-[8px]"
                     }>
-                      {location.type === "headquarters" ? "HQ" : "PARTNER"}
+                      {location.type === "headquarters" ? "HQ" : location.type === "shop" ? "SHOP" : "PARTNER"}
                     </Badge>
                   </div>
 
@@ -406,11 +413,11 @@ export function InteractiveWorldMap() {
                       className="p-4 bg-gray-50 hover:bg-[#0EA0DC]/5 border border-gray-100 hover:border-[#0EA0DC]/30 rounded-2xl cursor-pointer transition-all flex items-center justify-between group"
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${loc.type === "headquarters" ? "bg-yellow-100" : "bg-blue-100 group-hover:bg-[#0EA0DC] group-hover:text-white"}`}>
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${loc.type === "headquarters" ? "bg-yellow-100" : loc.type === "shop" ? "bg-green-100 group-hover:bg-green-600 group-hover:text-white" : "bg-blue-100 group-hover:bg-[#0EA0DC] group-hover:text-white"}`}>
                           {loc.type === "headquarters" ? (
                             <Building2 className="w-6 h-6 text-yellow-600" />
                           ) : (
-                            <MapPin className="w-6 h-6 text-[#0EA0DC] group-hover:text-white" />
+                            <MapPin className={`w-6 h-6 ${loc.type === "shop" ? "text-green-600" : "text-[#0EA0DC]"} group-hover:text-white`} />
                           )}
                         </div>
                         <div>
@@ -462,7 +469,9 @@ export function InteractiveWorldMap() {
                 <div className="flex items-center gap-6 ">
                   <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg ${selectedLocation.type === "headquarters"
                     ? "bg-gradient-to-br from-yellow-400 to-orange-500"
-                    : "bg-gradient-to-br from-[#0EA0DC] to-[#0B7FB3]"
+                    : selectedLocation.type === "shop"
+                      ? "bg-gradient-to-br from-green-400 to-green-600"
+                      : "bg-gradient-to-br from-[#0EA0DC] to-[#0B7FB3]"
                     }`}>
                     {selectedLocation.type === "headquarters" ? (
                       <Building2 className="w-8 h-8 text-white" />
@@ -477,13 +486,13 @@ export function InteractiveWorldMap() {
                     </div>
                     <p className="text-gray-500 font-semibold flex items-center gap-1">
                       <Globe className="w-3 h-3" />
-                      {selectedLocation.country} · Partner Portal Live
+                      {selectedLocation.country} · {selectedLocation.type === "shop" ? "Certified Shop" : "Partner Portal Live"}
                     </p>
                   </div>
                 </div>
                 {selectedLocation.address && (
                   <div className="mb-6 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-gray-600 text-sm">
-                    <p className="font-bold mb-1 text-xs uppercase text-gray-400 tracking-wider">Partner Address</p>
+                    <p className="font-bold mb-1 text-xs uppercase text-gray-400 tracking-wider">Address</p>
                     <p className="font-semibold text-[#272727]">{selectedLocation.address}</p>
                   </div>
                 )}
@@ -491,16 +500,16 @@ export function InteractiveWorldMap() {
                   <div className="p-4 rounded-3xl bg-gray-50 border border-gray-100 text-center">
                     <div className="flex items-center justify-center gap-1 mb-2">
                       <Building2 className="w-3 h-3 text-[#0EA0DC]" />
-                      <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Shops</span>
+                      <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{selectedLocation.type === "shop" ? "Rating" : "Shops"}</span>
                     </div>
-                    <p className="text-xl font-black text-[#272727]">{selectedLocation.stats.shops}</p>
+                    <p className="text-xl font-black text-[#272727]">{selectedLocation.type === "shop" ? "5.0" : selectedLocation.stats.shops}</p>
                   </div>
                   <div className="p-4 rounded-3xl bg-gray-50 border border-gray-100 text-center">
                     <div className="flex items-center justify-center gap-1 mb-2">
                       <TrendingUp className="w-3 h-3 text-green-600" />
-                      <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Revenue</span>
+                      <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{selectedLocation.type === "shop" ? "Jobs" : "Revenue"}</span>
                     </div>
-                    <p className="text-xl font-black text-[#272727]">{selectedLocation.stats.revenue}</p>
+                    <p className="text-xl font-black text-[#272727]">{selectedLocation.type === "shop" ? "120+" : selectedLocation.stats.revenue}</p>
                   </div>
                   <div className="p-4 rounded-3xl bg-gray-50 border border-gray-100 text-center">
                     <div className="flex items-center justify-center gap-1 mb-2">
@@ -519,12 +528,12 @@ export function InteractiveWorldMap() {
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: "85%" }}
-                      className="h-full bg-gradient-to-r from-[#0EA0DC] to-blue-600"
+                      className={`h-full bg-gradient-to-r ${selectedLocation.type === "shop" ? "from-green-400 to-green-600" : "from-[#0EA0DC] to-blue-600"}`}
                     />
                   </div>
                   <div className="flex gap-4">
-                    <Button className="flex-1 bg-[#0EA0DC] hover:bg-[#272727] text-white py-6 rounded-2xl font-black shadow-xl shadow-blue-500/20">
-                      View Regional Analytics
+                    <Button className={`flex-1 ${selectedLocation.type === "shop" ? "bg-green-600 hover:bg-green-700" : "bg-[#0EA0DC] hover:bg-[#272727]"} text-white py-6 rounded-2xl font-black shadow-xl`}>
+                      {selectedLocation.type === "shop" ? "View Shop Profile" : "View Regional Analytics"}
                     </Button>
                     <Button variant="outline" className="flex-1 border-gray-200 py-6 rounded-2xl font-black text-white">
                       Contact Center
