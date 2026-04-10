@@ -25,6 +25,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
+  const [address2, setAddress2] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
@@ -59,6 +60,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
           firstName,
           lastName,
           address,
+          address2,
           city,
           state,
           zipCode,
@@ -174,8 +176,15 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                       placeholder="123 Main St"
-                      className="border-[#0EA0DC]/30 rounded-lg"
+                      className="border-[#0EA0DC]/30 rounded-lg mb-3"
                       required
+                    />
+                    <Input
+                      type="text"
+                      value={address2}
+                      onChange={(e) => setAddress2(e.target.value)}
+                      placeholder="Apartment, suite, unit, etc. (optional)"
+                      className="border-[#0EA0DC]/30 rounded-lg"
                     />
                   </div>
 

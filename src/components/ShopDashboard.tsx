@@ -172,7 +172,8 @@ export function ShopDashboard({
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: string }>({});
   const [viewingProduct, setViewingProduct] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"shop" | "courses">("shop");
+  const [activeTab, setActiveTab] = useState<"shop" | "courses">("courses");
+
   const [viewingCourse, setViewingCourse] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [isSubmittingTraining, setIsSubmittingTraining] = useState(false);

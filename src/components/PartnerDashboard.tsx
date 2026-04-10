@@ -423,6 +423,7 @@ export function PartnerDashboard({
   const [shippingPhone, setShippingPhone] = useState("");
   const [shippingEmail, setShippingEmail] = useState("");
   const [shippingAddress, setShippingAddress] = useState("");
+  const [shippingAddress2, setShippingAddress2] = useState("");
   const [shippingCity, setShippingCity] = useState("");
   const [shippingState, setShippingState] = useState("");
   const [shippingZipCode, setShippingZipCode] = useState("");
@@ -573,6 +574,7 @@ export function PartnerDashboard({
           lastName: shippingName.split(' ').slice(1).join(' ') || "N/A",
           companyName: shippingCompanyName,
           address: shippingAddress,
+          address2: shippingAddress2,
           city: shippingCity,
           state: shippingState,
           zipCode: shippingZipCode,
@@ -587,6 +589,7 @@ export function PartnerDashboard({
       setShippingPhone("");
       setShippingEmail("");
       setShippingAddress("");
+      setShippingAddress2("");
       setShippingCity("");
       setShippingState("");
       setShippingZipCode("");
@@ -1006,6 +1009,12 @@ export function PartnerDashboard({
                                     placeholder="*Street Address"
                                     value={shippingAddress}
                                     onChange={(e) => setShippingAddress(e.target.value)}
+                                    className="bg-white rounded-lg border-gray-200 focus:border-[#0EA0DC]"
+                                  />
+                                  <Input
+                                    placeholder="Street Address 2"
+                                    value={shippingAddress2}
+                                    onChange={(e) => setShippingAddress2(e.target.value)}
                                     className="bg-white rounded-lg border-gray-200 focus:border-[#0EA0DC]"
                                   />
                                   <div className="grid grid-cols-2 gap-3">

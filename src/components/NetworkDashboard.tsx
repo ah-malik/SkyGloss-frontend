@@ -15,20 +15,40 @@ import { Checkbox } from "./ui/checkbox";
 import { toast } from "sonner";
 import api from "../api/axios";
 import { useAuth } from "../AuthContext";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 export function NetworkDashboard() {
   const { user } = useAuth();
   const [activeToolView, setActiveToolView] = useState<"main" | "Partners" | "analytics" | "reports" | "cloning">("main");
   const [shops, setShops] = useState<any[]>([]);
+  const [partners, setPartners] = useState<any[]>([]);
   const [isLoadingShops, setIsLoadingShops] = useState(false);
+  const [isAssigning, setIsAssigning] = useState<string | null>(null);
   const [selectedChatShop, setSelectedChatShop] = useState<any>(null);
+
+  const isGlobalPartner = 
+    user?.email?.toLowerCase().trim() === 'system.global@skygloss.internal' || 
+    user?.role === 'admin';
 
   useEffect(() => {
     const fetchShops = async () => {
       setIsLoadingShops(true);
       try {
         const response = await api.get('/users/referred-shops');
-        setShops(response.data);
+        // Combined response with shops and partners
+        if (response.data.shops) {
+          setShops(response.data.shops);
+          setPartners(response.data.partners || []);
+        } else {
+          // Fallback if structure is old array
+          setShops(response.data);
+        }
       } catch (error) {
         console.error("Failed to fetch referred shops:", error);
       } finally {
@@ -49,6 +69,19 @@ export function NetworkDashboard() {
     } catch (error) {
       console.error("Failed to toggle shop visibility:", error);
       toast.error("Failed to update visibility");
+    }
+  };
+
+  const handleTransferShop = async (shopId: string, partnerCode: string) => {
+    setIsAssigning(shopId);
+    try {
+      await api.patch(`/users/${shopId}/transfer-shop`, { partnerCode });
+      setShops(prev => prev.map(s => s._id === shopId ? { ...s, referredByPartnerCode: partnerCode } : s));
+      toast.success("Shop re-assigned successfully");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to re-assign shop");
+    } finally {
+      setIsAssigning(null);
     }
   };
 
@@ -314,6 +347,7 @@ export function NetworkDashboard() {
                         <tr className="border-b-2 border-[#0EA0DC]/10 bg-gray-50/50">
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Shop Name</th>
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Location</th>
+                          <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Assigned Partner</th>
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Registration Date</th>
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Status</th>
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Show on Map</th>
@@ -328,6 +362,36 @@ export function NetworkDashboard() {
                             </td>
                             <td className="px-6 py-4 text-[#666666] text-sm">
                               {shop.city}, {shop.country}
+                            </td>
+                            <td className="px-6 py-4 text-[#666666] text-sm">
+                              {isGlobalPartner ? (
+                                <Select
+                                  defaultValue={shop.referredByPartnerCode}
+                                  onValueChange={(val) => handleTransferShop(shop._id, val)}
+                                  disabled={isAssigning === shop._id}
+                                >
+                                  <SelectTrigger className="w-[180px] h-9 border-[#0EA0DC]/30">
+                                    <SelectValue placeholder="No Partner" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="GLOBAL77">
+                                      Global Partner (GLOBAL77)
+                                    </SelectItem>
+                                    {partners
+                                      .filter(p => p.partnerCode && p.partnerCode !== 'GLOBAL77')
+                                      .map((p) => (
+                                        <SelectItem key={p.partnerCode || p._id} value={p.partnerCode || p._id}>
+                                          {p.firstName} {p.lastName} ({p.partnerCode || 'No Code'}) {p.status !== 'active' ? `[${p.status.toUpperCase()}]` : ''}
+                                        </SelectItem>
+                                      ))
+                                    }
+                                  </SelectContent>
+                                </Select>
+                              ) : (
+                                <Badge variant="outline" className="border-[#0EA0DC]/30 text-[#666666]">
+                                  {shop.referredByPartnerCode || 'GLOBAL'}
+                                </Badge>
+                              )}
                             </td>
                             <td className="px-6 py-4 text-[#666666] text-sm">
                               {new Date(shop.createdAt).toLocaleDateString()}
