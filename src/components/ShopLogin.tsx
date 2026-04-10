@@ -131,7 +131,7 @@ export function ShopLogin() {
           if (prev >= 100) {
             clearInterval(interval);
             setTimeout(() => {
-              navigate("/dashboard/shop");
+              navigate("/dashboard/shop/courses");
             }, 300);
             return 100;
           }

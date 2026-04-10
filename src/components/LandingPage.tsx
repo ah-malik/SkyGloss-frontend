@@ -4,7 +4,7 @@ import { Card } from "./ui/card";
 import { Footer } from "./Footer";
 import { PublicCatalog } from "./PublicCatalog";
 import { PartnerIcon, ShopIcon } from "./CustomIcons";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 interface LandingPageProps { }
 
@@ -41,12 +41,12 @@ export function LandingPage(_: LandingPageProps) {
     {
       id: "Partner",
       title: "Partner Login",
-      IconComponent: PartnerIcon,
+      IconComponent: ShopIcon,
     },
     {
       id: "shop",
       title: "Certified Shop Login",
-      IconComponent: ShopIcon,
+      IconComponent: PartnerIcon,
     },
   ];
 
@@ -54,7 +54,14 @@ export function LandingPage(_: LandingPageProps) {
     <div className="min-h-screen geometric-bg">
       {/* Public Catalog Section */}
       <div id="product-catalog" className="pt-16 sm:pt-20">
-        <PublicCatalog />
+        <h2 className="text-center text-2xl font-bold text-[#272727]">
+        </h2>
+        <h2 className="text-2xl sm:text-2xl md:text-2xl text-center mt-20 text-[#272727] mb-3 sm:mb-4 px-4">
+          Don't have an account?
+          <Link to="/register/shop" className="text-blue-400 ml-2 hover:text-blue-300 font-medium">
+            Register Shop Here
+          </Link>      </h2>
+        {/* <PublicCatalog /> */}
       </div>
 
       {/* Partner Login Section */}

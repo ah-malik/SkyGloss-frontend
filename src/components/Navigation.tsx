@@ -77,7 +77,7 @@ export function Navigation({
             />
             <div className="hidden sm:block h-8 w-px bg-[#0EA0DC]/20"></div>
             <div className="hidden sm:block">
-              <p className="text-xs text-[#666666]">Partner Portal</p>
+              <p className="text-xs text-[#666666]">Shop Portal</p>
             </div>
           </motion.button>
 

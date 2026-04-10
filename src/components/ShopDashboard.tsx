@@ -190,7 +190,7 @@ export function ShopDashboard({
 
     // Determine what product-specific courses are currently rendered
     products
-      .filter(p => !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN']
+      .filter(p => !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN',]
         .includes(p.name.toUpperCase()) && !p.name.includes('APPLICATORS') && !p.name.includes('Applicators (2-Pack)'))
       .forEach(product => {
         const key = getCourseKey(product.name);
@@ -238,7 +238,7 @@ export function ShopDashboard({
       }
       await Promise.all(promises);
       toast.success("Dev Test: All courses filled 100%");
-      fetchUserProfile(); 
+      fetchUserProfile();
     } catch (err) {
       console.error(err);
       toast.error("Dev Auto-Complete Failed");
@@ -537,7 +537,7 @@ export function ShopDashboard({
             className="mb-8"
           >
             <h1 className="text-3xl text-[#272727] mb-2">
-              Shop Catalog
+              Shop Dashboard
             </h1>
             <p className="text-[#666666]">
               {activeTab === "shop" ? "Browse and order SkyGloss products" : "Access product training and resources"}
@@ -552,16 +552,7 @@ export function ShopDashboard({
             className="mb-8"
           >
             <div className="inline-flex rounded-xl border-2 border-[#0EA0DC] p-1 bg-white shadow-[0_0_10px_rgba(14,160,220,0.1)]">
-              <button
-                onClick={() => navigate("/dashboard/shop")}
-                className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "shop"
-                  ? "bg-[#272727] text-white shadow-lg"
-                  : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
-                  }`}
-              >
-                <ShoppingBag className="w-5 h-5 mr-3" />
-                <span className="text-lg">Shop</span>
-              </button>
+
               <button
                 onClick={() => navigate("/dashboard/shop/courses")}
                 className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "courses"
@@ -572,6 +563,17 @@ export function ShopDashboard({
                 <GraduationCap className="w-5 h-5 mr-3" />
                 <span className="text-lg">Courses</span>
               </button>
+              <button
+                onClick={() => navigate("/dashboard/shop")}
+                className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "shop"
+                  ? "bg-[#272727] text-white shadow-lg"
+                  : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
+                  }`}
+              >
+                <ShoppingBag className="w-5 h-5 mr-3" />
+                <span className="text-lg">Shop</span>
+              </button>
+
             </div>
           </motion.div>
 
@@ -848,10 +850,10 @@ export function ShopDashboard({
                   </p>
                 </div>
                 {/* DEV TESTING BUTTON */}
-                <Button 
-                  onClick={handleDevAutoComplete} 
+                <Button
+                  onClick={handleDevAutoComplete}
                   disabled={isSubmittingTraining}
-                  variant="outline" 
+                  variant="outline"
                   className="bg-yellow-50 text-yellow-700 border-yellow-300 hover:bg-yellow-100 font-bold shrink-0"
                 >
                   {isSubmittingTraining ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
