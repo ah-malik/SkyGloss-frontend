@@ -142,7 +142,7 @@ export function ShopRegistration() {
                             <h2 className="text-2xl text-[#272727] mb-2 font-semibold">Shop Registration - Step {step}</h2>
                             <p className="text-[#666666]">
                                 {step === 1 ? "Start with your basic information." : "Provide your shop address details."} 
-                                <span className="block mt-1 font-medium text-[#0EA0DC]">A {pricingText} fee applies.</span>
+                                {/* <span className="block mt-1 font-medium text-[#0EA0DC]">A {pricingText} fee applies.</span> */}
                             </p>
                         </div>
 
@@ -355,11 +355,22 @@ export function ShopRegistration() {
                                 </motion.div>
                             )}
 
-                            <div className="pt-6">
+                            <div className="pt-6 flex flex-col sm:flex-row gap-4">
+                                {step === 2 && (
+                                    <Button
+                                        type="button"
+                                        onClick={() => setStep(1)}
+                                        disabled={isLoading}
+                                        variant="outline"
+                                        className="flex-1 h-14 text-lg border-2 border-[#0EA0DC] text-[#0EA0DC] hover:bg-[#0EA0DC]/5 shadow-sm transition-all duration-300"
+                                    >
+                                        Back to Step 1
+                                    </Button>
+                                )}
                                 <Button 
                                     type="submit" 
                                     disabled={isLoading || !isStepValid} 
-                                    className="w-full h-14 text-lg bg-[#0EA0DC] hover:bg-[#0EA0DC]/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className={`h-14 text-lg bg-[#0EA0DC] hover:bg-[#0EA0DC]/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${step === 2 ? 'flex-[2]' : 'w-full'}`}
                                 >
                                     {isLoading ? "Processing..." : step === 1 ? "Next Step" : `Complete Registration (${pricingText})`}
                                 </Button>

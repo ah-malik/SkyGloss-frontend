@@ -33,6 +33,7 @@ export function NetworkDashboard() {
   const [selectedChatShop, setSelectedChatShop] = useState<any>(null);
 
   const isGlobalPartner = 
+    user?.partnerCode === 'GLOBAL77' ||
     user?.email?.toLowerCase().trim() === 'system.global@skygloss.internal' || 
     user?.role === 'admin';
 
@@ -397,9 +398,15 @@ export function NetworkDashboard() {
                               {new Date(shop.createdAt).toLocaleDateString()}
                             </td>
                             <td className="px-6 py-4">
-                              <Badge className="bg-green-100 text-green-800 border-0 font-semibold px-3 py-1">
-                                CERTIFIED
-                              </Badge>
+                              {shop.isVisibleOnMap ? (
+                                <Badge className="bg-green-100 text-green-800 border-0 font-semibold px-3 py-1">
+                                  CERTIFIED
+                                </Badge>
+                              ) : (
+                                <Badge className="bg-gray-100 text-gray-800 border-0 font-semibold px-3 py-1">
+                                  UNCERTIFIED
+                                </Badge>
+                              )}
                             </td>
                             <td className="px-6 py-4">
                               <div className="flex items-center space-x-2">
