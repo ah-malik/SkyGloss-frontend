@@ -195,7 +195,7 @@ export function ShopDashboard({
 
     // Determine what product-specific courses are currently rendered
     products
-      .filter(p => !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN',]
+      .filter(p => !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN', 'FUSION EXTREME']
         .includes(p.name.toUpperCase()) && !p.name.includes('APPLICATORS') && !p.name.includes('Applicators (2-Pack)'))
       .forEach(product => {
         const key = getCourseKey(product.name);
@@ -224,7 +224,7 @@ export function ShopDashboard({
       ];
       products.forEach(product => {
         const key = getCourseKey(product.name);
-        if (key && !requiredKeys.includes(key) && !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN'].includes(product.name.toUpperCase()) && !product.name.includes('APPLICATORS') && !product.name.includes('Applicators (2-Pack)')) {
+        if (key && !requiredKeys.includes(key) && !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN', 'FUSION EXTREME'].includes(product.name.toUpperCase()) && !product.name.includes('APPLICATORS') && !product.name.includes('Applicators (2-Pack)')) {
           requiredKeys.push(key);
         }
       });
@@ -1187,7 +1187,7 @@ export function ShopDashboard({
                 </motion.div>
 
                 {products
-                  .filter(p => !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN']
+                  .filter(p => !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN', 'FUSION EXTREME']
                     .includes(p.name.toUpperCase()) && !p.name.includes('APPLICATORS') && !p.name.includes('Applicators (2-Pack)'))
                   .map((product, index) => (
                     <motion.div
