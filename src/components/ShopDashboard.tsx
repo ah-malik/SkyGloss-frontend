@@ -1363,8 +1363,8 @@ export function ShopDashboard({
                         handleTrainingComplete();
                       }}
                       className={`mx-5 px-10 h-12 rounded-xl font-bold uppercase tracking-wider shadow-md transition-all ${user?.isTrainingComplete
-                          ? "bg-emerald-500 text-white cursor-default"
-                          : "bg-[#0EA0DC] hover:bg-[#0b86b8] text-white"
+                        ? "bg-emerald-500 text-white cursor-default"
+                        : "bg-[#0EA0DC] hover:bg-[#0b86b8] text-white"
                         }`}
                     >
                       {isSubmittingTraining ? (
@@ -1444,7 +1444,7 @@ export function ShopDashboard({
               </div>
 
               {/* Training Completion Gate */}
-              <motion.div
+              {/* <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
@@ -1509,7 +1509,7 @@ export function ShopDashboard({
                     </div>
                   </div>
                 </Card>
-              </motion.div>
+              </motion.div> */}
             </motion.div>
           )}
         </div>
