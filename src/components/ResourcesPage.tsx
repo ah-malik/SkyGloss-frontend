@@ -170,8 +170,8 @@ export function ResourcesPage({ onBack: _onBack }: ResourcesPageProps = {}) {
             SkyGloss Resources
           </h1>
           <p className="text-lg text-[#666666] max-w-3xl">
-            Access official brand assets, technical documentation, marketing materials, and training media.
-            All resources are organized for easy access and global consistency.
+Below you will find all the available resources and marketing materials that SkyGloss offers. 
+
           </p>
         </motion.div>
 
@@ -332,7 +332,7 @@ export function ResourcesPage({ onBack: _onBack }: ResourcesPageProps = {}) {
         </motion.div>
 
         {/* SkyGloss Resources Videos */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
@@ -356,7 +356,7 @@ export function ResourcesPage({ onBack: _onBack }: ResourcesPageProps = {}) {
                   url="https://res.cloudinary.com/dxhmopbei/video/upload/v1774458384/When_your_mum_and_dad_visit_your_first_flat___My_Family_-_BBC_n9iypu.mp4"
                   subtitles={VIDEO_SUBTITLES["Step_1_Light_Wash"]}
                 /> */}
-                <iframe width="100%" height="500" src="https://www.youtube.com/embed/62wEk02YKs0?si=FxDEUeVng5dSK3mH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                {/* <iframe width="100%" height="500" src="https://www.youtube.com/embed/62wEk02YKs0?si=FxDEUeVng5dSK3mH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
               </div>
 
               <div className="mt-8 p-4 bg-[#0EA0DC]/5 rounded-2xl border border-[#0EA0DC]/10 flex items-center justify-between">
@@ -366,9 +366,9 @@ export function ResourcesPage({ onBack: _onBack }: ResourcesPageProps = {}) {
                 </div>
                 <p className="text-xs text-[#666666]">Subtitles will automatically sync with your selected website language.</p>
               </div>
-            </div>
+            </div> 
           </Card>
-        </motion.div>
+        </motion.div> */}
       </div>
 
 

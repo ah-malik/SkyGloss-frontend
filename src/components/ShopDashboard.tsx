@@ -25,6 +25,9 @@ import { CheckoutPage } from "./CheckoutPage";
 import { OrderRequestPage } from "./OrderRequestPage";
 import { toast } from "sonner";
 import { useAuth } from "../AuthContext";
+import completeImage from "../../src/assets/complete.jpg";
+
+
 
 const currencies = [
   { code: 'USD', symbol: '$', name: 'US Dollar' },
@@ -90,6 +93,7 @@ import applicatorBottleImage from "../assets/Master_Partner_Dashboard/6 Applicat
 import edgeBladeBox1Image from "../assets/Master_Partner_Dashboard/7 Edge Blade.png";
 import paintPenBoxImage from "../assets/Master_Partner_Dashboard/8 Paint Pen.png";
 import applicatorsImage from "../assets/Master_Partner_Dashboard/8 Applicator.png";
+import certificationCongratulationsImage from "../assets/certification_congratulations.png";
 
 
 
@@ -540,9 +544,9 @@ export function ShopDashboard({
             <h1 className="text-3xl text-[#272727] mb-2">
               Shop Dashboard
             </h1>
-            <p className="text-[#666666]">
-              {activeTab === "shop" ? "Browse and order SkyGloss products" : "Access product training and resources"}
-            </p>
+            {/* <p className="text-[#666666]">
+              {activeTab === "shop" ? "" : "Access product training and resources"}
+            </p> */}
           </motion.div>
 
           {/* Main Tab Toggle - Visible for all Shops */}
@@ -554,16 +558,7 @@ export function ShopDashboard({
           >
             <div className="inline-flex rounded-xl border-2 border-[#0EA0DC] p-1 bg-white shadow-[0_0_10px_rgba(14,160,220,0.1)]">
 
-              <button
-                onClick={() => navigate("/dashboard/shop/courses")}
-                className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "courses"
-                  ? "bg-[#272727] text-white shadow-lg"
-                  : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
-                  }`}
-              >
-                <GraduationCap className="w-5 h-5 mr-3" />
-                <span className="text-lg">Courses</span>
-              </button>
+
               <button
                 onClick={() => navigate("/dashboard/shop")}
                 className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "shop"
@@ -574,7 +569,16 @@ export function ShopDashboard({
                 <ShoppingBag className="w-5 h-5 mr-3" />
                 <span className="text-lg">Shop</span>
               </button>
-
+              <button
+                onClick={() => navigate("/dashboard/shop/courses")}
+                className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "courses"
+                  ? "bg-[#272727] text-white shadow-lg"
+                  : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
+                  }`}
+              >
+                <GraduationCap className="w-5 h-5 mr-3" />
+                <span className="text-lg">Courses</span>
+              </button>
             </div>
           </motion.div>
 
@@ -845,9 +849,9 @@ export function ShopDashboard({
             >
               <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-2xl text-[#272727] mb-2">Available Training Courses</h2>
+                  <h2 className="text-2xl text-[#272727] mb-2">Training Courses</h2>
                   <p className="text-[#666666]">
-                    Complete comprehensive training for each SkyGloss product line
+                    Comprehensive training courses for everything you need to know about SkyGloss!
                   </p>
                 </div>
                 {/* DEV TESTING BUTTON */}
@@ -917,7 +921,7 @@ export function ShopDashboard({
                       Start your journey with SkyGloss. Learn about our mission, technology, and how we are redefining automotive paint restoration.
                     </p>
 
-                    <div className="grid grid-cols-2 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                    <div className="hidden grid grid-cols-2 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
                       <div className="text-center">
                         <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Modules</div>
                         <div className="text-sm font-bold text-[#272727]">19</div>
@@ -962,7 +966,7 @@ export function ShopDashboard({
                       }}
                       className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
                     >
-                      Start Welcome Course
+                      Launch Course
                     </Button>
                   </Card>
                 </motion.div>
@@ -1020,7 +1024,7 @@ export function ShopDashboard({
                       Configure your professional shop profile, connect with Partners, and set up your inventory for success.
                     </p>
 
-                    <div className="grid grid-cols-2 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                    <div className="hidden grid grid-cols-2 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
                       <div className="text-center">
                         <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Steps</div>
                         <div className="text-sm font-bold text-[#272727]">4</div>
@@ -1065,7 +1069,7 @@ export function ShopDashboard({
                       }}
                       className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
                     >
-                      Open Shop Setup
+                      Launch Course
                     </Button>
                   </Card>
                 </motion.div>
@@ -1126,7 +1130,7 @@ export function ShopDashboard({
                       Master the SkyGloss sales philosophy. Learn how to educate customers, align expectations, and articulate the true value of paint health.
                     </p>
 
-                    <div className="grid grid-cols-3 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                    <div className=" hidden grid grid-cols-3 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
                       <div className="text-center">
                         <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Modules</div>
                         <div className="text-sm font-bold text-[#272727]">8</div>
@@ -1177,7 +1181,7 @@ export function ShopDashboard({
                       }}
                       className="w-full bg-[#0EA0DC] text-white hover:bg-[#272727] transition-colors h-12 rounded-xl font-bold shadow-lg shadow-[#0EA0DC]/20"
                     >
-                      Launch Philosophy
+                      Launch Course
                     </Button>
                   </Card>
                 </motion.div>
@@ -1242,7 +1246,7 @@ export function ShopDashboard({
                           Comprehensive masterclass covering professional application, surface prep, and advanced maintenance for the {product.name} system.
                         </p>
 
-                        <div className="grid grid-cols-3 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <div className="hidden grid grid-cols-3 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
                           <div className="text-center">
                             <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Lessons</div>
                             <div className="text-sm font-bold text-[#272727]">12</div>
@@ -1300,6 +1304,109 @@ export function ShopDashboard({
                       </Card>
                     </motion.div>
                   ))}
+                {/* =========================
+    CERTIFICATION COMPLETION CARD
+========================= */}
+                <div >
+                  <Card className="p-1 pb-8 sm:p-12 rounded-3xl bg-white border border-gray-100 shadow-sm text-center relative overflow-hidden">
+
+                    {/* Image */}
+                    <div className="flex justify-center mb-8">
+                      <img
+                        src={completeImage}
+                        alt="Certification Complete"
+                        className="w-64 sm:w-80 rounded-2xl shadow-md object-cover"
+                      />
+                    </div>
+
+                    {/* Heading */}
+                    <h2 className="text-xl px-2 sm:text-2xl font-bold text-[#272727] mb-4">
+                      Congratulations you've completed all the courses!
+                    </h2>
+
+                    {/* Description */}
+                    <p className="text-[#666666] text-sm sm:text-base max-w-2xl mx-auto mb-3 leading-relaxed">
+                      The next step is to get you in touch with a local representative to complete your certification.
+                    </p>
+
+                    <p className="text-[#666666] text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
+                      Click on Complete Certification below and we will make sure to get in touch with you right away.
+                    </p>
+
+                    {/* Button */}
+                    <Button
+                      onClick={() => {
+                        // trigger your action here (API call / modal / redirect)
+                        console.log("Certification Requested");
+                      }}
+                      className="bg-[#0EA0DC] mx-5 hover:bg-[#0b86b8] text-white px-10 h-12 rounded-xl font-bold uppercase tracking-wider shadow-md"
+                    >
+                      Complete Certification
+                    </Button>
+
+                  </Card>
+                </div>
+                {/* Congratulations Card at the end of the grid */}
+                {isAllCoursesCompleted && !user?.isTrainingComplete && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="md:col-span-2 lg:col-span-3"
+                  >
+                    <Card className="p-8 rounded-[32px] border-2 border-[#0EA0DC]/30 bg-gradient-to-br from-white to-[#0EA0DC]/5 shadow-2xl overflow-hidden relative group">
+                      <div className="absolute top-0 right-0 w-64 h-64 opacity-[0.03] pointer-events-none -mr-12 -mt-12">
+                        <GraduationCap className="w-full h-full text-[#0EA0DC]" />
+                      </div>
+
+                      <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
+                        {/* Image Section */}
+                        <div className="shrink-0 w-full md:w-80">
+                          <div className="relative">
+                            <div className="absolute -inset-1 bg-gradient-to-r from-[#0EA0DC] to-[#0bcaf8] rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+                            <div className="relative bg-white rounded-3xl p-3 border border-gray-100 shadow-2xl">
+                              <img
+                                src={certificationCongratulationsImage}
+                                alt="Certification Congratulations"
+                                className="w-full h-auto rounded-2xl object-cover"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex-1 text-center md:text-left space-y-6">
+                          <div className="space-y-4">
+                            <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-0 px-4 py-1 font-bold text-sm tracking-wider uppercase">
+                              Achievement Unlocked
+                            </Badge>
+                            <h3 className="text-3xl sm:text-4xl font-black text-[#272727] leading-tight tracking-tight uppercase">
+                              Congratulations!<br /> You’ve completed all the courses.
+                            </h3>
+                          </div>
+
+                          <p className="text-[#666666] text-lg leading-relaxed font-medium max-w-2xl">
+                            The next step is to connect you with a local representative to finalize your certification.
+                            Click on <span className="text-[#0EA0DC] font-bold underline decoration-2 underline-offset-4">Complete Certification</span> below, and our team will get in touch with you right away.
+                          </p>
+
+                          <div className="pt-4">
+                            <Button
+                              disabled={isSubmittingTraining}
+                              onClick={handleTrainingComplete}
+                              className="h-16 px-12 text-xl font-black rounded-2xl bg-[#0EA0DC] hover:bg-[#272727] text-white shadow-xl shadow-[#0EA0DC]/30 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 w-full md:w-auto min-w-[300px]"
+                            >
+                              {isSubmittingTraining ? (
+                                <><Loader2 className="w-6 h-6 mr-3 animate-spin" /> Finalizing...</>
+                              ) : (
+                                "Complete Certification"
+                              )}
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                )}
               </div>
 
               {/* Training Completion Gate */}

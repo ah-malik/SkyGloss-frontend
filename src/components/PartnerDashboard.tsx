@@ -1444,7 +1444,7 @@ export function PartnerDashboard({
               transition={{ duration: 0.3 }}
             >
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-[#272727] mb-4">Available Training Courses</h2>
+                <h2 className="text-2xl font-bold text-[#272727] mb-4">Training Courses</h2>
                 <p className="text-[#666666] mb-6">
                   Complete comprehensive training for each SkyGloss product line to maintain certified status.
                 </p>
@@ -1550,7 +1550,7 @@ export function PartnerDashboard({
                       }}
                       className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
                     >
-                      Start Welcome Course
+                      Launch Course
                     </Button>
                   </Card>
                 </motion.div>
@@ -1655,7 +1655,7 @@ export function PartnerDashboard({
                       }}
                       className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
                     >
-                      Open Shop Setup
+                      Launch Course
                     </Button>
                   </Card>
                 </motion.div>
@@ -1759,7 +1759,7 @@ export function PartnerDashboard({
                       }}
                       className="w-full bg-[#0EA0DC] text-white hover:bg-[#272727] transition-colors h-12 rounded-xl font-bold shadow-lg shadow-[#0EA0DC]/20"
                     >
-                      Launch Philosophy
+                      Launch Course
                     </Button>
                   </Card>
                 </motion.div>

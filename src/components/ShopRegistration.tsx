@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import api from "../api/axios";
 import { useState, useEffect, useMemo } from "react";
 import { Country, State, City } from 'country-state-city';
-import { ArrowLeft, Mail, Lock, User, MapPin, Phone } from "lucide-react";
+import { ArrowLeft, Mail, Lock, User, MapPin, Phone, Globe, Facebook, Instagram, Youtube, Linkedin } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
@@ -26,12 +26,13 @@ export function ShopRegistration() {
     const [step, setStep] = useState(1);
     const countries = useMemo(() => Country.getAllCountries(), []);
 
+    const [callingCode, setCallingCode] = useState("");
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
         email: "",
         password: "",
-        role: "certified_shop", // Updated default
+        role: "certified_shop",
         country: "",
         address: "",
         streetAddress: "",
@@ -40,7 +41,13 @@ export function ShopRegistration() {
         phoneNumber: "",
         shopName: "",
         hearAboutUs: "",
-        referredByPartnerCode: ""
+        referredByPartnerCode: "",
+        website: "",
+        facebook: "",
+        instagram: "",
+        youtube: "",
+        tiktok: "",
+        linkedin: ""
     });
     const [isLoading, setIsLoading] = useState(false);
 
@@ -49,7 +56,8 @@ export function ShopRegistration() {
     }, [step]);
 
     const handleBack = () => {
-        if (step === 2) setStep(1);
+        if (step === 3) setStep(2);
+        else if (step === 2) setStep(1);
         else navigate("/");
     };
 
@@ -57,22 +65,21 @@ export function ShopRegistration() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const isSpain = formData.country.toLowerCase() === "spain";
-    const pricingText = isSpain ? "225€" : "$250";
-
     const isStepValid = useMemo(() => {
         if (step === 1) {
             const { firstName, lastName, email, password, country, hearAboutUs, referredByPartnerCode } = formData;
             const basicInfo = firstName && lastName && email && password.length >= 6 && country;
             const referralInfo = hearAboutUs || (referredByPartnerCode && referredByPartnerCode.length >= 4);
             return !!(basicInfo && referralInfo);
+        } else if (step === 2) {
+            const { city, address, phoneNumber } = formData;
+            return !!(city && address && phoneNumber);
         } else {
-            const { city, address, zipCode, phoneNumber } = formData;
-            return !!(city && address && zipCode && phoneNumber);
+            return true;
         }
     }, [formData, step]);
 
-    const validateStep1 = () => {
+    const validateStep = () => {
         if (!isStepValid) {
             alert("Please fill in all required fields correctly.");
             return false;
@@ -85,7 +92,8 @@ export function ShopRegistration() {
         setIsLoading(true);
 
         try {
-            const response = await api.post('/auth/register-shop', formData);
+            const fullPhone = callingCode ? `${callingCode} ${formData.phoneNumber}` : formData.phoneNumber;
+            const response = await api.post('/auth/register-shop', { ...formData, phoneNumber: fullPhone });
             if (response.data?.stripeUrl) {
                 window.location.href = response.data.stripeUrl;
             } else {
@@ -97,6 +105,10 @@ export function ShopRegistration() {
             alert(err.response?.data?.message || 'Registration failed. Please check your details.');
         }
     };
+
+    const stepLabels = ["Basic Information", "Shop Details", "Payment"];
+
+    const backButtonLabel = step === 1 ? "Back to Access Selection" : `Back to Step ${step - 1}`;
 
     return (
         <div className="min-h-screen geometric-bg flex flex-col">
@@ -111,7 +123,7 @@ export function ShopRegistration() {
                     className="group text-[#272727] hover:text-[#0EA0DC] hover:bg-white hover:shadow-[0_0_20px_rgba(14,160,220,0.25)] transition-all duration-200 bg-white/90 backdrop-blur-sm shadow-md border-2 border-[#0EA0DC]/30 hover:border-[#0EA0DC] rounded-xl px-4 sm:px-5 py-2.5 sm:py-3 gap-2"
                 >
                     <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 group-hover:transform group-hover:-translate-x-1 transition-transform duration-200" />
-                    <span className="hidden sm:inline">{step === 1 ? "Back to Access Selection" : "Back to Step 1"}</span>
+                    <span className="hidden sm:inline">{backButtonLabel}</span>
                     <span className="sm:hidden">Back</span>
                 </Button>
             </motion.div>
@@ -133,28 +145,30 @@ export function ShopRegistration() {
                                 <PartnerIcon className="text-white w-6 h-6" />
                             </motion.div>
                             <div className="flex gap-2">
-                                <div className={`w-3 h-3 rounded-full ${step === 1 ? 'bg-[#0EA0DC]' : 'bg-[#0EA0DC]/20'}`} />
-                                <div className={`w-3 h-3 rounded-full ${step === 2 ? 'bg-[#0EA0DC]' : 'bg-[#0EA0DC]/20'}`} />
+                                <div className={`w-3 h-3 rounded-full ${step >= 1 ? 'bg-[#0EA0DC]' : 'bg-[#0EA0DC]/20'}`} />
+                                <div className={`w-3 h-3 rounded-full ${step >= 2 ? 'bg-[#0EA0DC]' : 'bg-[#0EA0DC]/20'}`} />
+                                <div className={`w-3 h-3 rounded-full ${step >= 3 ? 'bg-[#0EA0DC]' : 'bg-[#0EA0DC]/20'}`} />
                             </div>
                         </div>
 
                         <div className="text-center mb-8">
                             <h2 className="text-2xl text-[#272727] mb-2 font-semibold">Shop Registration - Step {step}</h2>
-                            <p className="text-[#666666]">
-                                {step === 1 ? "Start with your basic information." : "Provide your shop address details."} 
-                                {/* <span className="block mt-1 font-medium text-[#0EA0DC]">A {pricingText} fee applies.</span> */}
-                            </p>
+                            <p className="text-[#666666]">{stepLabels[step - 1]}</p>
                         </div>
 
                         <form onSubmit={(e) => {
+                            e.preventDefault();
                             if (step === 1) {
-                                e.preventDefault();
-                                if (validateStep1()) setStep(2);
+                                if (validateStep()) setStep(2);
+                            } else if (step === 2) {
+                                if (validateStep()) setStep(3);
                             } else {
                                 handleSubmit(e);
                             }
                         }} className="space-y-5">
-                            {step === 1 ? (
+
+                            {/* ===== STEP 1: Basic Information ===== */}
+                            {step === 1 && (
                                 <motion.div
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
@@ -178,6 +192,14 @@ export function ShopRegistration() {
                                     </div>
 
                                     <div>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">Shop Name</label>
+                                        <div className="relative">
+                                            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                                            <Input type="text" name="shopName" value={formData.shopName} onChange={handleChange} placeholder="Shop Name" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                        </div>
+                                    </div>
+
+                                    <div>
                                         <label className="block text-sm text-[#272727] mb-2 font-medium">Email Address <span className="text-red-500">*</span></label>
                                         <div className="relative">
                                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
@@ -193,60 +215,6 @@ export function ShopRegistration() {
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                        <div>
-                                            <label className="block text-sm text-[#272727] mb-2 font-medium">Shop Name (Optional)</label>
-                                            <div className="relative">
-                                                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                                <Input type="text" name="shopName" value={formData.shopName} onChange={handleChange} placeholder="Shop Name" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm text-[#272727] mb-2 font-medium">How did you hear about us?</label>
-                                            <select
-                                                name="hearAboutUs"
-                                                value={formData.hearAboutUs}
-                                                onChange={handleChange}
-                                                className="w-full px-4 h-11 bg-white border border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors appearance-none"
-                                                disabled={isLoading}
-                                            >
-                                                <option value="">Select (Optional - Shows Partner ID)</option>
-                                                <option value="Facebook">Facebook</option>
-                                                <option value="X">X (Twitter)</option>
-                                                <option value="Instagram">Instagram</option>
-                                                <option value="Friend">Friend</option>
-                                                <option value="Internet">Internet</option>
-                                                <option value="Other">Other</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    {!formData.hearAboutUs && (
-                                        <motion.div
-                                            initial={{ opacity: 0, height: 0 }}
-                                            animate={{ opacity: 1, height: "auto" }}
-                                            exit={{ opacity: 0, height: 0 }}
-                                        >
-                                            <label className="block text-sm text-[#272727] mb-2 font-medium">Partner ID (4-8 characters) <span className="text-red-500">*</span></label>
-                                            <div className="relative">
-                                                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                                <Input
-                                                    required={!formData.hearAboutUs}
-                                                    type="text"
-                                                    name="referredByPartnerCode"
-                                                    minLength={4}
-                                                    maxLength={8}
-                                                    pattern="[a-zA-Z0-9]{4,8}"
-                                                    value={formData.referredByPartnerCode}
-                                                    onChange={handleChange}
-                                                    placeholder="Enter the Partner ID"
-                                                    className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors"
-                                                    disabled={isLoading}
-                                                />
-                                            </div>
-                                        </motion.div>
-                                    )}
-
                                     <div>
                                         <label className="block text-sm text-[#272727] mb-2 font-medium">Country <span className="text-red-500">*</span></label>
                                         <div className="relative">
@@ -260,6 +228,7 @@ export function ShopRegistration() {
                                                     const countryObj = countries.find(c => c.name === countryName);
                                                     setFormData({ ...formData, country: countryName, city: '' });
                                                     if (countryObj) {
+                                                        setCallingCode(`+${countryObj.phonecode}`);
                                                         const rawCities = City.getCitiesOfCountry(countryObj.isoCode) || [];
                                                         const rawStates = State.getStatesOfCountry(countryObj.isoCode) || [];
 
@@ -275,6 +244,7 @@ export function ShopRegistration() {
 
                                                         setCities(combined);
                                                     } else {
+                                                        setCallingCode("");
                                                         setCities([]);
                                                     }
                                                 }}
@@ -290,13 +260,65 @@ export function ShopRegistration() {
                                             </select>
                                         </div>
                                     </div>
+
+                                    <div>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">How did you hear about us?</label>
+                                        <select
+                                            name="hearAboutUs"
+                                            value={formData.hearAboutUs}
+                                            onChange={handleChange}
+                                            className="w-full px-4 h-11 bg-white border border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors appearance-none"
+                                            disabled={isLoading}
+                                        >
+                                            <option value="">Select</option>
+                                            <option value="Facebook">Facebook</option>
+                                            <option value="X">X (Twitter)</option>
+                                            <option value="Instagram">Instagram</option>
+                                            <option value="Friend">Friend</option>
+                                            <option value="Internet">Internet</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">
+                                            Partner ID (4-8 characters) {!formData.hearAboutUs && <span className="text-red-500">*</span>}
+                                        </label>
+                                        <div className="relative">
+                                            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                                            <Input
+                                                required={!formData.hearAboutUs}
+                                                type="text"
+                                                name="referredByPartnerCode"
+                                                minLength={4}
+                                                maxLength={8}
+                                                pattern="[a-zA-Z0-9]{4,8}"
+                                                value={formData.referredByPartnerCode}
+                                                onChange={handleChange}
+                                                placeholder="Enter the Partner ID"
+                                                className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors"
+                                                disabled={isLoading}
+                                            />
+                                        </div>
+                                    </div>
                                 </motion.div>
-                            ) : (
+                            )}
+
+                            {/* ===== STEP 2: Shop Details ===== */}
+                            {step === 2 && (
                                 <motion.div
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     className="space-y-5"
                                 >
+                                    <div>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">Address <span className="text-red-500">*</span></label>
+                                        <div className="relative">
+                                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                                            <Input required type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Address Line 1" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                        </div>
+                                    </div>
+
                                     <div>
                                         <label className="block text-sm text-[#272727] mb-2 font-medium">City <span className="text-red-500">*</span></label>
                                         <div className="relative">
@@ -319,36 +341,117 @@ export function ShopRegistration() {
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                        <div>
-                                            <label className="block text-sm text-[#272727] mb-2 font-medium">Address <span className="text-red-500">*</span></label>
-                                            <div className="relative">
-                                                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                                <Input required type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Address Line 1" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
-                                            </div>
+                                    <div>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">Street Address</label>
+                                        <div className="relative">
+                                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                                            <Input type="text" name="streetAddress" value={formData.streetAddress} onChange={handleChange} placeholder="Street / House No." className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
                                         </div>
-                                        <div>
-                                            <label className="block text-sm text-[#272727] mb-2 font-medium">Street Address (Optional)</label>
-                                            <div className="relative">
-                                                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                                <Input type="text" name="streetAddress" value={formData.streetAddress} onChange={handleChange} placeholder="Street / House No." className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">ZIP Code</label>
+                                        <div className="relative">
+                                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                                            <Input type="text" name="zipCode" value={formData.zipCode} onChange={handleChange} placeholder="ZIP / Postal Code" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">Phone Number <span className="text-red-500">*</span></label>
+                                        <div className="flex gap-2">
+                                            <select
+                                                value={callingCode}
+                                                onChange={(e) => setCallingCode(e.target.value)}
+                                                className="w-[110px] shrink-0 px-2 h-11 bg-white border border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors appearance-none text-sm"
+                                                disabled={isLoading}
+                                            >
+                                                <option value="">Code</option>
+                                                {countries.map(c => (
+                                                    <option key={c.isoCode} value={`+${c.phonecode}`}>
+                                                        {c.isoCode} +{c.phonecode}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="relative flex-1">
+                                                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                                                <Input required type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} placeholder="234 567 8900" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                        <div>
-                                            <label className="block text-sm text-[#272727] mb-2 font-medium">ZIP Code <span className="text-red-500">*</span></label>
-                                            <div className="relative">
-                                                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                                <Input required type="text" name="zipCode" value={formData.zipCode} onChange={handleChange} placeholder="ZIP / Postal Code" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
-                                            </div>
+                                    {/* Social Media Links */}
+                                    <div>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">Website</label>
+                                        <div className="relative">
+                                            <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                                            <Input type="url" name="website" value={formData.website} onChange={handleChange} placeholder="https://yourwebsite.com" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
                                         </div>
-                                        <div>
-                                            <label className="block text-sm text-[#272727] mb-2 font-medium">Phone Number <span className="text-red-500">*</span></label>
-                                            <div className="relative">
-                                                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                                <Input required type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} placeholder="+1 234 567 8900" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">Facebook</label>
+                                        <div className="relative">
+                                            <Facebook className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                                            <Input type="url" name="facebook" value={formData.facebook} onChange={handleChange} placeholder="https://facebook.com/yourpage" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">Instagram</label>
+                                        <div className="relative">
+                                            <Instagram className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                                            <Input type="url" name="instagram" value={formData.instagram} onChange={handleChange} placeholder="https://instagram.com/yourprofile" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">YouTube</label>
+                                        <div className="relative">
+                                            <Youtube className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                                            <Input type="url" name="youtube" value={formData.youtube} onChange={handleChange} placeholder="https://youtube.com/yourchannel" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">TikTok</label>
+                                        <div className="relative">
+                                            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" /></svg>
+                                            <Input type="url" name="tiktok" value={formData.tiktok} onChange={handleChange} placeholder="https://tiktok.com/@yourprofile" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">LinkedIn</label>
+                                        <div className="relative">
+                                            <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                                            <Input type="url" name="linkedin" value={formData.linkedin} onChange={handleChange} placeholder="https://linkedin.com/in/yourprofile" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {/* ===== STEP 3: Payment ===== */}
+                            {step === 3 && (
+                                <motion.div
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    className="space-y-6"
+                                >
+                                    <div className="text-center p-8 bg-gray-50 rounded-2xl border border-gray-100">
+                                        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#0EA0DC]/10 flex items-center justify-center">
+                                            <Lock className="w-8 h-8 text-[#0EA0DC]" />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-[#272727] mb-2">Secure Payment</h3>
+                                        <p className="text-[#666666] mb-4">You will be redirected to our secure payment page to complete your registration.</p>
+                                        <div className="flex flex-col gap-2 text-sm text-[#666666]">
+                                            <div className="flex items-center justify-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                                                <span>SSL Secured Payment</span>
+                                            </div>
+                                            <div className="flex items-center justify-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                                                <span>Powered by Stripe</span>
                                             </div>
                                         </div>
                                     </div>
@@ -356,23 +459,23 @@ export function ShopRegistration() {
                             )}
 
                             <div className="pt-6 flex flex-col sm:flex-row gap-4">
-                                {step === 2 && (
+                                {step > 1 && (
                                     <Button
                                         type="button"
-                                        onClick={() => setStep(1)}
+                                        onClick={() => setStep(step - 1)}
                                         disabled={isLoading}
                                         variant="outline"
                                         className="flex-1 h-14 text-lg border-2 border-[#0EA0DC] text-[#0EA0DC] hover:bg-[#0EA0DC]/5 shadow-sm transition-all duration-300"
                                     >
-                                        Back to Step 1
+                                        Back to Step {step - 1}
                                     </Button>
                                 )}
                                 <Button 
                                     type="submit" 
                                     disabled={isLoading || !isStepValid} 
-                                    className={`h-14 text-lg bg-[#0EA0DC] hover:bg-[#0EA0DC]/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${step === 2 ? 'flex-[2]' : 'w-full'}`}
+                                    className={`h-14 text-lg bg-[#0EA0DC] hover:bg-[#0EA0DC]/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${step > 1 ? 'flex-[2]' : 'w-full'}`}
                                 >
-                                    {isLoading ? "Processing..." : step === 1 ? "Next Step" : `Complete Registration (${pricingText})`}
+                                    {isLoading ? "Processing..." : step === 1 ? "Next Step" : step === 2 ? "Next Step" : "Complete Registration"}
                                 </Button>
                             </div>
 

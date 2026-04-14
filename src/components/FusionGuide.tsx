@@ -52,7 +52,7 @@ const sections: Section[] = [
             { id: "fusion_step2", title: "Step 2: Vehicle Inspection" },
             { id: "fusion_step3", title: "Step 3: Remove Attachments" },
             { id: "fusion_step4", title: "Step 4: Exfoliate" },
-            { id: "fusion_step5", title: "Step 5: Heavy Wash" },
+            { id: "fusion_step5", title: "Step 5: FINAL Wash" },
             { id: "fusion_step6", title: "Step 6: Etch" },
             { id: "fusion_step7", title: "Step 7: Mask" }
         ]
@@ -67,6 +67,13 @@ const sections: Section[] = [
             { id: "fusion_step11", title: "Step 11: Apply Fusion" },
             { id: "fusion_step12", title: "Step 12: Quality Check" },
             { id: "fusion_step13", title: "Step 13: Clean Bottle" }
+        ]
+    },
+    {
+        id: "fusion_extra_videos",
+        title: "Additional FUSION Application Videos",
+        subsections: [
+            { id: "fusion_extra_bmw", title: "BLUE BMW SUV" }
         ]
     },
     {
@@ -90,6 +97,24 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
     const { user, setUser } = useAuth();
     const [activeSub, setActiveSub] = useState("fusion_intro");
     const [completedSteps, setCompletedSteps] = useState<string[]>([]);
+    const [selectedVehicle, setSelectedVehicle] = useState<string | null>(null);
+
+    const vehicleVideoSets = [
+        {
+            id: "fusion_extra_bmw",
+            label: "BLUE BMW SUV",
+            description: "Additional application videos for the Blue BMW SUV project.",
+            videos: [
+                { name: "BMW SUV - Hood.mp4", url: "" },
+                { name: "BMW SUV - Front Bumper.mp4", url: "" },
+                { name: "BMW SUV - Fender.mp4", url: "" },
+                { name: "BMW SUV - Door.mp4", url: "" },
+                { name: "BMW SUV - Quarter Panel.mp4", url: "" },
+                { name: "BMW SUV - Trunk.mp4", url: "" },
+                { name: "BMW SUV - Roof.mp4", url: "" }
+            ]
+        }
+    ];
 
     const totalSteps = sections.reduce((acc, s) => acc + (s.subsections?.length || 0), 0);
     const progress = (completedSteps.length / totalSteps) * 100;
@@ -272,21 +297,21 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </li>
                                     </ul>
                                 </div>
-
+                                {/* 
                                 <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
                                     <video
                                         className="w-full h-full object-cover"
                                         controls
                                         src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411487/Step_1_Light_Wash_nszzj0.mp4"
                                     />
-                                </div>
+                                </div> */}
 
                                 <div className="flex justify-end mt-8">
                                     <Button
                                         onClick={() => markComplete('fusion_intro')}
                                         className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('fusion_intro') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                     >
-                                        {completedSteps.includes('fusion_intro') ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
+                                        {completedSteps.includes('fusion_intro') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                     </Button>
                                 </div>
                             </Card>
@@ -349,7 +374,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     onClick={() => markComplete('fusion_safety')}
                                     className={`rounded-xl px-8 h-10 font-bold text-xs uppercase tracking-widest transition-all ${completedSteps.includes('fusion_safety') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                 >
-                                    {completedSteps.includes('fusion_safety') ? 'Safety Verified' : 'Confirm Safety'}
+                                    {completedSteps.includes('fusion_safety') ? 'Section Completed' : 'Section Completed'}
                                 </Button>
                             </div>
                         </div>
@@ -426,7 +451,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         onClick={() => markComplete('fusion_data')}
                                         className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('fusion_data') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                     >
-                                        {completedSteps.includes('fusion_data') ? 'Data Verified' : 'Verify Technical Data'}
+                                        {completedSteps.includes('fusion_data') ? 'Section Completed' : 'Section Completed'}
                                     </Button>
                                 </div>
                             </Card>
@@ -448,22 +473,22 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                             {/* STEP 1: LIGHT WASH */}
                             <div id="fusion_step1" className="scroll-mt-32">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
-                                    <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 1: LIGHT WASH</h3>
+                                    <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 1: INITIAL WASH</h3>
 
                                     <p className="text-sm text-[#666666] mb-4">
-                                        "Purpose: This step is required to start the cleaning and decontamination process. Every step of the way gets you closer. We call this step LIGHT WASH because it's not about getting a perfectly clean surface but clean enough to see what is going on and examine if there are special steps that are needed or if you can treat the vehicle as normal. Because the vehicle will go through other processes that will dirty the surface again there's no point in getting a perfectly clean vehicle this step."
+                                        "Purpose: This step is required to start the cleaning and decontamination process. Every step of the way gets you closer. We call this step INITIAL WASH because it's not about getting a perfectly clean surface but clean enough to see what is going on and examine if there are special steps that are needed or if you can treat the vehicle as normal. Because the vehicle will go through other processes that will dirty the surface again there's no point in getting a perfectly clean vehicle this step."
                                     </p>
 
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">What You Are Trying to Achieve</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• A clean enough vehicle that there's no more dirt or debris stuck to the vehicle</li>
                                             <li>• You can clearly see the damage and condition of the original clearcoat</li>
                                         </ul>
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Tools & Materials</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• 3-5 clean blue microfibers</li>
                                             <li>• Alkaline degreaser or heavy dish soap, with little to no fragrances, dye or silicones.</li>
                                             <li>• Alcohol</li>
@@ -473,7 +498,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Process</h4>
-                                        <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
+                                        <ol className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Divide the vehicle into 3 or 4 sections at a time</li>
                                             <li>• Soak one section at a time and leave for 2-3 minutes</li>
                                             <li>• Wipe clean and dry with microfibers</li>
@@ -502,7 +527,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_step1')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step1') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_step1') ? 'Completed' : 'Verify Step 1'}
+                                            {completedSteps.includes('fusion_step1') ? 'Section Completed' : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -518,21 +543,21 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </p>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Inspection Goals</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• To find out if there are any panels that may not be suitable for FUSION</li>
                                             <li>• To find out if there are any panels that need special attention</li>
                                         </ul>
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Tools & Materials</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Paper towel</li>
                                             <li>• Etch</li>
                                         </ul>
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Process</h4>
-                                        <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
+                                        <ol className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Using Etch on a folded paper towel, check sections of panels around the vehicle for a chemical reaction.</li>
                                             <li>• Rub the soaked paper towel and see if you see any reaction taking place where that the clearcoat is heating up and become tacky or is scratches very, very easy.</li>
                                             <li>• This indicates that there is very little to know resistance to that particular panel.</li>
@@ -541,7 +566,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Pass / Fail Criteria</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Pass looks like no tackiness or major scratching took place. This indicates that it's fine to move forward with the next steps.</li>
                                             <li>• Fail looks like a heavily scratched area or very tacky to the touch. It can also start to discolor or melt the clearcoat. If it's light tackiness or discoloration, then you want to be careful on the Etch step and use minimal pressure and minimal amount of material. If it's heavy, scratching or tackiness, then that panel is better off being polished, and explained to the customer that there was not enough integrity on this panel to be able to rebuild it. Don't take the risks cautious on poorly repainted and lower integrity. Paint finishes.</li>
                                             <li>• It's also important to keep in mind that during application, if there is integrity issues on the panel, your applicator will stick and not flow as there are some application techniques to overcome this, but it comes through experience.</li>
@@ -549,7 +574,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Common Mistakes</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• You're testing too large of an area and potentially causing noticeable issues. Always small areas not anything large.</li>
                                             <li>• You check one panel or two panels thinking the whole car is okay but you didn't see the few panels that were poorly repainted and during application process if it becomes problematic. Make sure to look at all panels equally and assess them properly.</li>
                                         </ul>
@@ -568,7 +593,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_step2')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step2') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_step2') ? 'Completed' : 'Verify Step 2'}
+                                            {completedSteps.includes('fusion_step2') ? 'Section Completed' : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -584,14 +609,14 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Tools & Materials</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Fishing line</li>
                                             <li>• Adhesive remover</li>
                                         </ul>
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Process</h4>
-                                        <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
+                                        <ol className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Using fishing line or any other strategy to remove attachments carefully</li>
                                             <li>• Using adhesive remover or any other product that works well to remove the extra glue and adhesive that has been stuck on the panel.</li>
                                             <li>• Put all license plate and attachments on the front drivers floorboard to ensure that you never forget to put the items back on the vehicle.</li>
@@ -599,7 +624,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Common Mistakes</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Not communicating clearly with the customer on what they want and what they don't want to miss an opportunity to remove attachments they don't care of leave off.</li>
                                             <li>• Removing attachments that are brittle and breaking, therefore having to replace them at your expense, rather than the customer's.</li>
                                             <li>• Not gluing the attachments back on properly and risking them falling off later.</li>
@@ -621,7 +646,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_step3')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step3') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_step3') ? 'Completed' : 'Verify Step 3'}
+                                            {completedSteps.includes('fusion_step3') ? 'Section Completed' : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -637,7 +662,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Tools & Materials</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• 3mm DA (dual action) sander</li>
                                             <li>• 5'' or 6'' backing plate</li>
                                             <li>• 5'' or 6'' interface pad</li>
@@ -648,7 +673,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Process</h4>
-                                        <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
+                                        <ol className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Using a DA sanding with a 5mm or 8mm throw, panel by panel sand even and consistently</li>
                                             <li>• With water and alcohol solution and microfiber wipe clean the panel before you go to the next panel.</li>
                                             <li>• No need to get it perfect just wipe off most of the sanding residue to make the next step easier.</li>
@@ -657,7 +682,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Technique Notes</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Pressure: Medium pressure is all that's needed. If you don't use enough pressure it won't sand properly and if you use too much pressure, you're sanding disk will be used up too quickly.</li>
                                             <li>• Speed: Slow, consistent speed will get an even consistent finish.</li>
                                             <li>• Edge Precautions: All edges on modern, clear coats are thin. Do not put much pressure on edges and go over them quickly to avoid burn through. FUSION will not fix burn through.</li>
@@ -665,7 +690,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Visual Confirmation</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• The whole entire vehicle should have a dull, even consistent finish.</li>
                                             <li>• If there are some deeper scratches that are clearly visible and white and you're wondering if they're going to cover with FUSION, you can use Etch and a paper towel to see if the scratch pops through. Before Etch flashes off, this will give you an indication of how FUSION will cover the area.</li>
                                             <li>• Deep scratches through the paint will need to be touched up with actual paint. But deeper clearcoat scratches can be further sanded to fix them.</li>
@@ -676,7 +701,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Common Mistakes</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• The vehicle needed two sanding discs, because of the size or the hardness of the original clear coat. Sanding disc wear down, and most of the time you can use one disc per vehicle, but the sanding disk is no longer working as it should you will need to use a second disc.</li>
                                             <li>• Skipping areas and not sanding thoroughly.</li>
                                             <li>• Too much pressure on edges and burning through the clearcoat. FUSION will not fix burn through and will have to be repainted.</li>
@@ -699,7 +724,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_step4')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step4') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_step4') ? 'Completed' : 'Verify Step 4'}
+                                            {completedSteps.includes('fusion_step4') ? 'Section Completed' : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -711,11 +736,11 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 5: HEAVY WASH</h3>
 
                                     <p className="text-sm text-[#666666] mb-4">
-                                        "Purpose: We are now completely done with the dirty work. Everything from here on out is getting the vehicle completely clean using the same materials as the Light Wash Step you are now going to do a Heavy Wash. This is where every door jam, every window, every wheel well should be cleaned and free from debris, the vehicle will have a sanded look to it but completely clean."
+                                        Purpose: We are now completely done with the dirty work. Everything from here on out is getting the vehicle completely clean using the same materials as the Initial Wash Step you are now going to do a Initial Wash. This is where every door jam, every window, every wheel well should be cleaned and free from debris, the vehicle will have a sanded look to it but completely clean."
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Tools & Materials</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className="pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• 3-5 clean blue microfibers</li>
                                             <li>• 50% water with 50% alcohol solution.</li>
                                             <li>• Alcohol</li>
@@ -724,7 +749,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Process</h4>
-                                        <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
+                                        <ol className="pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Divide the vehicle into 3 or 4 sections</li>
                                             <li>• Soak one section at a time and leave for 2-3 minutes</li>
                                             <li>• Wipe clean and dry with microfibers removing all residue</li>
@@ -736,7 +761,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Common Mistakes</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Not thoroughly washing wheel wells, windows, or moldings, and having contamination get into the application. Do a thorough and complete wash.</li>
                                             <li>• Not opening up door jams, and not paying attention to the small details of cleaning in edges and hard to reach spots.</li>
                                         </ul>
@@ -755,7 +780,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_step5')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step5') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_step5') ? 'Completed' : 'Verify Step 5'}
+                                            {completedSteps.includes('fusion_step5') ? 'Section Completed' : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -771,7 +796,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Tools & Materials</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Paper towel</li>
                                             <li>• Alcohol</li>
                                             <li>• Acetone</li>
@@ -782,7 +807,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Process</h4>
-                                        <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
+                                        <ol className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Fold 3-5 paper towel sections into handheld square</li>
                                             <li>• Mix Etch (90% alcohol 10% acetone)</li>
                                             <li>• Panel by panel with heavy pressure and a good amount of Etch and evenly from top to bottom side to side, wipe the panel down.</li>
@@ -794,7 +819,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Common Mistakes</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Missing areas, door jams, and corners. These are actually the areas that you want to make sure to get the most as they are the ones that trapped the most contaminants and dirt that can cause an application issues.</li>
                                             <li>• Not using enough Etch and having the panels truly get a chemical reaction.</li>
                                             <li>• Using light pressure not aggressively using Etch how it should be.</li>
@@ -815,7 +840,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_step6')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step6') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_step6') ? 'Completed' : 'Verify Step 6'}
+                                            {completedSteps.includes('fusion_step6') ? 'Section Completed' : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -831,7 +856,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Tools & Materials</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• High-quality bodyshop masking tape</li>
                                             <li>• Razor blade / utility knife</li>
                                         </ul>
@@ -842,7 +867,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Common Mistakes</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• The moldings or trim pieces have too much silicone, and the tape is not sticking. Use a little alcohol on the trim pieces and it will help remove silicone or waxes there, prohibiting the tape to stick.</li>
                                             <li>• Not clean lines with your tape and having the tape touch areas that you actually want FUSION on. Make sure to be clean and have straight lines when masking.</li>
                                         </ul>
@@ -860,7 +885,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_step7')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step7') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_step7') ? 'Completed' : 'Verify Step 7'}
+                                            {completedSteps.includes('fusion_step7') ? 'Section Completed' : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -907,7 +932,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_step8')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step8') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_step8') ? 'Completed' : 'Verify Step 8'}
+                                            {completedSteps.includes('fusion_step8') ? 'Section Completed' : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -943,7 +968,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_step9')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step9') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_step9') ? 'Completed' : 'Verify Step 9'}
+                                            {completedSteps.includes('fusion_step9') ? 'Section Completed' : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -979,7 +1004,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_step10')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step10') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_step10') ? 'Completed' : 'Verify Step 10'}
+                                            {completedSteps.includes('fusion_step10') ? 'Section Completed' : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -999,14 +1024,14 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Environment Conditions</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Lighting Requirements: You must have adequate lighting whether it be mobile lights or a very well-lit environment. Without proper lighting you will miss small and even larger sections and not see drips and lines that you would've otherwise been able to easily correct during the application. Not having good lighting can create a lot of unnecessary work later on.</li>
                                             <li>• Climate: FUSION cannot be applied outdoors or an environment with lots of air movement. Always turn off any type of air circulation during application to ensure a smooth application and everything will level out properly. Make sure your panel temperature is between (60°F - 95°F) 16°C - 35°C for best results and ease of application.</li>
                                         </ul>
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Application Order</h4>
-                                        <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
+                                        <ol className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Top surfaces (roof, hood and trunk lid)</li>
                                             <li>• Sides (right and left)</li>
                                             <li>• Bumpers (front and back)</li>
@@ -1022,7 +1047,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Common Mistakes</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>Dry spots in your applicator. Make sure when you apply product to your applicator your getting all corners.</li>
                                             <li>Working too fast will always result in a thinner application. Do not try and speed up your application so you always have a thick proper layer.</li>
                                             <li>Leaving a panel that has issues thinking that it's going to disappear tomorrow. It is true that leveling application can correct its own mistakes like drips or lines that aren't completely leveled out. But after 30 minutes, if it doesn't have a desirable result, you must strip down the panel and redo it. Those mistakes will not go away and you will spend more time fixing the next day.</li>
@@ -1044,7 +1069,86 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_step11')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step11') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_step11') ? 'Completed' : 'Verify Step 11'}
+                                            {completedSteps.includes('fusion_step11') ? 'Section Completed' : 'Section Completed'}
+                                        </Button>
+                                    </div>
+                                </Card>
+                            </div>
+
+                            {/* ADDITIONAL FUSION APPLICATION VIDEOS */}
+                            <div id="fusion_extra_videos" className="scroll-mt-32 mt-8">
+                                <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
+                                    <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
+                                        New Content
+                                    </Badge>
+                                    <h2 className="text-3xl font-bold text-[#272727] mb-4 leading-[1.1] tracking-tighter uppercase">
+                                        Additional FUSION Application Videos
+                                    </h2>
+                                    <p className="text-[#666666] mb-8 font-medium">
+                                        In this section, users will find additional application videos to help them further develop their skills and continue mastering the FUSION application process. This collection will grow over time with more vehicle types.
+                                    </p>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                                        {vehicleVideoSets.map((set) => (
+                                            <button
+                                                key={set.id}
+                                                onClick={() => setSelectedVehicle(selectedVehicle === set.id ? null : set.id)}
+                                                className={`p-6 rounded-2xl border-2 transition-all text-left group ${selectedVehicle === set.id ? 'border-[#0EA0DC] bg-[#0EA0DC]/5' : 'border-gray-100 hover:border-[#0EA0DC]/30 hover:bg-gray-50'}`}
+                                            >
+                                                <div className="w-12 h-12 rounded-xl bg-[#272727] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                                    <Zap className="w-6 h-6 text-[#0EA0DC]" />
+                                                </div>
+                                                <h4 className="font-bold text-[#272727] mb-2 uppercase tracking-tight">{set.label}</h4>
+                                                <p className="text-xs text-[#666666] leading-relaxed">
+                                                    {set.videos.length} training videos available
+                                                </p>
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    {selectedVehicle && (
+                                        <div className="space-y-8 animate-in fade-in slide-in-from-top-4 duration-500">
+                                            <div className="flex items-center gap-4 mb-4">
+                                                <div className="h-px flex-1 bg-gray-100"></div>
+                                                <span className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-[0.2em]">Video Collection</span>
+                                                <div className="h-px flex-1 bg-gray-100"></div>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 gap-8">
+                                                {vehicleVideoSets.find(s => s.id === selectedVehicle)?.videos.map((video, idx) => (
+                                                    <div key={idx} className="space-y-4">
+                                                        <div className="flex items-center justify-between">
+                                                            <h5 className="font-bold text-[#272727] uppercase text-sm tracking-tight">
+                                                                {video.name}
+                                                            </h5>
+                                                        </div>
+                                                        <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group border border-gray-100">
+                                                            {video.url ? (
+                                                                <video
+                                                                    className="w-full h-full object-cover"
+                                                                    controls
+                                                                    src={video.url}
+                                                                />
+                                                            ) : (
+                                                                <div className="text-center p-8">
+                                                                    <Zap className="w-12 h-12 text-[#0EA0DC]/20 mx-auto mb-4" />
+                                                                    <p className="text-white/50 text-xs font-medium uppercase tracking-widest">Video Pending Upload</p>
+                                                                    <p className="text-white/30 text-[10px] mt-2">Filename: {video.name}</p>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <div className="flex justify-end mt-12 pt-8 border-t border-gray-100">
+                                        <Button
+                                            onClick={() => markComplete('fusion_extra_videos')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('fusion_extra_videos') ? 'bg-[#0EA0DC] text-white shadow-lg shadow-[#0EA0DC]/20' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                        >
+                                            {completedSteps.includes('fusion_extra_videos') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -1074,7 +1178,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_step12')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step12') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_step12') ? 'Completed' : 'Verify Step 12'}
+                                            {completedSteps.includes('fusion_step12') ? 'Section Completed' : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -1090,7 +1194,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </p>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Tools & Materials</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Gloves</li>
                                             <li>• Acetone</li>
                                             <li>• Paper towel</li>
@@ -1098,7 +1202,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Process</h4>
-                                        <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
+                                        <ol className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Dump all remaining FUSION out.</li>
                                             <li>• Put (1oz) 15 mL of acetone into the bottle. Put cap on</li>
                                             <li>• Shake and pour out. Repeat 3 times</li>
@@ -1123,7 +1227,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_step13')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_step13') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_step13') ? 'Completed' : 'Verify Step 13'}
+                                            {completedSteps.includes('fusion_step13') ? 'Section Completed' : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -1140,17 +1244,17 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 </Badge>
                             </div>
                             <Card className="p-6 rounded-2xl border-l-4 border-l-green-500">
-                                <p className="text-sm font-bold mb-4">DOWNLOAD CARE INSTRUCTIONS HANDOUT HERE</p>
+                                <p className="text-sm font-bold mb-4">CARE INSTRUCTIONS</p>
                                 <div className="bg-gray-50 p-6 rounded-2xl">
                                     <h4 className="font-bold text-sm text-[#272727] mb-2">Immediate Aftercare</h4>
-                                    <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                    <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                         <li>After 12 hours, always apply SEAL for a breathable sealant during full 2-week cure. This will keep water and dirt off.</li>
                                         <li>Do not wash for 2-weeks after application</li>
                                     </ul>
                                 </div>
 
                                 <p className="text-sm text-[#666666]">Aftercare Handout: Make sure to give this to your customer to get the most out of their SkyGloss Service.</p>
-
+                                <a href="https://drive.google.com/file/d/1ebN3aN0JS90KizRVNjvG_zhrhVZjA2DD/view?usp=drive_link" className="text-xl font-bold text-[#272727] mb-2  bg-[#0ea0dc] text-white p-2 rounded-xl inline-block w-full text-center">Download Care Instructions</a>
                                 <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
                                     <video
                                         className="w-full h-full object-cover"
@@ -1164,7 +1268,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         onClick={() => markComplete('fusion_care')}
                                         className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_care') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                     >
-                                        {completedSteps.includes('fusion_care') ? 'Completed' : 'Verify Aftercare'}
+                                        {completedSteps.includes('fusion_care') ? 'Section Completed' : 'Section Completed'}
                                     </Button>
                                 </div>
                             </Card>
@@ -1181,18 +1285,18 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                             {/* Removing FUSION */}
                             <div id="fusion_removal" className="scroll-mt-32">
                                 <Card className="p-6 rounded-2xl border-l-4">
-                                    <h3 className="text-xl font-bold text-[#272727] mb-2">Removing FUSION</h3>
+                                    <h3 className="text-xl font-bold text-[#272727] mb-2">REMOVING FUSION</h3>
 
                                     <p className="text-sm text-[#666666] mb-4">
-                                        FUSION can be removed 2 different ways. In the 3 hours before it is too cured with chemicals or 2-weeks after full cure by sanding it off.
+                                        FUSION can be removed 2 different ways. In the 2 hours before it is too cured with chemicals or 2-weeks after full cure by sanding it off.
                                     </p>
                                     <p className="text-sm text-[#666666] mb-4">
                                         It is always best if you must sand off FUSION that it is fully cured as it is going to sand more consistently and not gum up your sanding discs.
                                     </p>
                                     <div className="bg-gray-50 p-6 rounded-2xl">
-                                        <h4 className="font-bold text-sm text-[#272727] mb-2">Removing FUSION before 1 Hour:</h4>
+                                        <h4 className="font-bold text-sm text-[#272727] mb-2">Removing FUSION before 2 Hour:</h4>
                                         <h5 className="font-bold text-xs text-[#666666] mb-1">Tools & Materials</h5>
-                                        <ul className="list-disc pl-5 mb-3 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-3 text-sm text-[#666666]">
                                             <li>• Gloves</li>
                                             <li>• ETCH</li>
                                             <li>• Paper towel</li>
@@ -1201,7 +1305,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h5 className="font-bold text-xs text-[#666666] mb-1">Process</h5>
-                                        <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
+                                        <ol className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Being careful not to touch your other panels and only the panel you want to remove FUSION, fold up paper towel and load up ETCH.</li>
                                             <li>• Making 1 pass at a time and firm pressure wipe off FUSION.</li>
                                             <li>• Each wipe you must flip your paper towel to a new section otherwise you will put FUSION right back on the panel.</li>
@@ -1211,7 +1315,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     <div className="bg-gray-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Removing FUSION after 2 weeks:</h4>
                                         <h5 className="font-bold text-xs text-[#666666] mb-1">Tools & Materials</h5>
-                                        <ul className="list-disc pl-5 mb-3 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-3 text-sm text-[#666666]">
                                             <li>• 1,500 sanding discs</li>
                                             <li>• 3,000 sanding discs</li>
                                             <li>• 5,000 sanding discs</li>
@@ -1219,15 +1323,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             <li>• Cleaning microfibers</li>
                                         </ul>
                                     </div>
-                                    <div className="bg-blue-50 p-6 rounded-2xl">
-                                        <h5 className="font-bold text-xs text-[#666666] mb-1">Process</h5>
-                                        <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
-                                            <li>• Section by section starting with 1,500 grit sand off FUSION. Do not go too deep or you will risk burn through.</li>
-                                            <li>• Then follow it with 3,000 and then 5,000</li>
-                                            <li>• You can reapply FUSION after.</li>
-                                            <li>• If this is your first time doing this, contact our Technical Team to get even more tips as this can be a long and tedious process. If not done correctly, you can sand through the original paint.</li>
-                                        </ol>
-                                    </div>
+
                                     <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
                                         <video
                                             className="w-full h-full object-cover"
@@ -1235,31 +1331,41 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411491/Troubleshooting_Removing_Fusion_pn0itl.mp4"
                                         />
                                     </div>
+                                    <div className="bg-blue-50 p-6 rounded-2xl">
+                                        <h5 className="font-bold text-xs text-[#666666] mb-1">Process</h5>
+                                        <ol className=" pl-5 mb-4 text-sm text-[#666666]">
+                                            <li>• Section by section starting with 1,500 grit sand off FUSION. Do not go too deep or you will risk burn through.</li>
+                                            <li>• Then follow it with 3,000 and then 5,000</li>
+                                            <li>• You can reapply FUSION after.</li>
+                                            <li>• If this is your first time doing this, contact our Technical Team to get even more tips as this can be a long and tedious process. If not done correctly, you can sand through the original paint.</li>
+                                        </ol>
+                                    </div>
+
 
                                     <div className="flex justify-end mt-4">
                                         <Button
                                             onClick={() => markComplete('fusion_removal')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_removal') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_removal') ? 'Completed' : 'Verify Removal'}
+                                            {completedSteps.includes('fusion_removal') ? 'Section Completed' : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
 
                             {/* Correcting Application Issues */}
-                            <div id="fusion_issues" className="scroll-mt-32">
+                            {/* <div id="fusion_issues" className="scroll-mt-32">
                                 <Card className="p-6 rounded-2xl border-l-4">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">Correcting Application Issues</h3>
 
-                                    <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                    <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                         <li>You can reapply FUSION over FUSION as many times as you want if it is cured before applying the next layer.</li>
                                         <li>Depending on the substrate condition, you can apply two coats of FUSION, the first one will act as a base coat and the second one will act as a finish coat.</li>
                                         <li>Full cure is 2-weeks. However, a curing lamp can speed up the process and you can apply right after you cured it. 30 mins at 60-70C on the surface of the panel and leave it to completely cool down, and it will be ready to reapply. Make sure to get all sections of the panel so FUSION is evenly cured.</li>
                                     </ul>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Process</h4>
-                                        <ol className="list-decimal pl-5 mb-4 text-sm text-[#666666]">
+                                        <ol className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>• Wash vehicle</li>
                                             <li>• Hand sand with 5000 grit disc</li>
                                             <li>• Wash again</li>
@@ -1274,7 +1380,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Sticky Application</h4>
-                                        <ul className="list-disc pl-5 mb-4 text-sm text-[#666666]">
+                                        <ul className=" pl-5 mb-4 text-sm text-[#666666]">
                                             <li>This is due to the clearcoat underneath being too soft or not chemical resistant to FUSION.</li>
                                             <li>If the panels clearcoat is weak, using ETCH can soften up the panel and cause FUSION to reaction during application.</li>
                                             <li>This will cause the applicator to stick to the panel.</li>
@@ -1303,12 +1409,168 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('fusion_issues')}
                                             className={`rounded-xl px-8 h-10 font-bold text-xs ${completedSteps.includes('fusion_issues') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                         >
-                                            {completedSteps.includes('fusion_issues') ? 'Completed' : 'Verify Issues'}
+                                            {completedSteps.includes('fusion_issues') ? 'Section Completed' : 'Section Completed'}
+                                        </Button>
+                                    </div>
+                                </Card>
+                            </div> */}
+                            {/* =========================
+    CORRECTING APPLICATION ISSUES (NEW CLIENT CONTENT)
+========================= */}
+                            <div id="fusion_correcting_application_issues" className="scroll-mt-32">
+                                <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
+
+                                    <h3 className="text-xl font-bold text-[#272727] mb-2">
+                                        Correcting Application Issues
+                                    </h3>
+
+                                    {/* Overview */}
+                                    <div className="bg-gray-50 p-6 rounded-2xl mb-6">
+                                        <h4 className="font-bold text-sm mb-2">Overview</h4>
+                                        <p className="text-sm text-[#666666] leading-relaxed">
+                                            Application errors are a normal part of the learning process.
+                                            The goal is not just to fix them—but to understand why they happened and improve control moving forward.
+                                        </p>
+
+                                        <div className="mt-4">
+                                            <p className="text-sm font-bold text-[#272727] mb-2">Severity Levels:</p>
+                                            <ul className="text-sm text-[#666666] space-y-1">
+                                                <li>• Light</li>
+                                                <li>• Medium</li>
+                                                <li>• Heavy</li>
+                                            </ul>
+                                        </div>
+
+                                        <p className="text-sm text-[#666666] mt-4">
+                                            Correction depends on severity and cure stage of FUSION.
+                                        </p>
+                                    </div>
+
+                                    {/* Cure Timing Rules */}
+                                    <div className="bg-blue-50 p-6 rounded-2xl mb-6">
+                                        <h4 className="font-bold text-sm mb-3">Cure Timing Rules</h4>
+
+                                        <ul className="text-sm text-[#666666] space-y-2">
+                                            <li>
+                                                <strong>Light Errors:</strong> Can typically be corrected the next day
+                                            </li>
+                                            <li>
+                                                <strong>Medium / Heavy Errors:</strong> Require full cure (~2 weeks) OR accelerated cure (heat lamp)
+                                            </li>
+                                        </ul>
+
+                                        <div className="mt-4 p-4 bg-white rounded-xl border border-blue-100">
+                                            <p className="text-sm font-bold text-[#272727]">
+                                                Critical Rule:
+                                            </p>
+                                            <p className="text-sm text-[#666666] mt-1">
+                                                Do not attempt aggressive correction before proper cure—this will make the issue worse.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Why Issues Happen */}
+                                    <div className="bg-gray-50 p-6 rounded-2xl mb-6">
+                                        <h4 className="font-bold text-sm mb-3">Why Application Issues Happen</h4>
+
+                                        <p className="text-sm font-bold text-[#272727] mb-2">1. Surface-Related</p>
+                                        <ul className="text-sm text-[#666666] mb-4 space-y-1">
+                                            <li>• Repainted or compromised clearcoat</li>
+                                            <li>• Soft, reactive or uneven surfaces</li>
+                                        </ul>
+
+                                        <p className="text-sm font-bold text-[#272727] mb-2">2. Application Technique (Most Common)</p>
+                                        <ul className="text-sm text-[#666666] space-y-1">
+                                            <li>• Too much product → runs, drips</li>
+                                            <li>• Too little product → streaking, light spots</li>
+                                        </ul>
+
+                                        <p className="text-sm text-[#272727] mt-4 font-medium">
+                                            Core Principle: Apply as thick as possible without creating defects
+                                        </p>
+                                    </div>
+
+                                    {/* Light Errors */}
+                                    <div className="bg-green-50 p-6 rounded-2xl mb-6">
+                                        <h4 className="font-bold text-sm mb-2">Light Errors</h4>
+
+                                        <p className="text-sm text-[#666666] mb-2">
+                                            Examples:
+                                        </p>
+                                        <ul className="text-sm text-[#666666] mb-3 space-y-1">
+                                            <li>• Light streaking</li>
+                                            <li>• Minor texture</li>
+                                            <li>• Slight absorption</li>
+                                        </ul>
+
+                                        <p className="text-sm font-bold text-[#272727]">Correction:</p>
+                                        <ul className="text-sm text-[#666666] mt-1">
+                                            <li>• Next day correction</li>
+                                            <li>• Light polish</li>
+                                        </ul>
+                                    </div>
+
+                                    {/* Medium Errors */}
+                                    <div className="bg-yellow-50 p-6 rounded-2xl mb-6">
+                                        <h4 className="font-bold text-sm mb-2">Medium Errors</h4>
+
+                                        <p className="text-sm text-[#666666] mb-2">Examples:</p>
+                                        <ul className="text-sm text-[#666666] mb-3 space-y-1">
+                                            <li>• Visible streaks</li>
+                                            <li>• Light lines</li>
+                                            <li>• Uneven finish</li>
+                                        </ul>
+
+                                        <p className="text-sm font-bold text-[#272727] mb-2">Correction Process:</p>
+                                        <ol className="text-sm text-[#666666] space-y-1">
+                                            <li>1. Allow proper cure</li>
+                                            <li>2. Sand</li>
+                                            <li>3. Refine</li>
+                                            <li>4. Polish</li>
+                                        </ol>
+                                    </div>
+
+                                    {/* Heavy Errors */}
+                                    <div className="bg-red-50 p-6 rounded-2xl mb-6">
+                                        <h4 className="font-bold text-sm mb-2">Heavy Errors</h4>
+
+                                        <p className="text-sm text-[#666666] mb-2">Examples:</p>
+                                        <ul className="text-sm text-[#666666] mb-3 space-y-1">
+                                            <li>• Runs</li>
+                                            <li>• Drips</li>
+                                            <li>• Heavy buildup</li>
+                                        </ul>
+
+                                        <p className="text-sm font-bold text-[#272727] mb-2">Correction Process:</p>
+                                        <ol className="text-sm text-[#666666] space-y-1">
+                                            <li>1. Full cure or lamp cure</li>
+                                            <li>2. Sand and level</li>
+                                            <li>3. Refine surface</li>
+                                            <li>4. Reapply and blend FUSION</li>
+                                        </ol>
+                                    </div>
+
+                                    {/* Critical Rule */}
+                                    <div className="bg-[#272727] p-6 rounded-2xl text-white mb-6">
+                                        <h4 className="font-bold text-sm mb-2">Critical Rule</h4>
+
+                                        <p className="text-sm text-white/80 leading-relaxed">
+                                            The best way to avoid application issues is to check your work and never leave a panel to cure overnight.
+                                            If issues occur, strip and reapply—this will always save time and energy.
+                                        </p>
+                                    </div>
+
+                                    {/* Complete Button */}
+                                    <div className="flex justify-end mt-6">
+                                        <Button
+                                            onClick={() => markComplete('fusion_correcting_application_issues')}
+                                            className="rounded-xl px-8 h-10 bg-[#272727] text-white"
+                                        >
+                                            Section Completed
                                         </Button>
                                     </div>
                                 </Card>
                             </div>
-
                             {/* Final Note */}
                             <Card className="p-6 rounded-2xl bg-gray-50">
                                 <h3 className="text-lg font-bold text-[#272727] mb-4">FINAL NOTE</h3>
@@ -1348,18 +1610,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                         {/* Completion Footer */}
                         <div className="py-12">
-                            <Card className="p-8 rounded-2xl bg-[#272727] text-white text-center">
-                                <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mx-auto mb-6">
-                                    <CheckCircle className="w-8 h-8 text-[#0EA0DC]" />
+                            <Card className="p-12 rounded-2xl bg-[#272727] text-white text-center">
+                                <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center mx-auto mb-8">
+                                    <CheckCircle className="w-10 h-10 text-[#0EA0DC]" />
                                 </div>
-                                <h2 className="text-2xl font-bold mb-4">Congratulations! You have completed training for FUSION.</h2>
-                                <p className="text-white/70 text-sm mb-8">
-                                    On site and advanced training are always available and recommended to sharpen your technical skills.
-                                </p>
-                                <a href="/support" className="text-[#0EA0DC] text-sm mb-8 block">
-                                    Contact your Partner for more details.
-                                </a>
-                                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <h2 className="text-3xl sm:text-4xl font-bold mb-10">Congratulations! You have completed this course!</h2>
+                                <div className="flex justify-center">
                                     <Button
                                         onClick={async () => {
                                             try {
@@ -1369,12 +1625,9 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             }
                                             onBack();
                                         }}
-                                        className="bg-white text-[#272727] hover:bg-gray-100"
+                                        className="bg-white text-[#272727] hover:bg-gray-100 rounded-xl px-16 py-6 h-auto text-lg font-bold uppercase tracking-widest shadow-xl hover:shadow-2xl transition-all duration-300"
                                     >
-                                        Finished
-                                    </Button>
-                                    <Button variant="outline" className="border-white text-white hover:bg-[#0EA0DC]" onClick={() => window.open(FusionPdf, '_blank')}>
-                                        DOWNLOAD PDF
+                                        Finish
                                     </Button>
                                 </div>
                             </Card>

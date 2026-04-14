@@ -26,8 +26,7 @@ const sections: Section[] = [
         id: "shop_profile",
         title: "Section A: Shop Profile",
         subsections: [
-            { id: "shop_business_info", title: "Business Information" },
-            { id: "shop_contact_details", title: "Contact Details" }
+            { id: "shop_environment", title: "Shop Environment" }
         ]
     },
     {
@@ -55,7 +54,7 @@ const sections: Section[] = [
 
 export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
     const { user, setUser } = useAuth();
-    const [activeSub, setActiveSub] = useState("shop_business_info");
+    const [activeSub, setActiveSub] = useState("shop_environment");
     const [completedSteps, setCompletedSteps] = useState<string[]>([]);
 
     const totalSteps = sections.reduce((acc, s) => acc + (s.subsections?.length || 0), 0);
@@ -198,17 +197,19 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                         {/* Sections Mapping */}
                         {sections.map((section) => (
                             <div key={section.id} className="space-y-8">
-                                {section.subsections?.map((sub) => (
+                                {section.subsections?.map((sub, index) => (
                                     <div key={sub.id} id={sub.id} className="scroll-mt-32">
                                         <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
-                                            <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
-                                                {section.title}
-                                            </Badge>
+                                            {index === 0 && (
+                                                <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
+                                                    {section.title}
+                                                </Badge>
+                                            )}
                                             
                                             {section.id === 'shop_profile' && (
                                                 <>
                                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
-                                                        Required Items: {sub.title}
+                                                        SHOP ENVIRONMENT
                                                     </h2>
                                                     <div className="space-y-6 mb-10">
                                                         <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
@@ -245,7 +246,7 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                                             {sub.id === 'shop_restoration_products' && (
                                                 <>
                                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
-                                                        Restoration & Protection Products
+                                                       SkyGloss Proudcts
                                                     </h2>
                                                     <div className="bg-gray-50 p-6 rounded-2xl mb-8">
                                                         <p className="text-sm text-[#272727] font-medium leading-relaxed mb-4">
@@ -326,7 +327,7 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                                                     onClick={() => markComplete(sub.id)}
                                                     className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes(sub.id) ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                                 >
-                                                    {completedSteps.includes(sub.id) ? <><CheckCircle className="w-5 h-5 mr-2" /> Protocol Verified</> : 'Verify Standard'}
+                                                    {completedSteps.includes(sub.id) ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                                 </Button>
                                             </div>
                                         </Card>
@@ -337,15 +338,12 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
 
                         {/* Completion Footer */}
                         <div className="py-12">
-                            <Card className="p-8 rounded-2xl bg-[#272727] text-white text-center">
-                                <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mx-auto mb-6">
-                                    <CheckCircle className="w-8 h-8 text-[#0EA0DC]" />
+                            <Card className="p-12 rounded-2xl bg-[#272727] text-white text-center">
+                                <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center mx-auto mb-8">
+                                    <CheckCircle className="w-10 h-10 text-[#0EA0DC]" />
                                 </div>
-                                <h2 className="text-2xl font-bold mb-4">Congratulations! You have completed the SkyGloss Shop Setup.</h2>
-                                <p className="text-white/70 text-sm mb-8">
-                                    Your shop environment is now configured according to SkyGloss professional standards. You are ready to proceed with advanced training modules.
-                                </p>
-                                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <h2 className="text-3xl sm:text-4xl font-bold mb-10">Congratulations! You have completed this course!</h2>
+                                <div className="flex justify-center">
                                     <Button
                                         onClick={async () => {
                                             try {
@@ -355,12 +353,9 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                                             }
                                             onBack();
                                         }}
-                                        className="bg-white text-[#272727] hover:bg-gray-100"
+                                        className="bg-white text-[#272727] hover:bg-gray-100 rounded-xl px-16 py-6 h-auto text-lg font-bold uppercase tracking-widest shadow-xl hover:shadow-2xl transition-all duration-300"
                                     >
-                                        Finished
-                                    </Button>
-                                    <Button variant="outline" className="border-white text-white hover:bg-[#0EA0DC]" onClick={() => window.open('https://portal.skygloss.com/support', '_blank')}>
-                                        CONTACT SUPPORT
+                                        Finish
                                     </Button>
                                 </div>
                             </Card>

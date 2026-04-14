@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { Country } from 'country-state-city';
 import { ArrowLeft, Send, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -19,12 +20,14 @@ interface OrderRequestPageProps {
 export function OrderRequestPage({ cart, onBack, onComplete }: OrderRequestPageProps) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const countries = useMemo(() => Country.getAllCountries(), []);
 
   // Pre-fill from user profile if available
   const [email, setEmail] = useState(user?.email || "");
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
   const [country, setCountry] = useState(user?.country || "");
+  const [callingCode, setCallingCode] = useState("");
 
   const [address, setAddress] = useState("");
   const [address2, setAddress2] = useState("");
@@ -32,6 +35,14 @@ export function OrderRequestPage({ cart, onBack, onComplete }: OrderRequestPageP
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [shippingPhone, setShippingPhone] = useState(user?.phoneNumber || "");
+
+  // Auto-set calling code from user's country on mount
+  useEffect(() => {
+    if (user?.country) {
+      const countryObj = countries.find(c => c.name === user.country);
+      if (countryObj) setCallingCode(`+${countryObj.phonecode}`);
+    }
+  }, [user?.country, countries]);
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -62,7 +73,7 @@ export function OrderRequestPage({ cart, onBack, onComplete }: OrderRequestPageP
           state,
           zipCode,
           country,
-          phoneNumber: shippingPhone
+          phoneNumber: callingCode ? `${callingCode} ${shippingPhone}` : shippingPhone
         }
       };
 
@@ -109,7 +120,7 @@ export function OrderRequestPage({ cart, onBack, onComplete }: OrderRequestPageP
           </Button>
           <h1 className="text-3xl text-[#272727]">Request Order</h1>
           <p className="text-[#666666] mt-2">
-            Submit your order request for review. No payment is required at this stage.
+Submit your order request here. An invoice and payment options will be sent to you separately. No payment is required as this time. 
           </p>
         </motion.div>
 
@@ -227,27 +238,51 @@ export function OrderRequestPage({ cart, onBack, onComplete }: OrderRequestPageP
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm text-[#272727] mb-2">Country</label>
-                      <Input
-                        type="text"
+                      <select
                         value={country}
-                        onChange={(e) => setCountry(e.target.value)}
-                        className="border-[#0EA0DC]/30 rounded-lg bg-gray-50"
-                        placeholder="Country"
+                        onChange={(e) => {
+                          const countryName = e.target.value;
+                          setCountry(countryName);
+                          const countryObj = countries.find(c => c.name === countryName);
+                          if (countryObj) {
+                            setCallingCode(`+${countryObj.phonecode}`);
+                          } else {
+                            setCallingCode("");
+                          }
+                        }}
+                        className="w-full px-4 h-10 bg-white border border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors appearance-none"
                         required
-                        readOnly={!!user?.country} // Read-only if coming from user profile to prevent switching logic bypass? No, let them edit if they moved, but the logic depends on LOGIN country, not shipping country usually. User said "kisi aur country se login hota he".
-                      />
-                      {/* Note: We allow editing country for shipping, but the *Access* logic was handled at dashboard entry. */}
+                      >
+                        <option value="">Select Country</option>
+                        {countries.map(c => (
+                          <option key={c.isoCode} value={c.name}>{c.name}</option>
+                        ))}
+                      </select>
                     </div>
                     <div>
                       <label className="block text-sm text-[#272727] mb-2">Phone Number</label>
-                      <Input
-                        type="tel"
-                        value={shippingPhone}
-                        onChange={(e) => setShippingPhone(e.target.value)}
-                        placeholder="+1 (555) 000-0000"
-                        className="border-[#0EA0DC]/30 rounded-lg"
-                        required
-                      />
+                      <div className="flex gap-2">
+                        <select
+                          value={callingCode}
+                          onChange={(e) => setCallingCode(e.target.value)}
+                          className="w-[110px] shrink-0 px-2 h-10 bg-white border border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors appearance-none text-sm"
+                        >
+                          <option value="">Code</option>
+                          {countries.map(c => (
+                            <option key={c.isoCode} value={`+${c.phonecode}`}>
+                              {c.isoCode} +{c.phonecode}
+                            </option>
+                          ))}
+                        </select>
+                        <Input
+                          type="tel"
+                          value={shippingPhone}
+                          onChange={(e) => setShippingPhone(e.target.value)}
+                          placeholder="234 567 8900"
+                          className="border-[#0EA0DC]/30 rounded-lg flex-1"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
 

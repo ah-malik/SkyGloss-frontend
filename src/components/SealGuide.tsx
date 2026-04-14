@@ -216,7 +216,7 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('clean')}
                                             className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('clean') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                         >
-                                            {completedSteps.includes('clean') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('clean') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -245,7 +245,7 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('residue')}
                                             className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('residue') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                         >
-                                            {completedSteps.includes('residue') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('residue') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -274,7 +274,7 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('conditions')}
                                             className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('conditions') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                         >
-                                            {completedSteps.includes('conditions') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('conditions') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -319,7 +319,7 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('apply')}
                                             className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('apply') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                         >
-                                            {completedSteps.includes('apply') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('apply') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </div>
@@ -340,7 +340,7 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                                                 onClick={() => markComplete('maintenance')}
                                                 className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('maintenance') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                             >
-                                                {completedSteps.includes('maintenance') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                                {completedSteps.includes('maintenance') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                             </Button>
                                         </div>
                                     </div>
@@ -351,18 +351,13 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                         </div>
 
                         {/* Completion Footer */}
-                        <div className="mt-8">
-                            <Card className="p-4 rounded-lg border-none bg-[#f8fafc] text-center space-y-10 relative overflow-hidden border border-gray-100 shadow-inner">
-                                <div className="w-20 h-20 rounded-3xl bg-white flex items-center justify-center mx-auto shadow-2xl transform rotate-6 border border-gray-100">
+                        <div className="py-12">
+                            <Card className="p-12 rounded-2xl bg-[#272727] text-white text-center">
+                                <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center mx-auto mb-8">
                                     <CheckCircle className="w-10 h-10 text-[#0EA0DC]" />
                                 </div>
-                                <div className="space-y-6 relative z-10">
-                                    <h2 className="text-4xl font-bold uppercase tracking-tighter leading-none text-[#272727]">Standard Operation Complete</h2>
-                                    <p className="text-[#666666] max-w-xl mx-auto font-medium leading-relaxed">
-                                        You’ve now completed the SkyGloss SEAL application — enhancing hydrophobicity and revitalizing your coating for superior water-repellency and shine.
-                                    </p>
-                                </div>
-                                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 relative z-10 pt-4">
+                                <h2 className="text-3xl sm:text-4xl font-bold mb-10">Congratulations! You have completed this course!</h2>
+                                <div className="flex justify-center">
                                     <Button
                                         onClick={async () => {
                                             try {
@@ -372,12 +367,9 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
                                             }
                                             onBack();
                                         }}
-                                        className="rounded-xl p-4 px-12 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all"
+                                        className="bg-white text-[#272727] hover:bg-gray-100 rounded-xl px-16 py-6 h-auto text-lg font-bold uppercase tracking-widest shadow-xl hover:shadow-2xl transition-all duration-300"
                                     >
-                                        Finished
-                                    </Button>
-                                    <Button variant="outline" className="rounded-xl p-4 px-12 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all" onClick={() => window.open(SealPdf, '_blank')}>
-                                        DOWNLOAD PDF
+                                        Finish
                                     </Button>
                                 </div>
                             </Card>

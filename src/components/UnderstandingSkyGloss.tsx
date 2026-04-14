@@ -246,7 +246,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('under_philosophy')}
                                             className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_philosophy') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('under_philosophy') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Understanding'}
+                                            {completedSteps.includes('under_philosophy') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -316,7 +316,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('under_evolution')}
                                             className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_evolution') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('under_evolution') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('under_evolution') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -356,7 +356,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('under_physics')}
                                             className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_physics') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('under_physics') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Realism'}
+                                            {completedSteps.includes('under_physics') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -396,7 +396,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('under_limitations')}
                                             className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_limitations') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('under_limitations') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('under_limitations') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -436,7 +436,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('under_process')}
                                             className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_process') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('under_process') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Process'}
+                                            {completedSteps.includes('under_process') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -473,7 +473,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('under_expectations')}
                                             className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_expectations') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('under_expectations') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('under_expectations') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -529,7 +529,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('under_permanence')}
                                             className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_permanence') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('under_permanence') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Logic'}
+                                            {completedSteps.includes('under_permanence') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -572,7 +572,7 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('under_do_dont')}
                                             className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_do_dont') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('under_do_dont') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Mark Complete'}
+                                            {completedSteps.includes('under_do_dont') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
                                 </Card>
@@ -620,27 +620,22 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                             onClick={() => markComplete('under_standard')}
                                             className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('under_standard') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white hover:bg-black'}`}
                                         >
-                                            {completedSteps.includes('under_standard') ? <><CheckCircle className="w-5 h-5 mr-2" /> Verified</> : 'Verify Logic'}
+                                            {completedSteps.includes('under_standard') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                         </Button>
                                     </div>
+
                                 </Card>
                             </div>
                         </div>
 
                         {/* Completion Footer */}
-                        <div className="py-20">
-                            <Card className="p-8 rounded-lg border-none bg-[#f8fafc] text-center space-y-10 relative overflow-hidden border border-gray-100 shadow-inner">
-                                <div className="w-20 h-20 rounded-3xl bg-white flex items-center justify-center mx-auto shadow-2xl transform rotate-6 border border-gray-100">
-                                    <CheckCircle className="w-10 h-10 text-emerald-500" />
+                        <div className="py-12">
+                            <Card className="p-12 rounded-2xl bg-[#272727] text-white text-center">
+                                <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center mx-auto mb-8">
+                                    <CheckCircle className="w-10 h-10 text-[#0EA0DC]" />
                                 </div>
-                                <div className="space-y-6 relative z-10">
-                                    <h2 className="text-4xl font-bold uppercase tracking-tighter leading-none text-[#272727]">System Deployed</h2>
-                                    <p className="text-[#666666] max-w-xl mx-auto font-medium leading-relaxed">
-                                        You’ve now completed the full Understanding SkyGloss
-                                        — forming a deep-gloss, self-healing, factory-grade finish.
-                                    </p>
-                                </div>
-                                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 relative z-10 pt-4">
+                                <h2 className="text-3xl sm:text-4xl font-bold mb-10">Congratulations! You have completed this course!</h2>
+                                <div className="flex justify-center">
                                     <Button
                                         onClick={async () => {
                                             try {
@@ -650,12 +645,9 @@ export function UnderstandingSkyGloss({ onBack }: { onBack: () => void }) {
                                             }
                                             onBack();
                                         }}
-                                        className="rounded-xl p-4 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all"
+                                        className="bg-white text-[#272727] hover:bg-gray-100 rounded-xl px-16 py-6 h-auto text-lg font-bold uppercase tracking-widest shadow-xl hover:shadow-2xl transition-all duration-300"
                                     >
-                                        Finished
-                                    </Button>
-                                    <Button variant="outline" className="rounded-xl p-4 h-14 bg-[#272727] text-white font-bold hover:bg-[#0EA0DC] shadow-xl text-xs uppercase tracking-widest transition-all" onClick={() => window.open(UnderstandingPdf, '_blank')}>
-                                        DOWNLOAD PDF
+                                        Finish
                                     </Button>
                                 </div>
                             </Card>

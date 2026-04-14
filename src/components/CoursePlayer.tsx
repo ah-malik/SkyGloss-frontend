@@ -279,13 +279,13 @@ export function CoursePlayer({ onBack, productName = "FUSION" }: CoursePlayerPro
                 </div>
 
                 <div className="flex gap-3">
-                  <Button
+                    <Button
                     onClick={handleMarkComplete}
                     disabled={completedLessons.includes(currentLesson)}
                     className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] disabled:opacity-50"
                   >
                     <CheckCircle className="w-4 h-4 mr-2" />
-                    {completedLessons.includes(currentLesson) ? "Completed" : "Mark as Complete"}
+                    {completedLessons.includes(currentLesson) ? "Section Completed" : "Section Completed"}
                   </Button>
                   {currentLesson < course.lessons.length && (
                     <Button
@@ -382,6 +382,38 @@ export function CoursePlayer({ onBack, productName = "FUSION" }: CoursePlayerPro
                 </div>
               </Card>
             </motion.div>
+            {/* Completion Footer */}
+            {progress === 100 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="py-12"
+              >
+                <Card className="p-12 rounded-2xl bg-[#272727] text-white text-center">
+                  <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center mx-auto mb-8">
+                    <CheckCircle className="w-10 h-10 text-[#0EA0DC]" />
+                  </div>
+                  <h2 className="text-3xl sm:text-4xl font-bold mb-10">Congratulations! You have completed this course!</h2>
+                  <div className="flex justify-center">
+                    <Button
+                      onClick={async () => {
+                        try {
+                          const courseKey = productName.toUpperCase().replace(/\s+/g, '_');
+                          await api.patch('/users/me/complete-course', { courseName: courseKey });
+                        } catch (err) {
+                          console.error("Failed to mark course as complete", err);
+                        }
+                        onBack();
+                      }}
+                      className="bg-white text-[#272727] hover:bg-gray-100 rounded-xl px-16 py-6 h-auto text-lg font-bold uppercase tracking-widest shadow-xl hover:shadow-2xl transition-all duration-300"
+                    >
+                      Finish
+                    </Button>
+                  </div>
+                </Card>
+              </motion.div>
+            )}
           </div>
 
           {/* Sidebar - Course Curriculum */}

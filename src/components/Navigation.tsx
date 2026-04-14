@@ -1,6 +1,6 @@
 // Last Updated: 2026-01-26
 import { motion } from "motion/react";
-import { LogOut, FileText, HelpCircle, Menu, X, ShoppingCart, ShoppingBag, Package } from "lucide-react";
+import { LogOut, FileText, HelpCircle, Menu, X, ShoppingCart, ShoppingBag, Package, GraduationCap } from "lucide-react";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { useState } from "react";
@@ -14,6 +14,7 @@ interface NavigationProps {
   onNavigateResources?: () => void;
   onNavigateSupport?: () => void;
   onNavigateDashboard?: () => void;
+  onNavigateCourses?: () => void;
   cartCount?: number;
   onCartClick?: () => void;
   showCart?: boolean;
@@ -25,6 +26,7 @@ export function Navigation({
   onNavigateResources,
   onNavigateSupport,
   onNavigateDashboard,
+  onNavigateCourses,
   cartCount = 0,
   onCartClick,
   showCart = false
@@ -77,7 +79,7 @@ export function Navigation({
             />
             <div className="hidden sm:block h-8 w-px bg-[#0EA0DC]/20"></div>
             <div className="hidden sm:block">
-              <p className="text-xs text-[#666666]">Shop Portal</p>
+              <p className="text-xs text-[#666666]">{accessType === "certified_shop" ? "Shop Portal" : "Partner Portal"}</p>
             </div>
           </motion.button>
 
@@ -93,6 +95,15 @@ export function Navigation({
                 >
                   <roleInfo.Icon className="w-4 h-4 mr-2" />
                   {roleInfo.label}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onNavigateCourses}
+                  className="text-[#666666] hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200"
+                >
+                  <GraduationCap className="w-4 h-4 mr-2" />
+                  Courses
                 </Button>
                 {showCart && (
                   <Button
@@ -207,6 +218,14 @@ export function Navigation({
               >
                 <roleInfo.Icon className="w-4 h-4 mr-3" />
                 {roleInfo.label}
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => handleNavClick(onNavigateCourses)}
+                className="justify-start text-[#666666] hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
+              >
+                <GraduationCap className="w-4 h-4 mr-3" />
+                Courses
               </Button>
               <Button
                 variant="ghost"

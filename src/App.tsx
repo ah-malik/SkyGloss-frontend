@@ -51,6 +51,13 @@ export default function App() {
         onNavigateDashboard={() => {
           navigate(getDashboardPath(accessType));
         }}
+        onNavigateCourses={() => {
+          if (accessType === 'certified_shop') {
+            navigate('/dashboard/shop/courses');
+          } else {
+            navigate('/dashboard/partner/courses');
+          }
+        }}
         cartCount={cartCount}
         onCartClick={() => setShowCartSheet(true)}
         showCart={location.pathname.includes("dashboard")}
