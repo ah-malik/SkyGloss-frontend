@@ -73,7 +73,8 @@ const sections: Section[] = [
         id: "fusion_extra_videos",
         title: "Additional FUSION Application Videos",
         subsections: [
-            { id: "fusion_extra_bmw", title: "BLUE BMW SUV" }
+            { id: "fusion_extra_bmw", title: "BLUE BMW SUV" },
+            { id: "fusion_application_videos", title: "FUSION APPLICATION VIDEOS" }
         ]
     },
     {
@@ -112,6 +113,26 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                 { name: "BMW SUV - Quarter Panel.mp4", url: "" },
                 { name: "BMW SUV - Trunk.mp4", url: "" },
                 { name: "BMW SUV - Roof.mp4", url: "" }
+            ]
+        },
+        {
+            id: "fusion_application_videos",
+            label: "FUSION Application Videos",
+            description: "Detailed application and after-shot videos.",
+            videos: [
+                { name: "Roof After Shot", url: "https://drive.google.com/file/d/1w7PfWwt2GN--cQuATlyz_EFrdAfHfRw4/preview", isEmbed: true },
+                { name: "Passenger Side After Shot", url: "https://drive.google.com/file/d/1KkHlAw6sL8r4j34Bu17rouD7K3-3aaiB/preview", isEmbed: true },
+                { name: "Hood Before Shot", url: "https://drive.google.com/file/d/1Aj6KbpIhAPvLEPVC9lGgTJe6aQhikqCl/preview", isEmbed: true },
+                { name: "Hood After Shot", url: "https://drive.google.com/file/d/1iGk2sq-YPuTpPcPQ2RJq-ErZdzT_w_aF/preview", isEmbed: true },
+                { name: "Hood After Shot 2", url: "https://drive.google.com/file/d/1VcPutgURxnmJPZl_IXC9uIFZOpAzLrTR/preview", isEmbed: true },
+                { name: "Roof Application", url: "https://drive.google.com/file/d/1OPEFLbL3T-hBzIX1VRLrMI6dYIjAZccd/preview", isEmbed: true },
+                { name: "Rear Hatch Application", url: "https://drive.google.com/file/d/1phIaNTfw8PMX1aETegY-FTZMC-b4i_z6/preview", isEmbed: true },
+                { name: "Passenger Side Application", url: "https://drive.google.com/file/d/1Ie8tXhcLVbnPcJPgDQACvJ6M_wsjcjJE/preview", isEmbed: true },
+                { name: "Hood Application", url: "https://drive.google.com/file/d/194f1pOAnwDLIi_M-E6DqaJxiRsTzrhuN/preview", isEmbed: true },
+                { name: "Front Fender Application", url: "https://drive.google.com/file/d/1uOZZ0QfBlfRcBown6Kyq7jnTIG0-PSZA/preview", isEmbed: true },
+                { name: "Door Application", url: "https://drive.google.com/file/d/1nUT0d4GhmFQLYOfF_-H6zjjeNEWx3vL_/preview", isEmbed: true },
+                { name: "Bumper Application", url: "https://drive.google.com/file/d/1PRnv4RrMDffwdFEjQu2HvjRLOU4NB8Fi/preview", isEmbed: true },
+                { name: "Full Vehicle After Shot", url: "https://drive.google.com/file/d/1RluzLYA4N_2QQSrF8RJIF2MqkiNAEiUG/preview", isEmbed: true }
             ]
         }
     ];
@@ -514,11 +535,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <p className="text-sm text-[#666666] mb-4">• If the vehicle was extremely dirty, it might be best to do a heavy power wash.</p>
                                     </div>
 
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411487/Step_1_Light_Wash_nszzj0.mp4"
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/1cbiEUe-_ie-vtoC0vFvw2fkd6QNjpDBp/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 1: Light Wash"
                                         />
                                     </div>
 
@@ -580,12 +602,29 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </ul>
                                     </div>
 
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411487/Step_2_Vehicle_Inspectioin_stbz7x.mp4"
-                                        />
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                            <p className="text-xs font-bold text-[#666666] uppercase tracking-wider">Current Condition Clearcoat</p>
+                                            <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                                <iframe
+                                                    src="https://drive.google.com/file/d/1Zj7N0AA0MiW7g1SlwbnS-79OXTFy8vVr/preview"
+                                                    className="w-full h-full"
+                                                    allow="autoplay"
+                                                    title="Current Condition Clearcoat"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <p className="text-xs font-bold text-[#666666] uppercase tracking-wider">Chemical Test</p>
+                                            <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                                <iframe
+                                                    src="https://drive.google.com/file/d/1OUDmd-IK7KFKFv6gazTVL_65a1Vs0Bgf/preview"
+                                                    className="w-full h-full"
+                                                    allow="autoplay"
+                                                    title="Chemical Test"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div className="flex justify-end mt-4">
@@ -711,11 +750,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </ul>
                                     </div>
 
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411496/Step_4_Exfoliate_njuvqd.mp4"
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/12lkcXGt8DjNLqbmyRvjnBTVC4qhdcnmE/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 4: Exfoliate"
                                         />
                                     </div>
 
@@ -767,11 +807,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </ul>
                                     </div>
 
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411468/Step_5_Heavy_Wash_usilnv.mp4"
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/1kNYe9qHgPvOGi2b8vrEKVeIl_JFCa_nC/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 5: Final Wash"
                                         />
                                     </div>
 
@@ -827,11 +868,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </ul>
                                     </div>
 
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411482/Step_6_Etch_oscdyt.mp4"
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/1FtekQX-s6ICBnptbziQVseW2pOVHYqWJ/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 6: Etch"
                                         />
                                     </div>
 
@@ -872,11 +914,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             <li>• Not clean lines with your tape and having the tape touch areas that you actually want FUSION on. Make sure to be clean and have straight lines when masking.</li>
                                         </ul>
                                     </div>
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411454/Step_12_Quality_Check_hf90jk.mp4"
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/14pZjbv9t78iKhbpTxzkW3R9Pb9bFAY1m/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 7: Mask"
                                         />
                                     </div>
 
@@ -919,11 +962,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <p className="text-sm text-[#666666] mb-4">• Good for 2 hours after mixing</p>
                                     </div>
 
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411429/Step_8_Mixing_Fusion_qktbaz.mp4"
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/1dynV63p_E-hTcQ7sGO7sXhG8LXNpWFkm/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 8: Mixing Fusion"
                                         />
                                     </div>
 
@@ -955,11 +999,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <p className="text-sm text-[#666666]">2 - 3 applicators are needed per vehicle. Your applicator will get dirty if you did not do a good preparation job. Never apply to a panel with a dirty or contaminated applicator if the applicator gets dropped or picks up contamination throw it out and get a new one.</p>
                                     </div>
 
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411427/Step_9_First_Pour_uduqeg.mp4"
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/1lsnJkz89FG6fb5RcsXWlR7QTuKbsh04V/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 9: First Pour"
                                         />
                                     </div>
 
@@ -991,11 +1036,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <p className="text-sm text-[#666666]">• Pressing too much with the tack cloth can actually leave residue onto the panel. There should be a very light pass over the panel as you pick up the remaining amount of dirt and debris.</p>
                                     </div>
 
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411418/Step_10_Tack_Cloth_y9gzzx.mp4"
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/1Q5h3-g18K6dM4MSLq4CuVK67sBUyYtJn/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 10: Tack Cloth"
                                         />
                                     </div>
 
@@ -1056,11 +1102,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             <li className="font-bold text-red-600">DO NOT LEAVE MISTAKES TO CURE!</li>
                                         </ul>
                                     </div>
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411411/Step_11_Apply_Fusion_qjonbg.mp4"
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/1r6KdoTu5TD6rLpA39bAX_UqJcEXhXhXa/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 11: Applying Fusion"
                                         />
                                     </div>
 
@@ -1123,7 +1170,14 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                                             </h5>
                                                         </div>
                                                         <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group border border-gray-100">
-                                                            {video.url ? (
+                                                            {(video as any).isEmbed ? (
+                                                                <iframe
+                                                                    src={video.url}
+                                                                    className="w-full h-full"
+                                                                    allow="autoplay"
+                                                                    title={video.name}
+                                                                />
+                                                            ) : video.url ? (
                                                                 <video
                                                                     className="w-full h-full object-cover"
                                                                     controls
@@ -1165,11 +1219,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <p className="text-sm text-[#666666] font-bold mb-4">NEVER, leave a poor application or an application issue for another day. Remove it immediately assess the problem and redo it. This is a lot quicker than trying to fix it later.</p>
 
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411454/Step_12_Quality_Check_hf90jk.mp4"
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/1O3sit6QeOAHYBJCOOGTBjS4l4HlLxzlW/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 12: Quality Check"
                                         />
                                     </div>
 
@@ -1214,11 +1269,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <h4 className="font-bold text-sm text-[#272727] mb-2">Common Mistakes</h4>
                                         <p className="text-sm text-[#666666]">• Not doing a thorough job leaving the inside and outside building up FUSION particles each time. Once it is not cleaned good once, it will never recover. Always clean thoroughly each and every time.</p>
                                     </div>
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411464/Step_13_Clean_Applicator_Bottle_yapl9s.mp4"
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/1zu1Hv0_SEM7EI9cC7yNaBqsY7c9skr9b/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 13: Cleaning Applicator Bottle"
                                         />
                                     </div>
 
@@ -1255,12 +1311,29 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                 <p className="text-sm text-[#666666]">Aftercare Handout: Make sure to give this to your customer to get the most out of their SkyGloss Service.</p>
                                 <a href="https://drive.google.com/file/d/1ebN3aN0JS90KizRVNjvG_zhrhVZjA2DD/view?usp=drive_link" className="text-xl font-bold text-[#272727] mb-2  bg-[#0ea0dc] text-white p-2 rounded-xl inline-block w-full text-center">Download Care Instructions</a>
-                                <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                    <video
-                                        className="w-full h-full object-cover"
-                                        controls
-                                        src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411502/Aftercare_xjyv47.mp4"
-                                    />
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <p className="text-xs font-bold text-[#666666] uppercase tracking-wider">Curing</p>
+                                        <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                            <iframe
+                                                src="https://drive.google.com/file/d/1HEWFMX5VINQ4sgd4yCEQ9mphInHUHXw3/preview"
+                                                className="w-full h-full"
+                                                allow="autoplay"
+                                                title="Curing"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <p className="text-xs font-bold text-[#666666] uppercase tracking-wider">Applying Seal</p>
+                                        <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                            <iframe
+                                                src="https://drive.google.com/file/d/16WFVva96Se-MfMNQVovO5WNXXJXVefZ-/preview"
+                                                className="w-full h-full"
+                                                allow="autoplay"
+                                                title="Applying Seal"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div className="flex justify-end mt-4">
@@ -1324,11 +1397,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </ul>
                                     </div>
 
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411491/Troubleshooting_Removing_Fusion_pn0itl.mp4"
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/12Ahwele5mp5CjHT72mvc7tW849pOIuvD/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Removing Fusion"
                                         />
                                     </div>
                                     <div className="bg-blue-50 p-6 rounded-2xl">
@@ -1354,7 +1428,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                             </div>
 
                             {/* Correcting Application Issues */}
-                            {/* <div id="fusion_issues" className="scroll-mt-32">
+                            <div id="fusion_issues" className="scroll-mt-32">
                                 <Card className="p-6 rounded-2xl border-l-4">
                                     <h3 className="text-xl font-bold text-[#272727] mb-2">Correcting Application Issues</h3>
 
@@ -1389,18 +1463,12 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </ul>
                                     </div>
 
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411480/Troubleshooting_Correcting_Application_Issues_zasrj3.mp4"
-                                        />
-                                    </div>
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative group">
-                                        <video
-                                            className="w-full h-full object-cover"
-                                            controls
-                                            src="https://res.cloudinary.com/dknnqrpgv/video/upload/v1771411468/Troubleshooting_Sticky_Application_vztdru.mp4"
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/1Hso8Q2q4dbu2E_4F86IY5MmetuUSUMDy/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Fixing Scratches After Application"
                                         />
                                     </div>
 
@@ -1413,7 +1481,8 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </Button>
                                     </div>
                                 </Card>
-                            </div> */}
+                            </div>
+
                             {/* =========================
     CORRECTING APPLICATION ISSUES (NEW CLIENT CONTENT)
 ========================= */}
@@ -1569,6 +1638,108 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                             Section Completed
                                         </Button>
                                     </div>
+                                </Card>
+                            </div>
+                            <div id="fusion_sticky_panels" className="scroll-mt-32">
+                                <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
+
+                                    <h3 className="text-xl font-bold text-[#272727] mb-2">
+                                        Sticky Panels
+                                    </h3>
+
+                                    {/* Overview */}
+                                    <div className="bg-gray-50 p-6 rounded-2xl mb-6">
+                                        <p className="text-sm text-[#666666] leading-relaxed">
+                                            Sticky panels are not an application mistake—they are a surface compatibility issue.
+                                        </p>
+                                    </div>
+
+                                    {/* Why It Happens */}
+                                    <div className="bg-gray-50 p-6 rounded-2xl mb-6">
+                                        <h4 className="font-bold text-sm mb-3">Why It Happens</h4>
+
+                                        <p className="text-sm font-bold text-[#272727] mb-2">Clearcoat Issues:</p>
+                                        <ul className="text-sm text-[#666666] mb-4 space-y-1">
+                                            <li>• Too soft</li>
+                                            <li>• Not chemically resistant</li>
+                                        </ul>
+
+                                        <p className="text-sm font-bold text-[#272727] mb-2">Paint System Reaction:</p>
+                                        <ul className="text-sm text-[#666666] mb-4 space-y-1">
+                                            <li>• Weak or unstable paint systems react with FUSION</li>
+                                        </ul>
+
+                                        <p className="text-sm font-bold text-[#272727] mb-2">ETCH Impact:</p>
+                                        <ul className="text-sm text-[#666666] space-y-1">
+                                            <li>• Excessive or aggressive ETCH</li>
+                                            <li>• Can soften the panel</li>
+                                            <li>• Can trigger unwanted reaction during application</li>
+                                        </ul>
+                                    </div>
+
+                                    {/* What You'll Notice */}
+                                    <div className="bg-yellow-50 p-6 rounded-2xl mb-6">
+                                        <h4 className="font-bold text-sm mb-2">What You’ll Notice</h4>
+
+                                        <ul className="text-sm text-[#666666] space-y-1">
+                                            <li>• Applicator dragging or sticking</li>
+                                            <li>• Product not flowing properly</li>
+                                            <li>• Surface feels “grabby” during install</li>
+                                        </ul>
+                                    </div>
+
+                                    {/* Correction Options */}
+                                    <div className="bg-blue-50 p-6 rounded-2xl mb-6">
+                                        <h4 className="font-bold text-sm mb-3">Correction Options</h4>
+
+                                        <div className="mb-4">
+                                            <p className="text-sm font-bold text-[#272727] mb-1">Option 1: Adjust Application</p>
+                                            <ul className="text-sm text-[#666666] space-y-1">
+                                                <li>• Use more product</li>
+                                                <li>• Work faster</li>
+                                                <li>• Create a slight barrier between applicator and surface</li>
+                                            </ul>
+                                        </div>
+
+                                        <div className="mb-4">
+                                            <p className="text-sm font-bold text-[#272727] mb-1">Option 2: Stop and Reassess</p>
+                                            <p className="text-sm text-[#666666] mb-1">If sticking continues:</p>
+                                            <ol className="text-sm text-[#666666] space-y-1">
+                                                <li>1. Allow panel to cure fully</li>
+                                                <li>2. Retry application</li>
+                                            </ol>
+                                        </div>
+
+                                        <div>
+                                            <p className="text-sm font-bold text-[#272727] mb-1">Option 3: Remove & Abandon FUSION</p>
+                                            <p className="text-sm text-[#666666] mb-1">If surface is not compatible:</p>
+                                            <ol className="text-sm text-[#666666] space-y-1">
+                                                <li>1. Remove FUSION</li>
+                                                <li>2. Polish panel</li>
+                                                <li>3. Do not reapply</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+
+                                    {/* Key Point */}
+                                    <div className="bg-[#272727] p-6 rounded-2xl text-white mb-6">
+                                        <h4 className="font-bold text-sm mb-2">Key Point</h4>
+
+                                        <p className="text-sm text-white/80 leading-relaxed">
+                                            Some paint systems simply do not have enough chemical resistance for FUSION to perform correctly.
+                                        </p>
+                                    </div>
+
+                                    {/* Complete Button */}
+                                    <div className="flex justify-end mt-6">
+                                        <Button
+                                            onClick={() => markComplete('fusion_sticky_panels')}
+                                            className="rounded-xl px-8 h-10 bg-[#272727] text-white"
+                                        >
+                                            Section Completed
+                                        </Button>
+                                    </div>
+
                                 </Card>
                             </div>
                             {/* Final Note */}
