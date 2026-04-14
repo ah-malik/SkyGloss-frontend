@@ -1307,8 +1307,18 @@ export function ShopDashboard({
                 {/* =========================
     CERTIFICATION COMPLETION CARD
 ========================= */}
-                <div >
-                  <Card className="p-1 pb-8 sm:p-12 rounded-3xl bg-white border border-gray-100 shadow-sm text-center relative overflow-hidden">
+                <div
+                  id="Congratulations-courses"
+                  onClick={isAllCoursesCompleted && !user?.isTrainingComplete ? handleTrainingComplete : undefined}
+                  className={`transition-all duration-500 ${isAllCoursesCompleted && !user?.isTrainingComplete
+                    ? "cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
+                    : user?.isTrainingComplete
+                      ? "cursor-default"
+                      : "cursor-not-allowed opacity-40 grayscale-[0.5]"
+                    }`}
+                >
+                  <Card className={`p-1 pb-8 sm:p-12 rounded-3xl bg-white border shadow-sm text-center relative overflow-hidden transition-colors ${isAllCoursesCompleted && !user?.isTrainingComplete ? "border-[#0EA0DC]/30 bg-gradient-to-br from-white to-[#0EA0DC]/5" : "border-gray-100"
+                    }`}>
 
                     {/* Image */}
                     <div className="flex justify-center mb-8">
@@ -1321,27 +1331,51 @@ export function ShopDashboard({
 
                     {/* Heading */}
                     <h2 className="text-xl px-2 sm:text-2xl font-bold text-[#272727] mb-4">
-                      Congratulations you've completed all the courses!
+                      {user?.isTrainingComplete
+                        ? "Verification Submitted!"
+                        : isAllCoursesCompleted
+                          ? "Congratulations! You've Completed All Courses"
+                          : "Complete All Courses to Proceed"}
                     </h2>
 
                     {/* Description */}
                     <p className="text-[#666666] text-sm sm:text-base max-w-2xl mx-auto mb-3 leading-relaxed">
-                      The next step is to get you in touch with a local representative to complete your certification.
+                      {user?.isTrainingComplete
+                        ? "Your partner has been notified. We will reach out shortly to finalize your certification."
+                        : isAllCoursesCompleted
+                          ? "Great job! You are now ready to notify your partner and finalize your certification."
+                          : "You must finish all the training modules listed above before you can request certification."}
                     </p>
 
                     <p className="text-[#666666] text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
-                      Click on Complete Certification below and we will make sure to get in touch with you right away.
+                      {user?.isTrainingComplete
+                        ? "You can continue exploring the dashboard while we process your request."
+                        : isAllCoursesCompleted
+                          ? "Click the button below to send a notification to your partner right away."
+                          : "Track your progress on each course card to see what's remaining."}
                     </p>
 
                     {/* Button */}
                     <Button
-                      onClick={() => {
-                        // trigger your action here (API call / modal / redirect)
-                        console.log("Certification Requested");
+                      disabled={!isAllCoursesCompleted || isSubmittingTraining || user?.isTrainingComplete}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleTrainingComplete();
                       }}
-                      className="bg-[#0EA0DC] mx-5 hover:bg-[#0b86b8] text-white px-10 h-12 rounded-xl font-bold uppercase tracking-wider shadow-md"
+                      className={`mx-5 px-10 h-12 rounded-xl font-bold uppercase tracking-wider shadow-md transition-all ${user?.isTrainingComplete
+                          ? "bg-emerald-500 text-white cursor-default"
+                          : "bg-[#0EA0DC] hover:bg-[#0b86b8] text-white"
+                        }`}
                     >
-                      Complete Certification
+                      {isSubmittingTraining ? (
+                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Finalizing...</>
+                      ) : user?.isTrainingComplete ? (
+                        <><CheckCircle className="w-4 h-4 mr-2" /> Training Verified</>
+                      ) : isAllCoursesCompleted ? (
+                        "Complete Certification"
+                      ) : (
+                        "Locked"
+                      )}
                     </Button>
 
                   </Card>
@@ -1361,7 +1395,7 @@ export function ShopDashboard({
 
                       <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
                         {/* Image Section */}
-                        <div className="shrink-0 w-full md:w-80">
+                        {/* <div className="shrink-0 w-full md:w-80">
                           <div className="relative">
                             <div className="absolute -inset-1 bg-gradient-to-r from-[#0EA0DC] to-[#0bcaf8] rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
                             <div className="relative bg-white rounded-3xl p-3 border border-gray-100 shadow-2xl">
@@ -1372,7 +1406,7 @@ export function ShopDashboard({
                               />
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         <div className="flex-1 text-center md:text-left space-y-6">
                           <div className="space-y-4">
