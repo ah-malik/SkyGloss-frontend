@@ -17,7 +17,13 @@ const normalizeName = (name: string) => {
         .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
         .replace(/ı/g, 'i') // Special handling for Turkish dotless i
         .replace(/İ/g, 'I'); // Special handling for Turkish dotted I
-};
+const europeanCountries = [
+    'austria', 'belgium', 'bulgaria', 'croatia', 'cyprus', 'czech republic', 'denmark', 
+    'estonia', 'finland', 'france', 'germany', 'greece', 'hungary', 'ireland', 'italy', 
+    'latvia', 'lithuania', 'luxembourg', 'malta', 'netherlands', 'poland', 'portugal', 
+    'romania', 'slovakia', 'slovenia', 'spain', 'sweden', 'united kingdom', 
+    'switzerland', 'norway', 'iceland', 'liechtenstein', 'monaco', 'san marino', 'andorra'
+];
 
 export function ShopRegistration() {
     const navigate = useNavigate();
@@ -104,7 +110,15 @@ export function ShopRegistration() {
             setIsLoading(false);
             alert(err.response?.data?.message || 'Registration failed. Please check your details.');
         }
-    };
+    const registrationFee = useMemo(() => {
+        const country = formData.country.toLowerCase().trim();
+        if (country === 'australia' || country === 'new zealand') {
+            return { amount: 1200, currency: '$', suffix: 'USD' };
+        } else if (europeanCountries.includes(country)) {
+            return { amount: 250, currency: '€', suffix: 'EUR' };
+        }
+        return { amount: 250, currency: '$', suffix: 'USD' };
+    }, [formData.country]);
 
     const stepLabels = ["Basic Information", "Shop Details", "Payment"];
 
@@ -443,6 +457,13 @@ export function ShopRegistration() {
                                             <Lock className="w-8 h-8 text-[#0EA0DC]" />
                                         </div>
                                         <h3 className="text-xl font-bold text-[#272727] mb-2">Secure Payment</h3>
+                                        <div className="my-6 p-4 bg-white rounded-xl border-2 border-[#0EA0DC]/20 shadow-sm inline-block min-w-[200px]">
+                                            <div className="text-sm font-bold text-[#666666] uppercase tracking-wider mb-1">Registration Fee</div>
+                                            <div className="text-4xl font-black text-[#272727]">
+                                                {registrationFee.currency}{registrationFee.amount}
+                                                <span className="text-sm ml-1 text-[#0EA0DC]">{registrationFee.suffix}</span>
+                                            </div>
+                                        </div>
                                         <p className="text-[#666666] mb-4">You will be redirected to our secure payment page to complete your registration.</p>
                                         <div className="flex flex-col gap-2 text-sm text-[#666666]">
                                             <div className="flex items-center justify-center gap-2">

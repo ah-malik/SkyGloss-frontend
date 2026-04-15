@@ -76,7 +76,7 @@ export function PartnerLogin() {
       if (response.data?.paymentRequired) {
         setIsLoading(false);
         toast.error("Payment Required", {
-          description: response.data.message || "Please complete your $250 registration fee payment.",
+          description: response.data.message || "Please complete your registration fee payment.",
         });
         setTimeout(() => {
           window.location.href = response.data.stripeUrl;
