@@ -855,7 +855,7 @@ export function ShopDashboard({
                   </p>
                 </div>
                 {/* DEV TESTING BUTTON */}
-                <Button
+                {/* <Button
                   onClick={handleDevAutoComplete}
                   disabled={isSubmittingTraining}
                   variant="outline"
@@ -863,7 +863,7 @@ export function ShopDashboard({
                 >
                   {isSubmittingTraining ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                   Developer: Auto-Complete 100%
-                </Button>
+                </Button> */}
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
