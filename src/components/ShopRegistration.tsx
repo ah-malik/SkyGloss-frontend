@@ -336,7 +336,7 @@ export function ShopRegistration() {
                                                 </div>
                                             </div>
                                             
-                                            <div className="mt-4 hidden">
+                                            <div className="mt-4 ">
                                                 <label className="block text-sm text-[#272727] mb-2 font-medium">Coupon Code (Optional)</label>
                                                 <div className="relative">
                                                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
