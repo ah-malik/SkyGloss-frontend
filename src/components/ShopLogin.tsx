@@ -97,7 +97,7 @@ export function ShopLogin() {
   ];
 
   const isUSA = country === "United States";
-  const canSubmitLogin = country && (
+  const canSubmitLogin = (
     (loginMode === "credentials" && (username.trim() !== "" && password.trim() !== "")) ||
     (loginMode === "accessCode" && accessCode.trim().length === 8)
   );
@@ -117,8 +117,7 @@ export function ShopLogin() {
         response = await api.post('/auth/login', { email: username, password });
       } else {
         response = await api.post('/auth/login/access-code', {
-          accessCode: accessCode.trim(),
-          country: country
+          accessCode: accessCode.trim()
         });
       }
 
@@ -226,29 +225,10 @@ export function ShopLogin() {
 
               <TabsContent value="login">
                 <form onSubmit={handleLogin} className="space-y-4">
-                  {/* Country Selection */}
-                  <div>
-                    <label className="block text-sm text-[#272727] mb-2">Country</label>
-                    <div className="relative">
-                      <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666] z-10 pointer-events-none" />
-                      <Select value={country} onValueChange={setCountry}>
-                        <SelectTrigger className="pl-10 bg-white border-[#0EA0DC]/30 rounded-lg">
-                          <SelectValue placeholder="Select your country" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {countries.map((c) => (
-                            <SelectItem key={c} value={c}>{c}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                   {/* Conditional Fields based on Login Mode */}
-                   {country && (
+                   {/* Login Fields */}
                      <motion.div
-                       initial={{ opacity: 0, height: 0 }}
-                       animate={{ opacity: 1, height: "auto" }}
+                       initial={{ opacity: 0 }}
+                       animate={{ opacity: 1 }}
                        className="space-y-4"
                      >
                        {/* Mode Switcher */}
@@ -330,7 +310,6 @@ export function ShopLogin() {
                          </div>
                        )}
                      </motion.div>
-                   )}
 
                   {isLoading && (
                     <motion.div

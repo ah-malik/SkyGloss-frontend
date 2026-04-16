@@ -32,9 +32,9 @@ export function NetworkDashboard() {
   const [isAssigning, setIsAssigning] = useState<string | null>(null);
   const [selectedChatShop, setSelectedChatShop] = useState<any>(null);
 
-  const isGlobalPartner = 
+  const isGlobalPartner =
     user?.partnerCode === 'GLOBAL77' ||
-    user?.email?.toLowerCase().trim() === 'system.global@skygloss.internal' || 
+    user?.email?.toLowerCase().trim() === 'certified@skygloss.com' ||
     user?.role === 'admin';
 
   useEffect(() => {
