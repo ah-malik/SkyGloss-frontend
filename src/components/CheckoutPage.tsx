@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { Country } from 'country-state-city';
 import { ArrowLeft, Check, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -21,6 +22,7 @@ interface CheckoutPageProps {
 export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
   // We only need shipping step now, payment is handled by Stripe
   const [loading, setLoading] = useState(false);
+  const countries = useMemo(() => Country.getAllCountries(), []);
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -29,17 +31,21 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [country, setCountry] = useState("US");
+  const [callingCode, setCallingCode] = useState("");
+  const [shippingPhone, setShippingPhone] = useState("");
+  const [country, setCountry] = useState("United States");
 
-  // Scroll to top when component mounts
+  // Scroll to top when component mounts and set initial calling code
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+    
+    // Set initial calling code for default "United States"
+    const usInfo = countries.find(c => c.name === "United States");
+    if (usInfo) setCallingCode(`+${usInfo.phonecode}`);
+  }, [countries]);
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = 15.00;
-  const total = subtotal + shipping;
+  const total = subtotal; // Shipping is now $0
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,7 +71,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
           state,
           zipCode,
           country,
-          phoneNumber
+          phoneNumber: callingCode ? `${callingCode} ${shippingPhone}` : shippingPhone
         }
       };
 
@@ -133,7 +139,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
 
                 <form onSubmit={handleCheckout} className="space-y-4">
                   <div>
-                    <label className="block text-sm text-[#272727] mb-2">Email</label>
+                    <label className="block text-sm text-[#272727] mb-2">Email *</label>
                     <Input
                       type="email"
                       value={email}
@@ -146,7 +152,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">First Name</label>
+                      <label className="block text-sm text-[#272727] mb-2">First Name *</label>
                       <Input
                         type="text"
                         value={firstName}
@@ -157,7 +163,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">Last Name</label>
+                      <label className="block text-sm text-[#272727] mb-2">Last Name *</label>
                       <Input
                         type="text"
                         value={lastName}
@@ -170,7 +176,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                   </div>
 
                   <div>
-                    <label className="block text-sm text-[#272727] mb-2">Address</label>
+                    <label className="block text-sm text-[#272727] mb-2">Address *</label>
                     <Input
                       type="text"
                       value={address}
@@ -190,7 +196,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
 
                   <div className="grid md:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">City</label>
+                      <label className="block text-sm text-[#272727] mb-2">City *</label>
                       <Input
                         type="text"
                         value={city}
@@ -201,7 +207,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">State</label>
+                      <label className="block text-sm text-[#272727] mb-2">State *</label>
                       <Input
                         type="text"
                         value={state}
@@ -212,7 +218,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">ZIP Code</label>
+                      <label className="block text-sm text-[#272727] mb-2">ZIP Code *</label>
                       <Input
                         type="text"
                         value={zipCode}
@@ -226,28 +232,52 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">Country</label>
-                      <Select value={country} onValueChange={setCountry}>
-                        <SelectTrigger className="border-[#0EA0DC]/30 rounded-lg">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="US">United States</SelectItem>
-                          <SelectItem value="CA">Canada</SelectItem>
-                          <SelectItem value="MX">Mexico</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <label className="block text-sm text-[#272727] mb-2">Country *</label>
+                      <select
+                        value={country}
+                        onChange={(e) => {
+                          const countryName = e.target.value;
+                          setCountry(countryName);
+                          const countryObj = countries.find(c => c.name === countryName);
+                          if (countryObj) {
+                            setCallingCode(`+${countryObj.phonecode}`);
+                          } else {
+                            setCallingCode("");
+                          }
+                        }}
+                        className="w-full px-4 h-11 bg-white border border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors appearance-none text-[#272727]"
+                        required
+                      >
+                        <option value="">Select Country</option>
+                        {countries.map(c => (
+                          <option key={c.isoCode} value={c.name}>{c.name}</option>
+                        ))}
+                      </select>
                     </div>
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">Phone Number</label>
-                      <Input
-                        type="tel"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        placeholder="+1 (555) 000-0000"
-                        className="border-[#0EA0DC]/30 rounded-lg"
-                        required
-                      />
+                      <label className="block text-sm text-[#272727] mb-2">Phone Number *</label>
+                      <div className="flex gap-2">
+                        <select
+                          value={callingCode}
+                          onChange={(e) => setCallingCode(e.target.value)}
+                          className="w-[110px] shrink-0 px-2 h-11 bg-white border border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors appearance-none text-sm text-[#272727]"
+                        >
+                          <option value="">Code</option>
+                          {countries.map(c => (
+                            <option key={c.isoCode} value={`+${c.phonecode}`}>
+                              {c.isoCode} +{c.phonecode}
+                            </option>
+                          ))}
+                        </select>
+                        <Input
+                          type="tel"
+                          value={shippingPhone}
+                          onChange={(e) => setShippingPhone(e.target.value)}
+                          placeholder="234 567 8900"
+                          className="border-[#0EA0DC]/30 rounded-lg flex-1 h-11"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -298,18 +328,9 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                 <Separator className="my-4" />
 
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm text-[#666666]">
-                    <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm text-[#666666]">
-                    <span>Shipping</span>
-                    <span>${shipping.toFixed(2)}</span>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between text-lg text-[#272727]">
+                  <div className="flex justify-between text-sm text-[#272727] font-medium pt-2">
                     <span>Total</span>
-                    <span className="text-[#0EA0DC]">${total.toFixed(2)}</span>
+                    <span className="text-[#0EA0DC] text-xl">${total.toFixed(2)}</span>
                   </div>
                 </div>
               </Card>

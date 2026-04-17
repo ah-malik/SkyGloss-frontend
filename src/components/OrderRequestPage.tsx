@@ -144,7 +144,7 @@ Submit your order request here. An invoice and payment options will be sent to y
 
                 <form onSubmit={handleRequestSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm text-[#272727] mb-2">Email</label>
+                    <label className="block text-sm text-[#272727] mb-2">Email *</label>
                     <Input
                       type="email"
                       value={email}
@@ -157,7 +157,7 @@ Submit your order request here. An invoice and payment options will be sent to y
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">First Name</label>
+                      <label className="block text-sm text-[#272727] mb-2">First Name *</label>
                       <Input
                         type="text"
                         value={firstName}
@@ -168,7 +168,7 @@ Submit your order request here. An invoice and payment options will be sent to y
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">Last Name</label>
+                      <label className="block text-sm text-[#272727] mb-2">Last Name *</label>
                       <Input
                         type="text"
                         value={lastName}
@@ -181,7 +181,7 @@ Submit your order request here. An invoice and payment options will be sent to y
                   </div>
 
                   <div>
-                    <label className="block text-sm text-[#272727] mb-2">Address</label>
+                    <label className="block text-sm text-[#272727] mb-2">Address *</label>
                     <Input
                       type="text"
                       value={address}
@@ -201,7 +201,7 @@ Submit your order request here. An invoice and payment options will be sent to y
 
                   <div className="grid md:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">City</label>
+                      <label className="block text-sm text-[#272727] mb-2">City *</label>
                       <Input
                         type="text"
                         value={city}
@@ -212,7 +212,7 @@ Submit your order request here. An invoice and payment options will be sent to y
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">State</label>
+                      <label className="block text-sm text-[#272727] mb-2">State *</label>
                       <Input
                         type="text"
                         value={state}
@@ -223,7 +223,7 @@ Submit your order request here. An invoice and payment options will be sent to y
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">ZIP Code</label>
+                      <label className="block text-sm text-[#272727] mb-2">ZIP Code *</label>
                       <Input
                         type="text"
                         value={zipCode}
@@ -237,7 +237,7 @@ Submit your order request here. An invoice and payment options will be sent to y
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">Country</label>
+                      <label className="block text-sm text-[#272727] mb-2">Country *</label>
                       <select
                         value={country}
                         onChange={(e) => {
@@ -260,7 +260,7 @@ Submit your order request here. An invoice and payment options will be sent to y
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">Phone Number</label>
+                      <label className="block text-sm text-[#272727] mb-2">Phone Number *</label>
                       <div className="flex gap-2">
                         <select
                           value={callingCode}
