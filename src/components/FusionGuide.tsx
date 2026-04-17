@@ -54,7 +54,7 @@ const sections: Section[] = [
             { id: "fusion_step4", title: "Step 4: Exfoliate" },
             { id: "fusion_step5", title: "Step 5: FINAL Wash" },
             { id: "fusion_step6", title: "Step 6: Etch" },
-            { id: "fusion_step7", title: "Step 7: Mask" }
+            { id: "fusion_step7", title: "Step 7: Taping" }
         ]
     },
     {
@@ -891,7 +891,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                             {/* STEP 7: MASK */}
                             <div id="fusion_step7" className="scroll-mt-32 mt-8">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC]">
-                                    <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 7: MASK</h3>
+                                    <h3 className="text-xl font-bold text-[#272727] mb-2">STEP 7: TAPING</h3>
 
                                     <p className="text-sm text-[#666666] mb-4">
                                         "Purpose: Although we're not spraying anything into the air, moldings and trim pieces are not something that you want FUSION to get on. Running a piece of tape along these areas will help guide your application. You never want to purposely touch tape with FUSION because that will cause a chemical reaction and put some contaminants onto your applicator that then can go onto your panel. But it is there to help guide you and protect areas that you might accidentally hit."
@@ -1763,7 +1763,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 )}
                             </Card>
                             {/* additional training resources.  */}
-                            <Card className="p-6 rounded-2xl bg-[#0ea0dc]" style={{ backgroundColor: '#0ea0dc26' }}>
+                            {/* <Card className="p-6 rounded-2xl bg-[#0ea0dc]" style={{ backgroundColor: '#0ea0dc26' }}>
                                 <h3 className="text-lg font-bold text-[#272727] mb-4">Additional Training Resources.</h3>
                                 <p className="text-sm text-[#666666] mb-4">
                                     orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
@@ -1776,7 +1776,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         <p className="text-sm text-[#666666] mt-2">You have successfully completed the FUSION Professional Application Guide.</p>
                                     </div>
                                 )}
-                            </Card>
+                            </Card> */}
                         </div>
 
                         {/* Completion Footer */}

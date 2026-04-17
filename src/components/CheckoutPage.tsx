@@ -139,7 +139,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
 
                 <form onSubmit={handleCheckout} className="space-y-4">
                   <div>
-                    <label className="block text-sm text-[#272727] mb-2">Email *</label>
+                    <label className="block text-sm text-[#272727] mb-2 font-medium">Email Address <span className="text-red-500">*</span></label>
                     <Input
                       type="email"
                       value={email}
@@ -152,37 +152,37 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">First Name *</label>
+                      <label className="block text-sm text-[#272727] mb-2 font-medium">First Name <span className="text-red-500">*</span></label>
                       <Input
                         type="text"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
-                        placeholder="John"
-                        className="border-[#0EA0DC]/30 rounded-lg"
+                        placeholder="First Name"
+                        className="border-[#0EA0DC]/30 rounded-lg h-11"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">Last Name *</label>
+                      <label className="block text-sm text-[#272727] mb-2 font-medium">Last Name <span className="text-red-500">*</span></label>
                       <Input
                         type="text"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
-                        placeholder="Doe"
-                        className="border-[#0EA0DC]/30 rounded-lg"
+                        placeholder="Last Name"
+                        className="border-[#0EA0DC]/30 rounded-lg h-11"
                         required
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm text-[#272727] mb-2">Address *</label>
+                    <label className="block text-sm text-[#272727] mb-2 font-medium">Shipping Address <span className="text-red-500">*</span></label>
                     <Input
                       type="text"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
-                      placeholder="123 Main St"
-                      className="border-[#0EA0DC]/30 rounded-lg mb-3"
+                      placeholder="Street Address, P.O. box, etc."
+                      className="border-[#0EA0DC]/30 rounded-lg mb-3 h-11"
                       required
                     />
                     <Input
@@ -190,41 +190,41 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                       value={address2}
                       onChange={(e) => setAddress2(e.target.value)}
                       placeholder="Apartment, suite, unit, etc. (optional)"
-                      className="border-[#0EA0DC]/30 rounded-lg"
+                      className="border-[#0EA0DC]/30 rounded-lg h-11"
                     />
                   </div>
 
                   <div className="grid md:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">City *</label>
+                      <label className="block text-sm text-[#272727] mb-2 font-medium">City <span className="text-red-500">*</span></label>
                       <Input
                         type="text"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        placeholder="New York"
-                        className="border-[#0EA0DC]/30 rounded-lg"
+                        placeholder="City"
+                        className="border-[#0EA0DC]/30 rounded-lg h-11"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">State *</label>
+                      <label className="block text-sm text-[#272727] mb-2 font-medium">State / Province <span className="text-red-500">*</span></label>
                       <Input
                         type="text"
                         value={state}
                         onChange={(e) => setState(e.target.value)}
-                        placeholder="NY"
-                        className="border-[#0EA0DC]/30 rounded-lg"
+                        placeholder="State"
+                        className="border-[#0EA0DC]/30 rounded-lg h-11"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">ZIP Code *</label>
+                      <label className="block text-sm text-[#272727] mb-2 font-medium">ZIP / Postal Code <span className="text-red-500">*</span></label>
                       <Input
                         type="text"
                         value={zipCode}
                         onChange={(e) => setZipCode(e.target.value)}
-                        placeholder="10001"
-                        className="border-[#0EA0DC]/30 rounded-lg"
+                        placeholder="ZIP Code"
+                        className="border-[#0EA0DC]/30 rounded-lg h-11"
                         required
                       />
                     </div>
@@ -232,7 +232,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">Country *</label>
+                      <label className="block text-sm text-[#272727] mb-2 font-medium">Country <span className="text-red-500">*</span></label>
                       <select
                         value={country}
                         onChange={(e) => {
@@ -255,7 +255,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm text-[#272727] mb-2">Phone Number *</label>
+                      <label className="block text-sm text-[#272727] mb-2 font-medium">Phone Number <span className="text-red-500">*</span></label>
                       <div className="flex gap-2">
                         <select
                           value={callingCode}
@@ -328,6 +328,15 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                 <Separator className="my-4" />
 
                 <div className="space-y-2">
+                  <div className="flex justify-between text-sm py-1">
+                    <span className="text-[#666666]">Subtotal</span>
+                    <span className="text-[#272727] font-medium">${subtotal.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm py-1">
+                    <span className="text-emerald-600 font-bold uppercase tracking-wider text-[10px]">Shipping</span>
+                    <span className="text-emerald-600 font-black tracking-widest text-[11px]"> FREE</span>
+                  </div>
+                  <div className="h-px bg-gray-100 my-2" />
                   <div className="flex justify-between text-sm text-[#272727] font-medium pt-2">
                     <span>Total</span>
                     <span className="text-[#0EA0DC] text-xl">${total.toFixed(2)}</span>

@@ -49,6 +49,7 @@ export function ShopRegistration() {
         phoneNumber: "",
         shopName: "",
         hearAboutUs: "",
+        hearAboutUsOther: "",
         referredByPartnerCode: "",
         couponCode: "",
         website: "",
@@ -99,9 +100,9 @@ export function ShopRegistration() {
             const isCouponValid = couponCode === 'CERTIFICATIONONUS';
 
             // If they don't have a partner ID, hearAboutUs is required.
-            // If they have a partner ID, referredByPartnerCode is required.
+            // If hearAboutUs is "Other", hearAboutUsOther is also required.
             const referralInfo = noPartnerId
-                ? hearAboutUs
+                ? (formData.hearAboutUs && (formData.hearAboutUs !== 'Other' || formData.hearAboutUsOther))
                 : (referredByPartnerCode && referredByPartnerCode.length >= 4) || isCouponValid;
 
             return !!(basicInfo && referralInfo);
@@ -130,7 +131,12 @@ export function ShopRegistration() {
             const response = await api.post('/auth/register-shop', { ...formData, phoneNumber: fullPhone });
 
             // Send complete registration data to webhook
-            sendToWebhook('https://services.leadconnectorhq.com/hooks/0ECH0AoivQGV58EtMuli/webhook-trigger/db039a1b-f492-48b4-9433-3b82997bb1cf', { ...formData, phoneNumber: fullPhone });
+            const webhookPayload = { 
+                ...formData, 
+                phoneNumber: fullPhone,
+                hearAboutUs: formData.hearAboutUs === 'Other' ? formData.hearAboutUsOther : formData.hearAboutUs
+            };
+            sendToWebhook('https://services.leadconnectorhq.com/hooks/0ECH0AoivQGV58EtMuli/webhook-trigger/db039a1b-f492-48b4-9433-3b82997bb1cf', webhookPayload);
 
             if (response.data?.stripeUrl) {
                 window.location.href = response.data.stripeUrl;
@@ -217,7 +223,11 @@ export function ShopRegistration() {
                             e.preventDefault();
                             if (step === 1) {
                                 if (validateStep()) {
-                                    sendToWebhook('https://services.leadconnectorhq.com/hooks/0ECH0AoivQGV58EtMuli/webhook-trigger/e78768f0-50af-4496-8cd3-dede128410ef', formData);
+                                    const webhookPayload = { 
+                                        ...formData,
+                                        hearAboutUs: formData.hearAboutUs === 'Other' ? formData.hearAboutUsOther : formData.hearAboutUs
+                                    };
+                                    sendToWebhook('https://services.leadconnectorhq.com/hooks/0ECH0AoivQGV58EtMuli/webhook-trigger/e78768f0-50af-4496-8cd3-dede128410ef', webhookPayload);
                                     setStep(2);
                                 }
                             } else if (step === 2) {
@@ -349,6 +359,26 @@ export function ShopRegistration() {
                                                     <option value="Internet">Internet</option>
                                                     <option value="Other">Other</option>
                                                 </select>
+
+                                                {formData.hearAboutUs === 'Other' && (
+                                                    <motion.div
+                                                        initial={{ opacity: 0, y: -10 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        className="mt-3"
+                                                    >
+                                                        <label className="block text-sm text-[#272727] mb-2 font-medium">Please specify <span className="text-red-500">*</span></label>
+                                                        <Input
+                                                            required
+                                                            type="text"
+                                                            name="hearAboutUsOther"
+                                                            value={formData.hearAboutUsOther}
+                                                            onChange={handleChange}
+                                                            placeholder="Please specify how you heard about us"
+                                                            className="h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors"
+                                                            disabled={isLoading}
+                                                        />
+                                                    </motion.div>
+                                                )}
                                             </motion.div>
                                         ) : (
                                             <motion.div

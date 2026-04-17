@@ -99,9 +99,9 @@ import certificationCongratulationsImage from "../assets/certification_congratul
 
 const COURSE_STEPS: { [key: string]: number } = {
   'UNDERSTANDING_SKYGLOSS': 9,
-  'WELCOME_TO_SKYGLOSS': 12,
-  'SKYGLOSS_SHOP_SETUP': 5,
-  'FUSION': 19,
+  'WELCOME_TO_SKYGLOSS': 13,
+  'SKYGLOSS_SHOP_SETUP': 4,
+  'FUSION': 22,
   'RESIN_FILM': 7,
   'SEAL': 5,
   'SHINE': 6,
