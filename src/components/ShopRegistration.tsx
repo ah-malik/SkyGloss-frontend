@@ -59,6 +59,23 @@ export function ShopRegistration() {
         linkedin: ""
     });
     const [isLoading, setIsLoading] = useState(false);
+    
+    const sendToWebhook = async (url: string, data: any) => {
+        try {
+            const webhookData = new FormData();
+            Object.entries(data).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    webhookData.append(key, value.toString());
+                }
+            });
+            await fetch(url, {
+                method: 'POST',
+                body: webhookData,
+            });
+        } catch (err) {
+            console.error('[Webhooks] Failed to send data:', err);
+        }
+    };
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -104,6 +121,9 @@ export function ShopRegistration() {
         try {
             const fullPhone = callingCode ? `${callingCode} ${formData.phoneNumber}` : formData.phoneNumber;
             const response = await api.post('/auth/register-shop', { ...formData, phoneNumber: fullPhone });
+
+            // Send complete registration data to webhook
+            sendToWebhook('https://services.leadconnectorhq.com/hooks/0ECH0AoivQGV58EtMuli/webhook-trigger/db039a1b-f492-48b4-9433-3b82997bb1cf', { ...formData, phoneNumber: fullPhone });
 
             if (response.data?.stripeUrl) {
                 window.location.href = response.data.stripeUrl;
@@ -189,7 +209,10 @@ export function ShopRegistration() {
                         <form onSubmit={(e) => {
                             e.preventDefault();
                             if (step === 1) {
-                                if (validateStep()) setStep(2);
+                                if (validateStep()) {
+                                    sendToWebhook('https://services.leadconnectorhq.com/hooks/0ECH0AoivQGV58EtMuli/webhook-trigger/e78768f0-50af-4496-8cd3-dede128410ef', formData);
+                                    setStep(2);
+                                }
                             } else if (step === 2) {
                                 if (formData.couponCode === 'CERTIFICATIONONUS') {
                                     handleSubmit(e);
