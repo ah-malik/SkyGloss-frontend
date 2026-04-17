@@ -59,6 +59,7 @@ export function ShopRegistration() {
         linkedin: ""
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [noPartnerId, setNoPartnerId] = useState(false);
     
     const sendToWebhook = async (url: string, data: any) => {
         try {
@@ -96,7 +97,13 @@ export function ShopRegistration() {
             const { firstName, lastName, email, password, country, hearAboutUs, referredByPartnerCode, couponCode } = formData;
             const basicInfo = firstName && lastName && email && password.length >= 6 && country;
             const isCouponValid = couponCode === 'CERTIFICATIONONUS';
-            const referralInfo = hearAboutUs || (referredByPartnerCode && referredByPartnerCode.length >= 4) || isCouponValid;
+            
+            // If they don't have a partner ID, hearAboutUs is required.
+            // If they have a partner ID, referredByPartnerCode is required.
+            const referralInfo = noPartnerId 
+                ? hearAboutUs 
+                : (referredByPartnerCode && referredByPartnerCode.length >= 4) || isCouponValid;
+            
             return !!(basicInfo && referralInfo);
         } else if (step === 2) {
             const { city, address, phoneNumber } = formData;
@@ -104,7 +111,7 @@ export function ShopRegistration() {
         } else {
             return true;
         }
-    }, [formData, step]);
+    }, [formData, step, noPartnerId]);
 
     const validateStep = () => {
         if (!isStepValid) {
@@ -318,45 +325,68 @@ export function ShopRegistration() {
                                         </div>
                                     </div>
 
-                                    <div>
-                                        <label className="block text-sm text-[#272727] mb-2 font-medium">How did you hear about us?</label>
-                                        <select
-                                            name="hearAboutUs"
-                                            value={formData.hearAboutUs}
-                                            onChange={handleChange}
-                                            className="w-full px-4 h-11 bg-white border border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors appearance-none"
-                                            disabled={isLoading}
-                                        >
-                                            <option value="">Select</option>
-                                            <option value="Facebook">Facebook</option>
-                                            <option value="X">X (Twitter)</option>
-                                            <option value="Instagram">Instagram</option>
-                                            <option value="Friend">Friend</option>
-                                            <option value="Internet">Internet</option>
-                                            <option value="Other">Other</option>
-                                        </select>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-[#272727] mb-2 font-medium">
-                                            Partner ID (4-10 characters) {!formData.hearAboutUs && formData.couponCode !== 'CERTIFICATIONONUS' && <span className="text-red-500">*</span>}
-                                        </label>
-                                        <div className="relative">
-                                            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                            <Input
-                                                required={!formData.hearAboutUs && formData.couponCode !== 'CERTIFICATIONONUS'}
-                                                type="text"
-                                                name="referredByPartnerCode"
-                                                minLength={4}
-                                                maxLength={10}
-                                                pattern="[a-zA-Z0-9]{4,10}"
-                                                value={formData.referredByPartnerCode}
-                                                onChange={handleChange}
-                                                placeholder="Enter the 4-10 digit Partner ID"
-                                                className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors"
-                                                disabled={isLoading}
+                                    <div className="space-y-4 pt-2">
+                                        <div className="flex items-center space-x-2">
+                                            <input
+                                                type="checkbox"
+                                                id="noPartnerId"
+                                                checked={noPartnerId}
+                                                onChange={(e) => setNoPartnerId(e.target.checked)}
+                                                className="w-4 h-4 text-[#0EA0DC] rounded border-[#0EA0DC]/30 accent-[#0EA0DC]"
                                             />
+                                            <label htmlFor="noPartnerId" className="text-sm font-medium text-[#272727]">
+                                                Don't have Partner ID?
+                                            </label>
                                         </div>
+
+                                        {noPartnerId ? (
+                                            <motion.div
+                                                initial={{ opacity: 0, height: 0 }}
+                                                animate={{ opacity: 1, height: "auto" }}
+                                            >
+                                                <label className="block text-sm text-[#272727] mb-2 font-medium">How did you hear about us? <span className="text-red-500">*</span></label>
+                                                <select
+                                                    name="hearAboutUs"
+                                                    value={formData.hearAboutUs}
+                                                    onChange={handleChange}
+                                                    className="w-full px-4 h-11 bg-white border border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors appearance-none"
+                                                    disabled={isLoading}
+                                                >
+                                                    <option value="">Select</option>
+                                                    <option value="Facebook">Facebook</option>
+                                                    <option value="X">X (Twitter)</option>
+                                                    <option value="Instagram">Instagram</option>
+                                                    <option value="Friend">Friend</option>
+                                                    <option value="Internet">Internet</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </motion.div>
+                                        ) : (
+                                            <motion.div
+                                                initial={{ opacity: 0, height: 0 }}
+                                                animate={{ opacity: 1, height: "auto" }}
+                                            >
+                                                <label className="block text-sm text-[#272727] mb-2 font-medium">
+                                                    Partner ID (4-10 characters) {formData.couponCode !== 'CERTIFICATIONONUS' && <span className="text-red-500">*</span>}
+                                                </label>
+                                                <div className="relative">
+                                                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                                                    <Input
+                                                        required={!noPartnerId && formData.couponCode !== 'CERTIFICATIONONUS'}
+                                                        type="text"
+                                                        name="referredByPartnerCode"
+                                                        minLength={4}
+                                                        maxLength={10}
+                                                        pattern="[a-zA-Z0-9]{4,10}"
+                                                        value={formData.referredByPartnerCode}
+                                                        onChange={handleChange}
+                                                        placeholder="Enter the 4-10 digit Partner ID"
+                                                        className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors"
+                                                        disabled={isLoading}
+                                                    />
+                                                </div>
+                                            </motion.div>
+                                        )}
                                     </div>
 
                                     <div className="mt-4 ">

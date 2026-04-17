@@ -121,7 +121,16 @@ export function ShopLogin() {
         });
       }
 
-      const { access_token, user } = response.data;
+      const { access_token, user, paymentRequired, stripeUrl } = response.data;
+
+      if (paymentRequired && stripeUrl) {
+        toast.info("Payment Required", {
+          description: "Redirecting to activation page...",
+        });
+        window.location.href = stripeUrl;
+        return;
+      }
+
       localStorage.setItem('token', access_token);
       setUser(user);
 
@@ -139,7 +148,8 @@ export function ShopLogin() {
       }, 100);
     } catch (err: any) {
       setIsLoading(false);
-      alert(err.response?.data?.message || 'Login failed. Please check your credentials.');
+      const message = err.response?.data?.message || 'Login failed. Please check your credentials.';
+      toast.error(message);
     }
   };
 
