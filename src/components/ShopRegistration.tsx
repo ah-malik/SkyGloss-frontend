@@ -60,7 +60,7 @@ export function ShopRegistration() {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [noPartnerId, setNoPartnerId] = useState(false);
-    
+
     const sendToWebhook = async (url: string, data: any) => {
         try {
             const webhookData = new FormData();
@@ -97,13 +97,13 @@ export function ShopRegistration() {
             const { firstName, lastName, email, password, country, hearAboutUs, referredByPartnerCode, couponCode } = formData;
             const basicInfo = firstName && lastName && email && password.length >= 6 && country;
             const isCouponValid = couponCode === 'CERTIFICATIONONUS';
-            
+
             // If they don't have a partner ID, hearAboutUs is required.
             // If they have a partner ID, referredByPartnerCode is required.
-            const referralInfo = noPartnerId 
-                ? hearAboutUs 
+            const referralInfo = noPartnerId
+                ? hearAboutUs
                 : (referredByPartnerCode && referredByPartnerCode.length >= 4) || isCouponValid;
-            
+
             return !!(basicInfo && referralInfo);
         } else if (step === 2) {
             const { city, address, phoneNumber } = formData;
@@ -326,18 +326,7 @@ export function ShopRegistration() {
                                     </div>
 
                                     <div className="space-y-4 pt-2">
-                                        <div className="flex items-center space-x-2">
-                                            <input
-                                                type="checkbox"
-                                                id="noPartnerId"
-                                                checked={noPartnerId}
-                                                onChange={(e) => setNoPartnerId(e.target.checked)}
-                                                className="w-4 h-4 text-[#0EA0DC] rounded border-[#0EA0DC]/30 accent-[#0EA0DC]"
-                                            />
-                                            <label htmlFor="noPartnerId" className="text-sm font-medium text-[#272727]">
-                                                Don't have Partner ID?
-                                            </label>
-                                        </div>
+
 
                                         {noPartnerId ? (
                                             <motion.div
@@ -387,6 +376,19 @@ export function ShopRegistration() {
                                                 </div>
                                             </motion.div>
                                         )}
+
+                                        <div className="flex items-center space-x-2">
+                                            <input
+                                                type="checkbox"
+                                                id="noPartnerId"
+                                                checked={noPartnerId}
+                                                onChange={(e) => setNoPartnerId(e.target.checked)}
+                                                className="w-4 h-4 text-[#0EA0DC] rounded border-[#0EA0DC]/30 accent-[#0EA0DC]"
+                                            />
+                                            <label htmlFor="noPartnerId" className="text-sm font-medium text-[#272727]">
+                                                Don't have Partner ID?
+                                            </label>
+                                        </div>
                                     </div>
 
                                     <div className="mt-4 ">
