@@ -77,8 +77,24 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
   const handleSubmitTicket = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!name || !email || !userType || !issueCategory || !message) {
-      toast.error("Please fill in all required fields");
+    if (!name.trim()) {
+      toast.error("Please enter your name");
+      return;
+    }
+    if (!email.trim()) {
+      toast.error("Please enter your email");
+      return;
+    }
+    if (!userType) {
+      toast.error("Please select a User Type");
+      return;
+    }
+    if (!issueCategory) {
+      toast.error("Please select an Issue Category");
+      return;
+    }
+    if (!message.trim()) {
+      toast.error("Please enter your message");
       return;
     }
 
@@ -223,7 +239,6 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Your name"
                     className="border-[#0EA0DC]/30 rounded-lg"
-                    required
                   />
 
                 </div>
@@ -238,7 +253,6 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your@email.com"
                     className="border-[#0EA0DC]/30 rounded-lg"
-                    required
                   />
                 </div>
 
@@ -246,7 +260,7 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
                   <label className="block text-sm text-[#272727] mb-2">
                     User Type   <span className="text-red-500">*</span>
                   </label>
-                  <Select value={userType} onValueChange={setUserType} required>
+                  <Select value={userType} onValueChange={setUserType}>
                     <SelectTrigger className="border-[#0EA0DC]/30 rounded-lg">
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
@@ -263,7 +277,7 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
                   <label className="block text-sm text-[#272727] mb-2">
                     Issue Category   <span className="text-red-500">*</span>
                   </label>
-                  <Select value={issueCategory} onValueChange={setIssueCategory} required>
+                  <Select value={issueCategory} onValueChange={setIssueCategory}>
                     <SelectTrigger className="border-[#0EA0DC]/30 rounded-lg">
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
@@ -286,7 +300,6 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Describe your issue..."
                     className="border-[#0EA0DC]/30 rounded-lg min-h-[120px]"
-                    required
                   />
                 </div>
 
