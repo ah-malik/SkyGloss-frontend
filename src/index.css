@@ -5062,7 +5062,7 @@ div#Advanced\ Sales\ Training {
   display: none;
 }
 
-@media screen and (max-width: 1500px) and (min-width: 1080px) {
+@media screen and (max-width: 1600px) and (min-width: 1080px) {
   nav * {
     font-size: 11px;
   }

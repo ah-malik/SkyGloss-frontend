@@ -855,15 +855,15 @@ export function ShopDashboard({
                   </p>
                 </div>
                 {/* DEV TESTING BUTTON */}
-                {/* <Button
+                <Button
                   onClick={handleDevAutoComplete}
                   disabled={isSubmittingTraining}
                   variant="outline"
-                  className="bg-yellow-50 text-yellow-700 border-yellow-300 hover:bg-yellow-100 font-bold shrink-0"
+                  className="bg-yellow-50 text-yellow-700 border-yellow-300 hover:bg-yellow-100 font-bold shrink-0 hidden"
                 >
                   {isSubmittingTraining ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                   Developer: Auto-Complete 100%
-                </Button> */}
+                </Button>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1388,7 +1388,9 @@ export function ShopDashboard({
                     transition={{ duration: 0.5 }}
                     className="md:col-span-2 lg:col-span-3"
                   >
-                    <Card className="p-8 rounded-[32px] border-2 border-[#0EA0DC]/30 bg-gradient-to-br from-white to-[#0EA0DC]/5 shadow-2xl overflow-hidden relative group">
+                    {/* <Card className="p-8 rounded-[32px] border-2 border-[#0EA0DC]/30 bg-gradient-to-br from-white to-[#0EA0DC]/5 shadow-2xl overflow-hidden relative group"> */}
+                    <Card >
+
                       <div className="absolute top-0 right-0 w-64 h-64 opacity-[0.03] pointer-events-none -mr-12 -mt-12">
                         <GraduationCap className="w-full h-full text-[#0EA0DC]" />
                       </div>
@@ -1408,7 +1410,7 @@ export function ShopDashboard({
                           </div>
                         </div> */}
 
-                        <div className="flex-1 text-center md:text-left space-y-6">
+                        {/* <div className="flex-1 text-center md:text-left space-y-6">
                           <div className="space-y-4">
                             <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-0 px-4 py-1 font-bold text-sm tracking-wider uppercase">
                               Achievement Unlocked
@@ -1436,7 +1438,7 @@ export function ShopDashboard({
                               )}
                             </Button>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </Card>
                   </motion.div>
