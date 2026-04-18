@@ -893,8 +893,8 @@ export function ShopDashboard({
 
                         if (progress.length > 0) {
                           const completedCount = progress.length;
-                          const totalSteps = COURSE_STEPS[key] || 19;
-                          const percentage = Math.round((completedCount / totalSteps) * 100);
+                          const totalSteps = COURSE_STEPS[key] || 18;
+                          const percentage = Math.min(100, Math.round((completedCount / totalSteps) * 100));
 
                           if (completedCount >= totalSteps) {
                             return (
@@ -924,7 +924,7 @@ export function ShopDashboard({
                     <div className="hidden grid grid-cols-2 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
                       <div className="text-center">
                         <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Modules</div>
-                        <div className="text-sm font-bold text-[#272727]">19</div>
+                        <div className="text-sm font-bold text-[#272727]">18</div>
                       </div>
                       <div className="text-center border-l border-gray-200">
                         <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Level</div>
@@ -938,8 +938,8 @@ export function ShopDashboard({
 
                       if (progress.length > 0) {
                         const completedCount = progress.length;
-                        const totalSteps = COURSE_STEPS[key] || 19;
-                        const percentage = Math.round((completedCount / totalSteps) * 100);
+                        const totalSteps = COURSE_STEPS[key] || 18;
+                        const percentage = Math.min(100, Math.round((completedCount / totalSteps) * 100));
 
                         return (
                           <div className="mb-6 space-y-2">
@@ -997,7 +997,7 @@ export function ShopDashboard({
                         if (progress.length > 0) {
                           const completedCount = progress.length;
                           const totalSteps = COURSE_STEPS[key] || 4;
-                          const percentage = Math.round((completedCount / totalSteps) * 100);
+                          const percentage = Math.min(100, Math.round((completedCount / totalSteps) * 100));
 
                           if (completedCount >= totalSteps) {
                             return (
@@ -1042,7 +1042,7 @@ export function ShopDashboard({
                       if (progress.length > 0) {
                         const completedCount = progress.length;
                         const totalSteps = COURSE_STEPS[key] || 4;
-                        const percentage = Math.round((completedCount / totalSteps) * 100);
+                        const percentage = Math.min(100, Math.round((completedCount / totalSteps) * 100));
 
                         return (
                           <div className="mb-6 space-y-2">
@@ -1133,7 +1133,7 @@ export function ShopDashboard({
                     <div className=" hidden grid grid-cols-3 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
                       <div className="text-center">
                         <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Modules</div>
-                        <div className="text-sm font-bold text-[#272727]">8</div>
+                        <div className="text-sm font-bold text-[#272727]">9</div>
                       </div>
                       <div className="text-center border-x border-gray-200">
                         <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Type</div>
@@ -1249,7 +1249,7 @@ export function ShopDashboard({
                         <div className="hidden grid grid-cols-3 gap-2 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
                           <div className="text-center">
                             <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Lessons</div>
-                            <div className="text-sm font-bold text-[#272727]">12</div>
+                            <div className="text-sm font-bold text-[#272727]">20</div>
                           </div>
                           <div className="text-center border-x border-gray-200">
                             <div className="text-[10px] uppercase tracking-wider font-bold text-[#999999] mb-1">Duration</div>
