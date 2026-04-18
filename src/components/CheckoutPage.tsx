@@ -11,6 +11,8 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { toast } from "sonner";
 import { type CartItem } from "../AuthContext";
 import api from "../api/axios";
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 
 interface CheckoutPageProps {
@@ -31,17 +33,13 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
-  const [callingCode, setCallingCode] = useState("");
-  const [shippingPhone, setShippingPhone] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState<any>("");
   const [country, setCountry] = useState("United States");
+  const [countryISO, setCountryISO] = useState<any>("US");
 
   // Scroll to top when component mounts and set initial calling code
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // Set initial calling code for default "United States"
-    const usInfo = countries.find(c => c.name === "United States");
-    if (usInfo) setCallingCode(`+${usInfo.phonecode}`);
   }, [countries]);
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -71,7 +69,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
           state,
           zipCode,
           country,
-          phoneNumber: callingCode ? `${callingCode} ${shippingPhone}` : shippingPhone
+          phoneNumber: phoneNumber
         }
       };
 
@@ -240,9 +238,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                           setCountry(countryName);
                           const countryObj = countries.find(c => c.name === countryName);
                           if (countryObj) {
-                            setCallingCode(`+${countryObj.phonecode}`);
-                          } else {
-                            setCallingCode("");
+                            setCountryISO(countryObj.isoCode);
                           }
                         }}
                         className="w-full px-4 h-11 bg-white border border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors appearance-none text-[#272727]"
@@ -257,25 +253,14 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                     <div>
                       <label className="block text-sm text-[#272727] mb-2 font-medium">Phone Number <span className="text-red-500">*</span></label>
                       <div className="flex gap-2">
-                        <select
-                          value={callingCode}
-                          onChange={(e) => setCallingCode(e.target.value)}
-                          className="w-[110px] shrink-0 px-2 h-11 bg-white border border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors appearance-none text-sm text-[#272727]"
-                        >
-                          <option value="">Code</option>
-                          {countries.map(c => (
-                            <option key={c.isoCode} value={`+${c.phonecode}`}>
-                              {c.isoCode} +{c.phonecode}
-                            </option>
-                          ))}
-                        </select>
-                        <Input
-                          type="tel"
-                          value={shippingPhone}
-                          onChange={(e) => setShippingPhone(e.target.value)}
-                          placeholder="234 567 8900"
-                          className="border-[#0EA0DC]/30 rounded-lg flex-1 h-11"
-                          required
+                        <PhoneInput
+                          placeholder="Enter phone number"
+                          value={phoneNumber}
+                          onChange={setPhoneNumber}
+                          defaultCountry={countryISO || "US"}
+                          international
+                          withCountryCallingCode
+                          className="flex-1 skygloss-phone-input"
                         />
                       </div>
                     </div>
