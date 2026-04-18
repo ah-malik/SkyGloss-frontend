@@ -76,6 +76,12 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
 
   const handleSubmitTicket = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!name || !email || !userType || !issueCategory || !message) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       await api.post('/support', {
@@ -209,7 +215,7 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
               <form onSubmit={handleSubmitTicket} className="space-y-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>
                   <label className="block text-sm text-[#272727] mb-2">
-                    Name
+                    Name   <span className="text-red-500">*</span>
                   </label>
                   <Input
                     type="text"
@@ -219,11 +225,12 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
                     className="border-[#0EA0DC]/30 rounded-lg"
                     required
                   />
+
                 </div>
 
                 <div>
                   <label className="block text-sm text-[#272727] mb-2">
-                    Email
+                    Email   <span className="text-red-500">*</span>
                   </label>
                   <Input
                     type="email"
@@ -237,7 +244,7 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
 
                 <div>
                   <label className="block text-sm text-[#272727] mb-2">
-                    User Type
+                    User Type   <span className="text-red-500">*</span>
                   </label>
                   <Select value={userType} onValueChange={setUserType} required>
                     <SelectTrigger className="border-[#0EA0DC]/30 rounded-lg">
@@ -254,7 +261,7 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
 
                 <div>
                   <label className="block text-sm text-[#272727] mb-2">
-                    Issue Category
+                    Issue Category   <span className="text-red-500">*</span>
                   </label>
                   <Select value={issueCategory} onValueChange={setIssueCategory} required>
                     <SelectTrigger className="border-[#0EA0DC]/30 rounded-lg">
@@ -272,7 +279,7 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
 
                 <div className="col-span-2"  >
                   <label className="block text-sm text-[#272727] mb-2">
-                    Message
+                    Your Message...   <span className="text-red-500">*</span>
                   </label>
                   <Textarea
                     value={message}
