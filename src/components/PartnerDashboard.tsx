@@ -106,9 +106,9 @@ const getCourseDuration = (productName: string) => {
 
 const COURSE_STEPS: { [key: string]: number } = {
   'UNDERSTANDING_SKYGLOSS': 9,
-  'WELCOME_TO_SKYGLOSS': 12,
-  'SKYGLOSS_SHOP_SETUP': 5,
-  'FUSION': 19,
+  'WELCOME_TO_SKYGLOSS': 18,
+  'SKYGLOSS_SHOP_SETUP': 4,
+  'FUSION': 20,
   'RESIN_FILM': 7,
   'SEAL': 5,
   'SHINE': 6,
@@ -1476,8 +1476,8 @@ export function PartnerDashboard({
 
                         if (progress.length > 0) {
                           const completedCount = progress.length;
-                          const totalSteps = COURSE_STEPS[key] || 19;
-                          const percentage = Math.round((completedCount / totalSteps) * 100);
+                          const totalSteps = COURSE_STEPS[key] || 18;
+                          const percentage = Math.min(100, Math.round((completedCount / totalSteps) * 100));
 
                           if (completedCount >= totalSteps) {
                             return (
@@ -1521,8 +1521,8 @@ export function PartnerDashboard({
 
                       if (progress.length > 0) {
                         const completedCount = progress.length;
-                        const totalSteps = COURSE_STEPS[key] || 19;
-                        const percentage = Math.round((completedCount / totalSteps) * 100);
+                        const totalSteps = COURSE_STEPS[key] || 18;
+                        const percentage = Math.min(100, Math.round((completedCount / totalSteps) * 100));
 
                         return (
                           <div className="mb-6 space-y-2">
@@ -1582,7 +1582,7 @@ export function PartnerDashboard({
                         if (progress.length > 0) {
                           const completedCount = progress.length;
                           const totalSteps = COURSE_STEPS[key] || 4;
-                          const percentage = Math.round((completedCount / totalSteps) * 100);
+                          const percentage = Math.min(100, Math.round((completedCount / totalSteps) * 100));
 
                           if (completedCount >= totalSteps) {
                             return (
@@ -1627,7 +1627,7 @@ export function PartnerDashboard({
                       if (progress.length > 0) {
                         const completedCount = progress.length;
                         const totalSteps = COURSE_STEPS[key] || 4;
-                        const percentage = Math.round((completedCount / totalSteps) * 100);
+                        const percentage = Math.min(100, Math.round((completedCount / totalSteps) * 100));
 
                         return (
                           <div className="mb-6 space-y-2">
@@ -1729,7 +1729,7 @@ export function PartnerDashboard({
                       if (progress.length > 0) {
                         const completedCount = progress.length;
                         const totalSteps = COURSE_STEPS[key];
-                        const percentage = Math.round((completedCount / totalSteps) * 100);
+                        const percentage = Math.min(100, Math.round((completedCount / totalSteps) * 100));
 
                         if (completedCount < totalSteps) {
                           return (
@@ -1831,7 +1831,7 @@ export function PartnerDashboard({
                             if (progress.length > 0) {
                               const completedCount = progress.length;
                               const totalSteps = COURSE_STEPS[key] || 1;
-                              const percentage = Math.round((completedCount / totalSteps) * 100);
+                              const percentage = Math.min(100, Math.round((completedCount / totalSteps) * 100));
 
                               if (completedCount < totalSteps) {
                                 return (

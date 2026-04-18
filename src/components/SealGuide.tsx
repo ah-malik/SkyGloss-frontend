@@ -56,7 +56,7 @@ export function SealGuide({ onBack }: { onBack: () => void }) {
     const [completedSteps, setCompletedSteps] = useState<string[]>([]);
 
     const totalSteps = sections.reduce((acc, s) => acc + (s.subsections?.length || 0), 0);
-    const progress = (completedSteps.length / totalSteps) * 100;
+    const progress = Math.min(100, (completedSteps.length / totalSteps) * 100);
 
     const scrollTo = (id: string) => {
         const element = document.getElementById(id);

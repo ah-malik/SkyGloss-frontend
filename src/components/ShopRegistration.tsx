@@ -9,6 +9,9 @@ import { Card } from "./ui/card";
 import { PartnerIcon } from "./CustomIcons";
 import { Footer } from "./Footer";
 import { useNavigate } from "react-router";
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
+
 
 const normalizeName = (name: string) => {
     if (!name) return '';
@@ -18,6 +21,14 @@ const normalizeName = (name: string) => {
         .replace(/ı/g, 'i') // Special handling for Turkish dotless i
         .replace(/İ/g, 'I'); // Special handling for Turkish dotted I
 };
+
+const getFlagEmoji = (countryCode: string) => {
+    if (!countryCode) return '';
+    return countryCode
+        .toUpperCase()
+        .replace(/./g, char => String.fromCodePoint(char.charCodeAt(0) + 127397));
+};
+
 
 const europeanCountries = [
     'austria', 'belgium', 'bulgaria', 'croatia', 'cyprus', 'czech republic', 'denmark',
@@ -35,6 +46,7 @@ export function ShopRegistration() {
     const countries = useMemo(() => Country.getAllCountries(), []);
 
     const [callingCode, setCallingCode] = useState("");
+    const [countryISO, setCountryISO] = useState<any>("");
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -43,7 +55,6 @@ export function ShopRegistration() {
         role: "certified_shop",
         country: "",
         address: "",
-        streetAddress: "",
         city: "",
         zipCode: "",
         phoneNumber: "",
@@ -107,8 +118,8 @@ export function ShopRegistration() {
 
             return !!(basicInfo && referralInfo);
         } else if (step === 2) {
-            const { city, address, phoneNumber } = formData;
-            return !!(city && address && phoneNumber);
+            const { city, phoneNumber } = formData;
+            return !!(city && phoneNumber);
         } else {
             return true;
         }
@@ -126,17 +137,40 @@ export function ShopRegistration() {
         e.preventDefault();
         setIsLoading(true);
 
+        const normalizeUrl = (url: string) => {
+            if (!url || url.trim() === '') return '';
+            const trimmed = url.trim();
+            if (/^https?:\/\//i.test(trimmed)) return trimmed;
+            return `https://${trimmed}`;
+        };
+
         try {
-            const fullPhone = callingCode ? `${callingCode} ${formData.phoneNumber}` : formData.phoneNumber;
-            const response = await api.post('/auth/register-shop', { ...formData, phoneNumber: fullPhone });
+            // If callingCode exists, it might be from the old system or manually set
+            // PhoneInput usually provides the full number starting with +
+            const fullPhone = formData.phoneNumber.startsWith('+') 
+                ? formData.phoneNumber 
+                : (callingCode ? `${callingCode} ${formData.phoneNumber}` : formData.phoneNumber);
+            
+            const normalizedData = {
+                ...formData,
+                phoneNumber: fullPhone,
+                website: normalizeUrl(formData.website),
+                facebook: normalizeUrl(formData.facebook),
+                instagram: normalizeUrl(formData.instagram),
+                youtube: normalizeUrl(formData.youtube),
+                tiktok: normalizeUrl(formData.tiktok),
+                linkedin: normalizeUrl(formData.linkedin)
+            };
+
+            const response = await api.post('/auth/register-shop', normalizedData);
 
             // Send complete registration data to webhook
             const webhookPayload = { 
-                ...formData, 
-                phoneNumber: fullPhone,
+                ...normalizedData, 
                 hearAboutUs: formData.hearAboutUs === 'Other' ? formData.hearAboutUsOther : formData.hearAboutUs
             };
             sendToWebhook('https://services.leadconnectorhq.com/hooks/0ECH0AoivQGV58EtMuli/webhook-trigger/db039a1b-f492-48b4-9433-3b82997bb1cf', webhookPayload);
+
 
             if (response.data?.stripeUrl) {
                 window.location.href = response.data.stripeUrl;
@@ -302,6 +336,7 @@ export function ShopRegistration() {
                                                     const countryObj = countries.find(c => c.name === countryName);
                                                     setFormData({ ...formData, country: countryName, city: '' });
                                                     if (countryObj) {
+                                                        setCountryISO(countryObj.isoCode);
                                                         setCallingCode(`+${countryObj.phonecode}`);
                                                         const rawCities = City.getCitiesOfCountry(countryObj.isoCode) || [];
                                                         const rawStates = State.getStatesOfCountry(countryObj.isoCode) || [];
@@ -318,6 +353,7 @@ export function ShopRegistration() {
 
                                                         setCities(combined);
                                                     } else {
+                                                        setCountryISO("");
                                                         setCallingCode("");
                                                         setCities([]);
                                                     }
@@ -328,10 +364,11 @@ export function ShopRegistration() {
                                                 <option value="">Select Country</option>
                                                 {countries.map(country => (
                                                     <option key={country.isoCode} value={country.name}>
-                                                        {country.name}
+                                                        {getFlagEmoji(country.isoCode)} {country.name}
                                                     </option>
                                                 ))}
                                             </select>
+
                                         </div>
                                     </div>
 
@@ -451,10 +488,10 @@ export function ShopRegistration() {
                                     className="space-y-5"
                                 >
                                     <div>
-                                        <label className="block text-sm text-[#272727] mb-2 font-medium">Address <span className="text-red-500">*</span></label>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">Address</label>
                                         <div className="relative">
                                             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                            <Input required type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Address Line 1" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                            <Input type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Street / House No." className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
                                         </div>
                                     </div>
 
@@ -481,14 +518,6 @@ export function ShopRegistration() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm text-[#272727] mb-2 font-medium">Street Address</label>
-                                        <div className="relative">
-                                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                            <Input type="text" name="streetAddress" value={formData.streetAddress} onChange={handleChange} placeholder="Street / House No." className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
-                                        </div>
-                                    </div>
-
-                                    <div>
                                         <label className="block text-sm text-[#272727] mb-2 font-medium">ZIP Code</label>
                                         <div className="relative">
                                             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
@@ -498,33 +527,27 @@ export function ShopRegistration() {
 
                                     <div>
                                         <label className="block text-sm text-[#272727] mb-2 font-medium">Phone Number <span className="text-red-500">*</span></label>
-                                        <div className="flex gap-2">
-                                            <select
-                                                value={callingCode}
-                                                onChange={(e) => setCallingCode(e.target.value)}
-                                                className="w-[110px] shrink-0 px-2 h-11 bg-white border border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors appearance-none text-sm"
+                                        <div className="skygloss-phone-input-wrapper">
+                                            <PhoneInput
+                                                placeholder="Enter phone number"
+                                                value={formData.phoneNumber}
+                                                onChange={(val) => setFormData({ ...formData, phoneNumber: val || "" })}
+                                                defaultCountry={countryISO || undefined}
+                                                international
+                                                withCountryCallingCode
+                                                className="skygloss-phone-input"
                                                 disabled={isLoading}
-                                            >
-                                                <option value="">Code</option>
-                                                {countries.map(c => (
-                                                    <option key={c.isoCode} value={`+${c.phonecode}`}>
-                                                        {c.isoCode} +{c.phonecode}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="relative flex-1">
-                                                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                                <Input required type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} placeholder="234 567 8900" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
-                                            </div>
+                                            />
                                         </div>
                                     </div>
+
 
                                     {/* Social Media Links */}
                                     <div>
                                         <label className="block text-sm text-[#272727] mb-2 font-medium">Website</label>
                                         <div className="relative">
                                             <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                            <Input type="url" name="website" value={formData.website} onChange={handleChange} placeholder="https://yourwebsite.com" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                            <Input type="text" name="website" value={formData.website} onChange={handleChange} placeholder="yourwebsite.com" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
                                         </div>
                                     </div>
 
@@ -532,15 +555,16 @@ export function ShopRegistration() {
                                         <label className="block text-sm text-[#272727] mb-2 font-medium">Facebook</label>
                                         <div className="relative">
                                             <Facebook className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                            <Input type="url" name="facebook" value={formData.facebook} onChange={handleChange} placeholder="https://facebook.com/yourpage" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                            <Input type="text" name="facebook" value={formData.facebook} onChange={handleChange} placeholder="facebook.com/yourpage" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
                                         </div>
                                     </div>
+
 
                                     <div>
                                         <label className="block text-sm text-[#272727] mb-2 font-medium">Instagram</label>
                                         <div className="relative">
                                             <Instagram className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                            <Input type="url" name="instagram" value={formData.instagram} onChange={handleChange} placeholder="https://instagram.com/yourprofile" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                            <Input type="text" name="instagram" value={formData.instagram} onChange={handleChange} placeholder="instagram.com/yourprofile" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
                                         </div>
                                     </div>
 
@@ -548,15 +572,16 @@ export function ShopRegistration() {
                                         <label className="block text-sm text-[#272727] mb-2 font-medium">YouTube</label>
                                         <div className="relative">
                                             <Youtube className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                            <Input type="url" name="youtube" value={formData.youtube} onChange={handleChange} placeholder="https://youtube.com/yourchannel" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                            <Input type="text" name="youtube" value={formData.youtube} onChange={handleChange} placeholder="youtube.com/yourchannel" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
                                         </div>
                                     </div>
+
 
                                     <div>
                                         <label className="block text-sm text-[#272727] mb-2 font-medium">TikTok</label>
                                         <div className="relative">
                                             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" /></svg>
-                                            <Input type="url" name="tiktok" value={formData.tiktok} onChange={handleChange} placeholder="https://tiktok.com/@yourprofile" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                            <Input type="text" name="tiktok" value={formData.tiktok} onChange={handleChange} placeholder="tiktok.com/@yourprofile" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
                                         </div>
                                     </div>
 
@@ -564,9 +589,10 @@ export function ShopRegistration() {
                                         <label className="block text-sm text-[#272727] mb-2 font-medium">LinkedIn</label>
                                         <div className="relative">
                                             <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                            <Input type="url" name="linkedin" value={formData.linkedin} onChange={handleChange} placeholder="https://linkedin.com/in/yourprofile" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                            <Input type="text" name="linkedin" value={formData.linkedin} onChange={handleChange} placeholder="linkedin.com/in/yourprofile" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
                                         </div>
                                     </div>
+
                                 </motion.div>
                             )}
 
