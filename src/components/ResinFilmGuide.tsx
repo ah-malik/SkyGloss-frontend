@@ -7,6 +7,7 @@ import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { ScrollArea } from "./ui/scroll-area";
 import { useAuth } from "../AuthContext";
+import { SmartVideoPlayer } from "./SmartVideoPlayer";
 import ResinFilmPdf from "../assets/pdf/Resin_Film.pdf";
 
 interface Section {
@@ -46,7 +47,30 @@ const sections: Section[] = [
         subsections: [
             { id: "resin_protection", title: "Aftercare & Protection" }
         ]
+    },
+    {
+        id: "resin_videos",
+        title: "Professional Application Videos",
+        subsections: [
+            { id: "resin_video_overview", title: "Product Overview" },
+            { id: "resin_video_wash", title: "Pressure Wash" },
+            { id: "resin_video_fusion", title: "With Fusion" },
+            { id: "resin_video_nofusion", title: "Without Fusion" },
+            { id: "resin_video_app_resin", title: "Application Resin" },
+            { id: "resin_video_app_film", title: "Application Film" },
+            { id: "resin_video_curing", title: "Curing" }
+        ]
     }
+];
+
+const applicationVideos = [
+    { id: "resin_video_overview", title: "Product Overview", url: "https://drive.google.com/file/d/1W9UyZXGnK6EROrVisLnn99NIyCjgJCry/view" },
+    { id: "resin_video_wash", title: "Pressure Wash", url: "https://drive.google.com/file/d/1id-ZLwPKTjLwJEC-AgenKEmelU9w2TGL/view" },
+    { id: "resin_video_fusion", title: "With Fusion", url: "https://drive.google.com/file/d/1S9vmFv_AEjzvY7dKbiGbD3A6QVeKSR0a/view" },
+    { id: "resin_video_nofusion", title: "Without Fusion", url: "https://drive.google.com/file/d/17vZ5AQsai1hpJ52jol-8NDx58gLU6Pm8/view" },
+    { id: "resin_video_app_resin", title: "Application Resin", url: "https://drive.google.com/file/d/1qnY7FTwZUwmE27I48rniA5NsWesd-Sc4/view" },
+    { id: "resin_video_app_film", title: "Application Film", url: "https://drive.google.com/file/d/1IgxiT-D_BHXOdkQoaHP26uQsepevGuco/view" },
+    { id: "resin_video_curing", title: "Curing", url: "https://drive.google.com/file/d/1LqzyI3my2w7md1K1Nni2ThRV2140RIfk/view" }
 ];
 
 export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
@@ -455,6 +479,51 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
 
                             <div className="h-px bg-gray-100 my-8" />
 
+                            {/* SECTION: PROFESSIONAL VIDEOS */}
+                            <div id="resin_videos" className="scroll-mt-32">
+                                <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC] mt-8">
+                                    <div className="text-center mb-8">
+                                        <Badge variant="outline" className="border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 uppercase tracking-[0.4em] px-6 py-1 font-bold text-[10px] mb-4">
+                                            PROFESSIONAL APPLICATION VIDEOS
+                                        </Badge>
+                                        <h3 className="text-2xl font-bold text-[#272727]">Visual Training Gallery</h3>
+                                        <p className="text-sm text-[#666666] mt-2">Watch these detailed application videos to master the Resin Film system.</p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        {applicationVideos.map((video) => (
+                                            <div key={video.id} id={video.id} className="scroll-mt-40 space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <h4 className="font-bold text-[#272727] uppercase text-xs tracking-wider">
+                                                        {video.title}
+                                                    </h4>
+                                                    {completedSteps.includes(video.id) && (
+                                                        <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 text-[10px]">
+                                                            COMPLETED
+                                                        </Badge>
+                                                    )}
+                                                </div>
+                                                <SmartVideoPlayer url={video.url} />
+                                                <Button
+                                                    onClick={() => markComplete(video.id)}
+                                                    className={`w-full rounded-xl font-bold transition-all duration-300 ${completedSteps.includes(video.id) ? 'bg-[#0EA0DC]/10 text-[#0EA0DC] hover:bg-[#0EA0DC]/20' : 'bg-[#272727] text-white hover:bg-black'}`}
+                                                >
+                                                    {completedSteps.includes(video.id) ? 'Video Watched ✓' : 'Mark as Watched'}
+                                                </Button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="flex justify-end mt-12 pt-8 border-t border-gray-100">
+                                        <Button
+                                            onClick={() => markComplete('resin_videos')}
+                                            className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('resin_videos') ? 'bg-[#0EA0DC] text-white shadow-lg shadow-[#0EA0DC]/20' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
+                                        >
+                                            {completedSteps.includes('resin_videos') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
+                                        </Button>
+                                    </div>
+                                </Card>
+                            </div>
+
 
 
                             {/* Aftercare */}
@@ -472,7 +541,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <Button
                                         onClick={async () => {
                                             try {
-                                                await api.patch('/users/me/complete-course', { courseName: 'RESIN FILM' });
+                                                await api.patch('/users/me/complete-course', { courseName: 'RESIN_FILM' });
                                             } catch (err) {
                                                 console.error("Failed to mark course as complete", err);
                                             }
