@@ -48,19 +48,19 @@ const sections: Section[] = [
             { id: "resin_protection", title: "Aftercare & Protection" }
         ]
     },
-    {
-        id: "resin_videos",
-        title: "Professional Application Videos",
-        subsections: [
-            { id: "resin_video_overview", title: "Product Overview" },
-            { id: "resin_video_wash", title: "Pressure Wash" },
-            { id: "resin_video_fusion", title: "With Fusion" },
-            { id: "resin_video_nofusion", title: "Without Fusion" },
-            { id: "resin_video_app_resin", title: "Application Resin" },
-            { id: "resin_video_app_film", title: "Application Film" },
-            { id: "resin_video_curing", title: "Curing" }
-        ]
-    }
+    // {
+    //     id: "resin_videos",
+    //     title: "Professional Application Videos",
+    //     subsections: [
+    //         { id: "resin_video_overview", title: "Product Overview" },
+    //         { id: "resin_video_wash", title: "Pressure Wash" },
+    //         { id: "resin_video_fusion", title: "With Fusion" },
+    //         { id: "resin_video_nofusion", title: "Without Fusion" },
+    //         { id: "resin_video_app_resin", title: "Application Resin" },
+    //         { id: "resin_video_app_film", title: "Application Film" },
+    //         { id: "resin_video_curing", title: "Curing" }
+    //     ]
+    // }
 ];
 
 const applicationVideos = [
@@ -201,7 +201,9 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                         {completedSteps.length}/{totalSteps} modules verified
                                     </div>
                                 </div>
+                                <a href="https://skygloss.com/privacy-policy/" className="mt-6"><Button className="bg-[#0EA0DC] text-white hover:bg-[#0EA0DC]/90  px-6 py-6 font-semibold transition-all duration-300 hover:scale-105 mt-6">RESIN FILM APPLICATION GUIDE VIDEO</Button></a>
                             </div>
+
                         </div>
 
                         {/* Progress Bar */}
@@ -224,15 +226,16 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         Wash & <span className="text-[#0EA0DC]">Decontaminate</span>
                                     </h2>
-                                    <div className="space-y-6 mb-10">
+                                    <div className="space-y-6 mb-10 p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
+
                                         {[
                                             "Thoroughly wash the vehicle to remove all dirt, grease, and debris.",
                                             "Polish the surface if necessary to eliminate oxidation or fine scratches.",
                                             " Towel-dry completely — no moisture should remain before coating."
                                         ].map((step, i) => (
-                                            <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                                                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div>
-                                                <p className="text-sm text-[#666666] font-medium leading-relaxed">{step}</p>
+                                            <div key={i} className="mb-1">
+                                                {/* <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div> */}
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed">•  {step}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -255,15 +258,15 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         Remove <span className="text-[#0EA0DC]">Wax & Silicone</span>
                                     </h2>
-                                    <div className="space-y-6 mb-10">
+                                    <div className="space-y-6 mb-10 p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
                                         {[
                                             " If previous wax or silicone products were used, strip them off using a degreasing agent.",
                                             " The surface must be completely clean and residue-free for proper bonding.",
                                             "  Clean surface with IPA before application."
                                         ].map((step, i) => (
-                                            <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                                                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div>
-                                                <p className="text-sm text-[#666666] font-medium leading-relaxed">{step}</p>
+                                            <div key={i} className="mb-1"   >
+                                                {/* <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div> */}
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed">•  {step}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -287,15 +290,15 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                         Ideal Working <span className="text-[#0EA0DC]">Conditions</span>
                                     </h2>
-                                    <div className="space-y-6 mb-10">
+                                    <div className="space-y-6 mb-10 p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
                                         {[
                                             "Apply indoors or in a controlled, dust-free environment.",
                                             "Avoid direct sunlight, wind, or high humidity.",
                                             "Ensure the engine is cool — heat from a running engine can affect leveling and curing."
                                         ].map((step, i) => (
-                                            <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                                                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div>
-                                                <p className="text-sm text-[#666666] font-medium leading-relaxed">{step}</p>
+                                            <div key={i} className="mb-1">
+                                                {/* <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div> */}
+                                                <p className="text-xs text-[#666666] font-medium leading-relaxed">•  {step}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -360,7 +363,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                         <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
                                             Step 1 – Apply <span className="text-[#0EA0DC]">RESIN COAT</span>
                                         </h2>
-                                        <div className="space-y-6 mb-10">
+                                        <div className="space-y-6 mb-10 p-4 rounded-xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10 mb-6">
                                             {[
                                                 "Shake RESIN COAT well before use.",
                                                 "Apply 5–7 drops onto a clean applicator pad.",
@@ -368,9 +371,9 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                                 "Wait 2–4 minutes for the coating to flash, then buff gently with a clean microfiber cloth.",
                                                 "Repeat the process on all panels, ensuring complete coverage."
                                             ].map((step, i) => (
-                                                <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                                                    <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div>
-                                                    <p className="text-sm text-[#666666] font-medium leading-relaxed">{step}</p>
+                                                <div key={i} className="mb-1" >
+                                                    {/* <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#0EA0DC] font-bold text-xs shadow-sm shrink-0">{i + 1}</div> */}
+                                                    <p className="text-xs text-[#666666] font-medium leading-relaxed">•  {step}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -480,7 +483,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                             <div className="h-px bg-gray-100 my-8" />
 
                             {/* SECTION: PROFESSIONAL VIDEOS */}
-                            <div id="resin_videos" className="scroll-mt-32">
+                            {/* <div id="resin_videos" className="scroll-mt-32">
                                 <Card className="p-6 rounded-2xl border-l-4 border-l-[#0EA0DC] mt-8">
                                     <div className="text-center mb-8">
                                         <Badge variant="outline" className="border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 uppercase tracking-[0.4em] px-6 py-1 font-bold text-[10px] mb-4">
@@ -522,7 +525,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                         </Button>
                                     </div>
                                 </Card>
-                            </div>
+                            </div> */}
 
 
 
