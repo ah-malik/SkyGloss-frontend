@@ -16,6 +16,7 @@ import { useAuth } from "../AuthContext";
 import { toast } from "sonner";
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import { normalizeUrl } from "./ui/utils";
 
 export function ShopLogin() {
   const navigate = useNavigate();
@@ -161,7 +162,7 @@ export function ShopLogin() {
         contactName,
         email,
         phone,
-        website: websiteSocialMedia,
+        website: normalizeUrl(websiteSocialMedia),
         country,
         username: isUSA ? reqUsername : undefined,
         password: isUSA ? reqPassword : undefined
@@ -432,7 +433,7 @@ export function ShopLogin() {
                       </div>
                     )}
 
-                    <Input required type="url" placeholder="Website/Social Media" className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={websiteSocialMedia} onChange={(e) => setWebsiteSocialMedia(e.target.value)} />
+                    <Input required type="text" placeholder="Website/Social Media" className="bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] focus:ring-[#0EA0DC] rounded-lg" value={websiteSocialMedia} onChange={(e) => setWebsiteSocialMedia(e.target.value)} />
 
                     <Button type="submit" className="w-full skygloss-button h-12">Submit Request</Button>
                   </form>

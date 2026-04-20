@@ -11,6 +11,7 @@ import { Footer } from "./Footer";
 import { useNavigate } from "react-router";
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import { normalizeUrl } from "./ui/utils";
 
 
 const normalizeName = (name: string) => {
@@ -136,13 +137,6 @@ export function ShopRegistration() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-
-        const normalizeUrl = (url: string) => {
-            if (!url || url.trim() === '') return '';
-            const trimmed = url.trim();
-            if (/^https?:\/\//i.test(trimmed)) return trimmed;
-            return `https://${trimmed}`;
-        };
 
         try {
             // If callingCode exists, it might be from the old system or manually set

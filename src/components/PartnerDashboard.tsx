@@ -6,6 +6,7 @@ import { Package, FileText, Globe, CreditCard, Send, CheckCircle, Plus, Minus, X
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { normalizeUrl } from "./ui/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Badge } from "./ui/badge";
 import { Separator } from "./ui/separator";
@@ -625,12 +626,12 @@ export function PartnerDashboard({
         shopCity: certShopCity,
         shopState: certShopState,
         shopZip: certShopZip,
-        shopInstagram: certInstagram,
-        shopFacebook: certFacebook,
-        shopTikTok: certTikTok,
-        shopLinkedIn: certLinkedIn,
-        shopYouTube: certYouTube,
-        shopWebsite: certWebsite
+        shopInstagram: normalizeUrl(certInstagram),
+        shopFacebook: normalizeUrl(certFacebook),
+        shopTikTok: normalizeUrl(certTikTok),
+        shopLinkedIn: normalizeUrl(certLinkedIn),
+        shopYouTube: normalizeUrl(certYouTube),
+        shopWebsite: normalizeUrl(certWebsite)
       });
 
       if (response.data?.url) {
@@ -1239,7 +1240,7 @@ export function PartnerDashboard({
                           <div className="space-y-2 md:col-span-2">
                             <label className="text-xs font-semibold text-[#666666]">Website URL</label>
                             <Input
-                              type="url"
+                              type="text"
                               value={certWebsite}
                               onChange={(e) => setCertWebsite(e.target.value)}
                               placeholder="https://www.yourshop.com"
