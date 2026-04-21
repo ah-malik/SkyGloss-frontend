@@ -185,18 +185,17 @@ export function ReceiptPage() {
 
                         {/* Totals */}
                         <div className="space-y-2 text-right">
-                            <div className="flex justify-between">
+                            <div className="flex justify-between text-sm py-1">
                                 <span className="text-[#666666]">Subtotal</span>
-                                <span className="text-[#272727]">${(order.totalAmount - 15 - (order.totalAmount * 0.08)).toFixed(2)}</span>
+                                <span className="text-[#272727] font-medium">${(order.totalAmount / 1.08).toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between">
-                                <span className="text-[#666666]">Shipping</span>
-                                <span className="text-[#272727]">$15.00</span>
+                            <div className="flex justify-between text-sm py-1">
+                                <span className="text-emerald-600 font-bold uppercase tracking-wider text-[10px]">Shipping</span>
+                                <span className="text-emerald-600 font-black tracking-widest text-[11px]"> FREE</span>
                             </div>
-                            <div className="flex justify-between">
-                                <span className="text-[#666666]">Tax</span>
-                                <span className="text-[#272727]">${(order.totalAmount * 0.08).toFixed(2)}</span>
-                                {/* Note: In real app, tax/shipping should be stored exactly in fields. We are estimating for UI now based on our previous logic */}
+                            <div className="flex justify-between text-sm py-1">
+                                <span className="text-[#666666]">Tax (8%)</span>
+                                <span className="text-[#272727] font-medium">${(order.totalAmount - (order.totalAmount / 1.08)).toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between pt-4 border-t mt-4">
                                 <span className="text-lg font-bold text-[#272727]">Total</span>

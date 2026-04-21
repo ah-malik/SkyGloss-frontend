@@ -821,9 +821,9 @@ export function ShopDashboard({
                                   <span>Subtotal</span>
                                   <span className="text-[#272727]">{getSymbol(products[0]?.currency)}{(cartTotal).toFixed(2)}</span>
                                 </div>
-                                <div className="flex justify-between text-sm text-[#999999]">
+                                <div className="flex justify-between text-sm text-emerald-600 font-bold">
                                   <span>Shipping</span>
-                                  <span>At checkout</span>
+                                  <span>FREE</span>
                                 </div>
                                 <Separator className="bg-gray-300" />
                                 <div className="flex justify-between items-baseline">
