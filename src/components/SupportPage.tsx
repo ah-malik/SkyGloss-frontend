@@ -135,7 +135,7 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
             How can we help?
           </h1>
           <p className="text-lg text-[#666666] max-w-2xl mx-auto">
-            Get quick answers from our FAQ or submit a support ticket
+            Get quick answers from our <a href="https://skygloss.com/faq/" target="_blank" rel="noopener noreferrer" className="text-[#0EA0DC] hover:underline font-medium">FAQ</a> or submit a support ticket
           </p>
         </motion.div>
 
