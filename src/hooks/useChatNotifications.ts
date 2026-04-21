@@ -26,16 +26,19 @@ export function useChatNotifications(userId: string | undefined, userName: strin
             // Refresh unread count globally
             refreshUnreadCount();
 
-            // Set chat to open directly
+            // Open chat automatically
             setIsChatOpen(true);
             
             // Still show toast for extra visibility
             toast("New Message from Partner", {
                 description: `${data.senderName}: ${data.message.substring(0, 50)}${data.message.length > 50 ? '...' : ''}`,
                 duration: 5000,
+                action: {
+                    label: "Close",
+                    onClick: () => {}
+                }
             });
 
-            
             // Play a subtle notification sound
             try {
                 const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2354/2354-preview.mp3');
@@ -43,6 +46,25 @@ export function useChatNotifications(userId: string | undefined, userName: strin
             } catch (e) {
                 console.error('Failed to play notification sound', e);
             }
+        });
+
+        socket.on('new_notification', (notification: any) => {
+            // Check if this notification belongs to the current user
+            // In the backend, some notifications might not have a specific user field if they are global
+            if (notification.user && notification.user !== userId) return;
+
+            // Refresh unread count globally
+            refreshUnreadCount();
+
+            // Show toast with Close option
+            toast(notification.title || "New Notification", {
+                description: notification.message,
+                duration: 5000,
+                action: {
+                    label: "Close",
+                    onClick: () => {}
+                }
+            });
         });
 
         return () => {
