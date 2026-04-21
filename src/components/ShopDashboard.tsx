@@ -1357,11 +1357,13 @@ export function ShopDashboard({
                     </p>
 
                     <p className="text-[#666666] text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
-                      {user?.isTrainingComplete
-                        ? "You can continue exploring the dashboard while we process your request."
-                        : isAllCoursesCompleted
-                          ? "Click the button below to send a notification to your partner right away."
-                          : "Track your progress on each course card to see what's remaining."}
+                      {user?.isCertified
+                        ? "Congratulations! You are now a certified SkyGloss professional."
+                        : user?.isTrainingComplete
+                          ? "Your request has been sent. A representative will contact you shortly to finalize your certification."
+                          : isAllCoursesCompleted
+                            ? "Click the button below to send your certification request for partner approval."
+                            : "Complete all training modules above to unlock your certification request."}
                     </p>
 
                     {/* Button */}
@@ -1371,17 +1373,21 @@ export function ShopDashboard({
                         e.stopPropagation();
                         handleTrainingComplete();
                       }}
-                      className={`mx-5 px-10 h-12 rounded-xl font-bold uppercase tracking-wider shadow-md transition-all ${user?.isTrainingComplete
-                        ? "bg-emerald-500 text-white cursor-default"
-                        : "bg-[#0EA0DC] hover:bg-[#0b86b8] text-white"
+                      className={`mx-5 px-10 h-12 rounded-xl font-bold uppercase tracking-wider shadow-md transition-all ${user?.isCertified
+                        ? "bg-emerald-600 text-white cursor-default"
+                        : user?.isTrainingComplete
+                          ? "bg-amber-500 text-white cursor-default"
+                          : "bg-[#0EA0DC] hover:bg-[#0b86b8] text-white"
                         }`}
                     >
                       {isSubmittingTraining ? (
                         <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Finalizing...</>
+                      ) : user?.isCertified ? (
+                        <><Award className="w-4 h-4 mr-2" /> Skygloss Certification</>
                       ) : user?.isTrainingComplete ? (
-                        <><CheckCircle className="w-4 h-4 mr-2" /> Training Verified</>
+                        <><Clock className="w-4 h-4 mr-2" /> Pending Certification</>
                       ) : isAllCoursesCompleted ? (
-                        "Submit Certification"
+                        "Verification Submitted!"
                       ) : (
                         "Locked"
                       )}

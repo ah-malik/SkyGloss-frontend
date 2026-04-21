@@ -748,10 +748,10 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
                                         <iframe
-                                            src="https://drive.google.com/file/d/1fRIsP67uOaUqK9u0A46mR5-1_Rsh774z/preview"
-                                            className="w-full h-full"
+                                            src="https://drive.google.com/file/d/1OUDmd-IK7KFKFv6gazTVL_65a1Vs0Bgf/preview"
+                                            className="w-full h-full aspect-video rounded-2xl"
                                             allow="autoplay"
-                                            title="Step 4: Exfoliate"
+                                            title="Chemical Test"
                                         />
                                     </div>
 
