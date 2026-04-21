@@ -353,6 +353,7 @@ export function ShopDashboard({
 
   const fetchProducts = async () => {
     try {
+      const res = await api.get('/products?status=published&targetAudience=shop');
       const filteredProducts = res.data.filter((p: any) => 
         !["Advanced Technical Training", "Advanced Sales Training", "Lead Generation Marketing Program"]
         .includes(p.name)
