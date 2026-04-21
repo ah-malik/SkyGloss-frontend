@@ -353,8 +353,11 @@ export function ShopDashboard({
 
   const fetchProducts = async () => {
     try {
-      const res = await api.get('/products?status=published&targetAudience=shop');
-      setProducts(res.data);
+      const filteredProducts = res.data.filter((p: any) => 
+        !["Advanced Technical Training", "Advanced Sales Training", "Lead Generation Marketing Program"]
+        .includes(p.name)
+      );
+      setProducts(filteredProducts);
     } catch (err) {
       console.error("Failed to fetch products", err);
       toast.error("Failed to load products");
@@ -1377,7 +1380,7 @@ export function ShopDashboard({
                       ) : user?.isTrainingComplete ? (
                         <><CheckCircle className="w-4 h-4 mr-2" /> Training Verified</>
                       ) : isAllCoursesCompleted ? (
-                        "Complete Certification"
+                        "Submit Certification"
                       ) : (
                         "Locked"
                       )}
