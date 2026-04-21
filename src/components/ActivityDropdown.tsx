@@ -87,9 +87,9 @@ export function ActivityDropdown() {
                     <>
                         <DropdownMenuSeparator className="m-0 bg-[#0EA0DC]/10" />
                         <div className="p-2 bg-gray-50 text-center">
-                            <Button variant="ghost" size="xs" className="text-[10px] text-[#0EA0DC] font-bold uppercase tracking-widest h-auto py-1 hover:bg-[#0EA0DC]/10">
+                            {/* <Button variant="ghost" size="xs" className="text-[10px] text-[#0EA0DC] font-bold uppercase tracking-widest h-auto py-1 hover:bg-[#0EA0DC]/10">
                                 View All Notifications
-                            </Button>
+                            </Button> */}
                         </div>
                     </>
                 )}
