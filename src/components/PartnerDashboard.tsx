@@ -230,6 +230,7 @@ const PartnerProducts = [
     image: paintPenBoxImage,
     additionalImages: [paintPenToolsImage]
   },
+/*
   {
     id: 11,
     name: "Advanced Technical Training",
@@ -260,6 +261,7 @@ const PartnerProducts = [
     unitsPerCase: { "Per Month": 1 },
     image: "https://res.cloudinary.com/dxhmopbei/image/upload/v1772048836/atcnitnp6onipsxgkys4.jpg"
   }
+*/
 ];
 
 interface OrderItem {
