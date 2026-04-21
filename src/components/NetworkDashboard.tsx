@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
-import { TrendingUp, MapPin, Download, Plus, ArrowLeft, MessageCircle } from "lucide-react";
+import { TrendingUp, MapPin, Download, Plus, ArrowLeft, MessageCircle, Trophy, Clock, Award } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -83,6 +83,17 @@ export function NetworkDashboard() {
       toast.error(error.response?.data?.message || "Failed to re-assign shop");
     } finally {
       setIsAssigning(null);
+    }
+  };
+
+  const approveCertification = async (shopId: string) => {
+    try {
+      await api.patch(`/users/${shopId}`, { isCertified: true });
+      setShops(prev => prev.map(s => s._id === shopId ? { ...s, isCertified: true } : s));
+      toast.success("Shop certified successfully");
+    } catch (error) {
+      console.error("Failed to certify shop:", error);
+      toast.error("Failed to certify shop");
     }
   };
 
@@ -398,13 +409,17 @@ export function NetworkDashboard() {
                               {new Date(shop.createdAt).toLocaleDateString()}
                             </td>
                             <td className="px-6 py-4">
-                              {shop.isVisibleOnMap ? (
-                                <Badge className="bg-green-100 text-green-800 border-0 font-semibold px-3 py-1">
-                                  CERTIFIED
+                              {shop.isCertified ? (
+                                <Badge className="bg-emerald-100 text-emerald-800 border-0 font-bold px-3 py-1 flex items-center gap-1 w-fit">
+                                  <Award className="w-3 h-3" /> CERTIFIED
+                                </Badge>
+                              ) : shop.isTrainingComplete ? (
+                                <Badge className="bg-amber-100 text-amber-800 border-0 font-bold px-3 py-1 flex items-center gap-1 w-fit">
+                                  <Clock className="w-3 h-3" /> PENDING APPROVAL
                                 </Badge>
                               ) : (
-                                <Badge className="bg-gray-100 text-gray-800 border-0 font-semibold px-3 py-1">
-                                  UNCERTIFIED
+                                <Badge className="bg-gray-100 text-gray-400 border-0 font-bold px-3 py-1 w-fit">
+                                  IN TRAINING
                                 </Badge>
                               )}
                             </td>
@@ -425,7 +440,17 @@ export function NetworkDashboard() {
                               </div>
                             </td>
                             <td className="px-6 py-4 text-right">
-                              {shop.isTrainingComplete ? (
+                              <div className="flex items-center justify-end gap-2">
+                                {shop.isTrainingComplete && !shop.isCertified && (
+                                  <Button
+                                    size="sm"
+                                    onClick={() => approveCertification(shop._id)}
+                                    className="bg-amber-500 hover:bg-amber-600 text-white transition-all shadow-md font-bold"
+                                  >
+                                    <Trophy className="w-4 h-4 mr-1" />
+                                    Approve
+                                  </Button>
+                                )}
                                 <Button
                                   size="sm"
                                   onClick={() => setSelectedChatShop(shop)}
@@ -434,11 +459,7 @@ export function NetworkDashboard() {
                                   <MessageCircle className="w-4 h-4 mr-2" />
                                   Live Chat
                                 </Button>
-                              ) : (
-                                <Badge variant="outline" className="text-gray-400 border-gray-200">
-                                  Training Pending
-                                </Badge>
-                              )}
+                              </div>
                             </td>
                           </tr>
                         ))}
