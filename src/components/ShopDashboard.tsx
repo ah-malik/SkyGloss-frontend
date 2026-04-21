@@ -9,6 +9,8 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Separator } from "./ui/separator";
 import { Sheet, SheetContent, SheetTitle } from "./ui/sheet";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
+import { Package } from "lucide-react";
 
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ProductDetailPage } from "./ProductDetailPage";
@@ -179,6 +181,8 @@ export function ShopDashboard({
   const [activeTab, setActiveTab] = useState<"shop" | "courses">("courses");
 
   const [viewingCourse, setViewingCourse] = useState(false);
+  const [showOrderRequest, setShowOrderRequest] = useState(false);
+  const [showOrderSuccessModal, setShowOrderSuccessModal] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [isSubmittingTraining, setIsSubmittingTraining] = useState(false);
 
@@ -506,6 +510,7 @@ export function ShopDashboard({
             setShowCheckout(false);
             clearCart();
             // Optional: Navigate to a success page or just show "Thank You"
+            setShowOrderSuccessModal(true);
             navigate('/dashboard/shop/my-orders');
             if (onShowThankYou) {
               onShowThankYou();
@@ -1636,6 +1641,34 @@ export function ShopDashboard({
           </div>
         </SheetContent>
       </Sheet>
+      {/* Order Success Dialog */}
+      <Dialog open={showOrderSuccessModal} onOpenChange={setShowOrderSuccessModal}>
+        <DialogContent className="max-w-[500px] w-[75%] rounded-3xl border-0 shadow-2xl overflow-hidden p-0">
+          <div className="bg-[#0EA0DC] p-8 text-center relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full opacity-10">
+              <Package className="w-64 h-64 -rotate-12 -translate-x-12 -translate-y-12" />
+            </div>
+            <div className="relative z-10">
+              <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 border border-white/30 shadow-inner">
+                <CheckCircle className="w-10 h-10 text-white" />
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-1">Request Received!</h2>
+              <p className="text-white/80 text-sm">Your order inquiry has been logged</p>
+            </div>
+          </div>
+          <div className="p-8 bg-white">
+            <DialogDescription className="text-[#272727] text-lg font-medium leading-relaxed mb-8 text-center">
+              Thank you for your order! A Skygloss representative will contact you shortly to finalize shipping, payment, and invoicing details.
+            </DialogDescription>
+            <Button 
+              onClick={() => setShowOrderSuccessModal(false)}
+              className="w-full bg-[#0EA0DC] text-white hover:bg-[#0c80b3] h-14 rounded-2xl font-bold text-lg transition-all shadow-[0_4px_15px_rgba(14,160,220,0.3)]"
+            >
+              Got it, Thanks!
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

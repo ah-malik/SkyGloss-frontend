@@ -1974,7 +1974,7 @@ export function PartnerDashboard({
       </Sheet>
       {/* Order Success Dialog */}
       <Dialog open={showOrderSuccessModal} onOpenChange={setShowOrderSuccessModal}>
-        <DialogContent className="sm:max-w-[425px] rounded-3xl border-0 shadow-2xl overflow-hidden p-0">
+        <DialogContent className="max-w-[500px] w-[75%] rounded-3xl border-0 shadow-2xl overflow-hidden p-0">
           <div className="bg-[#0EA0DC] p-8 text-center relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-full opacity-10">
               <Package className="w-64 h-64 -rotate-12 -translate-x-12 -translate-y-12" />
