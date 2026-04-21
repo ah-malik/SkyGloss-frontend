@@ -285,15 +285,6 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
-                                        <iframe
-                                            src="https://drive.google.com/file/d/1W9UyZXGnK6EROrVisLnn99NIyCjgJCry/preview"
-                                            className="w-full h-full"
-                                            allow="autoplay"
-                                            title="Step 1: Light Wash"
-                                        />
-                                    </div>
-
                                     <div className="flex justify-end">
                                         <Button
                                             onClick={() => markComplete('resin_residue')}
