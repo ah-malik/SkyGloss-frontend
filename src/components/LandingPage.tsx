@@ -54,10 +54,10 @@ export function LandingPage(_: LandingPageProps) {
     <div className="min-h-screen geometric-bg">
 
 
-        {/* Partner Login Section */}
+      {/* Partner Login Section */}
       <div
         id="partner-login"
-        className="flex items-center justify-center p-4 sm:p-6 py-16 sm:py-24"
+        className="flex items-center justify-center p-4 sm:p-6 py-16 sm:pt-24"
       >
         <div className="w-full max-w-6xl">
           {/* Header */}
@@ -150,11 +150,11 @@ export function LandingPage(_: LandingPageProps) {
         </div>
       </div>
       {/* Public Catalog Section */}
-      <div id="product-catalog" className="pt-16 sm:pt-20 pb-8">
+      <div id="product-catalog" className="pt-8 sm:pt-12 pb-8">
         <h2 className="text-center text-2xl font-bold text-[#272727]">
         </h2>
         <h2 className="text-2xl sm:text-2xl md:text-2xl text-center mt-20 text-[#272727] mb-3 sm:mb-4 px-4">
-          Wanted to get skyGloss certified?
+        Want to get SkyGloss Certified?
 
           <Link to="/register/shop" className="text-blue-400 ml-2 hover:text-blue-300 font-medium">
             Register Here
@@ -162,7 +162,7 @@ export function LandingPage(_: LandingPageProps) {
         {/* <PublicCatalog /> */}
       </div>
 
-    
+
 
       {/* Footer */}
       <Footer />

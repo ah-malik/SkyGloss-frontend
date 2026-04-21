@@ -8,7 +8,7 @@ import { Card } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { ShopIcon } from "./CustomIcons";
+import { PartnerIcon } from "./CustomIcons";
 import { ForgotPasswordModal } from "./ForgotPasswordModal";
 import { Footer } from "./Footer";
 import { useNavigate, useLocation } from "react-router";
@@ -207,7 +207,8 @@ export function ShopLogin() {
               transition={{ type: "spring", stiffness: 200 }}
               className="w-16 h-16 mx-auto rounded-lg bg-[#0EA0DC] flex items-center justify-center mb-6 shadow-[0_4px_16px_rgba(14,160,220,0.3)]"
             >
-              <ShopIcon className="text-white" />
+              {/* <ShopIcon className="text-white" /> */}
+              <PartnerIcon className="text-white" />
             </motion.div>
 
             <div className="text-center mb-8">
@@ -236,91 +237,89 @@ export function ShopLogin() {
 
               <TabsContent value="login">
                 <form onSubmit={handleLogin} className="space-y-4">
-                   {/* Login Fields */}
-                     <motion.div
-                       initial={{ opacity: 0 }}
-                       animate={{ opacity: 1 }}
-                       className="space-y-4"
-                     >
-                       {/* Mode Switcher */}
-                       <div className="flex bg-gray-100/50 p-1 rounded-xl border border-gray-200 gap-1 mb-4">
-                         <button
-                           type="button"
-                           onClick={() => setLoginMode("credentials")}
-                           className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all duration-200 ${
-                             loginMode === "credentials" 
-                               ? "bg-white text-[#0EA0DC] shadow-sm ring-1 ring-black/5" 
-                               : "text-gray-500 hover:text-gray-700"
-                           }`}
-                         >
-                           Credentials
-                         </button>
-                         <button
-                           type="button"
-                           onClick={() => setLoginMode("accessCode")}
-                           className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all duration-200 ${
-                             loginMode === "accessCode" 
-                               ? "bg-white text-[#0EA0DC] shadow-sm ring-1 ring-black/5" 
-                               : "text-gray-500 hover:text-gray-700"
-                           }`}
-                         >
-                           Access Code
-                         </button>
-                       </div>
+                  {/* Login Fields */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="space-y-4"
+                  >
+                    {/* Mode Switcher */}
+                    <div className="flex bg-gray-100/50 p-1 rounded-xl border border-gray-200 gap-1 mb-4">
+                      <button
+                        type="button"
+                        onClick={() => setLoginMode("credentials")}
+                        className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all duration-200 ${loginMode === "credentials"
+                          ? "bg-white text-[#0EA0DC] shadow-sm ring-1 ring-black/5"
+                          : "text-gray-500 hover:text-gray-700"
+                          }`}
+                      >
+                        Credentials
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setLoginMode("accessCode")}
+                        className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all duration-200 ${loginMode === "accessCode"
+                          ? "bg-white text-[#0EA0DC] shadow-sm ring-1 ring-black/5"
+                          : "text-gray-500 hover:text-gray-700"
+                          }`}
+                      >
+                        Access Code
+                      </button>
+                    </div>
 
-                       {loginMode === "credentials" ? (
-                         <>
-                           <div>
-                             <label className="block text-sm text-[#272727] mb-2">Username / Email</label>
-                             <div className="relative">
-                               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                               <Input
-                                 type="text"
-                                 value={username}
-                                 onChange={(e) => setUsername(e.target.value)}
-                                 placeholder="Enter your email"
-                                 className="pl-10 bg-white border-[#0EA0DC]/30 rounded-lg"
-                                 disabled={isLoading}
-                               />
-                             </div>
-                           </div>
- 
-                           <div>
-                             <label className="block text-sm text-[#272727] mb-2">Password</label>
-                             <div className="relative">
-                               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                               <Input
-                                 type="password"
-                                 value={password}
-                                 onChange={(e) => setPassword(e.target.value)}
-                                 placeholder="Enter password"
-                                 className="pl-10 bg-white border-[#0EA0DC]/30 rounded-lg"
-                                 disabled={isLoading}
-                               />
-                             </div>
-                           </div>
-                         </>
-                       ) : (
-                         <div>
-                           <label className="block text-sm text-[#272727] mb-2">Certificate Number</label>
-                           <div className="relative">
-                             <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                             <Input
-                               type="text"
-                               value={accessCode}
-                               onChange={(e) => setAccessCode(e.target.value)}
-                               placeholder="Enter your 8-digit code"
-                               className="pl-10 bg-white border-[#0EA0DC]/30 rounded-lg"
-                               disabled={isLoading}
-                               maxLength={8}
-                             />
-                           </div>
-                           <p className="text-xs text-[#666666] mt-1">
-                             Enter your unique 8-digit certification access code.
-                           </p>
-                         </div>
-                       )}
-                     </motion.div>
+                    {loginMode === "credentials" ? (
+                      <>
+                        <div>
+                          <label className="block text-sm text-[#272727] mb-2">Username / Email</label>
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                            <Input
+                              type="text"
+                              value={username}
+                              onChange={(e) => setUsername(e.target.value)}
+                              placeholder="Enter your email"
+                              className="pl-10 bg-white border-[#0EA0DC]/30 rounded-lg"
+                              disabled={isLoading}
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm text-[#272727] mb-2">Password</label>
+                          <div className="relative">
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                            <Input
+                              type="password"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              placeholder="Enter password"
+                              className="pl-10 bg-white border-[#0EA0DC]/30 rounded-lg"
+                              disabled={isLoading}
+                            />
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <div>
+                        <label className="block text-sm text-[#272727] mb-2">Certificate Number</label>
+                        <div className="relative">
+                          <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
+                          <Input
+                            type="text"
+                            value={accessCode}
+                            onChange={(e) => setAccessCode(e.target.value)}
+                            placeholder="Enter your 8-digit code"
+                            className="pl-10 bg-white border-[#0EA0DC]/30 rounded-lg"
+                            disabled={isLoading}
+                            maxLength={8}
+                          />
+                        </div>
+                        <p className="text-xs text-[#666666] mt-1">
+                          Enter your unique 8-digit certification access code.
+                        </p>
+                      </div>
+                    )}
+                  </motion.div>
 
                   {isLoading && (
                     <motion.div
@@ -337,28 +336,28 @@ export function ShopLogin() {
                     {isLoading ? "Logging in..." : "Login to Shop"}
                   </Button>
 
-                    {loginMode === "credentials" && (
-                      <div className="text-center space-y-2">
+                  {loginMode === "credentials" && (
+                    <div className="text-center space-y-2">
+                      <button
+                        type="button"
+                        onClick={() => setShowForgotPassword(true)}
+                        className="text-sm text-[#0EA0DC] hover:underline transition-colors duration-200"
+                      >
+                        Forgot password?
+                      </button>
+                      <div className="text-sm text-[#666666]">
+                        Don't have an account?{" "}
                         <button
                           type="button"
-                          onClick={() => setShowForgotPassword(true)}
-                          className="text-sm text-[#0EA0DC] hover:underline transition-colors duration-200"
+                          onClick={() => navigate('/register/shop')}
+                          className="text-[#0EA0DC] font-semibold hover:underline"
                         >
-                          Forgot password?
+                          Register Shop Here
                         </button>
-                        <div className="text-sm text-[#666666]">
-                          Don't have an account?{" "}
-                          <button
-                            type="button"
-                            onClick={() => navigate('/register/shop')}
-                            className="text-[#0EA0DC] font-semibold hover:underline"
-                          >
-                            Register Shop Here
-                          </button>
-                        </div>
                       </div>
-                    )}
-                  </form>
+                    </div>
+                  )}
+                </form>
               </TabsContent>
 
               <TabsContent value="request">

@@ -62,15 +62,14 @@ const sections: Section[] = [
     //     ]
     // }
 ];
-
 const applicationVideos = [
-    { id: "resin_video_overview", title: "Product Overview", url: "https://drive.google.com/file/d/1W9UyZXGnK6EROrVisLnn99NIyCjgJCry/view" },
-    { id: "resin_video_wash", title: "Pressure Wash", url: "https://drive.google.com/file/d/1id-ZLwPKTjLwJEC-AgenKEmelU9w2TGL/view" },
-    { id: "resin_video_fusion", title: "With Fusion", url: "https://drive.google.com/file/d/1S9vmFv_AEjzvY7dKbiGbD3A6QVeKSR0a/view" },
-    { id: "resin_video_nofusion", title: "Without Fusion", url: "https://drive.google.com/file/d/17vZ5AQsai1hpJ52jol-8NDx58gLU6Pm8/view" },
-    { id: "resin_video_app_resin", title: "Application Resin", url: "https://drive.google.com/file/d/1qnY7FTwZUwmE27I48rniA5NsWesd-Sc4/view" },
-    { id: "resin_video_app_film", title: "Application Film", url: "https://drive.google.com/file/d/1IgxiT-D_BHXOdkQoaHP26uQsepevGuco/view" },
-    { id: "resin_video_curing", title: "Curing", url: "https://drive.google.com/file/d/1LqzyI3my2w7md1K1Nni2ThRV2140RIfk/view" }
+    { id: "resin_video_overview", title: "Product Overview", url: "https://drive.google.com/file/d/1W9UyZXGnK6EROrVisLnn99NIyCjgJCry/preview" },
+    { id: "resin_video_wash", title: "Pressure Wash", url: "https://drive.google.com/file/d/1id-ZLwPKTjLwJEC-AgenKEmelU9w2TGL/preview" },
+    { id: "resin_video_fusion", title: "With Fusion", url: "https://drive.google.com/file/d/1S9vmFv_AEjzvY7dKbiGbD3A6QVeKSR0a/preview" },
+    { id: "resin_video_nofusion", title: "Without Fusion", url: "https://drive.google.com/file/d/17vZ5AQsai1hpJ52jol-8NDx58gLU6Pm8/preview" },
+    { id: "resin_video_app_resin", title: "Application Resin", url: "https://drive.google.com/file/d/1qnY7FTwZUwmE27I48rniA5NsWesd-Sc4/preview" },
+    { id: "resin_video_app_film", title: "Application Film", url: "https://drive.google.com/file/d/1IgxiT-D_BHXOdkQoaHP26uQsepevGuco/preview" },
+    { id: "resin_video_curing", title: "Curing", url: "https://drive.google.com/file/d/1LqzyI3my2w7md1K1Nni2ThRV2140RIfk/preview" }
 ];
 
 export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
@@ -201,7 +200,7 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                         {completedSteps.length}/{totalSteps} modules verified
                                     </div>
                                 </div>
-                                <a href="https://skygloss.com/privacy-policy/" className="mt-6"><Button className="bg-[#0EA0DC] text-white hover:bg-[#0EA0DC]/90  px-6 py-6 font-semibold transition-all duration-300 hover:scale-105 mt-6">RESIN FILM APPLICATION GUIDE VIDEO</Button></a>
+                                <a href="https://drive.google.com/drive/folders/1vNhJKb_ub4g0oDfdX7yF0_ZQrCg97jSq?usp=drive_link" className="mt-6"><Button className="bg-[#0EA0DC] text-white hover:bg-[#0EA0DC]/90  px-6 py-6 font-semibold transition-all duration-300 hover:scale-105 mt-6">RESIN FILM APPLICATION GUIDE VIDEO</Button></a>
                             </div>
 
                         </div>
@@ -239,6 +238,15 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                             </div>
                                         ))}
                                     </div>
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/1id-ZLwPKTjLwJEC-AgenKEmelU9w2TGL/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 1: Light Wash"
+                                        />
+                                    </div>
+
                                     <div className="flex justify-end">
                                         <Button
                                             onClick={() => markComplete('resin_wash')}
@@ -269,6 +277,14 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                                 <p className="text-xs text-[#666666] font-medium leading-relaxed">•  {step}</p>
                                             </div>
                                         ))}
+                                    </div>
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/1W9UyZXGnK6EROrVisLnn99NIyCjgJCry/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 1: Light Wash"
+                                        />
                                     </div>
 
                                     <div className="flex justify-end">
@@ -301,6 +317,14 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                                 <p className="text-xs text-[#666666] font-medium leading-relaxed">•  {step}</p>
                                             </div>
                                         ))}
+                                    </div>
+                                    <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                        <iframe
+                                            src="https://drive.google.com/file/d/1S9vmFv_AEjzvY7dKbiGbD3A6QVeKSR0a/preview"
+                                            className="w-full h-full"
+                                            allow="autoplay"
+                                            title="Step 1: Light Wash"
+                                        />
                                     </div>
 
                                     <div className="flex justify-end">
@@ -377,6 +401,15 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                                 </div>
                                             ))}
                                         </div>
+                                        <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                            <iframe
+                                                src="https://drive.google.com/file/d/17vZ5AQsai1hpJ52jol-8NDx58gLU6Pm8/preview"
+                                                className="w-full h-full"
+                                                allow="autoplay"
+                                                title="Step 1: Light Wash"
+                                            />
+                                        </div>
+
                                         <div className="flex justify-end">
                                             <Button
                                                 onClick={() => markComplete('resin_step1_apply')}
@@ -400,6 +433,14 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                                         • Infrared lamps may be used to accelerate curing — only on the first layer (RESIN COAT).</p>
 
                                                 </div>
+                                            </div>
+                                            <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                                <iframe
+                                                    src="https://drive.google.com/file/d/1qnY7FTwZUwmE27I48rniA5NsWesd-Sc4/preview"
+                                                    className="w-full h-full"
+                                                    allow="autoplay"
+                                                    title="Step 1: Light Wash"
+                                                />
                                             </div>
 
                                             <div className="flex justify-end mt-8">
@@ -435,6 +476,14 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                                 <h6>You’ve now completed the full SkyGloss RESIN FILM System — forming a deep-gloss,
                                                     self-healing, factory-grade finish.</h6>
                                             </div>
+                                            <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                                <iframe
+                                                    src="https://drive.google.com/file/d/1IgxiT-D_BHXOdkQoaHP26uQsepevGuco/preview"
+                                                    className="w-full h-full"
+                                                    allow="autoplay"
+                                                    title="Step 1: Light Wash"
+                                                />
+                                            </div>
 
                                             <div className="flex justify-end mt-8">
                                                 <Button
@@ -465,6 +514,14 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                                     <br /> ◦ Avoid detergents with strong alkalis or harsh chemicals.</p>
 
                                             </div>
+                                        </div>
+                                        <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
+                                            <iframe
+                                                src="https://drive.google.com/file/d/1LqzyI3my2w7md1K1Nni2ThRV2140RIfk/preview"
+                                                className="w-full h-full"
+                                                allow="autoplay"
+                                                title="Step 1: Light Wash"
+                                            />
                                         </div>
 
                                         <div className="flex justify-end mt-8">

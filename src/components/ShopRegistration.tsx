@@ -163,7 +163,7 @@ export function ShopRegistration() {
                 ...normalizedData, 
                 hearAboutUs: formData.hearAboutUs === 'Other' ? formData.hearAboutUsOther : formData.hearAboutUs
             };
-            sendToWebhook('https://services.leadconnectorhq.com/hooks/0ECH0AoivQGV58EtMuli/webhook-trigger/db039a1b-f492-48b4-9433-3b82997bb1cf', webhookPayload);
+            sendToWebhook('https://services.leadconnectorhq.com/hooks/0ECH0AoivQGV58EtMuli/webhook-trigger/f05dd651-e2f4-46c1-8cb4-8ae07a33e75f', webhookPayload);
 
 
             if (response.data?.stripeUrl) {
@@ -255,7 +255,7 @@ export function ShopRegistration() {
                                         ...formData,
                                         hearAboutUs: formData.hearAboutUs === 'Other' ? formData.hearAboutUsOther : formData.hearAboutUs
                                     };
-                                    sendToWebhook('https://services.leadconnectorhq.com/hooks/0ECH0AoivQGV58EtMuli/webhook-trigger/e78768f0-50af-4496-8cd3-dede128410ef', webhookPayload);
+                                    sendToWebhook('https://services.leadconnectorhq.com/hooks/0ECH0AoivQGV58EtMuli/webhook-trigger/afe01ddb-f238-4d55-9243-3716a98b6505', webhookPayload);
                                     setStep(2);
                                 }
                             } else if (step === 2) {

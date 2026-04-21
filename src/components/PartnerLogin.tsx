@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
 import { Progress } from "./ui/progress";
-import { PartnerIcon } from "./CustomIcons";
+import { PartnerIcon, ShopIcon } from "./CustomIcons";
 import { ForgotPasswordModal } from "./ForgotPasswordModal";
 import { Footer } from "./Footer";
 import { useNavigate, useLocation } from "react-router";
@@ -140,7 +140,7 @@ export function PartnerLogin() {
               transition={{ type: "spring", stiffness: 200 }}
               className="w-16 h-16 mx-auto rounded-lg bg-[#0EA0DC] flex items-center justify-center mb-6 shadow-[0_4px_16px_rgba(14,160,220,0.3)]"
             >
-              <PartnerIcon className="text-white" />
+         <ShopIcon className="text-white" />
             </motion.div>
 
             <div className="text-center mb-8">
