@@ -7,6 +7,7 @@ import { useState } from "react";
 import logoImage from "../assets/logo.svg";
 import { useAuth } from "../AuthContext";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { ActivityDropdown } from "./ActivityDropdown";
 
 interface NavigationProps {
   isLoggedIn: boolean;
@@ -163,6 +164,8 @@ export function Navigation({
                     </div>
                   </>
                 )}
+                <div className="h-6 w-px bg-[#0EA0DC]/20 mx-2" />
+                <ActivityDropdown />
                 <div className="h-6 w-px bg-[#0EA0DC]/20 mx-2" />
                 <LanguageSwitcher />
               </div>

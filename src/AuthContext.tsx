@@ -32,6 +32,8 @@ interface AuthContextType {
   unreadMessages: number;
   setUnreadMessages: (count: number) => void;
   refreshUnreadCount: () => Promise<void>;
+  recentActivities: any[];
+  refreshActivities: () => Promise<void>;
   isChatOpen: boolean;
   setIsChatOpen: (open: boolean) => void;
 }
@@ -55,6 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   });
   const [showCartSheet, setShowCartSheet] = useState(false);
   const [unreadMessages, setUnreadMessages] = useState(0);
+  const [recentActivities, setRecentActivities] = useState<any[]>([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const refreshUnreadCount = async () => {
@@ -69,11 +72,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const refreshActivities = async () => {
+    if (!user) return;
+    try {
+      const res = await api.get('/notifications/my');
+      setRecentActivities(res.data);
+    } catch (err) {
+      console.error("Failed to fetch recent activities", err);
+    }
+  };
+
   useEffect(() => {
     if (user) {
       refreshUnreadCount();
+      refreshActivities();
     } else {
       setUnreadMessages(0);
+      setRecentActivities([]);
     }
   }, [user]);
 
@@ -178,6 +193,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         unreadMessages,
         setUnreadMessages,
         refreshUnreadCount,
+        recentActivities,
+        refreshActivities,
         isChatOpen,
         setIsChatOpen,
       }}

@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams, useLocation } from "react-router";
-import { Search, ShoppingCart, Plus, Minus, Eye, Loader2, GraduationCap, ShoppingBag, Lock, CheckCircle, MessageCircle } from "lucide-react";
+import { Search, ShoppingCart, Plus, Minus, Eye, Loader2, GraduationCap, ShoppingBag, Lock, CheckCircle, MessageCircle, Clock, Award } from "lucide-react";
 import api from "../api/axios";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
@@ -354,9 +354,9 @@ export function ShopDashboard({
   const fetchProducts = async () => {
     try {
       const res = await api.get('/products?status=published&targetAudience=shop');
-      const filteredProducts = res.data.filter((p: any) => 
+      const filteredProducts = res.data.filter((p: any) =>
         !["Advanced Technical Training", "Advanced Sales Training", "Lead Generation Marketing Program"]
-        .includes(p.name)
+          .includes(p.name)
       );
       setProducts(filteredProducts);
     } catch (err) {
@@ -1383,11 +1383,11 @@ export function ShopDashboard({
                       {isSubmittingTraining ? (
                         <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Finalizing...</>
                       ) : user?.isCertified ? (
-                        <><Award className="w-4 h-4 mr-2" /> Skygloss Certification</>
+                        <><Award className="w-4 h-4 mr-2" /> Skygloss Certified</>
                       ) : user?.isTrainingComplete ? (
                         <><Clock className="w-4 h-4 mr-2" /> Pending Certification</>
                       ) : isAllCoursesCompleted ? (
-                        "Verification Submitted!"
+                        "Submit Verification"
                       ) : (
                         "Locked"
                       )}
@@ -1670,7 +1670,7 @@ export function ShopDashboard({
             <DialogDescription className="text-[#272727] text-lg font-medium leading-relaxed mb-8 text-center">
               Thank you for your order! A Skygloss representative will contact you shortly to finalize shipping, payment, and invoicing details.
             </DialogDescription>
-            <Button 
+            <Button
               onClick={() => setShowOrderSuccessModal(false)}
               className="w-full bg-[#0EA0DC] text-white hover:bg-[#0c80b3] h-14 rounded-2xl font-bold text-lg transition-all shadow-[0_4px_15px_rgba(14,160,220,0.3)]"
             >
