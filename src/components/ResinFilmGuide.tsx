@@ -200,7 +200,14 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                         {completedSteps.length}/{totalSteps} modules verified
                                     </div>
                                 </div>
-                                <a href="https://drive.google.com/drive/folders/1vNhJKb_ub4g0oDfdX7yF0_ZQrCg97jSq?usp=drive_link" className="mt-6"><Button className="bg-[#0EA0DC] text-white hover:bg-[#0EA0DC]/90  px-6 py-6 font-semibold transition-all duration-300 hover:scale-105 mt-6">RESIN FILM APPLICATION GUIDE VIDEO</Button></a>
+                                <div className="mt-8 rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-black">
+                                    <iframe
+                                        src="https://drive.google.com/file/d/1W9UyZXGnK6EROrVisLnn99NIyCjgJCry/preview"
+                                        className="w-full aspect-video"
+                                        allow="autoplay"
+                                        title="Phase 02: Residue removal"
+                                    />
+                                </div>
                             </div>
 
                         </div>
