@@ -49,6 +49,9 @@ export function useChatNotifications(userId: string | undefined, userName: strin
         });
 
         socket.on('new_notification', (notification: any) => {
+            // Filter out self-triggered notifications
+            if (notification.triggeredBy && notification.triggeredBy === userId) return;
+
             // Check if this notification belongs to the current user
             // In the backend, some notifications might not have a specific user field if they are global
             if (notification.user && notification.user !== userId) return;

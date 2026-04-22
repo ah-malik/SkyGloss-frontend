@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams, useLocation } from "react-router";
-import { Search, ShoppingCart, Plus, Minus, Eye, Loader2, GraduationCap, ShoppingBag, Lock, CheckCircle, MessageCircle, Clock, Award } from "lucide-react";
+import { Search, ShoppingCart, Plus, Minus, Eye, Loader2, GraduationCap, ShoppingBag, Lock, CheckCircle, MessageCircle, Clock, Award, FileText } from "lucide-react";
 import api from "../api/axios";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
@@ -270,6 +270,24 @@ export function ShopDashboard({
       toast.error(`Failed to submit: ${errorMsg}`);
     } finally {
       setIsSubmittingTraining(false);
+    }
+  };
+
+  const handleDownloadCertificate = async () => {
+    try {
+      const response = await api.get('/pdf/certificate', {
+        responseType: 'blob',
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `SkyGloss_Certificate_${user.firstName}_${user.lastName}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error("Download failed", err);
+      toast.error("Failed to download certificate");
     }
   };
 
@@ -1367,31 +1385,47 @@ export function ShopDashboard({
                     </p>
 
                     {/* Button */}
-                    <Button
-                      disabled={!isAllCoursesCompleted || isSubmittingTraining || user?.isTrainingComplete}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleTrainingComplete();
-                      }}
-                      className={`mx-5 px-10 h-12 rounded-xl font-bold uppercase tracking-wider shadow-md transition-all ${user?.isCertified
-                        ? "bg-emerald-600 text-white cursor-default"
-                        : user?.isTrainingComplete
-                          ? "bg-amber-500 text-white cursor-default"
-                          : "bg-[#0EA0DC] hover:bg-[#0b86b8] text-white"
-                        }`}
-                    >
-                      {isSubmittingTraining ? (
-                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Finalizing...</>
-                      ) : user?.isCertified ? (
-                        <><Award className="w-4 h-4 mr-2" /> Skygloss Certified</>
-                      ) : user?.isTrainingComplete ? (
-                        <><Clock className="w-4 h-4 mr-2" /> Pending Certification</>
-                      ) : isAllCoursesCompleted ? (
-                        "Submit Verification"
-                      ) : (
-                        "Locked"
+                    <div className="flex flex-col   justify-center gap-4 px-5">
+                      <Button
+                        disabled={!isAllCoursesCompleted || isSubmittingTraining || user?.isTrainingComplete}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleTrainingComplete();
+                        }}
+                        className={`w-full sm:w-auto px-10 h-12 rounded-xl font-bold uppercase tracking-wider shadow-md transition-all ${user?.isCertified
+                          ? "bg-emerald-600 text-white cursor-default"
+                          : user?.isTrainingComplete
+                            ? "bg-amber-500 text-white cursor-default"
+                            : "bg-[#0EA0DC] hover:bg-[#0b86b8] text-white"
+                          }`}
+                      >
+                        {isSubmittingTraining ? (
+                          <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Finalizing...</>
+                        ) : user?.isCertified ? (
+                          <><Award className="w-4 h-4 mr-2" /> Skygloss Certified</>
+                        ) : user?.isTrainingComplete ? (
+                          <><Clock className="w-4 h-4 mr-2" /> Pending Certification</>
+                        ) : isAllCoursesCompleted ? (
+                          "Submit Verification"
+                        ) : (
+                          "Locked"
+                        )}
+                      </Button>
+
+                      {user?.isCertified && (
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDownloadCertificate();
+                          }}
+                          variant="outline"
+                          className="hidden opacity-0 w-full sm:w-auto px-8 h-12 rounded-xl font-bold border-2 border-[#0EA0DC] text-[#0EA0DC] hover:bg-[#0EA0DC] hover:text-white transition-all shadow-md"
+                        >
+                          <FileText className="w-4 h-4 mr-2" />
+                          Download Certificate
+                        </Button>
                       )}
-                    </Button>
+                    </div>
 
                   </Card>
                 </div>

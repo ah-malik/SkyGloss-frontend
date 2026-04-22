@@ -10,7 +10,7 @@ export function Footer() {
     // { name: "X", url: "#" },
     // { name: "TikTok", url: "#" },
     { name: "LinkedIn", url: "https://www.linkedin.com/company/skygloss/" },
-    { name: "YouTube", url: "https://www.youtube.com/@skyglossnation" },
+    { name: "YouTube", url: "https://www.youtube.com/@skygloss.services" },
   ];
 
   const supportLinks = [

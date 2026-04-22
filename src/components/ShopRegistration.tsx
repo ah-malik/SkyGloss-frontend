@@ -147,6 +147,8 @@ export function ShopRegistration() {
             
             const normalizedData = {
                 ...formData,
+                // If user has no partner ID, clear it so backend defaults to GLOBAL77
+                referredByPartnerCode: noPartnerId ? '' : formData.referredByPartnerCode,
                 phoneNumber: fullPhone,
                 website: normalizeUrl(formData.website),
                 facebook: normalizeUrl(formData.facebook),

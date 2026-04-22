@@ -11,8 +11,11 @@ import { Bell, CheckCircle2, GraduationCap, MessageSquare, Package, Clock } from
 import { useAuth } from "../AuthContext";
 import { formatDistanceToNow } from "date-fns";
 
+import { useNavigate } from "react-router";
+
 export function ActivityDropdown() {
-    const { recentActivities, refreshActivities, unreadMessages } = useAuth();
+    const { recentActivities, refreshActivities, unreadMessages, markAllNotificationsAsRead } = useAuth();
+    const navigate = useNavigate();
 
     const getIcon = (type: string) => {
         switch (type) {
@@ -44,11 +47,25 @@ export function ActivityDropdown() {
             <DropdownMenuContent align="end" className="w-80 bg-white border-[#0EA0DC]/20 shadow-xl rounded-2xl overflow-hidden p-0">
                 <DropdownMenuLabel className="px-4 py-3 bg-[#0EA0DC]/5 text-[#272727] font-bold flex items-center justify-between">
                     <span>Recent Activity</span>
-                    {unreadMessages > 0 && (
-                        <span className="text-[10px] bg-[#0EA0DC] text-white px-2 py-0.5 rounded-full uppercase tracking-wider">
-                            {unreadMessages} New
-                        </span>
-                    )}
+                    <div className="flex items-center gap-2">
+                        {unreadMessages > 0 && (
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    markAllNotificationsAsRead();
+                                }}
+                                className="text-[10px] text-[#0EA0DC] hover:underline uppercase font-bold"
+                            >
+                                Mark all as read
+                            </button>
+                        )}
+                        {unreadMessages > 0 && (
+                            <span className="text-[10px] bg-[#0EA0DC] text-white px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                {unreadMessages} New
+                            </span>
+                        )}
+                    </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator className="m-0 bg-[#0EA0DC]/10" />
                 <div className="max-h-[400px] overflow-y-auto">
@@ -62,7 +79,7 @@ export function ActivityDropdown() {
                             <DropdownMenuItem
                                 key={activity._id || idx}
                                 className="px-4 py-3 cursor-pointer hover:bg-[#0EA0DC]/5 transition-colors border-b border-[#0EA0DC]/5 last:border-0"
-                                onClick={() => activity.link && (window.location.href = activity.link)}
+                                onSelect={() => activity.link && navigate(activity.link)}
                             >
                                 <div className="flex gap-3 items-start w-full">
                                     <div className="mt-1 p-1.5 rounded-lg bg-gray-50 border border-gray-100">
@@ -83,16 +100,6 @@ export function ActivityDropdown() {
                         ))
                     )}
                 </div>
-                {recentActivities.length > 0 && (
-                    <>
-                        <DropdownMenuSeparator className="m-0 bg-[#0EA0DC]/10" />
-                        <div className="p-2 bg-gray-50 text-center">
-                            {/* <Button variant="ghost" size="xs" className="text-[10px] text-[#0EA0DC] font-bold uppercase tracking-widest h-auto py-1 hover:bg-[#0EA0DC]/10">
-                                View All Notifications
-                            </Button> */}
-                        </div>
-                    </>
-                )}
             </DropdownMenuContent>
         </DropdownMenu>
     );

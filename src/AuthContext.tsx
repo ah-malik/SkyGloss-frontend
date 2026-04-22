@@ -82,6 +82,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const markAllNotificationsAsRead = async () => {
+    if (!user) return;
+    try {
+      await api.patch('/notifications/mark-all-my-read');
+      await refreshUnreadCount();
+      await refreshActivities();
+    } catch (err) {
+      console.error("Failed to mark all as read", err);
+    }
+  };
+
   useEffect(() => {
     if (user) {
       refreshUnreadCount();
