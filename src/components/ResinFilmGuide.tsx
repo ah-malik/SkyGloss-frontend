@@ -201,12 +201,14 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                     </div>
                                 </div>
                                 <div className="mt-8 rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-black">
-                                    <iframe
+                                    {/* <iframe
                                         src="https://drive.google.com/file/d/1W9UyZXGnK6EROrVisLnn99NIyCjgJCry/preview"
                                         className="w-full aspect-video"
                                         allow="autoplay"
                                         title="Phase 02: Residue removal"
-                                    />
+                                    /> */}
+                                    <iframe className="w-full aspect-video"
+                                        src="https://www.youtube.com/embed/M0fyrcFcsF0?si=RLq1OI1ihODPH0eP" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
                                 </div>
                             </div>
 
@@ -246,12 +248,14 @@ export function ResinFilmGuide({ onBack }: { onBack: () => void }) {
                                         ))}
                                     </div>
                                     <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
-                                        <iframe
+                                        {/* <iframe
                                             src="https://drive.google.com/file/d/1id-ZLwPKTjLwJEC-AgenKEmelU9w2TGL/preview"
                                             className="w-full h-full"
                                             allow="autoplay"
                                             title="Step 1: Light Wash"
-                                        />
+                                        /> */}
+                                        <iframe className="w-full aspect-video"
+                                            src="https://www.youtube.com/embed/NYNXcx-14I4?si=HLCtm_FtygEdSqxh%22" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
                                     </div>
 
                                     <div className="flex justify-end">
