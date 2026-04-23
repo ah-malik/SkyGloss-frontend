@@ -10,6 +10,7 @@ import { Badge } from "./ui/badge";
 import { toast } from "sonner";
 import api from "../api/axios";
 import { useAuth } from "../AuthContext";
+import { format } from "date-fns";
 
 const faqs = [
   {
@@ -64,10 +65,20 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
     markRead();
   }, [refreshUnreadCount]);
 
+  // My Tickets State
+  const [myTickets, setMyTickets] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (user?.email) {
+      api.get(`/support/user/${user.email}`).then(res => {
+        setMyTickets(res.data);
+      }).catch(err => console.error("Failed to fetch user tickets:", err));
+    }
+  }, [user]);
 
   // Ticket Form State
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState(user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : "");
+  const [email, setEmail] = useState(user?.email || "");
   const [userType, setUserType] = useState("");
   const [issueCategory, setIssueCategory] = useState("");
   const [message, setMessage] = useState("");
@@ -111,6 +122,11 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
       toast.success("Support ticket submitted!", {
         description: "Our team will contact you within 24 hours"
       });
+      // Refresh tickets
+      if (user?.email) {
+        api.get(`/support/user/${user.email}`).then(res => setMyTickets(res.data));
+      }
+      setMessage("");
     } catch (error) {
       console.error("Failed to submit ticket:", error);
       toast.error("Failed to submit ticket. Please try again.");
@@ -341,6 +357,55 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
             )}
           </Card>
         </motion.div>
+
+        {/* My Tickets Section */}
+        {user && myTickets.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="max-w-7xl mx-auto mt-12"
+          >
+            <h3 className="text-2xl text-[#272727] mb-6 font-bold flex items-center gap-2">
+              <MessageSquare className="text-[#0EA0DC]" /> My Support Tickets
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {myTickets.map((ticket, idx) => (
+                <Card key={idx} className="skygloss-card p-6 rounded-2xl flex flex-col h-full">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <Badge className={`mb-2 ${ticket.status === 'open' ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' :
+                        ticket.status === 'in_progress' ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' :
+                          ticket.status === 'resolved' ? 'bg-green-100 text-green-700 hover:bg-green-200' :
+                            'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                        {ticket.status.replace('_', ' ').toUpperCase()}
+                      </Badge>
+                      <h4 className="font-bold text-slate-800 capitalize">{ticket.issueCategory} Issue</h4>
+                      <p className="text-xs text-slate-500">{format(new Date(ticket.createdAt), 'MMM dd, yyyy HH:mm')}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-slate-50 p-4 rounded-xl mb-4 border border-slate-100 text-sm text-slate-700 flex-grow">
+                    <strong>You:</strong><br />
+                    {ticket.message}
+                  </div>
+
+                  {ticket.adminReply && (
+                    <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-xl text-sm">
+                      <div className="flex justify-between items-end mb-1">
+                        <strong className="text-emerald-700">SkyGloss Support:</strong>
+                        <span className="text-[10px] text-emerald-600">
+                          {ticket.adminReplyDate ? format(new Date(ticket.adminReplyDate), 'MMM dd, yyyy') : ''}
+                        </span>
+                      </div>
+                      <p className="text-slate-700">{ticket.adminReply}</p>
+                    </div>
+                  )}
+                </Card>
+              ))}
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   );
