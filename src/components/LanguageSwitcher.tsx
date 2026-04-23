@@ -128,9 +128,8 @@ export function LanguageSwitcher() {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="flex items-center gap-2 text-[#666666] hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200">
-                    <Globe className="w-4 h-4" />
+                    <span className="text-lg">{currentFlag}</span>
                     <span className="hidden sm:inline">{currentLang}</span>
-                    <span className="sm:hidden">{currentFlag}</span>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" style={{ maxHeight: "350px" }} className=" bg-white border-[#0EA0DC]/20 max-h-[300px] overflow-y-auto">
@@ -140,14 +139,13 @@ export function LanguageSwitcher() {
                         onClick={() => changeLanguage(lang.code, lang.name, Array.from(lang.flags).slice(0, 2).join(''))}
                         className="cursor-pointer flex flex-col items-start gap-1 hover:bg-[#0EA0DC]/5 text-[#666666] py-2 h-auto"
                     >
-                        <div className="flex items-center justify-between w-full min-w-[200px] gap-4">
-                            <span className="font-medium text-[#272727]">{lang.name}</span>
-                            {lang.code.toUpperCase()}
-                            {/* <span className="text-lg tracking-widest">{lang.flags.replace('+', '')}</span> */}
+                        <div className="flex items-center justify-between w-full min-w-[220px] gap-4">
+                            <div className="flex items-center gap-3">
+                                <span className="text-xl">{Array.from(lang.flags).slice(0, 2).join('')}</span>
+                                <span className="font-medium text-[#272727]">{lang.name}</span>
+                            </div>
+                            <span className="text-[10px] text-[#999999] font-mono">{lang.code.toUpperCase()}</span>
                         </div>
-                        {/* <span className="text-[11px] text-[#999999] opacity-80 whitespace-normal text-left leading-snug w-[280px]">
-                            Code: {lang.code.toUpperCase()}
-                        </span> */}
                     </DropdownMenuItem>
                 ))}
             </DropdownMenuContent>
