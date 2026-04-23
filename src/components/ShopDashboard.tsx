@@ -291,7 +291,7 @@ export function ShopDashboard({
     }
   };
 
-  const showPrice = user?.country === "United States";
+  const showPrice = true;
 
   // Sync state with URL
   useEffect(() => {

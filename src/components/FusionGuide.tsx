@@ -613,12 +613,16 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                         </div>
                                         <div className="space-y-2">
                                             <p className="text-xs font-bold text-[#666666] uppercase tracking-wider">Chemical Test</p>
-                                            <iframe
-                                                src="https://drive.google.com/file/d/1OUDmd-IK7KFKFv6gazTVL_65a1Vs0Bgf/preview"
-                                                className="w-full h-full aspect-video rounded-2xl"
-                                                allow="autoplay"
-                                                title="Chemical Test"
-                                            />
+                                            <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100"
+                                            >
+
+                                                <iframe
+                                                    src="https://drive.google.com/file/d/1OUDmd-IK7KFKFv6gazTVL_65a1Vs0Bgf/preview"
+                                                    className="w-full h-full aspect-video rounded-2xl"
+                                                    allow="autoplay"
+                                                    title="Chemical Test"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
 
@@ -748,7 +752,7 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
 
                                     <div className="aspect-video bg-[#272727] rounded-2xl overflow-hidden shadow-inner border border-gray-100">
                                         <iframe
-                                            src="https://drive.google.com/file/d/1OUDmd-IK7KFKFv6gazTVL_65a1Vs0Bgf/preview"
+                                            src="https://drive.google.com/file/d/12lkcXGt8DjNLqbmyRvjnBTVC4qhdcnmE/preview"
                                             className="w-full h-full aspect-video rounded-2xl"
                                             allow="autoplay"
                                             title="Chemical Test"
