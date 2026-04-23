@@ -88,6 +88,22 @@ const languages = [
     { code: 'vi', name: 'Vietnamese', flags: '🇻🇳', countries: 'Vietnam' }
 ];
 
+const getFlagUrl = (emoji: string) => {
+    const chars = Array.from(emoji);
+    if (chars.length < 2) return null;
+    const codePoint1 = chars[0].codePointAt(0);
+    const codePoint2 = chars[1].codePointAt(0);
+    if (!codePoint1 || !codePoint2) return null;
+
+    const c1 = codePoint1 - 0x1F1E6;
+    const c2 = codePoint2 - 0x1F1E6;
+    if (c1 >= 0 && c1 <= 25 && c2 >= 0 && c2 <= 25) {
+        const code = String.fromCharCode(65 + c1, 65 + c2).toLowerCase();
+        return `https://flagcdn.com/w40/${code}.png`;
+    }
+    return null;
+};
+
 export function LanguageSwitcher() {
     const [currentLang, setCurrentLang] = useState('English');
     const [currentFlag, setCurrentFlag] = useState('🇺🇸');
@@ -128,26 +144,41 @@ export function LanguageSwitcher() {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="flex items-center gap-2 text-[#666666] hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200">
-                    <span className="text-lg">{currentFlag}</span>
+                    <div className="w-5 h-4 overflow-hidden rounded-sm flex items-center justify-center">
+                        {getFlagUrl(currentFlag) ? (
+                            <img src={getFlagUrl(currentFlag)!} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                            <span className="text-lg leading-none">{currentFlag}</span>
+                        )}
+                    </div>
                     <span className="hidden sm:inline">{currentLang}</span>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" style={{ maxHeight: "350px" }} className=" bg-white border-[#0EA0DC]/20 max-h-[300px] overflow-y-auto">
-                {languages.map((lang, idx) => (
-                    <DropdownMenuItem
-                        key={`${lang.code}-${idx}`}
-                        onClick={() => changeLanguage(lang.code, lang.name, Array.from(lang.flags).slice(0, 2).join(''))}
-                        className="cursor-pointer flex flex-col items-start gap-1 hover:bg-[#0EA0DC]/5 text-[#666666] py-2 h-auto"
-                    >
-                        <div className="flex items-center justify-between w-full min-w-[220px] gap-4">
-                            <div className="flex items-center gap-3">
-                                <span className="text-xl">{Array.from(lang.flags).slice(0, 2).join('')}</span>
-                                <span className="font-medium text-[#272727]">{lang.name}</span>
+                {languages.map((lang, idx) => {
+                    const flagUrl = getFlagUrl(lang.flags);
+                    return (
+                        <DropdownMenuItem
+                            key={`${lang.code}-${idx}`}
+                            onClick={() => changeLanguage(lang.code, lang.name, Array.from(lang.flags).slice(0, 2).join(''))}
+                            className="cursor-pointer flex flex-col items-start gap-1 hover:bg-[#0EA0DC]/5 text-[#666666] py-2 h-auto"
+                        >
+                            <div className="flex items-center justify-between w-full min-w-[220px] gap-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-5 h-4 overflow-hidden rounded-sm border border-gray-100 flex items-center justify-center">
+                                        {flagUrl ? (
+                                            <img src={flagUrl} alt="" className="w-full h-full object-cover" />
+                                        ) : (
+                                            <span className="text-xl leading-none">{Array.from(lang.flags).slice(0, 2).join('')}</span>
+                                        )}
+                                    </div>
+                                    <span className="font-medium text-[#272727]">{lang.name}</span>
+                                </div>
+                                <span className="text-[10px] text-[#999999] font-mono">{lang.code.toUpperCase()}</span>
                             </div>
-                            <span className="text-[10px] text-[#999999] font-mono">{lang.code.toUpperCase()}</span>
-                        </div>
-                    </DropdownMenuItem>
-                ))}
+                        </DropdownMenuItem>
+                    );
+                })}
             </DropdownMenuContent>
         </DropdownMenu>
     );
