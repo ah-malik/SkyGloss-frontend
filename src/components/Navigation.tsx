@@ -85,9 +85,9 @@ export function Navigation({
           </motion.button>
 
           {/* Desktop Navigation */}
-          {isLoggedIn && (
-            <>
-              <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden md:flex items-center space-x-2">
+            {isLoggedIn && (
+              <>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -166,43 +166,43 @@ export function Navigation({
                 )}
                 <div className="h-6 w-px bg-[#0EA0DC]/20 mx-2" />
                 <ActivityDropdown />
-                <div className="h-6 w-px bg-[#0EA0DC]/20 mx-2" />
-                <LanguageSwitcher />
-              </div>
+              </>
+            )}
+            <div className="h-6 w-px bg-[#0EA0DC]/20 mx-2" />
+            <LanguageSwitcher />
+          </div>
 
-              {/* Mobile Right Section - Cart + Menu */}
-              <div className="md:hidden flex items-center gap-2">
-                {/* Cart Button (Mobile) */}
-                {showCart && (
-                  <button
-                    onClick={onCartClick}
-                    className="relative p-2 rounded-lg hover:bg-[#0EA0DC]/5 transition-colors"
-                  >
-                    <ShoppingCart className="w-6 h-6 text-[#272727]" />
-                    {cartCount > 0 && (
-                      <Badge className="absolute -top-1 -right-1 bg-[#0EA0DC] text-white px-1.5 py-0 min-w-[20px] h-5 flex items-center justify-center text-xs rounded-full">
-                        {cartCount}
-                      </Badge>
-                    )}
-                  </button>
+          {/* Mobile Right Section */}
+          <div className="md:hidden flex items-center gap-2">
+            {isLoggedIn && showCart && (
+              <button
+                onClick={onCartClick}
+                className="relative p-2 rounded-lg hover:bg-[#0EA0DC]/5 transition-colors"
+              >
+                <ShoppingCart className="w-6 h-6 text-[#272727]" />
+                {cartCount > 0 && (
+                  <Badge className="absolute -top-1 -right-1 bg-[#0EA0DC] text-white px-1.5 py-0 min-w-[20px] h-5 flex items-center justify-center text-xs rounded-full">
+                    {cartCount}
+                  </Badge>
                 )}
+              </button>
+            )}
 
-                <LanguageSwitcher />
+            <LanguageSwitcher />
 
-                {/* Menu Button */}
-                <button
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-2 rounded-lg hover:bg-[#0EA0DC]/5 transition-colors"
-                >
-                  {mobileMenuOpen ? (
-                    <X className="w-6 h-6 text-[#272727]" />
-                  ) : (
-                    <Menu className="w-6 h-6 text-[#272727]" />
-                  )}
-                </button>
-              </div>
-            </>
-          )}
+            {isLoggedIn && (
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-lg hover:bg-[#0EA0DC]/5 transition-colors"
+              >
+                {mobileMenuOpen ? (
+                  <X className="w-6 h-6 text-[#272727]" />
+                ) : (
+                  <Menu className="w-6 h-6 text-[#272727]" />
+                )}
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Mobile Menu */}
