@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import api from "../api/axios";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Country, State, City } from 'country-state-city';
 import { ArrowLeft, Mail, Lock, User, MapPin, Phone, Globe, Facebook, Instagram, Youtube, Linkedin } from "lucide-react";
 import { Button } from "./ui/button";
@@ -23,11 +23,9 @@ const normalizeName = (name: string) => {
         .replace(/İ/g, 'I'); // Special handling for Turkish dotted I
 };
 
-const getFlagEmoji = (countryCode: string) => {
-    if (!countryCode) return '';
-    return countryCode
-        .toUpperCase()
-        .replace(/./g, char => String.fromCodePoint(char.charCodeAt(0) + 127397));
+const getFlagUrl = (isoCode: string) => {
+    if (!isoCode) return null;
+    return `https://flagcdn.com/w40/${isoCode.toLowerCase()}.png`;
 };
 
 
@@ -73,6 +71,9 @@ export function ShopRegistration() {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [noPartnerId, setNoPartnerId] = useState(false);
+    const [countrySearch, setCountrySearch] = useState('');
+    const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
+    const countryDropdownRef = useRef<HTMLDivElement>(null);
 
     const sendToWebhook = async (url: string, data: any) => {
         try {
@@ -94,6 +95,23 @@ export function ShopRegistration() {
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, [step]);
+
+    // Close country dropdown on outside click
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target as Node)) {
+                setCountryDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const filteredCountries = useMemo(() => {
+        if (!countrySearch) return countries;
+        const search = countrySearch.toLowerCase();
+        return countries.filter(c => c.name.toLowerCase().includes(search));
+    }, [countries, countrySearch]);
 
     const handleBack = () => {
         if (step === 3) setStep(2);
@@ -321,50 +339,65 @@ export function ShopRegistration() {
 
                                     <div>
                                         <label className="block text-sm text-[#272727] mb-2 font-medium">Country <span className="text-red-500">*</span></label>
-                                        <div className="relative">
-                                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                            <select
-                                                required
-                                                name="country"
-                                                value={formData.country}
-                                                onChange={(e) => {
-                                                    const countryName = e.target.value;
-                                                    const countryObj = countries.find(c => c.name === countryName);
-                                                    setFormData({ ...formData, country: countryName, city: '' });
-                                                    if (countryObj) {
-                                                        setCountryISO(countryObj.isoCode);
-                                                        setCallingCode(`+${countryObj.phonecode}`);
-                                                        const rawCities = City.getCitiesOfCountry(countryObj.isoCode) || [];
-                                                        const rawStates = State.getStatesOfCountry(countryObj.isoCode) || [];
-
-                                                        const combined = [...rawCities, ...rawStates]
-                                                            .map(item => ({
-                                                                ...item,
-                                                                name: normalizeName(item.name)
-                                                            }))
-                                                            .filter((item, index, self) =>
-                                                                index === self.findIndex((t) => t.name === item.name)
-                                                            )
-                                                            .sort((a, b) => a.name.localeCompare(b.name));
-
-                                                        setCities(combined);
-                                                    } else {
-                                                        setCountryISO("");
-                                                        setCallingCode("");
-                                                        setCities([]);
-                                                    }
-                                                }}
-                                                className="w-full pl-10 pr-4 h-11 bg-white border border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors appearance-none"
-                                                disabled={isLoading}
+                                        <div className="relative" ref={countryDropdownRef}>
+                                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666] z-10" />
+                                            {/* Selected country display / search input */}
+                                            <div
+                                                className="w-full pl-10 pr-4 h-11 bg-white border border-[#0EA0DC]/30 focus-within:border-[#0EA0DC] rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
+                                                onClick={() => { if (!isLoading) setCountryDropdownOpen(!countryDropdownOpen); }}
                                             >
-                                                <option value="">Select Country</option>
-                                                {countries.map(country => (
-                                                    <option key={country.isoCode} value={country.name}>
-                                                        {getFlagEmoji(country.isoCode)} {country.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-
+                                                {formData.country && countryISO && !countryDropdownOpen ? (
+                                                    <>
+                                                        <img src={getFlagUrl(countryISO)!} alt="" className="w-5 h-4 object-cover rounded-sm border border-gray-100" />
+                                                        <span className="text-[#272727] text-sm truncate">{formData.country}</span>
+                                                    </>
+                                                ) : (
+                                                    <input
+                                                        type="text"
+                                                        value={countrySearch}
+                                                        onChange={(e) => { setCountrySearch(e.target.value); setCountryDropdownOpen(true); }}
+                                                        onFocus={() => setCountryDropdownOpen(true)}
+                                                        placeholder={formData.country || "Search country..."}
+                                                        className="w-full bg-transparent outline-none text-sm text-[#272727] placeholder:text-[#999]"
+                                                        disabled={isLoading}
+                                                    />
+                                                )}
+                                            </div>
+                                            {/* Hidden required input for form validation */}
+                                            <input type="hidden" name="country" value={formData.country} required />
+                                            {/* Dropdown list */}
+                                            {countryDropdownOpen && (
+                                                <div className="absolute z-50 top-12 left-0 right-0 bg-white border border-[#0EA0DC]/20 rounded-lg shadow-lg max-h-[250px] overflow-y-auto">
+                                                    {filteredCountries.length === 0 ? (
+                                                        <div className="px-4 py-3 text-sm text-[#999]">No countries found</div>
+                                                    ) : (
+                                                        filteredCountries.map(country => (
+                                                            <div
+                                                                key={country.isoCode}
+                                                                className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#0EA0DC]/5 cursor-pointer transition-colors"
+                                                                onClick={() => {
+                                                                    const countryName = country.name;
+                                                                    setFormData({ ...formData, country: countryName, city: '' });
+                                                                    setCountryISO(country.isoCode);
+                                                                    setCallingCode(`+${country.phonecode}`);
+                                                                    const rawCities = City.getCitiesOfCountry(country.isoCode) || [];
+                                                                    const rawStates = State.getStatesOfCountry(country.isoCode) || [];
+                                                                    const combined = [...rawCities, ...rawStates]
+                                                                        .map(item => ({ ...item, name: normalizeName(item.name) }))
+                                                                        .filter((item, index, self) => index === self.findIndex((t) => t.name === item.name))
+                                                                        .sort((a, b) => a.name.localeCompare(b.name));
+                                                                    setCities(combined);
+                                                                    setCountryDropdownOpen(false);
+                                                                    setCountrySearch('');
+                                                                }}
+                                                            >
+                                                                <img src={getFlagUrl(country.isoCode)!} alt="" className="w-5 h-4 object-cover rounded-sm border border-gray-100 shrink-0" />
+                                                                <span className="text-sm text-[#272727] font-medium">{country.name}</span>
+                                                            </div>
+                                                        ))
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
