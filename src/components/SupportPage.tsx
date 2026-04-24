@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
-import { useState, useEffect } from "react";
-import { Mail, MessageSquare, Phone, Loader2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Mail, MessageSquare, Phone, Loader2, Send, ArrowLeft, ChevronRight } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -11,39 +11,6 @@ import { toast } from "sonner";
 import api from "../api/axios";
 import { useAuth } from "../AuthContext";
 import { format } from "date-fns";
-
-const faqs = [
-  {
-    category: "Product",
-    question: "How long does the clear coating last?",
-    answer: "SkyGloss clear coatings provide protection ranging from 3 to 5+ years depending on the product line and maintenance. Our Forever line offers lifetime protection with proper care."
-  },
-  {
-    category: "Application",
-    question: "What temperature should I apply the coating at?",
-    answer: "Apply SkyGloss products in a controlled environment between 15-25°C (59-77°F). Avoid direct sunlight and ensure the surface temperature is within this range."
-  },
-  {
-    category: "Technical",
-    question: "Can I apply over existing wax or sealant?",
-    answer: "No, all previous waxes, sealants, and coatings must be completely removed before application. Use a panel wipe or IPA solution to ensure a clean surface."
-  },
-  {
-    category: "Order",
-    question: "What is your return policy?",
-    answer: "Unopened products can be returned within 30 days of purchase. Contact your Partner for specific return procedures."
-  },
-  {
-    category: "Training",
-    question: "How do I access the training platform?",
-    answer: "Training access is provided upon certification. Use your technician access code to log in to the portal and access all training modules."
-  },
-  {
-    category: "Technical",
-    question: "How do I fix high spots or streaking?",
-    answer: "If you notice high spots within 1-2 minutes of application, buff immediately with a clean microfiber towel. For cured high spots, polish with a fine polish and reapply."
-  }
-];
 
 interface SupportPageProps {
   onBack?: () => void;
@@ -67,6 +34,10 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
 
   // My Tickets State
   const [myTickets, setMyTickets] = useState<any[]>([]);
+  const [openTicketId, setOpenTicketId] = useState<string | null>(null);
+  const [chatMessage, setChatMessage] = useState("");
+  const [sendingChat, setSendingChat] = useState(false);
+  const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (user?.email) {
@@ -75,6 +46,12 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
       }).catch(err => console.error("Failed to fetch user tickets:", err));
     }
   }, [user]);
+
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [openTicketId, myTickets]);
 
   // Ticket Form State
   const [name, setName] = useState(user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : "");
@@ -88,36 +65,15 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
   const handleSubmitTicket = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!name.trim()) {
-      toast.error("Please enter your name");
-      return;
-    }
-    if (!email.trim()) {
-      toast.error("Please enter your email");
-      return;
-    }
-    if (!userType) {
-      toast.error("Please select a User Type");
-      return;
-    }
-    if (!issueCategory) {
-      toast.error("Please select an Issue Category");
-      return;
-    }
-    if (!message.trim()) {
-      toast.error("Please enter your message");
-      return;
-    }
+    if (!name.trim()) { toast.error("Please enter your name"); return; }
+    if (!email.trim()) { toast.error("Please enter your email"); return; }
+    if (!userType) { toast.error("Please select a User Type"); return; }
+    if (!issueCategory) { toast.error("Please select an Issue Category"); return; }
+    if (!message.trim()) { toast.error("Please enter your message"); return; }
 
     setIsSubmitting(true);
     try {
-      await api.post('/support', {
-        name,
-        email,
-        userType,
-        issueCategory,
-        message
-      });
+      await api.post('/support', { name, email, userType, issueCategory, message });
       setTicketSubmitted(true);
       toast.success("Support ticket submitted!", {
         description: "Our team will contact you within 24 hours"
@@ -134,6 +90,44 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
       setIsSubmitting(false);
     }
   };
+
+  const sendChatMessage = async (ticketId: string) => {
+    if (!chatMessage.trim() || sendingChat) return;
+    setSendingChat(true);
+    try {
+      const res = await api.post(`/support/${ticketId}/messages`, {
+        sender: 'user',
+        content: chatMessage.trim(),
+        senderEmail: user?.email,
+      });
+      setMyTickets(prev => prev.map(t => t._id === ticketId ? res.data : t));
+      setChatMessage("");
+    } catch (err) {
+      console.error("Failed to send message:", err);
+      toast.error("Failed to send message");
+    } finally {
+      setSendingChat(false);
+    }
+  };
+
+  const handleChatKeyDown = (e: React.KeyboardEvent, ticketId: string) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendChatMessage(ticketId);
+    }
+  };
+
+  // Build chat messages (backward compatible)
+  const getChatMessages = (ticket: any) => {
+    if (!ticket) return [];
+    if (ticket.messages && ticket.messages.length > 0) return ticket.messages;
+    const msgs: any[] = [];
+    if (ticket.message) msgs.push({ sender: 'user', content: ticket.message, timestamp: ticket.createdAt });
+    if (ticket.adminReply) msgs.push({ sender: 'admin', content: ticket.adminReply, timestamp: ticket.adminReplyDate || ticket.updatedAt });
+    return msgs;
+  };
+
+  const openTicket = myTickets.find(t => t._id === openTicketId);
 
   return (
     <div className="min-h-screen bg-white pt-20 pb-12">
@@ -188,19 +182,13 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
               <div className="space-y-3 mb-4 flex-grow">
                 <div>
                   <p className="text-xs text-[#0EA0DC] mb-1">Technical Support</p>
-                  <a
-                    href="tel:+13604414886"
-                    className="text-sm text-[#0EA0DC] hover:underline transition-all"
-                  >
+                  <a href="tel:+13604414886" className="text-sm text-[#0EA0DC] hover:underline transition-all">
                     +1 (360) 441-4886
                   </a>
                 </div>
                 <div>
                   <p className="text-xs text-[#0EA0DC] mb-1">Ordering Support</p>
-                  <a
-                    href="tel:+16027844113"
-                    className="text-sm text-[#0EA0DC] hover:underline transition-all"
-                  >
+                  <a href="tel:+16027844113" className="text-sm text-[#0EA0DC] hover:underline transition-all">
                     +1 (602) 784-4113
                   </a>
                 </div>
@@ -249,27 +237,14 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
                   <label className="block text-sm text-[#272727] mb-2">
                     Name   <span className="text-red-500">*</span>
                   </label>
-                  <Input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Your name"
-                    className="border-[#0EA0DC]/30 rounded-lg"
-                  />
-
+                  <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" className="border-[#0EA0DC]/30 rounded-lg" />
                 </div>
 
                 <div>
                   <label className="block text-sm text-[#272727] mb-2">
                     Email   <span className="text-red-500">*</span>
                   </label>
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    className="border-[#0EA0DC]/30 rounded-lg"
-                  />
+                  <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com" className="border-[#0EA0DC]/30 rounded-lg" />
                 </div>
 
                 <div>
@@ -307,7 +282,7 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
                   </Select>
                 </div>
 
-                <div className="col-span-2"  >
+                <div className="col-span-2">
                   <label className="block text-sm text-[#272727] mb-2">
                     Your Message...   <span className="text-red-500">*</span>
                   </label>
@@ -369,41 +344,126 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
             <h3 className="text-2xl text-[#272727] mb-6 font-bold flex items-center gap-2">
               <MessageSquare className="text-[#0EA0DC]" /> My Support Tickets
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {myTickets.map((ticket, idx) => (
-                <Card key={idx} className="skygloss-card p-6 rounded-2xl flex flex-col h-full">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <Badge className={`mb-2 ${ticket.status === 'open' ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' :
-                        ticket.status === 'in_progress' ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' :
-                          ticket.status === 'resolved' ? 'bg-green-100 text-green-700 hover:bg-green-200' :
-                            'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-                        {ticket.status.replace('_', ' ').toUpperCase()}
-                      </Badge>
-                      <h4 className="font-bold text-slate-800 capitalize">{ticket.issueCategory} Issue</h4>
-                      <p className="text-xs text-slate-500">{format(new Date(ticket.createdAt), 'MMM dd, yyyy HH:mm')}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-slate-50 p-4 rounded-xl mb-4 border border-slate-100 text-sm text-slate-700 flex-grow">
-                    <strong>You:</strong><br />
-                    {ticket.message}
-                  </div>
 
-                  {ticket.adminReply && (
-                    <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-xl text-sm">
-                      <div className="flex justify-between items-end mb-1">
-                        <strong className="text-emerald-700">SkyGloss Support:</strong>
-                        <span className="text-[10px] text-emerald-600">
-                          {ticket.adminReplyDate ? format(new Date(ticket.adminReplyDate), 'MMM dd, yyyy') : ''}
-                        </span>
+            {/* Ticket Chat View */}
+            {openTicket ? (
+              <Card className="skygloss-card rounded-2xl overflow-hidden flex flex-col" style={{ height: '500px' }}>
+                {/* Chat Header */}
+                <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3 shrink-0">
+                  <button
+                    onClick={() => setOpenTicketId(null)}
+                    className="p-1.5 rounded-lg hover:bg-slate-200 transition-colors"
+                  >
+                    <ArrowLeft size={18} className="text-slate-600" />
+                  </button>
+                  <div className="flex-1">
+                    <h4 className="font-bold text-slate-800 capitalize text-sm">{openTicket.issueCategory} Issue</h4>
+                    <p className="text-xs text-slate-500">
+                      {format(new Date(openTicket.createdAt), 'MMM dd, yyyy HH:mm')}
+                      <span className="mx-2">·</span>
+                      <Badge className={`text-[10px] px-1.5 py-0 ${
+                        openTicket.status === 'open' ? 'bg-blue-100 text-blue-700' :
+                        openTicket.status === 'in_progress' ? 'bg-yellow-100 text-yellow-700' :
+                        openTicket.status === 'resolved' ? 'bg-green-100 text-green-700' :
+                        'bg-gray-100 text-gray-700'
+                      }`}>
+                        {openTicket.status.replace('_', ' ').toUpperCase()}
+                      </Badge>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Chat Messages */}
+                <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50/30">
+                  {getChatMessages(openTicket).map((msg: any, idx: number) => (
+                    <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <div className={`max-w-[75%] rounded-2xl px-4 py-3 ${
+                        msg.sender === 'user'
+                          ? 'bg-[#0EA0DC] text-white rounded-br-sm'
+                          : 'bg-white border border-emerald-200 text-slate-800 rounded-bl-sm shadow-sm'
+                      }`}>
+                        {msg.sender === 'admin' && (
+                          <p className="text-[10px] font-bold text-emerald-600 mb-1">SkyGloss Support</p>
+                        )}
+                        <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
+                        <p className={`text-[10px] mt-1 ${msg.sender === 'user' ? 'text-white/60' : 'text-slate-400'}`}>
+                          {msg.timestamp ? format(new Date(msg.timestamp), 'MMM dd, HH:mm') : ''}
+                        </p>
                       </div>
-                      <p className="text-slate-700">{ticket.adminReply}</p>
                     </div>
-                  )}
-                </Card>
-              ))}
-            </div>
+                  ))}
+                  <div ref={chatEndRef} />
+                </div>
+
+                {/* Message Input */}
+                <div className="px-4 py-3 border-t border-slate-100 bg-white shrink-0">
+                  <div className="flex items-end gap-2">
+                    <textarea
+                      value={chatMessage}
+                      onChange={(e) => setChatMessage(e.target.value)}
+                      onKeyDown={(e) => handleChatKeyDown(e, openTicket._id)}
+                      placeholder="Type your message..."
+                      rows={1}
+                      className="flex-1 resize-none bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA0DC]/20 max-h-[100px]"
+                      style={{ minHeight: '44px' }}
+                    />
+                    <button
+                      onClick={() => sendChatMessage(openTicket._id)}
+                      disabled={!chatMessage.trim() || sendingChat}
+                      className="h-11 w-11 shrink-0 rounded-xl bg-[#0EA0DC] hover:bg-[#0b86b8] text-white flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Send size={18} />
+                    </button>
+                  </div>
+                </div>
+              </Card>
+            ) : (
+              /* Ticket List */
+              <div className="space-y-3">
+                {myTickets.map((ticket, idx) => {
+                  const msgs = getChatMessages(ticket);
+                  const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1] : null;
+                  return (
+                    <Card
+                      key={idx}
+                      className="skygloss-card p-4 rounded-2xl cursor-pointer hover:border-[#0EA0DC]/30 hover:shadow-md transition-all"
+                      onClick={() => { setOpenTicketId(ticket._id); setChatMessage(""); }}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 shrink-0 rounded-full bg-[#0EA0DC]/10 flex items-center justify-center">
+                          <MessageSquare size={18} className="text-[#0EA0DC]" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <h4 className="font-bold text-slate-800 capitalize text-sm">{ticket.issueCategory} Issue</h4>
+                            <Badge className={`text-[10px] px-1.5 py-0 ${
+                              ticket.status === 'open' ? 'bg-blue-100 text-blue-700' :
+                              ticket.status === 'in_progress' ? 'bg-yellow-100 text-yellow-700' :
+                              ticket.status === 'resolved' ? 'bg-green-100 text-green-700' :
+                              'bg-gray-100 text-gray-700'
+                            }`}>
+                              {ticket.status.replace('_', ' ').toUpperCase()}
+                            </Badge>
+                          </div>
+                          {lastMsg && (
+                            <p className="text-xs text-slate-500 truncate">
+                              <span className="font-medium">{lastMsg.sender === 'user' ? 'You' : 'Support'}:</span>{' '}
+                              {lastMsg.content}
+                            </p>
+                          )}
+                        </div>
+                        <div className="shrink-0 flex flex-col items-end gap-1">
+                          <span className="text-[10px] text-slate-400">
+                            {ticket.createdAt ? format(new Date(ticket.createdAt), 'MMM dd') : ''}
+                          </span>
+                          <ChevronRight size={16} className="text-slate-300" />
+                        </div>
+                      </div>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
           </motion.div>
         )}
       </div>
