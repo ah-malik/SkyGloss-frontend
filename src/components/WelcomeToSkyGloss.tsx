@@ -450,7 +450,9 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                         onClick={() => markComplete('learning_curve')}
                                         className="rounded-xl px-10 h-14 bg-[#272727] text-white"
                                     >
-                                        Section Completed
+                                        {completedSteps.includes('learning_curve') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
+
+
                                     </Button>
                                 </div>
                             </Card>
