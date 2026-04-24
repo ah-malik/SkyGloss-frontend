@@ -234,7 +234,7 @@ export function ShopRegistration() {
                     className="group text-[#272727] hover:text-[#0EA0DC] hover:bg-white hover:shadow-[0_0_20px_rgba(14,160,220,0.25)] transition-all duration-200 bg-white/90 backdrop-blur-sm shadow-md border-2 border-[#0EA0DC]/30 hover:border-[#0EA0DC] rounded-xl px-4 sm:px-5 py-2.5 sm:py-3 gap-2"
                 >
                     <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 group-hover:transform group-hover:-translate-x-1 transition-transform duration-200" />
-                    <span className="hidden sm:inline">{backButtonLabel}</span>
+                    <span className="hidden sm:inline" key={`back-label-${step}`}>{backButtonLabel}</span>
                     <span className="sm:hidden">Back</span>
                 </Button>
             </motion.div>
@@ -262,7 +262,7 @@ export function ShopRegistration() {
                             </div>
                         </div>
 
-                        <div className="text-center mb-8">
+                        <div className="text-center mb-8" key={`step-header-${step}`}>
                             <h2 className="text-2xl text-[#272727] mb-2 font-semibold">Shop Registration - Step {step}</h2>
                             <p className="text-[#666666]">{stepLabels[step - 1]}</p>
                         </div>
@@ -688,7 +688,7 @@ export function ShopRegistration() {
                                 </motion.div>
                             )}
 
-                            <div className="pt-6 flex flex-col sm:flex-row gap-4">
+                            <div className="pt-6 flex flex-col sm:flex-row gap-4" key={`step-buttons-${step}`}>
                                 {step > 1 && (
                                     <Button
                                         type="button"

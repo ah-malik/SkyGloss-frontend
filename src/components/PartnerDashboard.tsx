@@ -230,38 +230,38 @@ const PartnerProducts = [
     image: paintPenBoxImage,
     additionalImages: [paintPenToolsImage]
   },
-/*
-  {
-    id: 11,
-    name: "Advanced Technical Training",
-    description: "2-Day On-Site Course",
-    sizes: ["2-Day Course"],
-    unitPrices: { "2-Day Course": 2500.00 },
-    casePrices: { "2-Day Course": 2500.00 },
-    unitsPerCase: { "2-Day Course": 1 },
-    image: "https://res.cloudinary.com/dxhmopbei/image/upload/v1772048373/q99t4cvoxcfjkujlox2k.jpg"
-  },
-  {
-    id: 12,
-    name: "Advanced Sales Training",
-    description: "Personalized Sales Training + Ongoing Support",
-    sizes: ["Full Session"],
-    unitPrices: { "Full Session": 1000.00 },
-    casePrices: { "Full Session": 1000.00 },
-    unitsPerCase: { "Full Session": 1 },
-    image: "https://res.cloudinary.com/dxhmopbei/image/upload/v1772048722/pb8sauytdht4aecqxgaj.png"
-  },
-  {
-    id: 13,
-    name: "Lead Generation Marketing Program",
-    description: "Real Lead Acquisition System",
-    sizes: ["Per Month"],
-    unitPrices: { "Per Month": 1000.00 },
-    casePrices: { "Per Month": 1000.00 },
-    unitsPerCase: { "Per Month": 1 },
-    image: "https://res.cloudinary.com/dxhmopbei/image/upload/v1772048836/atcnitnp6onipsxgkys4.jpg"
-  }
-*/
+  /*
+    {
+      id: 11,
+      name: "Advanced Technical Training",
+      description: "2-Day On-Site Course",
+      sizes: ["2-Day Course"],
+      unitPrices: { "2-Day Course": 2500.00 },
+      casePrices: { "2-Day Course": 2500.00 },
+      unitsPerCase: { "2-Day Course": 1 },
+      image: "https://res.cloudinary.com/dxhmopbei/image/upload/v1772048373/q99t4cvoxcfjkujlox2k.jpg"
+    },
+    {
+      id: 12,
+      name: "Advanced Sales Training",
+      description: "Personalized Sales Training + Ongoing Support",
+      sizes: ["Full Session"],
+      unitPrices: { "Full Session": 1000.00 },
+      casePrices: { "Full Session": 1000.00 },
+      unitsPerCase: { "Full Session": 1 },
+      image: "https://res.cloudinary.com/dxhmopbei/image/upload/v1772048722/pb8sauytdht4aecqxgaj.png"
+    },
+    {
+      id: 13,
+      name: "Lead Generation Marketing Program",
+      description: "Real Lead Acquisition System",
+      sizes: ["Per Month"],
+      unitPrices: { "Per Month": 1000.00 },
+      casePrices: { "Per Month": 1000.00 },
+      unitsPerCase: { "Per Month": 1 },
+      image: "https://res.cloudinary.com/dxhmopbei/image/upload/v1772048836/atcnitnp6onipsxgkys4.jpg"
+    }
+  */
 ];
 
 interface OrderItem {
@@ -714,7 +714,7 @@ export function PartnerDashboard({
 
   return (
     <div className="min-h-screen bg-white pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -1993,7 +1993,7 @@ export function PartnerDashboard({
             <DialogDescription className="text-[#272727] text-lg font-medium leading-relaxed mb-8 text-center">
               Thank you for your order! A Skygloss representative will contact you shortly to finalize shipping, payment, and invoicing details.
             </DialogDescription>
-            <Button 
+            <Button
               onClick={() => setShowOrderSuccessModal(false)}
               className="w-full bg-[#0EA0DC] text-white hover:bg-[#0c80b3] h-14 rounded-2xl font-bold text-lg transition-all shadow-[0_4px_15px_rgba(14,160,220,0.3)]"
             >
