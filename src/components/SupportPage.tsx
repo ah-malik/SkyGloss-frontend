@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { useState, useEffect, useRef } from "react";
+import { io } from "socket.io-client";
 import { Mail, MessageSquare, Phone, Loader2, Send, ArrowLeft, ChevronRight } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
@@ -38,6 +39,12 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
   const [chatMessage, setChatMessage] = useState("");
   const [sendingChat, setSendingChat] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const openTicketIdRef = useRef<string | null>(null);
+
+  // Keep ref in sync for socket handler
+  useEffect(() => {
+    openTicketIdRef.current = openTicketId;
+  }, [openTicketId]);
 
   useEffect(() => {
     if (user?.email) {
@@ -46,6 +53,18 @@ export function SupportPage({ onBack }: SupportPageProps = {}) {
       }).catch(err => console.error("Failed to fetch user tickets:", err));
     }
   }, [user]);
+
+  // Real-time socket listener for support messages
+  useEffect(() => {
+    const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000';
+    const socket = io(socketUrl, { transports: ['websocket', 'polling'] });
+
+    socket.on('support_message', ({ ticketId, ticket }: { ticketId: string; ticket: any }) => {
+      setMyTickets(prev => prev.map(t => t._id === ticketId ? ticket : t));
+    });
+
+    return () => { socket.disconnect(); };
+  }, []);
 
   useEffect(() => {
     if (chatEndRef.current) {
