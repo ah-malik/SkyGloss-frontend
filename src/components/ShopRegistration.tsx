@@ -152,17 +152,17 @@ export function ShopRegistration() {
         return true;
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async (e?: React.FormEvent, payLater: boolean = false) => {
+        if (e) e.preventDefault();
         setIsLoading(true);
 
         try {
             // If callingCode exists, it might be from the old system or manually set
             // PhoneInput usually provides the full number starting with +
-            const fullPhone = formData.phoneNumber.startsWith('+') 
-                ? formData.phoneNumber 
+            const fullPhone = formData.phoneNumber.startsWith('+')
+                ? formData.phoneNumber
                 : (callingCode ? `${callingCode} ${formData.phoneNumber}` : formData.phoneNumber);
-            
+
             const normalizedData = {
                 ...formData,
                 // If user has no partner ID, clear it so backend defaults to GLOBAL77
@@ -179,14 +179,17 @@ export function ShopRegistration() {
             const response = await api.post('/auth/register-shop', normalizedData);
 
             // Send complete registration data to webhook
-            const webhookPayload = { 
-                ...normalizedData, 
+            const webhookPayload = {
+                ...normalizedData,
                 hearAboutUs: formData.hearAboutUs === 'Other' ? formData.hearAboutUsOther : formData.hearAboutUs
             };
             sendToWebhook('https://services.leadconnectorhq.com/hooks/0ECH0AoivQGV58EtMuli/webhook-trigger/f05dd651-e2f4-46c1-8cb4-8ae07a33e75f', webhookPayload);
 
 
-            if (response.data?.stripeUrl) {
+            if (payLater) {
+                alert("Registration successful! You can pay the activation fee later from your dashboard.");
+                navigate('/login/shop');
+            } else if (response.data?.stripeUrl) {
                 window.location.href = response.data.stripeUrl;
             } else if (response.data?.user && formData.couponCode === 'CERTIFICATIONONUS') {
                 alert("Registration successful via Certification Bonus! Redirecting to login...");
@@ -271,7 +274,7 @@ export function ShopRegistration() {
                             e.preventDefault();
                             if (step === 1) {
                                 if (validateStep()) {
-                                    const webhookPayload = { 
+                                    const webhookPayload = {
                                         ...formData,
                                         hearAboutUs: formData.hearAboutUs === 'Other' ? formData.hearAboutUsOther : formData.hearAboutUs
                                     };
@@ -688,29 +691,60 @@ export function ShopRegistration() {
                                 </motion.div>
                             )}
 
-                            <div className="pt-6 flex flex-col sm:flex-row gap-4" key={`step-buttons-${step}`}>
-                                {step > 1 && (
-                                    <Button
-                                        type="button"
-                                        onClick={() => setStep(step - 1)}
-                                        disabled={isLoading}
-                                        variant="outline"
-                                        className="flex-1 h-14 text-lg border-2 border-[#0EA0DC] text-[#0EA0DC] hover:bg-[#0EA0DC]/5 shadow-sm transition-all duration-300"
-                                    >
-                                        Back to Step {step - 1}
-                                    </Button>
+                            <div className="pt-6 flex flex-col gap-4" key={`step-buttons-${step}`}>
+                                {step === 3 ? (
+                                    <div className="flex flex-col sm:flex-row gap-4 w-full">
+                                        <Button
+                                            type="button"
+                                            onClick={() => setStep(step - 1)}
+                                            disabled={isLoading}
+                                            variant="outline"
+                                            className="flex-1 h-14 text-lg border-2 border-[#0EA0DC] text-[#0EA0DC] hover:bg-[#0EA0DC]/5 shadow-sm transition-all duration-300"
+                                        >
+                                            Back
+                                        </Button>
+                                        <Button
+                                            type="button"
+                                            onClick={(e) => handleSubmit(e, true)}
+                                            disabled={isLoading || !isStepValid}
+                                            variant="outline"
+                                            className="flex-[1.5] h-14 text-lg border-2 border-slate-300 text-white hover:bg-[#0EA0DC]/10 shadow-sm transition-all duration-300 hover:text-[#0EA0DC]"
+                                        >
+                                            {isLoading ? "Processing..." : "Pay Later"}
+                                        </Button>
+                                        <Button
+                                            type="submit"
+                                            disabled={isLoading || !isStepValid}
+                                            className="flex-[2] h-14 text-lg bg-[#0EA0DC] hover:bg-[#0EA0DC]/90 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                                        >
+                                            {isLoading ? "Processing..." : "Pay Now"}
+                                        </Button>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col sm:flex-row gap-4 w-full">
+                                        {step > 1 && (
+                                            <Button
+                                                type="button"
+                                                onClick={() => setStep(step - 1)}
+                                                disabled={isLoading}
+                                                variant="outline"
+                                                className="flex-1 h-14 text-lg border-2 border-[#0EA0DC] text-[#0EA0DC] hover:bg-[#0EA0DC]/5 shadow-sm transition-all duration-300"
+                                            >
+                                                Back to Step {step - 1}
+                                            </Button>
+                                        )}
+                                        <Button
+                                            type="submit"
+                                            disabled={isLoading || !isStepValid}
+                                            className={`h-14 text-lg bg-[#0EA0DC] hover:bg-[#0EA0DC]/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${step > 1 ? 'flex-[2]' : 'w-full'}`}
+                                        >
+                                            {isLoading ? "Processing..." :
+                                                step === 1 ? "Next Step" :
+                                                    (step === 2 && formData.couponCode === 'CERTIFICATIONONUS') ? "Complete Registration" :
+                                                        "Next Step"}
+                                        </Button>
+                                    </div>
                                 )}
-                                <Button
-                                    type="submit"
-                                    disabled={isLoading || !isStepValid}
-                                    className={`h-14 text-lg bg-[#0EA0DC] hover:bg-[#0EA0DC]/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${step > 1 ? 'flex-[2]' : 'w-full'}`}
-                                >
-                                    {isLoading ? "Processing..." :
-                                        step === 1 ? "Next Step" :
-                                            (step === 2 && formData.couponCode === 'CERTIFICATIONONUS') ? "Complete Registration" :
-                                                step === 2 ? "Next Step" :
-                                                    "Complete Registration"}
-                                </Button>
                             </div>
 
                             <div className="text-center mt-6">
