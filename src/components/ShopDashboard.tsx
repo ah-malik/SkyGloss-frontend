@@ -185,6 +185,22 @@ export function ShopDashboard({
   const [showOrderSuccessModal, setShowOrderSuccessModal] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [isSubmittingTraining, setIsSubmittingTraining] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
+
+  const handlePayNow = async () => {
+    if (!user) return;
+    setIsPaying(true);
+    try {
+      const response = await api.post('/orders/activation-fee');
+      if (response.data?.url) {
+        window.location.href = response.data.url;
+      }
+    } catch (err: any) {
+      console.error(err);
+      toast.error('Failed to initiate payment session');
+      setIsPaying(false);
+    }
+  };
 
   // Compute if all available courses (structural + dynamic product ones) are 100% completed
   const isAllCoursesCompleted = useMemo(() => {
@@ -471,6 +487,36 @@ export function ShopDashboard({
     const isResinFilm = product.name?.toUpperCase().includes('RESIN FILM');
 
     if (isFusion) {
+      const isUnpaid = user?.role === 'certified_shop' && !user?.isPartnerPaid && user?.isSelfRegistered;
+      if (isUnpaid) {
+        return (
+          <div className="min-h-screen bg-white pt-32 pb-12 flex justify-center px-4">
+            <Card className="p-8 max-w-md w-full text-center space-y-6">
+              <Lock className="w-16 h-16 text-[#0EA0DC] mx-auto opacity-50" />
+              <h2 className="text-2xl font-bold text-[#272727]">Course Locked</h2>
+              <p className="text-[#666666]">
+                Please complete your account activation payment to access the FUSION masterclass and training materials.
+              </p>
+              <div className="space-y-3">
+                <Button
+                  onClick={handlePayNow}
+                  disabled={isPaying}
+                  className="w-full bg-[#0EA0DC] text-white hover:bg-[#0EA0DC]/90 h-12 rounded-xl font-bold"
+                >
+                  {isPaying ? "Loading..." : "Pay Now"}
+                </Button>
+                <Button
+                  onClick={() => navigate('/dashboard/shop/courses')}
+                  variant="outline"
+                  className="w-full h-12 rounded-xl"
+                >
+                  Back to Courses
+                </Button>
+              </div>
+            </Card>
+          </div>
+        );
+      }
       return <FusionGuide onBack={() => {
         navigate('/dashboard/shop/courses');
       }} />;
@@ -1320,14 +1366,39 @@ export function ShopDashboard({
                           return null;
                         })()}
 
-                        <Button
-                          onClick={() => {
-                            navigate(`/dashboard/shop/courses/${product._id}`);
-                          }}
-                          className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
-                        >
-                          Launch Course
-                        </Button>
+                        {(() => {
+                          const isFusion = product.name.toUpperCase().includes('FUSION');
+                          const isUnpaid = user?.role === 'certified_shop' && !user?.isPartnerPaid && user?.isSelfRegistered;
+                          const showPayNow = isFusion && isUnpaid;
+
+                          if (showPayNow) {
+                            return (
+                              <div className="mt-4">
+                                <p className="text-sm font-bold text-amber-600 mb-3 text-center">
+                                  Please pay now to access this course.
+                                </p>
+                                <Button
+                                  onClick={handlePayNow}
+                                  disabled={isPaying}
+                                  className="w-full bg-[#0EA0DC] text-white hover:bg-[#0EA0DC]/90 transition-colors h-12 rounded-xl font-bold uppercase tracking-wider"
+                                >
+                                  {isPaying ? "Loading..." : "Pay Now"}
+                                </Button>
+                              </div>
+                            );
+                          }
+
+                          return (
+                            <Button
+                              onClick={() => {
+                                navigate(`/dashboard/shop/courses/${product._id}`);
+                              }}
+                              className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
+                            >
+                              Launch Course
+                            </Button>
+                          );
+                        })()}
                       </Card>
                     </motion.div>
                   ))}

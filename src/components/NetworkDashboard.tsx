@@ -369,8 +369,17 @@ export function NetworkDashboard() {
                       <tbody>
                         {shops.map((shop, idx) => (
                           <tr key={idx} className="border-b border-[#0EA0DC]/10 hover:bg-[#0EA0DC]/5 transition-colors">
-                            <td className="px-6 py-4 text-[#272727] font-medium">
-                              {shop.firstName} {shop.lastName}
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-2">
+                                <span className="text-[#272727] font-medium">
+                                  {shop.firstName} {shop.lastName}
+                                </span>
+                                {!shop.isPartnerPaid && (
+                                  <Badge variant="outline" className="text-red-500 border-red-200 bg-red-50 text-[10px] px-1.5 py-0 h-5 flex items-center shadow-sm">
+                                    UNPAID
+                                  </Badge>
+                                )}
+                              </div>
                             </td>
                             <td className="px-6 py-4 text-[#666666] text-sm">
                               {shop.city}, {shop.country}
