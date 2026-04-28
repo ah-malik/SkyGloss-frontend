@@ -166,7 +166,17 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                                     SkyGloss <span className="text-[#0EA0DC]">Shop Setup</span>
                                 </h1>
                                 <p className="text-[#666666] text-lg max-w-2xl mb-8 font-medium">
-                                    Setting up your professional shop environment ensures you're ready to deliver the high-standard automotive restoration SkyGloss is known for.
+                                    Your shop environment plays a direct role in the quality of your work.
+                                    <br />
+                                    This is a professional process. The way your space is set up—how clean it is, how organized it is, how controlled it is—will either support you or work against you.
+                                    <br />
+                                    You don’t need a perfect shop. But you do need a space that’s intentional.
+                                    <br />
+                                    A clean, well-prepared environment makes everything easier. It improves consistency, reduces mistakes, and allows you to focus on doing the work the right way.
+                                    <br />
+                                    At the end of the day, better environments produce better results.
+                                    <br />
+                                    Set yourself up accordingly keep it clean and you will be good to go!
                                 </p>
                                 <div className="flex items-center gap-6 flex-wrap">
                                     <div className="flex items-center gap-2 text-sm text-[#666666] font-medium">
@@ -205,7 +215,7 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                                                     {section.title}
                                                 </Badge>
                                             )}
-                                            
+
                                             {section.id === 'shop_profile' && (
                                                 <>
                                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
@@ -246,7 +256,7 @@ export default function SkyGlossShopSetup({ onBack }: { onBack: () => void }) {
                                             {sub.id === 'shop_restoration_products' && (
                                                 <>
                                                     <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase">
-                                                       SkyGloss Proudcts
+                                                        SkyGloss Proudcts
                                                     </h2>
                                                     <div className="bg-gray-50 p-6 rounded-2xl mb-8">
                                                         <p className="text-sm text-[#272727] font-medium leading-relaxed mb-4">

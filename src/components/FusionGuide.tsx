@@ -449,9 +449,9 @@ export function FusionGuide({ onBack }: { onBack: () => void }) {
                                 <div id="fusion_storage" className="bg-gray-50 p-6 rounded-2xl mb-8">
                                     <h4 className="font-bold text-sm text-[#272727] mb-3">Storage</h4>
                                     <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Shelf life (unopened) from the date of purchase is 2 years.</li>
+                                        <li>• Shelf life (unopened) from the date of purchase is 1 years.</li>
                                         <li>• Shelf life (opened) from the date of opening is 2 months.</li>
-                                        <li>• Storage temperature: (50°F-85°F) 10°C-30°C.</li>
+                                        <li>• Storage temperature: 50°F and 75°F (10℃ and 24℃).</li>
                                         <li>• Always store FUSION in a cooler lower humidity environment.</li>
                                     </ul>
                                 </div>

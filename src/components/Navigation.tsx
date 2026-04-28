@@ -139,11 +139,11 @@ export function Navigation({
                 >
                   <HelpCircle className="w-4 h-4 mr-2" />
                   Support
-                  {unreadMessages > 0 && (
+                  {/* {unreadMessages > 0 && (
                     <Badge className="ml-2 bg-red-500 text-white px-2 py-0.5 text-[10px] animate-pulse">
                       {unreadMessages}
                     </Badge>
-                  )}
+                  )} */}
                 </Button>
 
                 <Button

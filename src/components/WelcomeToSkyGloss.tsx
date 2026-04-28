@@ -43,11 +43,11 @@ const sections: Section[] = [
             { id: "data_access", title: "What You’re Getting Access To" },
             { id: "intro_engine", title: "SkyGloss as a Growth Engine" },
             { id: "data_bigger_picture", title: "The Bigger Picture" },
-            { id: "data_next_steps", title: "Your Path Forward" },
+            // { id: "data_next_steps", title: "Your Path Forward" },
             { id: "proper_perspective", title: "Proper Perspective" },
             { id: "new_craft", title: "This Is a New Craft" },
             { id: "professional_mindset", title: "Professional Mindset" },
-            { id: "mistakes_learning", title: "Mistakes Are Part of Learning" },
+            // { id: "mistakes_learning", title: "Mistakes Are Part of Learning" },
             { id: "payoff", title: "The Payoff" },
             { id: "intro_final", title: "Welcome to SkyGloss" }
         ]
@@ -166,15 +166,15 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                     <span className="text-[#0EA0DC]">Welcome</span> to SkyGloss
                                 </h1>
                                 <p className="text-[#666666] text-lg max-w-2xl mb-6 font-medium">
-                                    You’re not just learning a new product—you’re stepping into a different way of thinking about paint, restoration, and how your business operates.
+                                    A Different Way to Think About Paint
                                 </p>
 
                                 <p className="text-[#666666] text-lg max-w-2xl mb-6 font-medium">
-                                    SkyGloss exists to solve a simple problem:
+                                    Cut. Polish. Refine. Repeat.
                                     <br />
-                                    For decades, the only way to improve paint was to remove it.
+                                    That process works. It always has. Polishing is a real craft, and it will always have a need—especially on vehicles that are built for it. Take a show car for an example. They purposely get painted with extra layers of clearcoat so it can be polish down to perfection and have enough clearcoat to polish for every show for years to come.
                                     <br />
-                                    Now, there is another way.
+                                    But most vehicles today aren’t built that way.
                                 </p>
                                 <div className="flex items-center gap-6 flex-wrap">
                                     <div className="flex items-center gap-2 text-sm text-[#666666] font-medium">
@@ -214,36 +214,65 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
 
                                 <div className="space-y-6 mb-10">
                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-                                        <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3">The Old Way</h4>
                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                            For years, polishing has been the standard.
+                                            Cut. Polish. Refine. Repeat.
                                             <br />
-                                            It works—but it works by removing clearcoat.
-                                            <br />   <br />
-                                            Modern paint systems are thinner than ever, which means:
+                                            That process works. It always has. Polishing is a real craft, and it will always have a need—especially on vehicles that are built for it. Take a show car for an example. They purposely get painted with extra layers of clearcoat so it can be polish down to perfection and have enough clearcoat to polish for every show for years to come.
+                                            <br />
+                                            But most vehicles today aren’t built that way.
                                             <br />
                                             <br />
-                                            • Less room for correction
+                                            Modern paint systems are thinner than they’ve ever been. Over the past two decades, overall film build has been reduced by nearly 50%.
                                             <br />
-                                            • Higher risk of damage
                                             <br />
-                                            • Shorter lifespan of the finish
+                                            Clearcoat is the manufacturer’s primary line of protection. It’s what preserves the finish, maintains integrity, and keeps a vehicle looking factory over time.
+                                            <br />
+                                            <br />
+                                            In the past, paint systems were able to last the life of the vehicle. Today, that is not true. Modern paint may be shinier—but it’s built with significantly less material behind it.
+                                            <br />
+                                            <br />
+                                            But there’s another reality that matters just as much. It’s way more work to cut and polish a vehicle’s clearcoat then it is to build it up.
+                                            <br />
+                                            <br />
+                                            Customers don’t value the hours it takes to polish a car.
+                                            <br />
+                                            They don’t see the passes.
+                                            <br />
+                                            They don’t understand the steps.
+                                            <br />
+                                            They don’t feel the physical effort behind it.
+                                            <br />
+                                            They see the result.
+                                            <br />
+                                            <br />
+                                            That’s why most daily-driven vehicles never receive full correction—not because they don’t need it, but because the time, cost, and physical effort don’t align with what the market is willing to support.
+                                            <br />
+                                            <br />
+                                            So, the industry has reached a crossroads.
+                                            <br />
+                                            Paint is thinner.
+                                            <br />
+                                            The work is harder.
+                                            <br />
+                                            The body takes more strain.
+                                            <br />
+                                            And the customer just wants the car to look right.
+                                            <br />
+                                            <br />
+                                            Which leads to a very simple question:
+                                            <br />
+                                            <strong>
 
+                                                Is removing material really the best way to maintain it?
+                                            </strong>
+                                            <br />
+                                            Or is there a better, more practical way to get the same—or better—result?
                                             <br />
                                             <br />
-                                            <br />
-                                            SkyGloss starts with a different question:
-                                            <br />
-                                            What if we didn’t have to remove clearcoat to improve appearance?
-                                            <br />
-                                            Instead of cutting material away, SkyGloss focuses on <strong>building the surface back up</strong>
+                                            That’s where SkyGloss begins.
                                         </p>
                                     </div>
-
-
                                 </div>
-
-
 
                                 <div className="flex justify-end mt-8">
                                     <Button
@@ -255,12 +284,69 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                 </div>
                             </Card>
                         </div>
+                        <div id="data_fusion" className="scroll-mt-32">
+                            <h2 className="text-4xl font-bold text-[#0EA0DC] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                WHERE FUSION FITS
 
 
+                            </h2>
+                            <Card className="p-8 rounded-lg border-gray-100 bg-white">
+                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                    The Core of the System
 
+                                </h2>
+
+                                <div id="storage_details" className="bg-gray-50 p-6 rounded-2xl mb-8">
+                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                        FUSION is the flagship process within SkyGloss.
+                                        <br />
+                                        It represents the shift from always removing clearcoat…
+                                        <br />
+                                        to having the ability to build it back into the surface.
+                                        <br />
+                                        <br />
+                                        It is:
+                                        <br />
+                                        • A foundational process
+                                        <br />
+                                        • A replacement for traditional first-step polishing in many cases
+                                        <br />
+                                        • A more consistent and scalable process compared to polishing
+                                        <br />
+                                        •  A method for creating a factory-fresh finish
+                                        <br />
+                                        <br />
+                                        It is not:
+                                        <br />
+                                        •  A coating
+                                        <br />
+                                        •  A shortcut
+                                        <br />
+                                        •  A wipe-on solution
+                                        <br />
+                                        <br />
+                                        It requires understanding, preparation, and proper application.
+                                        <br />
+                                        Because real processes require skill.
+                                        <br />
+                                        And skill creates value.
+                                    </p>
+                                </div>
+
+                                <div className="flex justify-end mt-8">
+                                    <Button
+                                        onClick={() => markComplete('data_fusion')}
+                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data_fusion') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                    >
+                                        {completedSteps.includes('data_fusion') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
+                                    </Button>
+                                </div>
+                            </Card>
+                        </div>
                         {/* SECTION B: TECHNICAL PRODUCT DATA */}
                         <div id="data_core" className="scroll-mt-32">
                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
+
                                 <Badge variant="outline" className="mb-6 border-[#0EA0DC]/30 text-[#0EA0DC] bg-[#0EA0DC]/5 px-4 py-1.5 font-bold rounded-xl uppercase tracking-widest text-[10px]">
                                     SECTION B: The Core Idea
                                 </Badge>
@@ -268,32 +354,47 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     The Core Idea
                                 </h2>
+                                <h4 className="text-2xl font-bold text-[#0EA0DC] mb-8 leading-[1.1] tracking-tighter uppercase ">
+                                    Build Instead of Remove
 
-
-
+                                </h4>
                                 <div id="storage_explanation" className="bg-gray-50 p-6 rounded-2xl mb-8">
                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                        Clearcoat is the protection system of a vehicle.
+                                        Clearcoat is the vehicle’s built-in protection system. It’s what manufacturers have relied on for decades to preserve and protect the paint finish.
                                         <br />
-                                        It determines:              <br />              <br />
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Gloss</li>
-                                        <li>• Durability</li>
-                                        <li>• Resistance to wear</li>
-                                        <li>• Long-term serviceability</li>
-                                    </ul>
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">               <br />              <br />
+                                        <br />
+                                        Everything else—coatings, sealants, films—are performance layers designed to enhance or complement that foundation. But the core protection has always been the clearcoat itself.
+                                        <br />
+                                        <br />
+                                        That outer layer is what keeps a finish healthy, vibrant, and intact. The last thing we want to do is prematurely remove or weaken the very system designed to protect the vehicle.
+                                        <br />
+                                        <br />
+                                        It determines:
+                                        <br />
+                                        •   Gloss
+                                        <br />
+                                        •   Durability
+                                        <br />
+                                        •   Resistance to wear
+                                        <br />
+                                        •   Chemical resistance
+                                        <br />
+                                        •   UV resistance
+                                        <br />
+                                        •   Long-term serviceability
+                                        <br />
+                                        <br />
                                         For over 75 years, improving paint meant cutting into that layer.
-                                        <br /><br />
+                                        <br />
+                                        <br />
                                         SkyGloss introduces a new approach:
-                                        <br /><br />
+                                        <br />
+                                        <br />
                                         <strong>
-                                            Build clearcoat instead of removing it.
+                                            Build clearcoat instead of always removing it.
                                         </strong>
                                     </p>
                                 </div>
-
 
                                 <div className="flex justify-end mt-8">
                                     <Button
@@ -319,30 +420,22 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
 
                                 <div className="space-y-6 mb-10">
                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-                                        <h4 className="font-bold text-sm uppercase tracking-wider text-[#0EA0DC] mb-3">The Old Way</h4>
                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
                                             SkyGloss is not here to replace what you already do.
                                             <br />
-                                            It works with your existing services, not against them:
-                                            <br /> <br />
-                                            • Ceramic coatings
+                                            It works with your existing services:
                                             <br />
-                                            • Paint protection film
+                                            •  Ceramic coatings
                                             <br />
-                                            • Existing shop systems
-
-
+                                            •  Paint protection film
+                                            <br />
+                                            •  Existing shop workflows
                                             <br />
                                             <br />
-                                            SkyGloss focuses on creating a better foundation for everything else to perform at its best.
-
+                                            SkyGloss focuses on creating a better foundation so everything else performs at a higher level.
                                         </p>
                                     </div>
-
-
                                 </div>
-
-
 
                                 <div className="flex justify-end mt-8">
                                     <Button
@@ -356,59 +449,9 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                         </div>
 
                         <div className="h-px bg-gray-100 my-8" />
-                        <div id="data_fusion" className="scroll-mt-32">
-                            <Card className="p-8 rounded-lg border-gray-100 bg-white">
 
-
-                                <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
-                                    What is FUSION
-                                </h2>
-
-
-
-                                <div id="storage_details" className="bg-gray-50 p-6 rounded-2xl mb-8">
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                        FUSION is the core SkyGloss service.
-                                        <br />  <br />
-                                        <strong>  It is:     </strong>               <br />
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• A foundational process</li>
-                                        <li>• A replacement for traditional first-step polishing</li>
-                                        <li>• Designed to build and restore clearcoat</li>
-                                    </ul>
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">                        <br />
-                                        <strong> It is not:</strong>
-
-
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• A coating</li>
-                                        <li>• A shortcut</li>
-
-                                    </ul>
-
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">                        <br />
-                                        It requires proper preparation, understanding, and application.
-                                        <br /><br />
-                                        Because real services require skill—and skill creates value.
-                                    </p>
-                                </div>
-
-
-                                <div className="flex justify-end mt-8">
-                                    <Button
-                                        onClick={() => markComplete('data_fusion')}
-                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data_fusion') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
-                                    >
-                                        {completedSteps.includes('data_fusion') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
                         <div id="learning_curve" className="scroll-mt-32">
                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
-
                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 uppercase tracking-tighter">
                                     Understanding the Learning Curve
                                 </h2>
@@ -421,27 +464,62 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                         <br /><br />
                                         Just like sprayed clearcoat, incorrect application can create:
                                         <br /><br />
-                                        • Lines<br />
-                                        • High spots<br />
-                                        • Inconsistencies
+                                        •   Lines
+                                        <br />
+                                        •   High spots
+                                        <br />
+                                        •   Inconsistencies
                                         <br /><br />
-                                        This is part of the learning process—not product failure.
+                                        <strong style={{ color: "red" }}>
+
+                                            That’s not product failure.
+                                        </strong>
+                                        <br />
+                                        That’s part of the learning process.
                                         <br /><br />
                                         Every vehicle is different:
                                         <br /><br />
-                                        • Different starting conditions<br />
-                                        • Different paint systems<br />
+                                        •  Different paint systems
+                                        <br />
+                                        • Different conditions
+                                        <br />
                                         • Different environments
                                         <br /><br />
                                         Over time, the process becomes intuitive.
+                                        <br />
+                                        You learn to adjust:
                                         <br /><br />
-                                        You will learn to adjust:
-                                        <br /><br />
-                                        • Product amount<br />
-                                        • Pressure<br />
+                                        •  Product amount
+                                        <br />
+                                        • Pressure
+                                        <br />
                                         • Movement
                                         <br /><br />
-                                        This takes experience—but skill creates value.
+                                        You’re not going to be faster than polishing on your first few cars.
+                                        <br />
+                                        That’s normal.
+                                        <br /><br />
+                                        But once you get through that early stage—somewhere around 5–10 vehicles—it starts to click.
+                                        <br />
+                                        And when it does:
+                                        <br />
+                                        <strong>
+
+
+                                            It becomes significantly faster than polishing.
+                                        </strong>
+                                        <br />
+                                        Less physical strain.
+                                        <br />
+                                        More consistent results.
+                                        <br />
+                                        More repeatable workflow.
+                                        <br /><br />
+                                        This is why it’s important to stick with it.
+                                        <br />
+                                        Learn it properly.
+                                        <br />
+                                        Because once you understand it, you won’t want to go back to doing things the hard way.
                                     </p>
                                 </div>
 
@@ -451,8 +529,6 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                         className="rounded-xl px-10 h-14 bg-[#272727] text-white"
                                     >
                                         {completedSteps.includes('learning_curve') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
-
-
                                     </Button>
                                 </div>
                             </Card>
@@ -460,7 +536,6 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                         <div className="h-px bg-gray-100 my-8" />
                         <div id="intro_reality" className="scroll-mt-32">
                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
-
                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 uppercase tracking-tighter">
                                     Speed, Consistency, and Scalability
                                 </h2>
@@ -471,17 +546,21 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                         <br /><br />
                                         Everything changes.
                                         <br /><br />
-                                        • No more guessing<br />
-                                        • No more inconsistent correction<br />
-                                        • No more long polishing cycles
+                                        •   No more long polishing cycles
+                                        <br />
+                                        •  No more inconsistency
+                                        <br />
+                                        •  No more guessing
                                         <br /><br />
                                         FUSION allows for:
                                         <br /><br />
-                                        • 3–4 hour processes (start to finish)<br />
-                                        • Repeatable workflow<br />
-                                        • Consistent, factory-level results
+                                        •  3–4 hour processes
+                                        <br />
+                                        •  Repeatable workflow
+                                        <br />
+                                        •  Consistent, factory-level results
                                         <br /><br />
-                                        This is where real efficiency and scalability are unlocked.
+                                        This is where efficiency and scalability are unlocked.
                                     </p>
                                 </div>
 
@@ -499,36 +578,41 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                         <div className="h-px bg-gray-100 my-8" />
                         <div id="data_real_world" className="scroll-mt-32">
                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
-
-
                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     Built for the Real World
                                 </h2>
 
-
-
                                 <div id="storage_environment" className="bg-gray-50 p-6 rounded-2xl mb-8">
                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                        SkyGloss is designed for real vehicles, not just show cars.
-                                        <br />  <br />
-                                        <strong> It works across:   </strong>               <br />
+                                        SkyGloss is designed for real vehicles—not just show cars.
+                                        <br />
+                                        It works across:
+                                        <br />
+                                        •   Daily drivers
+                                        <br />
+                                        •   High-use vehicles
+                                        <br />
+                                        •   Modern paint systems
+                                        <br />
+                                        <br />
+                                        It is:
+                                        <br />
+                                        •   Practical
+                                        <br />
+                                        •   Scalable
+                                        <br />
+                                        •   Easy to integrate
+                                        <br />
+                                        •   Built to create real revenue
+                                        <br />
+                                        <br />
+                                        Most vehicles don’t need perfection.
+                                        <br />
+                                        They need to look right.
+                                        <br />
+                                        SkyGloss gives you a way to deliver that.
                                     </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Daily drivers</li>
-                                        <li>• High-use vehicles</li>
-                                        <li>• Modern, thinner paint systems</li>
-                                    </ul>
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">                        <br />
-                                        <strong> It is:</strong>
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Practical</li>
-                                        <li>• Scalable</li>
-                                        <li>• Easy to integrate</li>
-                                        <li>• Built to create new revenue in your shop</li>
-                                    </ul>
                                 </div>
-
 
                                 <div className="flex justify-end mt-8">
                                     <Button
@@ -544,31 +628,31 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                         <div className="h-px bg-gray-100 my-8" />
                         <div id="intro_opportunity" className="scroll-mt-32">
                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
-
                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     A Universal Opportunity
                                 </h2>
 
                                 <div className="space-y-6 mb-10">
                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-
                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                            SkyGloss is designed to work across many surfaces and industries.
-                                            <br />Be on the lookout for opportunities beyond just your standard services:
-                                            <br />   <br />
-                                            • Automotive
+                                            SkyGloss is not limited to automotive.
                                             <br />
-                                            • Aviation
+                                            It can be applied across:
                                             <br />
-                                            • Marine
+                                            •   Automotive
                                             <br />
-                                            • Industrial
+                                            •   Aviation
                                             <br />
-                                            • Commercial
-                                        </p>
-                                        <p className="text-sm text-[#272727] font-medium leading-relaxed">
+                                            •  Marine
                                             <br />
-                                            This is not limited to one lane.
+                                            •   Industrial
+                                            <br />
+                                            •   Commercial
+                                            <br />
+                                            <br />
+                                            This is a versatile system.
+                                            <br />
+                                            And versatility creates opportunity.
                                         </p>
                                     </div>
                                 </div>
@@ -587,33 +671,30 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                         <div className="h-px bg-gray-100 my-8" />
                         <div id="data_access" className="scroll-mt-32">
                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
-
-
                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     What You’re Getting Access To
                                 </h2>
 
-
-
                                 <div id="storage_access_points" className="bg-gray-50 p-6 rounded-2xl mb-8">
                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                        SkyGloss is more than just a product.
-                                        <br />  <br />
-                                        <strong> You now have access to: </strong>               <br />
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Technical training</li>
-                                        <li>• A complete service structure (FUSION / RESIN / SHIELD)</li>
-                                        <li>• Paint system understanding</li>
-                                        <li>• Customer communication guidance</li>
-                                        <li>• Marketing resources</li>
-                                        <li>• Ongoing updates and support</li>
-                                    </ul>
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">                        <br />   <br />
-                                        This system is built to help you succeed—not just install a product.
+                                        SkyGloss is more than a product.
+                                        <br />
+                                        You now have access to:
+                                        <br />
+                                        •     Training
+                                        <br />
+                                        •     A complete service structure
+                                        <br />
+                                        •    Marketing resources
+                                        <br />
+                                        •     Technical understanding
+                                        <br />
+                                        •     Ongoing support
+                                        <br />
+                                        <br />
+                                        This system is built to help you succeed.
                                     </p>
                                 </div>
-
 
                                 <div className="flex justify-end mt-8">
                                     <Button
@@ -629,46 +710,34 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                         <div className="h-px bg-gray-100 my-8" />
                         <div id="intro_engine" className="scroll-mt-32">
                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
-
                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 uppercase tracking-tighter">
                                     SkyGloss as a Growth Engine
                                 </h2>
 
                                 <div className="space-y-6 mb-10">
                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-
                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
                                             This is not just a tool—it’s an opportunity.
-                                            <br /><br />
-                                            It will:
                                             <br />
-                                            • Solve real problems in your shop<br />
-                                            • Improve your workflow<br />
-                                            • Increase efficiency
-                                            <br /><br />
-                                            It also gives you a new way to communicate and market your services.
-                                            <br /><br />
-                                            You’ll reach customers who:
+                                            It helps you:
                                             <br />
-                                            • Haven’t heard this concept before<br />
-                                            • Are tired of traditional options<br />
-                                            • Are looking for something more logical
-                                            <br /><br />
-                                            We are continuously building:
+                                            •    Solve real problems
                                             <br />
-                                            • New strategies<br />
-                                            • New offers<br />
-                                            • New applications<br />
-                                            • Global expansion
-                                            <br /><br />
-                                            The shops that engage the most—will win.
+                                            •    Improve workflow
+                                            <br />
+                                            •    Increase efficiency
+                                            <br />
+                                            •   Create new revenue
+                                            <br />
+                                            <br />
+                                            It also gives you a new way to communicate your services.
+                                            <br />
+                                            Customers may not understand all the details of paint correction.
+                                            <br />
+                                            But they understand: A fresh, healthy finish. Every. Single. Time. With SkyGloss.
                                         </p>
                                     </div>
-
-
                                 </div>
-
-
 
                                 <div className="flex justify-end mt-8">
                                     <Button
@@ -681,57 +750,65 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                             </Card>
                         </div>
 
-
                         <div className="h-px bg-gray-100 my-8" />
                         <div id="data_bigger_picture" className="scroll-mt-32">
                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
-
-
                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     The Bigger Picture
                                 </h2>
 
-
-
                                 <div id="storage_picture" className="bg-gray-50 p-6 rounded-2xl mb-8">
                                     <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                        SkyGloss is built on a simple, powerful idea:
-                                        <br />  <br />
-                                        <strong> You now have access to: </strong>               <br />
+                                        SkyGloss is built on a simple idea:
+                                        <br />
+                                        •    Solve real problems
+                                        <br />
+                                        •    Keep it simple
+                                        <br />
+                                        •    Create real value
+                                        <br />
+                                        <br />
+                                        This matters because it gives you direction.
+                                        <br />
+                                        In this industry, it’s easy to get pulled in a hundred different directions—new products, new claims, new systems that promise something better every few months. If you’re always chasing that, you never really build consistency.
+                                        <br />
+                                        <br />
+                                        What we’re teaching here is different.
+                                        <br />
+                                        We focus on the foundation of the paint finish.
+                                        <br />
+                                        When you understand what clearcoat actually is and what its role is, your approach becomes much more straightforward. You’re no longer guessing, and you’re not relying on trends—you’re working from something that is fundamentally true about every vehicle.
+                                        <br />
+                                        <br />
+                                        And this is where it becomes a really powerful concept.
+                                        <br />
+                                        There are a lot of great products in this industry. Different coatings, films, sealants—each with their own purpose. SkyGloss has its own line of protection products as well, and they all serve a role.
+                                        <br />
+                                        But the key is this:
+                                        <br />
+                                        FUSION is your starting point.
+                                        <br />
+                                        It’s the foundation that everything else can build on.
+                                        <br />
+                                        Because of that, it’s completely compatible with everything—whether it’s SkyGloss products or anything else you’re already using. You’re not replacing systems. You’re strengthening the base that those systems rely on.
+                                        <br />
+                                        <br />
+                                        That’s what simplifies everything.
+                                        <br />
+                                        Instead of choosing between products, you’re creating a process.
+                                        <br />
+                                        That mindset is what allows you to scale, improve efficiency, and deliver results that make sense—both for you and for your customer.
+                                        <br />
+                                        The goal here isn’t to complicate what you’re doing.
+                                        <br />
+                                        It’s to simplify it—so you can focus on what actually matters.
                                     </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• It solves a real problem</li>
-                                        <li>• It is easy to understand</li>
-                                        <li>• It creates real value for customers</li>
-
-                                    </ul>
-                                    <p className="text-sm text-[#272727] font-medium leading-relaxed">                       <br />
-                                        When marketed properly, it becomes a no-brainer service for customers.
-                                        <br />
-                                        We are not chasing trends.
-                                        <br />
-                                        We are building something long-term.
-                                        <br />
-                                        <br />
-                                        <strong>
-                                            A brand built on:
-                                        </strong>
-
-                                    </p>
-                                    <ul className="space-y-2 text-sm text-[#666666]">
-                                        <li>• Integrity</li>
-                                        <li>• Simplicity</li>
-                                        <li>• Real results</li>
-
-                                    </ul>
-
                                 </div>
-
 
                                 <div className="flex justify-end mt-8">
                                     <Button
                                         onClick={() => markComplete('data_bigger_picture')}
-                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data_picture') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
+                                        className={`rounded-xl px-10 h-12 font-bold transition-all duration-500 ${completedSteps.includes('data_bigger_picture') ? 'bg-[#0EA0DC] text-white' : 'bg-[#272727] text-white'}`}
                                     >
                                         {completedSteps.includes('data_bigger_picture') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                     </Button>
@@ -739,10 +816,9 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                             </Card>
                         </div>
 
-                        <div className="h-px bg-gray-100 my-8" />
+                        {/* <div className="h-px bg-gray-100 my-8" />
                         <div id="data_next_steps" className="scroll-mt-32">
                             <Card className="p-8 rounded-lg border-gray-100 bg-white">
-
                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     Your Path Forward
                                 </h2>
@@ -803,9 +879,8 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                             : 'Section Completed'}
                                     </Button>
                                 </div>
-
                             </Card>
-                        </div>
+                        </div> */}
                         <div className="h-px bg-gray-100 my-8" />
                         <div id="proper_perspective" className="scroll-mt-32">
                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
@@ -817,25 +892,19 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                     Proper Perspective
                                 </h2>
                                 <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                    This is one of the most important concepts to understand.
+                                    This is one of the most important concepts.
                                     <br /><br />
-                                    If you approach this with the right perspective and expectations, everything else becomes easier—and your success with SkyGloss becomes inevitable.
-                                    <br /><br />
-                                    FUSION is not difficult to learn.
-                                    <br /><br />
+                                    FUSION is not difficult.
+                                    <br />
                                     But it is a skill.
                                     <br /><br />
-                                    Like anything valuable, there is a learning curve.
-                                    <br /><br />
-                                    The difference is—this one is short, practical, and worth it.
-                                    <br /><br />
                                     Most people give up too early.
-                                    <br /><br />
-                                    After 5–10 cars, you got it.
-                                    <br /><br />
-                                    After 20 cars, you’re operating at a high level.
-                                    <br /><br />
-                                    But only if you give yourself the opportunity to get there.
+                                    <br />
+                                    After 5–10 cars, you understand it.
+                                    <br />
+                                    After more repetition, you master it.
+                                    <br />
+                                    But only if you give yourself the chance. Don’t sell yourself short. Once you learn it, you will never want to use anything else again. Everything else will just be a reminder of how tiring and time-consuming polishing is. Not because SkyGloss is better, but because SkyGloss is doing all the work rather than you and the machine.
                                 </p>
 
                                 <div className="flex justify-end mt-12">
@@ -856,19 +925,19 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                     This Is a New Craft
                                 </h2>
                                 <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                    For decades, the industry has been built around removing clearcoat.
-                                    <br /><br />
-                                    FUSION introduces a different approach:
-                                    <br /><br />
-                                    building it back up.
-                                    <br /><br />
-                                    This is not just a new product—it’s a new way of working.
-                                    <br /><br />
-                                    And like any craft, it requires time, repetition, and intention.
-                                    <br /><br />
-                                    If you rush it or expect perfection immediately, you’ll get frustrated.
-                                    <br /><br />
-                                    If you commit to learning it properly, you’ll gain a skill that stays with you forever.
+                                    This is not just a product.
+                                    <br />
+                                    It’s a new way of working.
+                                    <br />
+                                    And like any craft, it requires:
+                                    <br />
+                                    • Time
+                                    <br />
+                                    • Repetition
+                                    <br />
+                                    • Intention
+                                    <br />
+                                    If you commit to it, you gain a skill that stays with you.
                                 </p>
 
                                 <div className="flex justify-end mt-12">
@@ -890,38 +959,21 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                 </h2>
                                 <p className="text-sm text-[#272727] font-medium leading-relaxed">
                                     Think about clearcoat in a body shop.
-                                    <br /><br />
-                                    If a painter sprays a panel and there are runs, drips, or uneven areas, no one blames the clearcoat itself.
-                                    <br /><br />
-                                    That would make no sense.
-                                    <br /><br />
-                                    Everyone in the industry understands the reality:
-                                    <br /><br />
-                                    it was applied incorrectly.
-                                    <br /><br />
-                                    Clearcoat is a professional product.
-                                    <br /><br />
-                                    It requires proper technique, proper control, and proper understanding.
-                                    <br /><br />
-                                    FUSION is no different.
-                                    <br /><br />
-                                    If it’s applied incorrectly, the issue is not the product—it’s the application.
-                                    <br /><br />
-                                    That’s not an opinion, that’s just how professional processes work.
-                                    <br /><br />
-                                    Blaming the product instead of improving the technique is the fastest way to stay stuck.
-                                    <br /><br />
-                                    Don’t do that.
-                                    <br /><br />
-                                    Take ownership, refine your approach, and get better.
-                                    <br /><br />
-                                    The difference here is important:
-                                    <br /><br />
-                                    FUSION is significantly easier to learn than repainting a vehicle.
-                                    <br /><br />
-                                    But it still demands respect for the process.
-                                    <br /><br />
-                                    Approach it like a professional, and you’ll get professional results.
+                                    <br />
+                                    If a painter makes a mistake, no one blames the clearcoat.
+                                    <br />
+                                    They fix the process.
+                                    <br />
+                                    <br />
+                                    FUSION is the same.
+                                    <br />
+                                    If applied incorrectly, the issue is technique—not the product.
+                                    <br />
+                                    Take ownership.
+                                    <br />
+                                    Improve.
+                                    <br />
+                                    Get better.
                                 </p>
 
                                 <div className="flex justify-end mt-12">
@@ -935,7 +987,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                             </Card>
                         </div>
 
-                        <div className="h-px bg-gray-100 my-8" />
+                        {/* <div className="h-px bg-gray-100 my-8" />
                         <div id="mistakes_learning" className="scroll-mt-32">
                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
                                 <h2 className="text-3xl font-bold text-[#272727] mb-6 uppercase tracking-tighter">
@@ -968,7 +1020,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                     </Button>
                                 </div>
                             </Card>
-                        </div>
+                        </div> */}
 
                         <div className="h-px bg-gray-100 my-8" />
                         <div id="payoff" className="scroll-mt-32">
@@ -977,17 +1029,17 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                     The Payoff
                                 </h2>
                                 <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                    Once you understand FUSION, everything changes.
-                                    <br /><br />
-                                    • You work faster than traditional polishing
+                                    Once you understand FUSION:
                                     <br />
-                                    • You achieve more consistent results
+                                    •     You work faster
                                     <br />
-                                    • You build, rather than remove
+                                    •     You get better results
                                     <br />
-                                    • You operate at a higher level of logic and efficiency
-                                    <br /><br />
-                                    But none of that happens without putting in the reps.
+                                    •     You reduce strain
+                                    <br />
+                                    •     You create a healthier finish
+                                    <br />
+                                    But only if you put in the reps.
                                 </p>
 
                                 <div className="flex justify-end mt-12">
@@ -1004,26 +1056,30 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                         <div className="h-px bg-gray-100 my-8" />
                         <div id="intro_final" className="scroll-mt-32">
                             <Card className="p-8 sm:p-12 rounded-[32px] border-l-4 border-l-[#0EA0DC]">
-
                                 <h2 className="text-3xl font-bold text-[#272727] mb-8 leading-[1.1] tracking-tighter uppercase ">
                                     Final Thought
                                 </h2>
 
                                 <div className="space-y-6 mb-10">
                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
-
                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
-                                            Don’t be the person who gives up before it clicks.
-                                            <br /><br />
-                                            Give yourself the chance to learn it properly.
-                                            <br /><br />
-                                            Because once you do—
-                                            <br /><br />
-                                            you don’t just understand FUSION, you own the skill.
-                                            <br /><br />
-                                            Polishing will always exist—for the few vehicles that can afford to lose clearcoat.
+                                            Polishing will always exist.
                                             <br />
-                                            The rest of the world now has SkyGloss.
+                                            But now, there is another option.
+                                            <br />
+                                            A more efficient one.
+                                            <br />
+                                            A more practical one.
+                                            <br />
+                                            A more natural way to maintain paint.
+                                            <br />
+                                            SkyGloss gives you that option.
+                                            <br />
+                                            Take the time to learn it.
+                                            <br />
+                                            Because once you understand it—
+                                            <br />
+                                            It will become one of your favorite new tools in your shop!
                                         </p>
 
                                         <br />
