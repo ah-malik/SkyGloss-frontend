@@ -697,8 +697,18 @@ export function ShopDashboard({
                           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                             {/* Image Section */}
                             <div
-                              className="flex-shrink-0 w-full sm:w-48 cursor-pointer bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 hover:opacity-90 transition-opacity flex items-center justify-center"
-                              onClick={() => handleOpenProduct(product._id)}
+                              className="flex-shrink-0 w-full sm:w-48 bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 flex items-center justify-center"
+                              onClick={() => {
+                                const isFusionProduct = product.name.toUpperCase().includes('FUSION');
+                                const isUnpaid = user?.role === 'certified_shop' && !user?.isPartnerPaid && user?.isSelfRegistered;
+                                
+                                if (isFusionProduct && isUnpaid) {
+                                  toast.error("Please activate your account to view this product.");
+                                } else {
+                                  handleOpenProduct(product._id);
+                                }
+                              }}
+                              style={{ cursor: product.name.toUpperCase().includes('FUSION') && (user?.role === 'certified_shop' && !user?.isPartnerPaid && user?.isSelfRegistered) ? 'not-allowed' : 'pointer' }}
                             >
                               <ImageWithFallback
                                 src={product.shopImages?.[0] || product.images?.[0]}
@@ -732,7 +742,16 @@ export function ShopDashboard({
                                     {product.sizes?.map((s: any) => (
                                       <button
                                         key={s.size}
-                                        onClick={() => setSelectedSizes({ ...selectedSizes, [product._id]: s.size })}
+                                        onClick={() => {
+                                          const isFusionProduct = product.name.toUpperCase().includes('FUSION');
+                                          const isUnpaid = user?.role === 'certified_shop' && !user?.isPartnerPaid && user?.isSelfRegistered;
+                                          
+                                          if (isFusionProduct && isUnpaid) {
+                                            toast.error("Please activate your account to modify sizes.");
+                                          } else {
+                                            setSelectedSizes({ ...selectedSizes, [product._id]: s.size });
+                                          }
+                                        }}
                                         className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${currentSizeStr === s.size
                                           ? "bg-[#272727] text-white shadow-md"
                                           : "bg-gray-100 text-[#666666] hover:bg-gray-200"
@@ -746,33 +765,58 @@ export function ShopDashboard({
 
                                 {/* Price and Actions */}
                                 <div className="flex items-center gap-4">
-                                  {showPrice && (
-                                    <div className="text-right">
-                                      <span className="text-2xl font-bold text-[#0EA0DC]">
-                                        {getSymbol(product.currency)}{currentPrice.toFixed(2)}
-                                      </span>
-                                    </div>
-                                  )}
-                                  <div className="flex gap-2">
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={() => handleOpenProduct(product._id)}
-                                      className="rounded-lg border-[#0EA0DC]/30 hover:text-[#0EA0DC]  text-[#0EA0DC] hover:bg-[#0EA0DC]/10 h-10 px-4"
-                                    >
-                                      <Eye className="w-4 h-4 mr-2" />
-                                      Details
-                                    </Button>
-                                    <Button
-                                      size="sm"
-                                      disabled={product.stock === 0}
-                                      onClick={() => addToCart(product)}
-                                      className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] transition-all duration-200 rounded-lg h-10 px-4"
-                                    >
-                                      <ShoppingCart className="w-4 h-4 mr-2" />
-                                      Add to Cart
-                                    </Button>
-                                  </div>
+                                  {(() => {
+                                    const isFusionProduct = product.name.toUpperCase().includes('FUSION');
+                                    const isUnpaid = user?.role === 'certified_shop' && !user?.isPartnerPaid && user?.isSelfRegistered;
+
+                                    if (isFusionProduct && isUnpaid) {
+                                      return (
+                                        <div className="flex flex-col items-end gap-2">
+                                          <span className="text-sm font-bold text-amber-600">Please Pay Now</span>
+                                          <Button
+                                            size="sm"
+                                            onClick={handlePayNow}
+                                            disabled={isPaying}
+                                            className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] transition-all duration-200 rounded-lg h-10 px-6 font-bold uppercase tracking-wider"
+                                          >
+                                            {isPaying ? "Loading..." : "Pay Now"}
+                                          </Button>
+                                        </div>
+                                      );
+                                    }
+
+                                    return (
+                                      <>
+                                        {showPrice && (
+                                          <div className="text-right">
+                                            <span className="text-2xl font-bold text-[#0EA0DC]">
+                                              {getSymbol(product.currency)}{currentPrice.toFixed(2)}
+                                            </span>
+                                          </div>
+                                        )}
+                                        <div className="flex gap-2">
+                                          <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => handleOpenProduct(product._id)}
+                                            className="rounded-lg border-[#0EA0DC]/30 hover:text-[#0EA0DC]  text-[#0EA0DC] hover:bg-[#0EA0DC]/10 h-10 px-4"
+                                          >
+                                            <Eye className="w-4 h-4 mr-2" />
+                                            Details
+                                          </Button>
+                                          <Button
+                                            size="sm"
+                                            disabled={product.stock === 0}
+                                            onClick={() => addToCart(product)}
+                                            className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] transition-all duration-200 rounded-lg h-10 px-4"
+                                          >
+                                            <ShoppingCart className="w-4 h-4 mr-2" />
+                                            Add to Cart
+                                          </Button>
+                                        </div>
+                                      </>
+                                    );
+                                  })()}
                                 </div>
                               </div>
                             </div>
@@ -1252,7 +1296,7 @@ export function ShopDashboard({
                       onClick={() => {
                         navigate(`/dashboard/shop/courses/understanding-skygloss`);
                       }}
-                      className="w-full bg-[#0EA0DC] text-white hover:bg-[#272727] transition-colors h-12 rounded-xl font-bold shadow-lg shadow-[#0EA0DC]/20"
+                      className="w-full bg-[#272727] text-white hover:bg-[#0EA0DC] transition-colors h-12 rounded-xl font-bold"
                     >
                       Launch Course
                     </Button>

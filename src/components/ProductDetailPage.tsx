@@ -1,16 +1,18 @@
 // Last Updated: 2026-01-26
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
-import { ArrowLeft, ShoppingCart, Download, CheckCircle2, Plus, Minus } from "lucide-react";
+import { useNavigate } from "react-router";
+import { ArrowLeft, ShoppingCart, Download, CheckCircle2, Plus, Minus, Lock } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
-// import { Switch } from "./ui/switch";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import api from "../api/axios";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "../AuthContext";
 import FusionPdf from "../assets/pdf/Fusion.pdf";
 import MattePdf from "../assets/pdf/Matte.pdf";
 import ResinFilmPdf from "../assets/pdf/Resin_Film.pdf";
@@ -112,6 +114,25 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
   const [showAether] = useState(false); // false = Element, true = Aether
   const [quantity, setQuantity] = useState(1);
   const [orderType, setOrderType] = useState<"unit" | "case">("unit");
+  const [isPaying, setIsPaying] = useState(false);
+  
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handlePayNow = async () => {
+    if (!user) return;
+    setIsPaying(true);
+    try {
+      const response = await api.post('/orders/activation-fee');
+      if (response.data?.url) {
+        window.location.href = response.data.url;
+      }
+    } catch (err: any) {
+      console.error(err);
+      toast.error('Failed to initiate payment session');
+      setIsPaying(false);
+    }
+  };
 
   const isPartner = product?.id && !product._id; // Simple check for Partner hardcoded products
 
@@ -178,6 +199,40 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
     );
   }
 
+
+  const isFusionProduct = product.name?.toUpperCase().includes("FUSION");
+  const isUnpaid = user?.role === 'certified_shop' && !user?.isPartnerPaid && user?.isSelfRegistered;
+  
+  if (isFusionProduct && isUnpaid) {
+    return (
+      <div className="min-h-screen bg-white pt-32 pb-12 flex justify-center px-4">
+        <Card className="p-8 max-w-md w-full text-center space-y-6 h-fit shadow-xl border-2 border-amber-500/20 rounded-[32px]">
+          <Lock className="w-16 h-16 text-amber-600 mx-auto opacity-80 animate-pulse" />
+          <h2 className="text-2xl font-bold text-[#272727]">Product Locked</h2>
+          <p className="text-[#666666]">
+            Please complete your account activation payment to access FUSION products and details.
+          </p>
+          <div className="space-y-3 pt-4">
+            <div className="text-sm font-bold text-amber-600 mb-2">Please Pay Now</div>
+            <Button
+              onClick={handlePayNow}
+              disabled={isPaying}
+              className="w-full bg-[#0EA0DC] text-white hover:bg-[#0EA0DC]/90 transition-colors h-12 rounded-xl font-bold uppercase tracking-wider shadow-md"
+            >
+              {isPaying ? "Loading..." : "Pay Now"}
+            </Button>
+            <Button
+              onClick={onBack}
+              variant="outline"
+              className="w-full border-gray-300 text-[#666666] hover:bg-gray-50 h-12 rounded-xl font-bold"
+            >
+              Back to Catalog
+            </Button>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   const sizes = product.sizes || [];
   const productImageList = (product.shopImages?.length > 0)
