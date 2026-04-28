@@ -459,7 +459,13 @@ export function ShopDashboard({
     product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     product.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ).sort((a, b) => {
+    const aIsFusion = a.name.toUpperCase().includes('FUSION');
+    const bIsFusion = b.name.toUpperCase().includes('FUSION');
+    if (aIsFusion && !bIsFusion) return -1;
+    if (!aIsFusion && bIsFusion) return 1;
+    return 0;
+  });
 
 
 
@@ -1303,9 +1309,16 @@ export function ShopDashboard({
                   </Card>
                 </motion.div>
 
-                {products
+                {[...products]
                   .filter(p => !['PPF GLOSS', 'PPF MATTE', 'APPLICATOR', 'APPLICATOR BOTTLE', 'EDGE BLADE', 'PAINT PEN', 'FUSION EXTREME']
                     .includes(p.name.toUpperCase()) && !p.name.includes('APPLICATORS') && !p.name.includes('Applicators (2-Pack)'))
+                  .sort((a, b) => {
+                    const aIsFusion = a.name.toUpperCase().includes('FUSION');
+                    const bIsFusion = b.name.toUpperCase().includes('FUSION');
+                    if (aIsFusion && !bIsFusion) return -1;
+                    if (!aIsFusion && bIsFusion) return 1;
+                    return 0;
+                  })
                   .map((product, index) => (
                     <motion.div
                       key={product._id}
