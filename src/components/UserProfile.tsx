@@ -9,7 +9,7 @@ import api from "../api/axios";
 import { useAuth } from "../AuthContext";
 
 export function UserProfile() {
-  const { user, login } = useAuth();
+  const { user, setUser } = useAuth();
 
   // Profile Contact Info State
   const [firstName, setFirstName] = useState(user?.firstName || "");
@@ -66,9 +66,8 @@ export function UserProfile() {
 
       // Refresh user in AuthContext
       if (res.data) {
-        // AuthContext provides `login(userData)` or simply caches user payload.
-        // Wait, does login accept the whole user? Let's check AuthContext.
-        // If not, updating locally in backend works, and refresh on next login or page reload.
+        setUser(res.data);
+        localStorage.setItem('user', JSON.stringify(res.data));
       }
     } catch (error: any) {
       console.error("Profile update error:", error);
