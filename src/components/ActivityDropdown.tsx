@@ -10,12 +10,24 @@ import { Button } from "./ui/button";
 import { Bell, CheckCircle2, GraduationCap, MessageSquare, Package, Clock } from "lucide-react";
 import { useAuth } from "../AuthContext";
 import { formatDistanceToNow } from "date-fns";
-
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
+import api from "../api/axios";
 
 export function ActivityDropdown() {
-    const { recentActivities, refreshActivities, unreadMessages, markAllNotificationsAsRead } = useAuth();
+    const { recentActivities, refreshActivities, unreadMessages } = useAuth();
     const navigate = useNavigate();
+
+    const handleMarkAllRead = async () => {
+        try {
+            await api.patch('/notifications/mark-all-my-read');
+            await refreshActivities();
+            toast.success("All activities marked as read");
+        } catch (err) {
+            console.error("Failed to mark activities as read:", err);
+            toast.error("Failed to mark activities as read");
+        }
+    };
 
     const getIcon = (type: string) => {
         switch (type) {
@@ -53,7 +65,7 @@ export function ActivityDropdown() {
                                 onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
-                                    markAllNotificationsAsRead();
+                                    handleMarkAllRead();
                                 }}
                                 className="text-[10px] text-[#0EA0DC] hover:underline uppercase font-bold"
                             >
@@ -79,7 +91,7 @@ export function ActivityDropdown() {
                             <DropdownMenuItem
                                 key={activity._id || idx}
                                 className="px-4 py-3 cursor-pointer hover:bg-[#0EA0DC]/5 transition-colors border-b border-[#0EA0DC]/5 last:border-0"
-                                onSelect={() => activity.link && navigate(activity.link)}
+                                onSelect={() => navigate('/activities')}
                             >
                                 <div className="flex gap-3 items-start w-full">
                                     <div className="mt-1 p-1.5 rounded-lg bg-gray-50 border border-gray-100">
@@ -99,6 +111,17 @@ export function ActivityDropdown() {
                             </DropdownMenuItem>
                         ))
                     )}
+                </div>
+                <DropdownMenuSeparator className="m-0 bg-[#0EA0DC]/10" />
+                <div className="p-2 bg-slate-50 text-center shrink-0">
+                    <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="w-full text-[#0EA0DC] hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5 text-xs font-bold transition-colors"
+                        onClick={() => navigate('/activities')}
+                    >
+                        View All Activity
+                    </Button>
                 </div>
             </DropdownMenuContent>
         </DropdownMenu>
