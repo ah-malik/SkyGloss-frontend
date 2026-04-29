@@ -1547,7 +1547,7 @@ export function ShopDashboard({
                             handleDownloadCertificate();
                           }}
                           variant="outline"
-                          className="w-full sm:w-auto px-8 h-12 rounded-xl font-bold border-2 border-[#0EA0DC] text-[#0EA0DC] hover:bg-[#0EA0DC] hover:text-white transition-all shadow-md"
+                          className="hidden opacity-0 w-full sm:w-auto px-8 h-12 rounded-xl font-bold border-2 border-[#0EA0DC] text-[#0EA0DC] hover:bg-[#0EA0DC] hover:text-white transition-all shadow-md"
                         >
                           <FileText className="w-4 h-4 mr-2" />
                           Download Certificate

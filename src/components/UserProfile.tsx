@@ -227,7 +227,7 @@ export function UserProfile() {
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-600 mb-1.5">Country</label>
-                    <Input value={country} onChange={(e) => setCountry(e.target.value)} className="rounded-xl border-[#0EA0DC]/10" placeholder="Country" />
+                    <Input value={country} onChange={(e) => setCountry(e.target.value)} className="rounded-xl border-[#0EA0DC]/20" placeholder="Country" />
                   </div>
 
                   <Button
@@ -259,42 +259,42 @@ export function UserProfile() {
                     <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 mb-1.5">
                       <Globe className="w-3.5 h-3.5 text-slate-400" /> Website
                     </label>
-                    <Input value={website} onChange={(e) => setWebsite(e.target.value)} className="rounded-xl rounded-xl" placeholder="https://example.com" />
+                    <Input value={website} onChange={(e) => setWebsite(e.target.value)} className="rounded-xl border-[#0EA0DC]/20" placeholder="https://example.com" />
                   </div>
 
                   <div>
                     <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 mb-1.5">
                       <Instagram className="w-3.5 h-3.5 text-pink-500" /> Instagram
                     </label>
-                    <Input value={instagram} onChange={(e) => setInstagram(e.target.value)} className="rounded-xl rounded-xl" placeholder="https://instagram.com/username" />
+                    <Input value={instagram} onChange={(e) => setInstagram(e.target.value)} className="rounded-xl border-[#0EA0DC]/20" placeholder="https://instagram.com/username" />
                   </div>
 
                   <div>
                     <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 mb-1.5">
                       <Facebook className="w-3.5 h-3.5 text-blue-600" /> Facebook
                     </label>
-                    <Input value={facebook} onChange={(e) => setFacebook(e.target.value)} className="rounded-xl rounded-xl" placeholder="https://facebook.com/username" />
+                    <Input value={facebook} onChange={(e) => setFacebook(e.target.value)} className="rounded-xl border-[#0EA0DC]/20" placeholder="https://facebook.com/username" />
                   </div>
 
                   <div>
                     <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 mb-1.5">
                       <Linkedin className="w-3.5 h-3.5 text-blue-700" /> LinkedIn
                     </label>
-                    <Input value={linkedin} onChange={(e) => setLinkedin(e.target.value)} className="rounded-xl rounded-xl" placeholder="https://linkedin.com/in/username" />
+                    <Input value={linkedin} onChange={(e) => setLinkedin(e.target.value)} className="rounded-xl border-[#0EA0DC]/20" placeholder="https://linkedin.com/in/username" />
                   </div>
 
                   <div>
                     <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 mb-1.5">
                       <Youtube className="w-3.5 h-3.5 text-red-600" /> YouTube
                     </label>
-                    <Input value={youtube} onChange={(e) => setYoutube(e.target.value)} className="rounded-xl rounded-xl" placeholder="https://youtube.com/c/channel" />
+                    <Input value={youtube} onChange={(e) => setYoutube(e.target.value)} className="rounded-xl border-[#0EA0DC]/20" placeholder="https://youtube.com/c/channel" />
                   </div>
 
                   <div>
                     <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 mb-1.5">
                       <LinkIcon className="w-3.5 h-3.5 text-slate-400" /> TikTok
                     </label>
-                    <Input value={tiktok} onChange={(e) => setTiktok(e.target.value)} className="rounded-xl rounded-xl" placeholder="https://tiktok.com/@username" />
+                    <Input value={tiktok} onChange={(e) => setTiktok(e.target.value)} className="rounded-xl border-[#0EA0DC]/20" placeholder="https://tiktok.com/@username" />
                   </div>
 
                   <Button
@@ -324,12 +324,12 @@ export function UserProfile() {
                 <form onSubmit={handleUpdatePassword} className="space-y-4">
                   <div>
                     <label className="block text-xs font-semibold text-slate-600 mb-1.5">New Password</label>
-                    <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="rounded-xl rounded-xl" placeholder="••••••••" />
+                    <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="rounded-xl border-[#0EA0DC]/20" placeholder="••••••••" />
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-600 mb-1.5">Confirm New Password</label>
-                    <Input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="rounded-xl rounded-xl" placeholder="••••••••" />
+                    <Input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="rounded-xl border-[#0EA0DC]/20" placeholder="••••••••" />
                   </div>
 
                   <Button
