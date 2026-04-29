@@ -1,13 +1,22 @@
 // Last Updated: 2026-01-26
 import { motion } from "motion/react";
-import { LogOut, FileText, HelpCircle, Menu, X, ShoppingCart, ShoppingBag, Package, GraduationCap } from "lucide-react";
+import { LogOut, FileText, HelpCircle, Menu, X, ShoppingCart, ShoppingBag, Package, GraduationCap, User, Settings } from "lucide-react";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { useState } from "react";
 import logoImage from "../assets/logo.svg";
 import { useAuth } from "../AuthContext";
+import { useNavigate } from "react-router";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { ActivityDropdown } from "./ActivityDropdown";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 interface NavigationProps {
   isLoggedIn: boolean;
@@ -34,6 +43,7 @@ export function Navigation({
 }: NavigationProps) {
   const { accessType, user, unreadMessages } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
 
   const getRoleInfo = () => {
@@ -146,15 +156,40 @@ export function Navigation({
                   )} */}
                 </Button>
 
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={onLogout}
-                  className="text-[#666666] hover:text-red-600 hover:bg-red-50 transition-all duration-200"
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Logout
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="relative text-[#666666] hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200"
+                    >
+                      <User className="w-4 h-4 mr-2" />
+                      <span className="hidden sm:inline">{user?.firstName || 'Account'}</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48 bg-white border border-[#0EA0DC]/20 shadow-xl rounded-xl overflow-hidden">
+                    <DropdownMenuLabel className="px-4 py-2.5 bg-[#0EA0DC]/5 text-[#272727] font-bold text-xs">
+                      User Menu
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator className="m-0 bg-[#0EA0DC]/10" />
+                    
+                    <DropdownMenuItem 
+                      onSelect={() => navigate('/profile')}
+                      className="px-4 py-2.5 cursor-pointer text-slate-600 hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-colors flex items-center text-sm"
+                    >
+                      <Settings className="w-4 h-4 mr-2.5 text-slate-400" />
+                      Profile Settings
+                    </DropdownMenuItem>
+                    
+                    <DropdownMenuItem 
+                      onSelect={onLogout}
+                      className="px-4 py-2.5 cursor-pointer text-slate-600 hover:text-red-600 hover:bg-red-50 transition-colors flex items-center text-sm"
+                    >
+                      <LogOut className="w-4 h-4 mr-2.5 text-slate-400" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
                 {user?.partnerCode && (
                   <>
                     <div className="h-6 w-px bg-[#0EA0DC]/20 mx-2" />
@@ -245,6 +280,14 @@ export function Navigation({
               >
                 <HelpCircle className="w-4 h-4 mr-3" />
                 Support
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => handleNavClick(() => navigate('/profile'))}
+                className="justify-start text-[#666666] hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5"
+              >
+                <Settings className="w-4 h-4 mr-3" />
+                Profile Settings
               </Button>
               <Button
                 variant="ghost"

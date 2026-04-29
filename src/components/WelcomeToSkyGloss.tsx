@@ -171,9 +171,9 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
 
                                 <p className="text-[#666666] text-lg max-w-2xl mb-6 font-medium">
                                     Cut. Polish. Refine. Repeat.
-                                    <br />
+                                    <br />  <br />
                                     That process works. It always has. Polishing is a real craft, and it will always have a need—especially on vehicles that are built for it. Take a show car for an example. They purposely get painted with extra layers of clearcoat so it can be polish down to perfection and have enough clearcoat to polish for every show for years to come.
-                                    <br />
+                                    <br /><br />
                                     But most vehicles today aren’t built that way.
                                 </p>
                                 <div className="flex items-center gap-6 flex-wrap">
@@ -216,9 +216,9 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
                                             Cut. Polish. Refine. Repeat.
-                                            <br />
+                                            <br />             <br />
                                             That process works. It always has. Polishing is a real craft, and it will always have a need—especially on vehicles that are built for it. Take a show car for an example. They purposely get painted with extra layers of clearcoat so it can be polish down to perfection and have enough clearcoat to polish for every show for years to come.
-                                            <br />
+                                            <br />             <br />
                                             But most vehicles today aren’t built that way.
                                             <br />
                                             <br />
@@ -260,12 +260,12 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                             <br />
                                             <br />
                                             Which leads to a very simple question:
-                                            <br />
+                                            <br /><br />
                                             <strong>
 
                                                 Is removing material really the best way to maintain it?
                                             </strong>
-                                            <br />
+                                            <br />  <br />
                                             Or is there a better, more practical way to get the same—or better—result?
                                             <br />
                                             <br />
@@ -422,9 +422,9 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                     <div className="p-6 rounded-2xl bg-[#0EA0DC]/5 border border-[#0EA0DC]/10">
                                         <p className="text-sm text-[#272727] font-medium leading-relaxed">
                                             SkyGloss is not here to replace what you already do.
-                                            <br />
+                                            <br />  <br />
                                             It works with your existing services:
-                                            <br />
+                                            <br />  <br />
                                             •  Ceramic coatings
                                             <br />
                                             •  Paint protection film
@@ -500,25 +500,25 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                         That’s normal.
                                         <br /><br />
                                         But once you get through that early stage—somewhere around 5–10 vehicles—it starts to click.
-                                        <br />
+                                        <br />           <br />
                                         And when it does:
-                                        <br />
+                                        <br />           <br />
                                         <strong>
 
 
                                             It becomes significantly faster than polishing.
                                         </strong>
-                                        <br />
+                                        <br />           <br />
                                         Less physical strain.
-                                        <br />
+                                        <br />           <br />
                                         More consistent results.
-                                        <br />
+                                        <br />           <br />
                                         More repeatable workflow.
                                         <br /><br />
                                         This is why it’s important to stick with it.
-                                        <br />
+                                        <br />           <br />
                                         Learn it properly.
-                                        <br />
+                                        <br />           <br />
                                         Because once you understand it, you won’t want to go back to doing things the hard way.
                                     </p>
                                 </div>

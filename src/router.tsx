@@ -15,6 +15,7 @@ import { ThankYouPage } from "./components/ThankYouPage";
 import { ReceiptPage } from "./components/ReceiptPage";
 import { ResetPassword } from "./components/ResetPassword";
 import { PublicRoute, ProtectedRoute } from "./components/AuthRoutes";
+import { UserProfile } from "./components/UserProfile";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,7 @@ export const router = createBrowserRouter([
           { path: "resources", element: <ResourcesPage /> },
           { path: "support", element: <SupportPage /> },
           { path: "thank-you/:type", element: <ThankYouPage /> },
+          { path: "profile", element: <UserProfile /> },
         ]
       },
     ],
