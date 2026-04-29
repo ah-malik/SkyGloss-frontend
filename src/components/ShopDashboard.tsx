@@ -707,7 +707,7 @@ export function ShopDashboard({
                               onClick={() => {
                                 const isFusionProduct = product.name.toUpperCase().includes('FUSION');
                                 const isUnpaid = user?.role === 'certified_shop' && !user?.isPartnerPaid && user?.isSelfRegistered;
-                                
+
                                 if (isFusionProduct && isUnpaid) {
                                   toast.error("Please activate your account to view this product.");
                                 } else {
@@ -751,7 +751,7 @@ export function ShopDashboard({
                                         onClick={() => {
                                           const isFusionProduct = product.name.toUpperCase().includes('FUSION');
                                           const isUnpaid = user?.role === 'certified_shop' && !user?.isPartnerPaid && user?.isSelfRegistered;
-                                          
+
                                           if (isFusionProduct && isUnpaid) {
                                             toast.error("Please activate your account to modify sizes.");
                                           } else {
@@ -778,14 +778,14 @@ export function ShopDashboard({
                                     if (isFusionProduct && isUnpaid) {
                                       return (
                                         <div className="flex flex-col items-end gap-2">
-                                          <span className="text-sm font-bold text-amber-600">Please Pay Now</span>
+                                          <span className="text-lg font-bold text-amber-600">To Unlock </span>
                                           <Button
                                             size="sm"
                                             onClick={handlePayNow}
                                             disabled={isPaying}
                                             className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] transition-all duration-200 rounded-lg h-10 px-6 font-bold uppercase tracking-wider"
                                           >
-                                            {isPaying ? "Loading..." : "Pay Now"}
+                                            {isPaying ? "Loading..." : "Complete Registration"}
                                           </Button>
                                         </div>
                                       );
@@ -1547,7 +1547,7 @@ export function ShopDashboard({
                             handleDownloadCertificate();
                           }}
                           variant="outline"
-                          className=" w-full sm:w-auto px-8 h-12 rounded-xl font-bold border-2 border-[#0EA0DC] text-[#0EA0DC] hover:bg-[#0EA0DC] hover:text-white transition-all shadow-md"
+                          className="hidden opacity-0 w-full sm:w-auto px-8 h-12 rounded-xl font-bold border-2 border-[#0EA0DC] text-[#0EA0DC] hover:bg-[#0EA0DC] hover:text-white transition-all shadow-md"
                         >
                           <FileText className="w-4 h-4 mr-2" />
                           Download Certificate

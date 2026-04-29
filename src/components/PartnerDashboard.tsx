@@ -714,7 +714,7 @@ export function PartnerDashboard({
 
   return (
     <div className="min-h-screen bg-white pt-20">
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -809,6 +809,13 @@ export function PartnerDashboard({
                           p.name.toUpperCase().includes(dp.name.toUpperCase()) ||
                           dp.name.toUpperCase().includes(p.name.toUpperCase())
                         ))
+                        .sort((a, b) => {
+                          const aIsFusion = a.name.toUpperCase().includes('FUSION');
+                          const bIsFusion = b.name.toUpperCase().includes('FUSION');
+                          if (aIsFusion && !bIsFusion) return -1;
+                          if (!aIsFusion && bIsFusion) return 1;
+                          return 0;
+                        })
                         .map((product, index) => (
                           <motion.div
                             key={product.id}

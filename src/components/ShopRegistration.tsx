@@ -703,7 +703,7 @@ export function ShopRegistration() {
                                         >
                                             Back
                                         </Button>
-                                        <Button
+                                        {/* <Button
                                             type="button"
                                             onClick={(e) => handleSubmit(e, true)}
                                             disabled={isLoading || !isStepValid}
@@ -711,7 +711,7 @@ export function ShopRegistration() {
                                             className="flex-[1.5] h-14 text-lg border-2 border-slate-300 text-white hover:bg-[#0EA0DC]/10 shadow-sm transition-all duration-300 hover:text-[#0EA0DC]"
                                         >
                                             {isLoading ? "Processing..." : "Pay Later"}
-                                        </Button>
+                                        </Button> */}
                                         <Button
                                             type="submit"
                                             disabled={isLoading || !isStepValid}
