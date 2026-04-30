@@ -143,31 +143,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Use shopImages for shop products, fall back to images
     const image = product.shopImages?.[0] || product.images?.[0] || '';
 
-    const existingItem = cart.find(
-      item => item.id === product._id && item.size === selectedSizeStr
-    );
+    setCart(prevCart => {
+      const existingItem = prevCart.find(
+        item => item.id === product._id && item.size === selectedSizeStr
+      );
 
-    if (existingItem) {
-      setCart(cart.map(item =>
-        item.id === product._id && item.size === selectedSizeStr
-          ? { ...item, quantity: item.quantity + quantity }
-          : item
-      ));
-    } else {
-      setCart([...cart, {
-        id: product._id,
-        name: product.name,
-        size: selectedSizeStr,
-        price,
-        quantity,
-        image,
-        currency: product.currency
-      }]);
-    }
+      if (existingItem) {
+        return prevCart.map(item =>
+          item.id === product._id && item.size === selectedSizeStr
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        );
+      } else {
+        return [...prevCart, {
+          id: product._id,
+          name: product.name,
+          size: selectedSizeStr,
+          price,
+          quantity,
+          image,
+          currency: product.currency
+        }];
+      }
+    });
   };
 
   const updateQuantity = (id: string, size: string, delta: number) => {
-    setCart(cart.map(item => {
+    setCart(prevCart => prevCart.map(item => {
       if (item.id === id && item.size === size) {
         const newQuantity = Math.max(0, item.quantity + delta);
         return { ...item, quantity: newQuantity };
@@ -177,7 +179,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const removeFromCart = (id: string, size: string) => {
-    setCart(cart.filter(item => !(item.id === id && item.size === size)));
+    setCart(prevCart => prevCart.filter(item => !(item.id === id && item.size === size)));
   };
 
   const clearCart = () => {

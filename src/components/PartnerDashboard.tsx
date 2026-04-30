@@ -517,18 +517,21 @@ export function PartnerDashboard({
       ? product.unitPrices[size]
       : product.casePrices[size];
 
-    const existingItem = orderItems.find(
+    let updatedItems = [...orderItems];
+
+    // Add or Update the product being explicitly added
+    const existingItem = updatedItems.find(
       item => item.productId === product.id && item.size === size && item.orderType === orderType
     );
 
     if (existingItem) {
-      setOrderItems(orderItems.map(item =>
+      updatedItems = updatedItems.map(item =>
         item.productId === product.id && item.size === size && item.orderType === orderType
           ? { ...item, quantity: item.quantity + 1 }
           : item
-      ));
+      );
     } else {
-      setOrderItems([...orderItems, {
+      updatedItems.push({
         productId: product.id,
         productName: product.name,
         size,
@@ -536,9 +539,41 @@ export function PartnerDashboard({
         quantity: 1,
         price: price || 0,
         currency: product.currency || 'USD'
-      }]);
+      });
     }
 
+    // Auto-add Applicator Bottle if Fusion product
+    if (product.name.toUpperCase().includes('FUSION')) {
+      const applicatorBottle = PartnerProducts.find(p => p.name.toUpperCase().includes('APPLICATOR BOTTLE'));
+      if (applicatorBottle) {
+        const abSize = "1pc";
+        const abPrice = applicatorBottle.unitPrices[abSize];
+
+        const existingAB = updatedItems.find(
+          item => item.productId === applicatorBottle.id && item.size === abSize && item.orderType === "unit"
+        );
+
+        if (existingAB) {
+          updatedItems = updatedItems.map(item =>
+            item.productId === applicatorBottle.id && item.size === abSize && item.orderType === "unit"
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          );
+        } else {
+          updatedItems.push({
+            productId: applicatorBottle.id,
+            productName: applicatorBottle.name,
+            size: abSize,
+            orderType: "unit",
+            quantity: 1,
+            price: abPrice || 0,
+            currency: applicatorBottle.currency || 'USD'
+          });
+        }
+      }
+    }
+
+    setOrderItems(updatedItems);
     toast.success(`Added ${product.name} (${size}) - ${orderType === "case" ? "Case" : "Unit"}`);
   };
 

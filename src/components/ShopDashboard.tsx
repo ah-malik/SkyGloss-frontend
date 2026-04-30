@@ -421,6 +421,15 @@ export function ShopDashboard({
   const addToCart = (product: any) => {
     const selectedSizeStr = selectedSizes[product._id] || product.sizes[0]?.size;
     addToCartContext(product, selectedSizeStr);
+    
+    // Auto-add Applicator Bottle if Fusion product
+    if (product.name.toUpperCase().includes('FUSION')) {
+      const applicatorBottle = products.find(p => p.name.toUpperCase().includes('APPLICATOR BOTTLE'));
+      if (applicatorBottle) {
+        addToCartContext(applicatorBottle, applicatorBottle.sizes[0]?.size, 1);
+      }
+    }
+
     toast.success("Added to cart", {
       description: `${product.name} (${selectedSizeStr})`
     });
@@ -452,6 +461,14 @@ export function ShopDashboard({
     // Pass explicit price so cart always uses the correct size-based price
     // (price may be undefined for non-US users, addToCartContext handles that gracefully)
     addToCartContext(product, size, quantity, price);
+
+    // Auto-add Applicator Bottle if Fusion product
+    if (product.name.toUpperCase().includes('FUSION')) {
+      const applicatorBottle = products.find(p => p.name.toUpperCase().includes('APPLICATOR BOTTLE'));
+      if (applicatorBottle) {
+        addToCartContext(applicatorBottle, applicatorBottle.sizes[0]?.size, quantity);
+      }
+    }
   };
 
   // Filter products based on search query
