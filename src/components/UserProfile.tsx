@@ -1,12 +1,28 @@
-import { motion } from "motion/react";
-import { useState } from "react";
-import { User, Lock, Globe, Shield, FileText, Phone, MapPin, Link as LinkIcon, Facebook, Instagram, Linkedin, Youtube, Loader2 } from "lucide-react";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { User, Lock, Globe, Shield, FileText, Phone, MapPin, Link as LinkIcon, Facebook, Instagram, Linkedin, Youtube, Loader2, Mail } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { toast } from "sonner";
 import api from "../api/axios";
 import { useAuth } from "../AuthContext";
+import { Country, State, City } from 'country-state-city';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
+
+const normalizeName = (name: string) => {
+  if (!name) return '';
+  return name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ı/g, 'i')
+    .replace(/İ/g, 'I');
+};
+
+const getFlagUrl = (isoCode: string) => {
+  if (!isoCode) return null;
+  return `https://flagcdn.com/w40/${isoCode.toLowerCase()}.png`;
+};
 
 export function UserProfile() {
   const { user, setUser } = useAuth();
@@ -21,6 +37,14 @@ export function UserProfile() {
   const [address, setAddress] = useState(user?.address || "");
   const [streetAddress, setStreetAddress] = useState(user?.streetAddress || "");
 
+  // Country/City states
+  const countries = useMemo(() => Country.getAllCountries(), []);
+  const [cities, setCities] = useState<any[]>([]);
+  const [countryISO, setCountryISO] = useState<string>("");
+  const [countrySearch, setCountrySearch] = useState("");
+  const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
+  const countryDropdownRef = useRef<HTMLDivElement>(null);
+
   // Social Links State
   const [website, setWebsite] = useState(user?.website || "");
   const [facebook, setFacebook] = useState(user?.facebook || "");
@@ -28,6 +52,40 @@ export function UserProfile() {
   const [youtube, setYoutube] = useState(user?.youtube || "");
   const [tiktok, setTiktok] = useState(user?.tiktok || "");
   const [linkedin, setLinkedin] = useState(user?.linkedin || "");
+
+  // Initialize Country ISO and Cities on mount
+  useEffect(() => {
+    if (user?.country) {
+      const foundCountry = countries.find(c => c.name === user.country);
+      if (foundCountry) {
+        setCountryISO(foundCountry.isoCode);
+        const rawCities = City.getCitiesOfCountry(foundCountry.isoCode) || [];
+        const rawStates = State.getStatesOfCountry(foundCountry.isoCode) || [];
+        const combined = [...rawCities, ...rawStates]
+          .map(item => ({ ...item, name: normalizeName(item.name) }))
+          .filter((item, index, self) => index === self.findIndex((t) => t.name === item.name))
+          .sort((a, b) => a.name.localeCompare(b.name));
+        setCities(combined);
+      }
+    }
+  }, [user, countries]);
+
+  // Handle outside click for country dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target as Node)) {
+        setCountryDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const filteredCountries = useMemo(() => {
+    if (!countrySearch) return countries;
+    const search = countrySearch.toLowerCase();
+    return countries.filter(c => c.name.toLowerCase().includes(search));
+  }, [countries, countrySearch]);
 
   // Password State
   const [password, setPassword] = useState("");
@@ -198,9 +256,19 @@ export function UserProfile() {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="space-y-4">
                     <label className="block text-xs font-semibold text-slate-600 mb-1.5">Phone Number</label>
-                    <Input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} className="rounded-xl border-[#0EA0DC]/20" placeholder="Phone Number" />
+                    <div className="skygloss-phone-input-wrapper">
+                      <PhoneInput
+                        placeholder="Enter phone number"
+                        value={phoneNumber}
+                        onChange={(val) => setPhoneNumber(val || "")}
+                        defaultCountry={countryISO as any || undefined}
+                        international
+                        withCountryCallingCode
+                        className="skygloss-phone-input"
+                      />
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
@@ -217,7 +285,18 @@ export function UserProfile() {
                   <div className="grid grid-cols-3 gap-4">
                     <div className="col-span-2">
                       <label className="block text-xs font-semibold text-slate-600 mb-1.5">City</label>
-                      <Input value={city} onChange={(e) => setCity(e.target.value)} className="rounded-xl border-[#0EA0DC]/20" placeholder="City" />
+                      <select
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        className="w-full px-4 h-11 bg-white border border-[#0EA0DC]/20 rounded-xl focus:border-[#0EA0DC] outline-none text-sm transition-colors appearance-none"
+                      >
+                        <option value="">Select City</option>
+                        {cities.map((c, index) => (
+                          <option key={`${c.name}-${index}`} value={c.name}>
+                            {c.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-slate-600 mb-1.5">Zip Code</label>
@@ -227,7 +306,60 @@ export function UserProfile() {
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-600 mb-1.5">Country</label>
-                    <Input value={country} onChange={(e) => setCountry(e.target.value)} className="rounded-xl border-[#0EA0DC]/20" placeholder="Country" />
+                    <div className="relative" ref={countryDropdownRef}>
+                      <div
+                        className="w-full px-4 h-11 bg-white border border-[#0EA0DC]/20 rounded-xl flex items-center gap-2 cursor-pointer focus-within:border-[#0EA0DC]"
+                        onClick={() => setCountryDropdownOpen(!countryDropdownOpen)}
+                      >
+                        {country && countryISO && !countryDropdownOpen ? (
+                          <>
+                            <img src={getFlagUrl(countryISO)!} alt="" className="w-5 h-4 object-cover rounded-sm" />
+                            <span className="text-sm text-slate-700">{country}</span>
+                          </>
+                        ) : (
+                          <input
+                            type="text"
+                            value={countrySearch}
+                            onChange={(e) => { setCountrySearch(e.target.value); setCountryDropdownOpen(true); }}
+                            onFocus={() => setCountryDropdownOpen(true)}
+                            placeholder={country || "Search country..."}
+                            className="w-full bg-transparent outline-none text-sm text-slate-700"
+                          />
+                        )}
+                      </div>
+
+                      {countryDropdownOpen && (
+                        <div className="absolute z-50 top-12 left-0 right-0 bg-white border border-[#0EA0DC]/20 rounded-xl shadow-xl max-h-[200px] overflow-y-auto mt-1">
+                          {filteredCountries.length === 0 ? (
+                            <div className="px-4 py-3 text-sm text-slate-400">No countries found</div>
+                          ) : (
+                            filteredCountries.map(c => (
+                              <div
+                                key={c.isoCode}
+                                className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#0EA0DC]/5 cursor-pointer transition-colors"
+                                onClick={() => {
+                                  setCountry(c.name);
+                                  setCountryISO(c.isoCode);
+                                  setCity("");
+                                  const rawCities = City.getCitiesOfCountry(c.isoCode) || [];
+                                  const rawStates = State.getStatesOfCountry(c.isoCode) || [];
+                                  const combined = [...rawCities, ...rawStates]
+                                    .map(item => ({ ...item, name: normalizeName(item.name) }))
+                                    .filter((item, index, self) => index === self.findIndex((t) => t.name === item.name))
+                                    .sort((a, b) => a.name.localeCompare(b.name));
+                                  setCities(combined);
+                                  setCountryDropdownOpen(false);
+                                  setCountrySearch("");
+                                }}
+                              >
+                                <img src={getFlagUrl(c.isoCode)!} alt="" className="w-5 h-4 object-cover rounded-sm" />
+                                <span className="text-sm text-slate-700 font-medium">{c.name}</span>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <Button
