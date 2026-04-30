@@ -195,7 +195,7 @@ export function NetworkDashboard() {
 
   return (
     <div className="min-h-screen bg-white pt-20 pb-12">
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
