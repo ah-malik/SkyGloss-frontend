@@ -77,7 +77,7 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
 
             // Connect to Socket.IO
             const socketUrl = import.meta.env.VITE_SOCKET_URL || 'https://skygloss-backend-production-3b96.up.railway.app';
-            const newSocket = io(socketUrl);
+            const newSocket = io(socketUrl, { transports: ['websocket'] });
 
             if (!getIsMounted()) {
                 newSocket.disconnect();
