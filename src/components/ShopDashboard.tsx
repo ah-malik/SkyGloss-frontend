@@ -101,7 +101,7 @@ import certificationCongratulationsImage from "../assets/certification_congratul
 
 const COURSE_STEPS: { [key: string]: number } = {
   'UNDERSTANDING_SKYGLOSS': 9,
-  'WELCOME_TO_SKYGLOSS': 18,
+  'WELCOME_TO_SKYGLOSS': 16,
   'SKYGLOSS_SHOP_SETUP': 4,
   'FUSION': 20,
   'RESIN_FILM': 7,
@@ -1033,7 +1033,7 @@ export function ShopDashboard({
 
                         if (progress.length > 0) {
                           const completedCount = progress.length;
-                          const totalSteps = COURSE_STEPS[key] || 18;
+                          const totalSteps = COURSE_STEPS[key] || 16;
                           const percentage = Math.min(100, Math.round((completedCount / totalSteps) * 100));
 
                           if (completedCount >= totalSteps) {
@@ -1078,7 +1078,7 @@ export function ShopDashboard({
 
                       if (progress.length > 0) {
                         const completedCount = progress.length;
-                        const totalSteps = COURSE_STEPS[key] || 18;
+                        const totalSteps = COURSE_STEPS[key] || 16;
                         const percentage = Math.min(100, Math.round((completedCount / totalSteps) * 100));
 
                         return (
