@@ -8,7 +8,7 @@ export function useChatNotifications(userId: string | undefined, userName: strin
     const socketRef = useRef<Socket | null>(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const { refreshUnreadCount, setIsChatOpen } = useAuth();
+    const { refreshUnreadCount, setIsChatOpen, refreshActivities } = useAuth();
 
     useEffect(() => {
         if (!userId) return;
@@ -25,6 +25,7 @@ export function useChatNotifications(userId: string | undefined, userName: strin
         socket.on('new_admin_message', (data: { roomId: string, message: string, senderName: string }) => {
             // Refresh unread count globally
             refreshUnreadCount();
+            refreshActivities();
 
             // Open chat automatically
             setIsChatOpen(true);
@@ -62,6 +63,7 @@ export function useChatNotifications(userId: string | undefined, userName: strin
 
             // Refresh unread count globally
             refreshUnreadCount();
+            refreshActivities();
 
             // Show toast with Close option
             toast(notification.title || "New Notification", {
