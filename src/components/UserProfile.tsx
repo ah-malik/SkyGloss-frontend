@@ -9,6 +9,7 @@ import { useAuth } from "../AuthContext";
 import { Country, State, City } from 'country-state-city';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import { motion } from "framer-motion";
 
 const normalizeName = (name: string) => {
   if (!name) return '';

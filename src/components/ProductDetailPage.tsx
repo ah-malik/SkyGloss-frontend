@@ -598,15 +598,19 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                     hover:bg-[#0EA0DC] hover:border-[#0EA0DC]"
                   >
                     <Download className="w-5 h-5 mb-2" />
-                    <span className="text-sm text-[rgb(255,255,255)]">Safety Data Sheet (SDS)</span>
+                    <span className="text-sm">Safety Data Sheet (SDS)</span>
                   </Button>
                   <Button
                     variant="outline"
-                    className="h-auto py-3 sm:py-4 flex-col items-start border-[#0EA0DC]/30 text-[#0EA0DC]
-                     hover:bg-[#0EA0DC] hover:border-[#0EA0DC]"
+                    className={`h-auto py-3 sm:py-4 flex-col items-start border-[#0EA0DC]/30 text-[#0EA0DC]
+                     hover:bg-[#0EA0DC] hover:text-white ${!product?.technicalSheetUrl ? 'opacity-40 pointer-events-none' : ''}`}
+                    onClick={() => {
+                      if (product?.technicalSheetUrl) window.open(product.technicalSheetUrl, '_blank');
+                    }}
+                    disabled={!product?.technicalSheetUrl}
                   >
                     <Download className="w-5 h-5 mb-2" />
-                    <span className="text-sm text-[rgb(255,255,255)]">Technical Data Sheet (TDS)</span>
+                    <span className="text-sm">Technical Data Sheet (TDS)</span>
                   </Button>
                   <Button
                     variant="outline"
@@ -619,7 +623,7 @@ export function ProductDetailPage({ productId, onBack, onAddToCart, showPrice = 
                     disabled={!getProductPdf(product.name)}
                   >
                     <Download className="w-5 h-5 mb-2" />
-                    <span className="text-sm text-[rgb(255,255,255)]">Application Guide (PDF)</span>
+                    <span className="text-sm">Application Guide (PDF)</span>
                   </Button>
                 </div>
               </Card>
