@@ -85,6 +85,19 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
             }
 
             socketRef.current = newSocket;
+            
+            // Mark notifications from this specific user/admin as read
+            const triggeredById = isAdminRole ? userId : 'admin';
+            if (triggeredById) {
+                try {
+                    await api.patch(`/notifications/mark-chat-read/${triggeredById}`);
+                    // Trigger global unread count refresh
+                    // Note: We might need useAuth here, but ChatWidget is often rendered in places where we can pass it or just let the socket handle it.
+                    // Actually, refreshActivities is already called in the socket listeners.
+                } catch (err) {
+                    console.error('Failed to mark chat as read:', err);
+                }
+            }
 
             newSocket.on('connect', () => {
                 console.log('Connected to chat server');

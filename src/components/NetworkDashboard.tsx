@@ -473,7 +473,7 @@ export function NetworkDashboard() {
                                   {recentActivities.some(n => 
                                     n.type === 'CHAT_MESSAGE' && 
                                     !n.isRead && 
-                                    n.metadata?.roomId === shop._id
+                                    n.triggeredBy === shop._id
                                   ) && (
                                     <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse" />
                                   )}
