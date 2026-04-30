@@ -91,7 +91,13 @@ export function ActivityDropdown() {
                             <DropdownMenuItem
                                 key={activity._id || idx}
                                 className="px-4 py-3 cursor-pointer hover:bg-[#0EA0DC]/5 transition-colors border-b border-[#0EA0DC]/5 last:border-0"
-                                onSelect={() => navigate('/activities')}
+                                onSelect={() => {
+                                    if (activity.type === 'CHAT_MESSAGE') {
+                                        navigate('/dashboard/partner/network?tab=shops');
+                                    } else {
+                                        navigate('/activities');
+                                    }
+                                }}
                             >
                                 <div className="flex gap-3 items-start w-full">
                                     <div className="mt-1 p-1.5 rounded-lg bg-gray-50 border border-gray-100">

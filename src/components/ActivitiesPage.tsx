@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import { Bell, CheckCircle2, GraduationCap, MessageSquare, Package, Clock, Loader2, CheckCheck } from "lucide-react";
 import { Card } from "./ui/card";
@@ -11,6 +12,7 @@ import { formatDistanceToNow } from "date-fns";
 
 export function ActivitiesPage() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [activities, setActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -109,11 +111,16 @@ export function ActivitiesPage() {
                 transition={{ delay: idx * 0.05 }}
               >
                 <Card 
-                  className={`p-5 rounded-2xl border transition-all duration-200 flex items-start gap-4 shadow-sm hover:shadow-md ${
+                  className={`p-5 rounded-2xl border transition-all duration-200 flex items-start gap-4 shadow-sm hover:shadow-md cursor-pointer ${
                     !activity.isRead 
                       ? 'bg-[#0EA0DC]/5 border-[#0EA0DC]/30' 
                       : 'bg-white border-slate-100'
                   }`}
+                  onClick={() => {
+                    if (activity.type === 'CHAT_MESSAGE') {
+                      navigate('/dashboard/partner/network?tab=shops');
+                    }
+                  }}
                 >
                   <div className="p-2 bg-white rounded-xl border border-slate-100 shadow-sm shrink-0">
                     {getIcon(activity.type)}

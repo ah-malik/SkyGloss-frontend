@@ -526,7 +526,7 @@ export function WelcomeToSkyGloss({ onBack }: { onBack: () => void }) {
                                 <div className="flex justify-end mt-8">
                                     <Button
                                         onClick={() => markComplete('learning_curve')}
-                                        className="rounded-xl px-10 h-14 bg-[#272727] text-white"
+                                        className={`rounded-xl px-10 h-14 font-bold transition-all duration-500 ${completedSteps.includes('intro_replacement') ? 'bg-[#0EA0DC] text-white shadow-lg' : 'bg-[#272727] text-white hover:bg-black shadow-md'}`}
                                     >
                                         {completedSteps.includes('learning_curve') ? <><CheckCircle className="w-5 h-5 mr-2" /> Section Completed</> : 'Section Completed'}
                                     </Button>

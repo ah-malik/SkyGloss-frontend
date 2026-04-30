@@ -5,6 +5,7 @@ import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { useSearchParams } from "react-router";
 import { InteractiveWorldMap } from "./InteractiveWorldMap";
 import { ManagePartners } from "./ManagePartners";
 import { SalesAnalytics } from "./SalesAnalytics";
@@ -24,7 +25,9 @@ import {
 } from "./ui/select";
 
 export function NetworkDashboard() {
-  const { user } = useAuth();
+  const { user, recentActivities } = useAuth();
+  const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'stats';
   const [activeToolView, setActiveToolView] = useState<"main" | "Partners" | "analytics" | "reports" | "cloning">("main");
   const [shops, setShops] = useState<any[]>([]);
   const [partners, setPartners] = useState<any[]>([]);
@@ -246,7 +249,7 @@ export function NetworkDashboard() {
         </div>
 
         {/* Main Content Tabs */}
-        <Tabs defaultValue="overview" className="w-full">
+        <Tabs defaultValue={initialTab} className="w-full">
           <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 gap-1.5 mb-8 bg-white rounded-xl p-1.5 border-2 border-[#0EA0DC] shadow-[0_0_10px_rgba(14,160,220,0.15)] h-auto">
             <TabsTrigger
               value="overview"
@@ -463,10 +466,17 @@ export function NetworkDashboard() {
                                 <Button
                                   size="sm"
                                   onClick={() => setSelectedChatShop(shop)}
-                                  className="bg-[#0EA0DC] hover:bg-[#272727] text-white transition-all shadow-md"
+                                  className="bg-[#0EA0DC] hover:bg-[#272727] text-white transition-all shadow-md relative"
                                 >
                                   <MessageCircle className="w-4 h-4 mr-2" />
                                   Live Chat
+                                  {recentActivities.some(n => 
+                                    n.type === 'CHAT_MESSAGE' && 
+                                    !n.isRead && 
+                                    n.metadata?.roomId === shop._id
+                                  ) && (
+                                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse" />
+                                  )}
                                 </Button>
                               </div>
                             </td>
