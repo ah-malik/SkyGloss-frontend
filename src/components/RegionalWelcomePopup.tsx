@@ -4,6 +4,7 @@ import { X, Info, ShoppingCart, GraduationCap } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { useAuth } from '../AuthContext';
+import { useLocation } from 'react-router-dom';
 
 const REGIONAL_ISO_CODES = [
     // USA, Canada, Australia, New Zealand
@@ -37,8 +38,13 @@ export function RegionalWelcomePopup() {
     const { user } = useAuth();
     const [isVisible, setIsVisible] = useState(false);
 
+    const location = useLocation();
+
     useEffect(() => {
         if (!user || !user._id || !user.country) return;
+        
+        // Only show the popup when the user is actually on the dashboard
+        if (!location.pathname.includes('dashboard')) return;
 
         // 1. Check if user country is in the allowed list
         const countryName = user.country;
@@ -53,15 +59,11 @@ export function RegionalWelcomePopup() {
         const storageKey = `skygloss_welcome_popup_count_${user._id}`;
         const showCount = parseInt(localStorage.getItem(storageKey) || "0");
 
-        if (showCount < 2) {
+        if (showCount < 1) {
             setIsVisible(true);
-            // We increment immediately or on close?
-            // Usually on mount for "login" sessions.
-            // But if they refresh, it might increment too fast.
-            // Let's increment it now so it counts this session.
             localStorage.setItem(storageKey, (showCount + 1).toString());
         }
-    }, [user]);
+    }, [user, location.pathname]);
 
     const handleClose = () => {
         setIsVisible(false);

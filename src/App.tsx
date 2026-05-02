@@ -5,6 +5,7 @@ import { Navigation } from "./components/Navigation";
 import { useAuth } from "./AuthContext";
 import { useChatNotifications } from "./hooks/useChatNotifications";
 import { ChatWidget } from "./components/ChatWidget";
+import { RegionalWelcomePopup } from "./components/RegionalWelcomePopup";
 // import { RegionalWelcomePopup } from "./components/RegionalWelcomePopup";
 
 export default function App() {
@@ -67,7 +68,7 @@ export default function App() {
       {/* Render the current page */}
       <Outlet />
 
-      {/* {isLoggedIn && <RegionalWelcomePopup />} */}
+      {isLoggedIn && <RegionalWelcomePopup />}
 
       {/* Global Chat Widget */}
       {isChatOpen && (
