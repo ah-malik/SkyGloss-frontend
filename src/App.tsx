@@ -6,7 +6,6 @@ import { useAuth } from "./AuthContext";
 import { useChatNotifications } from "./hooks/useChatNotifications";
 import { ChatWidget } from "./components/ChatWidget";
 import { RegionalWelcomePopup } from "./components/RegionalWelcomePopup";
-// import { RegionalWelcomePopup } from "./components/RegionalWelcomePopup";
 
 export default function App() {
   const { cartCount, setShowCartSheet, logout, accessType, user, isChatOpen, setIsChatOpen } = useAuth();

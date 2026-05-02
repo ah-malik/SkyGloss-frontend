@@ -4,7 +4,7 @@ import { X, Info, ShoppingCart, GraduationCap } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { useAuth } from '../AuthContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 const REGIONAL_ISO_CODES = [
     // USA, Canada, Australia, New Zealand
