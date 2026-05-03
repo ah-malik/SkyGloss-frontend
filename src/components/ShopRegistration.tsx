@@ -70,6 +70,8 @@ export function ShopRegistration() {
         linkedin: ""
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [fetchedFee, setFetchedFee] = useState<{ feeAmount: number, currency: string } | null>(null);
+    const [isFetchingFee, setIsFetchingFee] = useState(false);
     const [noPartnerId, setNoPartnerId] = useState(false);
     const [countrySearch, setCountrySearch] = useState('');
     const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
@@ -112,6 +114,23 @@ export function ShopRegistration() {
         const search = countrySearch.toLowerCase();
         return countries.filter(c => c.name.toLowerCase().includes(search));
     }, [countries, countrySearch]);
+
+    useEffect(() => {
+        const fetchFee = async () => {
+            if (!formData.country) return;
+            setIsFetchingFee(true);
+            try {
+                const res = await api.get(`/registration-fees/public/by-country/${formData.country}`);
+                setFetchedFee(res.data);
+            } catch (err) {
+                console.error('Failed to fetch fee:', err);
+                setFetchedFee({ feeAmount: 250, currency: 'USD' });
+            } finally {
+                setIsFetchingFee(false);
+            }
+        };
+        fetchFee();
+    }, [formData.country]);
 
     const handleBack = () => {
         if (step === 3) setStep(2);
@@ -205,20 +224,58 @@ export function ShopRegistration() {
     };
 
     const registrationFee = useMemo(() => {
-        const country = formData.country.toLowerCase().trim();
         const isFree = formData.couponCode === 'CERTIFICATIONONUS';
-
         if (isFree) {
             return { base: 0, tax: 0, total: 0, currency: '$', suffix: 'USD', hasTax: false, isFree: true };
         }
 
-        if (country === 'australia' || country === 'new zealand') {
-            return { base: 1800, tax: 180, total: 1980, currency: '$', suffix: 'AUD', hasTax: true };
-        } else if (europeanCountries.includes(country)) {
-            return { base: 250, tax: 0, total: 250, currency: '€', suffix: 'EUR', hasTax: false };
+        const fee = fetchedFee?.feeAmount ?? 250;
+        const cur = (fetchedFee?.currency || 'USD').toUpperCase();
+        
+        // Comprehensive Symbols mapping
+        const symbols: any = { 
+            'USD': '$', 'EUR': '€', 'GBP': '£', 'AUD': '$', 'CAD': '$', 'JPY': '¥', 
+            'CNY': '¥', 'INR': '₹', 'AED': 'د.إ', 'AFN': '؋', 'ALL': 'L', 'AMD': '֏', 
+            'ANG': 'ƒ', 'AOA': 'Kz', 'ARS': '$', 'AZN': '₼', 'BAM': 'KM', 'BBD': '$', 
+            'BDT': '৳', 'BGN': 'лв', 'BHD': '.د.ب', 'BIF': 'FBu', 'BMD': '$', 'BND': '$', 
+            'BOB': '$b', 'BRL': 'R$', 'BSD': '$', 'BTN': 'Nu.', 'BWP': 'P', 'BYN': 'Br', 
+            'BZD': 'BZ$', 'CHF': 'CHF', 'CLP': '$', 'COP': '$', 'CRC': '₡', 'CUP': '₱', 
+            'CVE': '$', 'CZK': 'Kč', 'DJF': 'Fdj', 'DKK': 'kr', 'DOP': 'RD$', 'DZD': 'دج', 
+            'EGP': '£', 'ETB': 'Br', 'FJD': '$', 'GEL': '₾', 'GHS': 'GH₵', 'GMD': 'D', 
+            'GNF': 'FG', 'GTQ': 'Q', 'GYD': '$', 'HKD': '$', 'HNL': 'L', 'HRK': 'kn', 
+            'HTG': 'G', 'HUF': 'Ft', 'IDR': 'Rp', 'ILS': '₪', 'IQD': 'ع.د', 'IRR': '﷼', 
+            'ISK': 'kr', 'JMD': 'J$', 'JOD': 'JD', 'KES': 'KSh', 'KGS': 'лв', 'KHR': '៛', 
+            'KMF': 'CF', 'KPW': '₩', 'KRW': '₩', 'KWD': 'KD', 'KYD': '$', 'KZT': '₸', 
+            'LAK': '₭', 'LBP': '£', 'LKR': '₨', 'LRD': '$', 'LSL': 'L', 'LYD': 'LD', 
+            'MAD': 'MAD', 'MDL': 'lei', 'MGA': 'Ar', 'MKD': 'ден', 'MMK': 'K', 'MNT': '₮', 
+            'MOP': 'MOP$', 'MRU': 'UM', 'MUR': '₨', 'MVR': '.ر', 'MWK': 'MK', 'MXN': '$', 
+            'MYR': 'RM', 'MZN': 'MT', 'NAD': '$', 'NGN': '₦', 'NIO': 'C$', 'NOK': 'kr', 
+            'NPR': '₨', 'NZD': '$', 'OMR': '﷼', 'PAB': 'B/.', 'PEN': 'S/.', 'PGK': 'K', 
+            'PHP': '₱', 'PKR': '₨', 'PLN': 'zł', 'PYG': 'Gs', 'QAR': '﷼', 'RON': 'lei', 
+            'RSD': 'Дин.', 'RUB': '₽', 'RWF': 'R₣', 'SAR': '﷼', 'SBD': '$', 'SCR': '₨', 
+            'SDG': 'ج.س.', 'SEK': 'kr', 'SGD': '$', 'SLL': 'Le', 'SOS': 'S', 'SRD': '$', 
+            'SSP': '£', 'STN': 'Db', 'SYP': '£', 'SZL': 'L', 'THB': '฿', 'TJS': 'SM', 
+            'TMT': 'T', 'TND': 'د.ت', 'TOP': 'T$', 'TRY': '₺', 'TTD': 'TT$', 'TWD': 'NT$', 
+            'TZS': 'TSh', 'UAH': '₴', 'UGX': 'USh', 'UYU': '$U', 'UZS': 'лв', 'VES': 'Bs.S', 
+            'VND': '₫', 'VUV': 'VT', 'WST': 'WS$', 'XAF': 'FCFA', 'XCD': '$', 'XOF': 'CFA', 
+            'XPF': '₣', 'YER': '﷼', 'ZAR': 'R', 'ZMW': 'ZK', 'ZWL': '$'
+        };
+
+        let symbol = symbols[cur] || '$';
+        
+        // Fallback: Use Intl.NumberFormat if available and symbol is still default for non-USD
+        if (symbol === '$' && cur !== 'USD') {
+            try {
+                const parts = new Intl.NumberFormat('en-US', { style: 'currency', currency: cur }).formatToParts(1);
+                const foundSymbol = parts.find(p => p.type === 'currency')?.value;
+                if (foundSymbol) symbol = foundSymbol;
+            } catch (e) {
+                // Keep default $
+            }
         }
-        return { base: 250, tax: 0, total: 250, currency: '$', suffix: 'USD', hasTax: false };
-    }, [formData.country]);
+
+        return { base: fee, tax: 0, total: fee, currency: symbol, suffix: cur, hasTax: false };
+    }, [formData.country, formData.couponCode, fetchedFee]);
 
     const stepLabels = ["Basic Information", "Shop Details", "Payment"];
 

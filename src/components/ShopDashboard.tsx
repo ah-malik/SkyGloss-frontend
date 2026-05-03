@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams, useLocation } from "react-router";
-import { Search, ShoppingCart, Plus, Minus, Eye, Loader2, GraduationCap, ShoppingBag, Lock, CheckCircle, MessageCircle, Clock, Award, FileText } from "lucide-react";
+import { Search, ShoppingCart, Plus, Minus, Eye, Loader2, GraduationCap, ShoppingBag, Lock, CheckCircle, MessageCircle, Clock, Award, FileText, BookOpen } from "lucide-react";
 import api from "../api/axios";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
@@ -426,7 +426,9 @@ export function ShopDashboard({
     if (product.name.toUpperCase().includes('FUSION')) {
       const applicatorBottle = products.find(p => p.name.toUpperCase().includes('APPLICATOR BOTTLE'));
       if (applicatorBottle) {
-        addToCartContext(applicatorBottle, applicatorBottle.sizes[0]?.size, 1);
+        const abSize = applicatorBottle.sizes[0]?.size;
+        const abPrice = applicatorBottle.sizes[0]?.price;
+        addToCartContext(applicatorBottle, abSize, 1, abPrice);
       }
     }
 
@@ -466,7 +468,9 @@ export function ShopDashboard({
     if (product.name.toUpperCase().includes('FUSION')) {
       const applicatorBottle = products.find(p => p.name.toUpperCase().includes('APPLICATOR BOTTLE'));
       if (applicatorBottle) {
-        addToCartContext(applicatorBottle, applicatorBottle.sizes[0]?.size, quantity);
+        const abSize = applicatorBottle.sizes[0]?.size;
+        const abPrice = applicatorBottle.sizes[0]?.price;
+        addToCartContext(applicatorBottle, abSize, quantity, abPrice);
       }
     }
   };
@@ -674,6 +678,26 @@ export function ShopDashboard({
               >
                 <GraduationCap className="w-5 h-5 mr-3" />
                 <span className="text-lg">Courses</span>
+              </button>
+              <button
+                onClick={() => navigate("/resources")}
+                className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "resources"
+                  ? "bg-[#272727] text-white shadow-lg"
+                  : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
+                  }`}
+              >
+                <BookOpen className="w-5 h-5 mr-3" />
+                <span className="text-lg">Resources</span>
+              </button>
+              <button
+                onClick={() => navigate("/support")}
+                className={`flex items-center px-10 py-4 rounded-lg transition-all duration-200 ${activeTab === "support"
+                  ? "bg-[#272727] text-white shadow-lg"
+                  : "bg-transparent text-[#666666] hover:text-[#0EA0DC]"
+                  }`}
+              >
+                <MessageCircle className="w-5 h-5 mr-3" />
+                <span className="text-lg">Live Chat</span>
               </button>
             </div>
           </motion.div>
@@ -1489,7 +1513,7 @@ export function ShopDashboard({
                       : "cursor-not-allowed opacity-40 grayscale-[0.5]"
                     }`}
                 >
-                  <Card className={`p-1 pb-8 sm:p-12 rounded-3xl bg-white border shadow-sm text-center relative overflow-hidden transition-colors ${isAllCoursesCompleted && !user?.isTrainingComplete ? "border-[#0EA0DC]/30 bg-gradient-to-br from-white to-[#0EA0DC]/5" : "border-gray-100"
+                  <Card className={`skygloss-card p-6 rounded-2xl h-full flex flex-col group hover:shadow-xl transition-all border-0 shadow-lg ${isAllCoursesCompleted && !user?.isTrainingComplete ? "border-[#0EA0DC]/30 bg-gradient-to-br from-white to-[#0EA0DC]/5" : "border-gray-100"
                     }`}>
 
                     {/* Image */}
@@ -1538,10 +1562,10 @@ export function ShopDashboard({
                           handleTrainingComplete();
                         }}
                         className={`w-full sm:w-auto px-10 h-12 rounded-xl font-bold uppercase tracking-wider shadow-md transition-all ${user?.isCertified
-                          ? "bg-emerald-600 text-white cursor-default"
+                          ? "bg-[#0EA0DC] hover:bg-[#272727]/90 text-white cursor-default"
                           : user?.isTrainingComplete
-                            ? "bg-amber-500 text-white cursor-default"
-                            : "bg-[#0EA0DC] hover:bg-[#0b86b8] text-white"
+                            ? "bg-amber-500 hover:bg-amber-500/90 text-white cursor-default"
+                            : "bg-[#0EA0DC] hover:bg-[#0EA0DC] text-white"
                           }`}
                       >
                         {isSubmittingTraining ? (
@@ -1564,7 +1588,7 @@ export function ShopDashboard({
                             handleDownloadCertificate();
                           }}
                           variant="outline"
-                          className=" w-full sm:w-auto px-8 h-12 rounded-xl font-bold border-2 border-[#0EA0DC] text-[#0EA0DC] hover:bg-[#0EA0DC] hover:text-white transition-all shadow-md"
+                          className="hidden opacity-0 w-full sm:w-auto px-8 h-12 rounded-xl font-bold border-2 border-[#0EA0DC] text-[#0EA0DC] hover:bg-[#0EA0DC] hover:text-white transition-all shadow-md"
                         >
                           <FileText className="w-4 h-4 mr-2" />
                           Download Certificate

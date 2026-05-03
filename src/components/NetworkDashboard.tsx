@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
-import { TrendingUp, MapPin, Download, Plus, ArrowLeft, MessageCircle, Trophy, Clock, Award } from "lucide-react";
+import { TrendingUp, MapPin, Download, Plus, ArrowLeft, MessageCircle, Trophy, Clock, Award, XCircle, CheckCircle } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -91,12 +91,27 @@ export function NetworkDashboard() {
 
   const approveCertification = async (shopId: string) => {
     try {
-      await api.patch(`/users/${shopId}`, { isCertified: true });
-      setShops(prev => prev.map(s => s._id === shopId ? { ...s, isCertified: true } : s));
-      toast.success("Shop certified successfully");
+      await api.patch(`/users/${shopId}`, {
+        isCertified: true,
+        isVisibleOnMap: true
+      });
+      setShops(prev => prev.map(s => s._id === shopId ? { ...s, isCertified: true, isVisibleOnMap: true } : s));
+      toast.success("Shop certified successfully and visible on map");
     } catch (error) {
       console.error("Failed to certify shop:", error);
       toast.error("Failed to certify shop");
+    }
+  };
+
+  const toggleBlockShop = async (shopId: string, currentStatus: string) => {
+    const newStatus = currentStatus === 'blocked' ? 'active' : 'blocked';
+    try {
+      await api.patch(`/users/${shopId}`, { status: newStatus });
+      setShops(prev => prev.map(s => s._id === shopId ? { ...s, status: newStatus } : s));
+      toast.success(`Shop ${newStatus === 'blocked' ? 'blocked' : 'unblocked'} successfully`);
+    } catch (error) {
+      console.error("Failed to update shop status:", error);
+      toast.error("Failed to update shop status");
     }
   };
 
@@ -470,12 +485,26 @@ export function NetworkDashboard() {
                                 >
                                   <MessageCircle className="w-4 h-4 mr-2" />
                                   Live Chat
-                                  {recentActivities.some(n => 
-                                    n.type === 'CHAT_MESSAGE' && 
-                                    !n.isRead && 
+                                  {recentActivities.some(n =>
+                                    n.type === 'CHAT_MESSAGE' &&
+                                    !n.isRead &&
                                     n.triggeredBy === shop._id
                                   ) && (
-                                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse" />
+                                      <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse" />
+                                    )}
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  onClick={() => toggleBlockShop(shop._id, shop.status)}
+                                  className={`transition-all shadow-md font-bold ${shop.status === 'blocked'
+                                      ? "bg-green-500 hover:bg-green-600 text-white"
+                                      : "bg-red-500 hover:bg-red-600 text-white"
+                                    }`}
+                                >
+                                  {shop.status === 'blocked' ? (
+                                    <><CheckCircle className="w-4 h-4 mr-1" /> Unblock</>
+                                  ) : (
+                                    <><XCircle className="w-4 h-4 mr-1" /> Block</>
                                   )}
                                 </Button>
                               </div>

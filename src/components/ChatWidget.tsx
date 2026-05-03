@@ -20,10 +20,11 @@ interface ChatWidgetProps {
     userType?: string;
     userId?: string;
     onClose?: () => void;
+    isFullPage?: boolean;
 }
 
-export function ChatWidget({ userName, userEmail, userType = 'guest', userId, onClose }: ChatWidgetProps) {
-    const [isOpen, setIsOpen] = useState(true);
+export function ChatWidget({ userName, userEmail, userType = 'guest', userId, onClose, isFullPage = false }: ChatWidgetProps) {
+    const [isOpen, setIsOpen] = useState(!isFullPage);
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputMessage, setInputMessage] = useState('');
     const [roomId, setRoomId] = useState<string | null>(null);
@@ -47,7 +48,7 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
     useEffect(() => {
         let isMounted = true;
 
-        if (isOpen && !socketRef.current) {
+        if ((isOpen || isFullPage) && !socketRef.current) {
             connectToChat(() => isMounted);
         }
         return () => {
@@ -57,7 +58,7 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
                 socketRef.current = null;
             }
         };
-    }, [isOpen]);
+    }, [isOpen, isFullPage]);
 
     const connectToChat = async (getIsMounted: () => boolean) => {
         setIsConnecting(true);
@@ -73,11 +74,16 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
             if (!getIsMounted()) return;
 
             const room = response.data;
-            setRoomId(room._id);
+            const rid = room._id.toString();
+            setRoomId(rid);
 
             // Connect to Socket.IO
             const socketUrl = import.meta.env.VITE_SOCKET_URL || 'https://skygloss-backend-production-3b96.up.railway.app';
-            const newSocket = io(socketUrl, { transports: ['websocket'] });
+            const newSocket = io(socketUrl, { 
+                transports: ['websocket'],
+                reconnection: true,
+                reconnectionAttempts: 5
+            });
 
             if (!getIsMounted()) {
                 newSocket.disconnect();
@@ -91,18 +97,25 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
             if (triggeredById) {
                 try {
                     await api.patch(`/notifications/mark-chat-read/${triggeredById}`);
-                    // Trigger global unread count refresh
-                    // Note: We might need useAuth here, but ChatWidget is often rendered in places where we can pass it or just let the socket handle it.
-                    // Actually, refreshActivities is already called in the socket listeners.
                 } catch (err) {
                     console.error('Failed to mark chat as read:', err);
                 }
             }
 
+            const joinRoom = () => {
+                if (newSocket.connected) {
+                    console.log('Emitting join_room for', rid);
+                    newSocket.emit('join_room', { roomId: rid });
+                }
+            };
+
             newSocket.on('connect', () => {
                 console.log('Connected to chat server');
-                newSocket.emit('join_room', { roomId: room._id });
+                joinRoom();
             });
+
+            // If already connected (re-render), join immediately
+            if (newSocket.connected) joinRoom();
 
             newSocket.on('chat_history', (history: Message[]) => {
                 setMessages(history);
@@ -131,7 +144,7 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
         if (!inputMessage.trim() || !socketRef.current || !roomId) return;
 
         socketRef.current.emit('send_message', {
-            roomId,
+            roomId: roomId.toString(),
             senderName: userName,
             senderType: currentSenderType,
             message: inputMessage,
@@ -142,11 +155,18 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
 
     const handleTyping = () => {
         if (socketRef.current && roomId) {
-            socketRef.current.emit('typing', { roomId, userName });
+            socketRef.current.emit('typing', { roomId: roomId.toString(), userName });
         }
     };
 
-    if (!isOpen) {
+    const openInNewTab = () => {
+        const url = `/live-chat?userId=${userId || ''}&roomId=${roomId || ''}`;
+        window.open(url, '_blank');
+        setIsOpen(false);
+        onClose?.();
+    };
+
+    if (!isOpen && !isFullPage) {
         return (
             <button
                 onClick={() => setIsOpen(true)}
@@ -158,44 +178,55 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
     }
 
     return (
-        <Card style={{
-            position: 'fixed',
-            bottom: '6px',
-            right: '6px',
-            width: '300px',
-            height: '500px',
-            zIndex: 50,
-            borderRadius: '20px',
-            overflow: 'hidden',
-            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-        }} className="!fixed !bottom-6 !right-6 w-96 h-[500px] flex flex-col shadow-2xl z-50 rounded-2xl overflow-hidden">
+        <Card 
+            className={isFullPage ? "chat-widget-full-page flex flex-col h-full w-full border-0 shadow-none" : "!fixed !bottom-6 !right-6 w-96 h-[500px] flex flex-col shadow-2xl z-50 rounded-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300"}
+        >
             {/* Header */}
-            <div className="bg-[#0EA0DC] text-white p-4 flex items-center justify-between">
+            <div className={`bg-[#0EA0DC] text-white p-4 flex items-center justify-between ${isFullPage ? 'hidden' : ''}`}>
                 <div className="flex items-center gap-2">
                     <MessageCircle className="w-5 h-5" />
                     <span className="font-semibold">Live Chat</span>
                 </div>
-                <button
-                    onClick={() => {
-                        setIsOpen(false);
-                        onClose?.();
-                    }}
-                    className="hover:bg-white/20 rounded p-1"
-                >
-                    <X className="w-5 h-5" />
-                </button>
+                <div className="flex items-center gap-1">
+                    {!isFullPage && (
+                        <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="h-8 w-8 text-white hover:bg-white/20"
+                            onClick={openInNewTab}
+                            title="Open in new tab"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        </Button>
+                    )}
+                    <button
+                        onClick={() => {
+                            setIsOpen(false);
+                            onClose?.();
+                        }}
+                        className="hover:bg-white/20 rounded p-1"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-3">
+            <div className={`flex-1 overflow-y-auto p-4 bg-gray-50 space-y-3 ${isFullPage ? 'rounded-t-3xl' : ''}`}>
                 {isConnecting ? (
                     <div className="flex items-center justify-center h-full">
-                        <Loader2 className="w-6 h-6 animate-spin text-[#0EA0DC]" />
+                        <div className="flex flex-col items-center gap-3">
+                            <Loader2 className="w-8 h-8 animate-spin text-[#0EA0DC]" />
+                            <p className="text-sm text-gray-500 font-medium">Connecting to secure chat...</p>
+                        </div>
                     </div>
                 ) : messages.length === 0 ? (
-                    <div className="text-center text-gray-500 text-sm mt-8">
-                        <MessageCircle className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                        <p>Start a conversation!</p>
+                    <div className="text-center text-gray-500 text-sm mt-12">
+                        <div className="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <MessageCircle className="w-8 h-8 opacity-30 text-[#0EA0DC]" />
+                        </div>
+                        <p className="font-bold text-[#272727] text-base mb-1">No messages yet</p>
+                        <p className="text-gray-400">Ask a question to start the conversation.</p>
                     </div>
                 ) : (
                     messages.map((msg, idx) => (
@@ -203,13 +234,18 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
                             key={msg._id || idx}
                             className={`flex ${msg.senderType === currentSenderType ? 'justify-end' : 'justify-start'}`}
                         >
-                            <div
-                                className={`max-w-[75%] px-4 py-2 rounded-2xl ${msg.senderType === currentSenderType
-                                    ? 'bg-[#0EA0DC] text-white rounded-br-none'
-                                    : 'bg-white text-gray-800 rounded-bl-none shadow-sm'
-                                    }`}
-                            >
-                                <p className="text-sm">{msg.message}</p>
+                            <div className="flex flex-col gap-1 max-w-[80%] md:max-w-[70%]">
+                                <div
+                                    className={`px-4 py-2.5 rounded-2xl ${msg.senderType === currentSenderType
+                                        ? 'bg-gradient-to-br from-[#0EA0DC] to-[#0A85B8] text-white rounded-br-none shadow-md'
+                                        : 'bg-white text-gray-800 rounded-bl-none shadow-sm border border-gray-100'
+                                        }`}
+                                >
+                                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.message}</p>
+                                </div>
+                                <span className={`text-[10px] text-gray-400 ${msg.senderType === currentSenderType ? 'text-right mr-1' : 'ml-1'}`}>
+                                    {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now'}
+                                </span>
                             </div>
                         </div>
                     ))
@@ -217,11 +253,11 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
                 )}
                 {isTyping && (
                     <div className="flex justify-start">
-                        <div className="bg-white px-4 py-2 rounded-2xl rounded-bl-none shadow-sm">
-                            <div className="flex gap-1">
-                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></span>
-                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
-                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
+                        <div className="bg-white px-4 py-3 rounded-2xl rounded-bl-none shadow-sm border border-gray-100">
+                            <div className="flex gap-1.5">
+                                <span className="w-2 h-2 bg-[#0EA0DC]/40 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></span>
+                                <span className="w-2 h-2 bg-[#0EA0DC]/40 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
+                                <span className="w-2 h-2 bg-[#0EA0DC]/40 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
                             </div>
                         </div>
                     </div>
@@ -230,23 +266,29 @@ export function ChatWidget({ userName, userEmail, userType = 'guest', userId, on
             </div>
 
             {/* Input */}
-            <div className="p-4 bg-white border-t flex gap-2">
+            <div className={`p-4 bg-white border-t border-gray-100 flex gap-2 items-center ${isFullPage ? 'rounded-b-3xl' : ''}`}>
                 <Input
                     value={inputMessage}
                     onChange={(e) => {
                         setInputMessage(e.target.value);
                         handleTyping();
                     }}
-                    onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-                    placeholder="Type a message..."
-                    className="flex-1"
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            sendMessage();
+                        }
+                    }}
+                    placeholder="Type your message here..."
+                    className="flex-1 rounded-xl bg-gray-50 border-transparent focus:bg-white transition-all py-6"
                 />
                 <Button
                     onClick={sendMessage}
-                    disabled={!inputMessage.trim()}
-                    className="bg-[#0EA0DC] hover:bg-[#0EA0DC]/90"
+                    disabled={!inputMessage.trim() || isConnecting}
+                    size="icon"
+                    className="h-12 w-12 rounded-xl bg-[#0EA0DC] hover:bg-[#0EA0DC]/90 shadow-lg shadow-[#0EA0DC]/20 shrink-0"
                 >
-                    <Send className="w-4 h-4" />
+                    <Send className="w-5 h-5" />
                 </Button>
             </div>
         </Card>

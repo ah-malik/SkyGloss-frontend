@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { useAuth } from '../AuthContext';
 import { useLocation } from 'react-router';
+import api from '../api/axios';
 
 const REGIONAL_ISO_CODES = [
     // USA, Canada, Australia, New Zealand
@@ -35,18 +36,22 @@ const ALLOWED_COUNTRIES = [
 ];
 
 export function RegionalWelcomePopup() {
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
     const [isVisible, setIsVisible] = useState(false);
 
     const location = useLocation();
 
     useEffect(() => {
-        if (!user || !user._id || !user.country) return;
+        const userId = user?.id || user?._id;
+        if (!userId || !user?.country) return;
         
         // Only show the popup when the user is actually on the dashboard
         if (!location.pathname.includes('dashboard')) return;
 
-        // 1. Check if user country is in the allowed list
+        // 1. Check if user already saw it (from backend field)
+        if (user.hasSeenWelcomePopup === true) return;
+
+        // 2. Check if user country is in the allowed list
         const countryName = user.country;
         const isAllowed = ALLOWED_COUNTRIES.some(c =>
             countryName.toLowerCase().includes(c.toLowerCase()) ||
@@ -55,18 +60,27 @@ export function RegionalWelcomePopup() {
 
         if (!isAllowed) return;
 
-        // 2. Check login/show count from localStorage
-        const storageKey = `skygloss_welcome_popup_count_${user._id}`;
-        const showCount = parseInt(localStorage.getItem(storageKey) || "0");
-
-        if (showCount < 1) {
-            setIsVisible(true);
-            localStorage.setItem(storageKey, (showCount + 1).toString());
-        }
+        // Show popup
+        setIsVisible(true);
     }, [user, location.pathname]);
 
-    const handleClose = () => {
+    const handleClose = async () => {
         setIsVisible(false);
+        
+        const userId = user?.id || user?._id;
+        // Mark as seen in backend
+        if (userId) {
+            try {
+                // Update local state first for instant feedback
+                setUser({ ...user, hasSeenWelcomePopup: true });
+
+                await api.patch(`/users/me/profile`, {
+                    hasSeenWelcomePopup: true
+                });
+            } catch (err) {
+                console.error('Failed to update welcome popup status:', err);
+            }
+        }
     };
 
     if (!isVisible) return null;

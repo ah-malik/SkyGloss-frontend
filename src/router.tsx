@@ -14,6 +14,7 @@ import { SupportPage } from "./components/SupportPage";
 import { ThankYouPage } from "./components/ThankYouPage";
 import { ReceiptPage } from "./components/ReceiptPage";
 import { ResetPassword } from "./components/ResetPassword";
+import { LiveChatPage } from "./components/LiveChatPage";
 import { PublicRoute, ProtectedRoute } from "./components/AuthRoutes";
 import { UserProfile } from "./components/UserProfile";
 import { ActivitiesPage } from "./components/ActivitiesPage";
@@ -63,6 +64,7 @@ export const router = createBrowserRouter([
           { path: "thank-you/:type", element: <ThankYouPage /> },
           { path: "profile", element: <UserProfile /> },
           { path: "activities", element: <ActivitiesPage /> },
+          { path: "live-chat", element: <LiveChatPage /> },
         ]
       },
     ],

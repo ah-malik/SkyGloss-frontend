@@ -544,18 +544,20 @@ export function PartnerDashboard({
 
     // Auto-add Applicator Bottle if Fusion product
     if (product.name.toUpperCase().includes('FUSION')) {
-      const applicatorBottle = PartnerProducts.find(p => p.name.toUpperCase().includes('APPLICATOR BOTTLE'));
+      const applicatorBottle = mergedProducts.find(p => p.name.toUpperCase().includes('APPLICATOR BOTTLE'));
       if (applicatorBottle) {
-        const abSize = "1pc";
-        const abPrice = applicatorBottle.unitPrices[abSize];
+        const abSize = applicatorBottle.sizes && applicatorBottle.sizes.length > 0 ? applicatorBottle.sizes[0] : "1pc";
+        const abPrice = orderType === "unit"
+          ? (applicatorBottle.unitPrices ? applicatorBottle.unitPrices[abSize] : 0)
+          : (applicatorBottle.casePrices ? applicatorBottle.casePrices[abSize] : 0);
 
         const existingAB = updatedItems.find(
-          item => item.productId === applicatorBottle.id && item.size === abSize && item.orderType === "unit"
+          item => item.productId === applicatorBottle.id && item.size === abSize && item.orderType === orderType
         );
 
         if (existingAB) {
           updatedItems = updatedItems.map(item =>
-            item.productId === applicatorBottle.id && item.size === abSize && item.orderType === "unit"
+            item.productId === applicatorBottle.id && item.size === abSize && item.orderType === orderType
               ? { ...item, quantity: item.quantity + 1 }
               : item
           );
@@ -564,7 +566,7 @@ export function PartnerDashboard({
             productId: applicatorBottle.id,
             productName: applicatorBottle.name,
             size: abSize,
-            orderType: "unit",
+            orderType: orderType,
             quantity: 1,
             price: abPrice || 0,
             currency: 'USD'
@@ -1549,7 +1551,7 @@ export function PartnerDashboard({
                       Start your journey with SkyGloss. Learn about our mission, technology, and how we are redefining automotive paint restoration.
                     </p>
 
-                    <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                    <div className="hidden flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
                       <div className="flex items-center gap-2 text-[#999999] text-xs">
                         <Clock className="w-4 h-4" />
                         <span>30 mins</span>
@@ -1654,7 +1656,7 @@ export function PartnerDashboard({
                       Configure your professional shop profile, connect with Partners, and set up your inventory for success.
                     </p>
 
-                    <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                    <div className="hidden flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
                       <div className="flex items-center gap-2 text-[#999999] text-xs">
                         <Clock className="w-4 h-4" />
                         <span>15 mins</span>
@@ -1754,7 +1756,7 @@ export function PartnerDashboard({
                       Master the SkyGloss sales philosophy. Learn how to educate customers, align expectations, and articulate the true value of paint health.
                     </p>
 
-                    <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                    <div className="hidden flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
                       <div className="flex items-center gap-2 text-[#999999] text-xs">
                         <Clock className="w-4 h-4" />
                         <span>1h 30m</span>
@@ -1855,7 +1857,7 @@ export function PartnerDashboard({
                           Comprehensive masterclass covering professional application and maintenance for the {product.name} system.
                         </p>
 
-                        <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                        <div className="hidden flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl border border-gray-100">
                           <div className="flex items-center gap-2 text-[#999999] text-xs">
                             <Clock className="w-4 h-4" />
                             <span>{getCourseDuration(product.name)}</span>

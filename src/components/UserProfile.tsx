@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import { User, Lock, Globe, Shield, FileText, Phone, MapPin, Link as LinkIcon, Facebook, Instagram, Linkedin, Youtube, Loader2, Mail } from "lucide-react";
+import { User, Lock, Globe, Shield, FileText, Phone, MapPin, Link as LinkIcon, Facebook, Instagram, Linkedin, Youtube, Loader2, Mail, Camera, Trash2 } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -96,6 +96,8 @@ export function UserProfile() {
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
   const [isDownloadingCert, setIsDownloadingCert] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -185,6 +187,56 @@ export function UserProfile() {
     }
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Basic validation
+    if (!file.type.startsWith('image/')) {
+      toast.error("Please select an image file");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image size must be less than 5MB");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    setIsUploadingImage(true);
+    try {
+      const res = await api.post('/users/me/profile-image', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      setUser(res.data);
+      localStorage.setItem('user', JSON.stringify(res.data));
+      toast.success("Profile image updated");
+    } catch (error: any) {
+      console.error("Image upload error:", error);
+      toast.error("Failed to upload image");
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const handleDeleteImage = async () => {
+    if (!window.confirm("Are you sure you want to delete your profile image?")) return;
+
+    setIsUploadingImage(true);
+    try {
+      const res = await api.patch('/users/me/profile', { profileImage: "" });
+      setUser(res.data);
+      localStorage.setItem('user', JSON.stringify(res.data));
+      toast.success("Profile image deleted");
+    } catch (error: any) {
+      console.error("Image deletion error:", error);
+      toast.error("Failed to delete image");
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f8fafc] pt-24 pb-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -207,8 +259,46 @@ export function UserProfile() {
           >
             <Card className="p-4 rounded-2xl bg-white shadow-sm border-[#0EA0DC]/10">
               <div className="flex flex-col items-center py-4 text-center">
-                <div className="w-20 h-20 rounded-full bg-[#0EA0DC]/10 flex items-center justify-center mb-3">
-                  <User className="w-10 h-10 text-[#0EA0DC]" />
+                <div className="relative group mb-3">
+                  <div className="w-24 h-24 rounded-full bg-[#0EA0DC]/10 flex items-center justify-center overflow-hidden border-2 border-[#0EA0DC]/20 transition-all group-hover:border-[#0EA0DC]/50">
+                    {user?.profileImage ? (
+                      <img src={user.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      <User className="w-12 h-12 text-[#0EA0DC]" />
+                    )}
+                    
+                    {isUploadingImage && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <Loader2 className="w-8 h-8 text-white animate-spin" />
+                      </div>
+                    )}
+                  </div>
+                  
+                  <button 
+                    onClick={() => fileInputRef.current?.click()}
+                    className="absolute bottom-0 right-0 p-2 bg-[#0EA0DC] text-white rounded-full shadow-lg hover:bg-[#272727] transition-all"
+                    disabled={isUploadingImage}
+                  >
+                    <Camera className="w-4 h-4" />
+                  </button>
+                  
+                  {user?.profileImage && (
+                    <button 
+                      onClick={handleDeleteImage}
+                      className="absolute top-0 right-0 p-1.5 bg-red-500 text-white rounded-full shadow-md hover:bg-red-600 transition-all opacity-0 group-hover:opacity-100"
+                      disabled={isUploadingImage}
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                  
+                  <input 
+                    type="file" 
+                    ref={fileInputRef} 
+                    onChange={handleImageUpload} 
+                    className="hidden" 
+                    accept="image/*"
+                  />
                 </div>
                 <h3 className="font-bold text-slate-800 text-lg">{user?.firstName} {user?.lastName}</h3>
                 <span className="text-xs text-[#0EA0DC] font-bold uppercase bg-[#0EA0DC]/10 px-3 py-1 rounded-full mt-1 tracking-wider">
