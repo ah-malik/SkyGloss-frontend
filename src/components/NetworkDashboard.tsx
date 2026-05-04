@@ -139,8 +139,8 @@ export function NetworkDashboard() {
     }));
 
   const dynamicNetworkStats = [
-    { label: "Total Certified Shops in Your Territory", value: totalShopsCount.toString(), change: "+0%", trend: "up" },
-    { label: "Direct Referral Shops", value: totalShopsCount.toString(), change: "+0%", trend: "up" }
+    { label: "Total certified shops in your network:", value: totalShopsCount.toString(), change: "+0%", trend: "up" },
+    // { label: "Direct Referral Shops", value: totalShopsCount.toString(), change: "+0%", trend: "up" }
   ];
 
   if (activeToolView === "Partners") {
@@ -223,11 +223,11 @@ export function NetworkDashboard() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl text-[#272727] mb-2">
-                Global Network Dashboard
+                Partner  Dashboard
               </h1>
-              <p className="text-sm sm:text-base text-[#666666]">
+              {/* <p className="text-sm sm:text-base text-[#666666]">
                 Monitor your worldwide Partner network and performance
-              </p>
+              </p> */}
             </div>
             <Button className="bg-[#0EA0DC] text-white hover:shadow-[0_0_20px_rgba(14,160,220,0.4)] whitespace-nowrap">
               <Download className="w-4 h-4 mr-2" />
@@ -497,8 +497,8 @@ export function NetworkDashboard() {
                                   size="sm"
                                   onClick={() => toggleBlockShop(shop._id, shop.status)}
                                   className={`transition-all shadow-md font-bold ${shop.status === 'blocked'
-                                      ? "bg-green-500 hover:bg-green-600 text-white"
-                                      : "bg-red-500 hover:bg-red-600 text-white"
+                                    ? "bg-green-500 hover:bg-green-600 text-white"
+                                    : "bg-red-500 hover:bg-red-600 text-white"
                                     }`}
                                 >
                                   {shop.status === 'blocked' ? (

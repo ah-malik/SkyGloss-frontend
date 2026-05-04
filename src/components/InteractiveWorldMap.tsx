@@ -145,13 +145,13 @@ export function InteractiveWorldMap() {
       try {
         const res = await api.get("/users");
         const allUsers = res.data;
-        
+
         const mapLocations = allUsers
           .filter((user: any) => {
             const hasCoords = user.latitude != null && user.longitude != null;
             const isPartner = user.role === "master_partner" || user.role === "regional_partner" || user.role === "partner";
             const isShopOnMap = user.role === "certified_shop" && user.isVisibleOnMap === true;
-            
+
             return hasCoords && (isPartner || isShopOnMap);
           })
           .map((user: any) => ({
@@ -293,7 +293,7 @@ export function InteractiveWorldMap() {
         >
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-lg font-black text-[#272727] uppercase tracking-tight">
-              {viewMode === "global" ? "Direct Network" : "USA Hubs"}
+              {viewMode === "global" ? "Find a Shop" : "USA Hubs"}
             </h3>
             <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-none font-bold">
               {currentLocations.length} Online
