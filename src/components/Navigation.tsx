@@ -70,7 +70,7 @@ export function Navigation({
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-sm border-b border-[#0EA0DC]/20 shadow-sm"
+      className="z-[9999] fixed top-0 left-0 right-0 bg-white/98 backdrop-blur-sm border-b border-[#0EA0DC]/20 shadow-sm"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -158,9 +158,9 @@ export function Navigation({
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       className="relative text-[#666666] hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-all duration-200"
                     >
                       <User className="w-4 h-4 mr-2" />
@@ -172,16 +172,16 @@ export function Navigation({
                       User Menu
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator className="m-0 bg-[#0EA0DC]/10" />
-                    
-                    <DropdownMenuItem 
+
+                    <DropdownMenuItem
                       onSelect={() => navigate('/profile')}
                       className="px-4 py-2.5 cursor-pointer text-slate-600 hover:text-[#0EA0DC] hover:bg-[#0EA0DC]/5 transition-colors flex items-center text-sm"
                     >
                       <Settings className="w-4 h-4 mr-2.5 text-slate-400" />
                       Profile Settings
                     </DropdownMenuItem>
-                    
-                    <DropdownMenuItem 
+
+                    <DropdownMenuItem
                       onSelect={onLogout}
                       className="px-4 py-2.5 cursor-pointer text-slate-600 hover:text-red-600 hover:bg-red-50 transition-colors flex items-center text-sm"
                     >
