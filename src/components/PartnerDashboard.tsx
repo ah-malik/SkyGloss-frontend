@@ -546,7 +546,8 @@ export function PartnerDashboard({
     if (product.name.toUpperCase().includes('FUSION')) {
       const applicatorBottle = mergedProducts.find(p => p.name.toUpperCase().includes('APPLICATOR BOTTLE'));
       if (applicatorBottle) {
-        const abSize = applicatorBottle.sizes && applicatorBottle.sizes.length > 0 ? applicatorBottle.sizes[0] : "1pc";
+        const firstSize = applicatorBottle.sizes?.[0];
+        const abSize = typeof firstSize === 'object' ? firstSize.size : (firstSize || "1pc");
         const abPrice = orderType === "unit"
           ? (applicatorBottle.unitPrices ? applicatorBottle.unitPrices[abSize] : 0)
           : (applicatorBottle.casePrices ? applicatorBottle.casePrices[abSize] : 0);

@@ -105,10 +105,21 @@ export function NetworkDashboard() {
 
   const toggleBlockShop = async (shopId: string, currentStatus: string) => {
     const newStatus = currentStatus === 'blocked' ? 'active' : 'blocked';
+    const payload: any = { status: newStatus };
+    
+    // Hide from map if blocked
+    if (newStatus === 'blocked') {
+      payload.isVisibleOnMap = false;
+    }
+
     try {
-      await api.patch(`/users/${shopId}`, { status: newStatus });
-      setShops(prev => prev.map(s => s._id === shopId ? { ...s, status: newStatus } : s));
-      toast.success(`Shop ${newStatus === 'blocked' ? 'blocked' : 'unblocked'} successfully`);
+      await api.patch(`/users/${shopId}`, payload);
+      setShops(prev => prev.map(s => 
+        s._id === shopId 
+          ? { ...s, status: newStatus, isVisibleOnMap: newStatus === 'blocked' ? false : s.isVisibleOnMap } 
+          : s
+      ));
+      toast.success(`Shop ${newStatus === 'blocked' ? 'blocked and hidden from map' : 'unblocked'} successfully`);
     } catch (error) {
       console.error("Failed to update shop status:", error);
       toast.error("Failed to update shop status");
@@ -380,7 +391,7 @@ export function NetworkDashboard() {
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Assigned Partner</th>
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Registration Date</th>
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Status</th>
-                          <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Show on Map</th>
+                          {/* <th className="px-6 py-4 text-sm font-semibold text-[#272727]">Show on Map</th> */}
                           <th className="px-6 py-4 text-sm font-semibold text-[#272727] text-right">Actions</th>
                         </tr>
                       </thead>
@@ -450,7 +461,7 @@ export function NetworkDashboard() {
                                 </Badge>
                               )}
                             </td>
-                            <td className="px-6 py-4">
+                            {/* <td className="px-6 py-4">
                               <div className="flex items-center space-x-2">
                                 <Checkbox
                                   id={`visibility-${shop._id}`}
@@ -465,7 +476,7 @@ export function NetworkDashboard() {
                                   {shop.isVisibleOnMap ? "Visible" : "Hidden"}
                                 </label>
                               </div>
-                            </td>
+                            </td> */}
                             <td className="px-6 py-4 text-right">
                               <div className="flex items-center justify-end gap-2">
                                 {shop.isTrainingComplete && !shop.isCertified && (

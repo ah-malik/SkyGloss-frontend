@@ -42,6 +42,18 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [countries]);
 
+  const getCurrencySymbol = (currency?: string) => {
+    const symbols: Record<string, string> = {
+      'USD': '$',
+      'EUR': '€',
+      'GBP': '£',
+      'AUD': '$',
+      'CAD': '$',
+      'INR': '₹'
+    };
+    return symbols[currency?.toUpperCase() || ''] || (currency ? (currency + ' ') : '$');
+  };
+
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = subtotal; // Shipping is now $0
 
@@ -303,7 +315,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                         <h4 className="text-sm text-[#272727]">{item.name}</h4>
                         <p className="text-xs text-[#666666]">{item.size} × {item.quantity}</p>
                         <p className="text-sm text-[#0EA0DC] mt-1">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          {getCurrencySymbol(item.currency)}{(item.price * item.quantity).toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -315,7 +327,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm py-1">
                     <span className="text-[#666666]">Subtotal</span>
-                    <span className="text-[#272727] font-medium">${subtotal.toFixed(2)}</span>
+                    <span className="text-[#272727] font-medium">{getCurrencySymbol(cart[0]?.currency)}{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm py-1">
                     <span className="text-emerald-600 font-bold uppercase tracking-wider text-[10px]">Shipping</span>
@@ -324,7 +336,7 @@ export function CheckoutPage({ cart, onBack, onComplete }: CheckoutPageProps) {
                   <div className="h-px bg-gray-100 my-2" />
                   <div className="flex justify-between text-sm text-[#272727] font-medium pt-2">
                     <span>Total</span>
-                    <span className="text-[#0EA0DC] text-xl">${total.toFixed(2)}</span>
+                    <span className="text-[#0EA0DC] text-xl">{getCurrencySymbol(cart[0]?.currency)}{total.toFixed(2)}</span>
                   </div>
                 </div>
               </Card>

@@ -47,6 +47,18 @@ export function ReceiptPage() {
         }
     };
 
+    const getCurrencySymbol = (currency?: string) => {
+        const symbols: Record<string, string> = {
+            'USD': '$',
+            'EUR': '€',
+            'GBP': '£',
+            'AUD': '$',
+            'CAD': '$',
+            'INR': '₹'
+        };
+        return symbols[currency?.toUpperCase() || ''] || (currency ? (currency + ' ') : '$');
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -173,9 +185,9 @@ export function ReceiptPage() {
                                     </div>
                                     <div className="text-right">
                                         <p className="text-[#272727] text-sm font-medium">
-                                            ${(item.price * item.quantity).toFixed(2)}
+                                            {getCurrencySymbol(order.currency)}{(item.price * item.quantity).toFixed(2)}
                                         </p>
-                                        <p className="text-xs text-[#666666]">{item.quantity} x ${item.price.toFixed(2)}</p>
+                                        <p className="text-xs text-[#666666]">{item.quantity} x {getCurrencySymbol(order.currency)}{item.price.toFixed(2)}</p>
                                     </div>
                                 </div>
                             ))}
@@ -187,7 +199,7 @@ export function ReceiptPage() {
                         <div className="space-y-2 text-right">
                             <div className="flex justify-between text-sm py-1">
                                 <span className="text-[#666666]">Subtotal</span>
-                                <span className="text-[#272727] font-medium">${(order.totalAmount / 1.08).toFixed(2)}</span>
+                                <span className="text-[#272727] font-medium">{getCurrencySymbol(order.currency)}{(order.totalAmount / 1.08).toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-sm py-1">
                                 <span className="text-emerald-600 font-bold uppercase tracking-wider text-[10px]">Shipping</span>
@@ -195,11 +207,11 @@ export function ReceiptPage() {
                             </div>
                             <div className="flex justify-between text-sm py-1">
                                 <span className="text-[#666666]">Tax (8%)</span>
-                                <span className="text-[#272727] font-medium">${(order.totalAmount - (order.totalAmount / 1.08)).toFixed(2)}</span>
+                                <span className="text-[#272727] font-medium">{getCurrencySymbol(order.currency)}{(order.totalAmount - (order.totalAmount / 1.08)).toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between pt-4 border-t mt-4">
                                 <span className="text-lg font-bold text-[#272727]">Total</span>
-                                <span className="text-lg font-bold text-[#0EA0DC]">${order.totalAmount.toFixed(2)}</span>
+                                <span className="text-lg font-bold text-[#0EA0DC]">{getCurrencySymbol(order.currency)}{order.totalAmount.toFixed(2)}</span>
                             </div>
                         </div>
 

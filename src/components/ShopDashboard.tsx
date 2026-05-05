@@ -426,8 +426,10 @@ export function ShopDashboard({
     if (product.name.toUpperCase().includes('FUSION')) {
       const applicatorBottle = products.find(p => p.name.toUpperCase().includes('APPLICATOR BOTTLE'));
       if (applicatorBottle) {
-        const abSize = applicatorBottle.sizes[0]?.size;
-        const abPrice = applicatorBottle.sizes[0]?.price;
+        const firstSize = applicatorBottle.sizes?.[0];
+        const abSize = typeof firstSize === 'object' ? firstSize.size : (firstSize || "1pc");
+        const abPrice = typeof firstSize === 'object' ? firstSize.price : undefined;
+        // Use the actual price from the product data
         addToCartContext(applicatorBottle, abSize, 1, abPrice);
       }
     }
@@ -468,8 +470,10 @@ export function ShopDashboard({
     if (product.name.toUpperCase().includes('FUSION')) {
       const applicatorBottle = products.find(p => p.name.toUpperCase().includes('APPLICATOR BOTTLE'));
       if (applicatorBottle) {
-        const abSize = applicatorBottle.sizes[0]?.size;
-        const abPrice = applicatorBottle.sizes[0]?.price;
+        const firstSize = applicatorBottle.sizes?.[0];
+        const abSize = typeof firstSize === 'object' ? firstSize.size : (firstSize || "1pc");
+        const abPrice = typeof firstSize === 'object' ? firstSize.price : undefined;
+        // Use the actual price and match the quantity
         addToCartContext(applicatorBottle, abSize, quantity, abPrice);
       }
     }
