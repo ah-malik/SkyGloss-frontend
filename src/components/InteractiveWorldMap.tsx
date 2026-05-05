@@ -161,9 +161,10 @@ export function InteractiveWorldMap() {
           .filter((user: any) => {
             const hasCoords = user.latitude != null && user.longitude != null;
             const isPartner = ["master_partner", "regional_partner", "partner"].includes(user.role);
-            const isShopOnMap = user.role === "certified_shop" && user.isVisibleOnMap === true;
+            // Shop only shows on map if ACTIVE + CERTIFIED
+            const isActiveShop = user.role === "certified_shop" && user.isCertified === true && user.status === "active";
 
-            return hasCoords && (isPartner || isShopOnMap);
+            return hasCoords && (isPartner || isActiveShop);
           })
           .map((user: any) => ({
             name: user.companyName || user.shopName || `${user.firstName} ${user.lastName}`,

@@ -374,11 +374,12 @@ export function ShopRegistration() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm text-[#272727] mb-2 font-medium">Shop Name</label>
+                                        <label className="block text-sm text-[#272727] mb-2 font-medium">Shop Name <span className="text-xs text-[#999]">(max 30 characters)</span></label>
                                         <div className="relative">
                                             <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-                                            <Input type="text" name="shopName" value={formData.shopName} onChange={handleChange} placeholder="Shop Name" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
+                                            <Input type="text" name="shopName" value={formData.shopName} onChange={(e) => { if (e.target.value.length <= 30) handleChange(e); }} maxLength={30} placeholder="Shop Name" className="pl-10 h-11 bg-white border-[#0EA0DC]/30 focus:border-[#0EA0DC] rounded-lg transition-colors" disabled={isLoading} />
                                         </div>
+                                        <p className={`text-[11px] mt-1 text-right ${formData.shopName.length >= 30 ? 'text-red-500 font-medium' : 'text-[#999]'}`}>{formData.shopName.length}/30</p>
                                     </div>
 
                                     <div>
