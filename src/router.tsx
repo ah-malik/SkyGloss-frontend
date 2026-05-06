@@ -19,7 +19,18 @@ import { PublicRoute, ProtectedRoute } from "./components/AuthRoutes";
 import { UserProfile } from "./components/UserProfile";
 import { ActivitiesPage } from "./components/ActivitiesPage";
 
+import MapWidget from "./components/MapWidget";
+
 export const router = createBrowserRouter([
+  // Standalone map widget (no layout, no auth — for embedding)
+  {
+    path: "/map-widget",
+    element: (
+      <div style={{ width: "100vw", height: "100vh", margin: 0, padding: 0 }}>
+        <MapWidget />
+      </div>
+    ),
+  },
   {
     path: "/",
     element: <App />,
@@ -70,3 +81,4 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
