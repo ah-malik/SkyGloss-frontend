@@ -127,15 +127,7 @@ const headquarters: Location = {
   address: "2 E Camelback Rd, Phoenix, AZ 85012, USA",
 };
 
-function ChangeView({ center, zoom }: { center: [number, number]; zoom: number }) {
-  const map = useMap();
-  useEffect(() => {
-    if (center && !isNaN(center[0]) && !isNaN(center[1])) {
-      map.flyTo(center, zoom, { duration: 1.5 });
-    }
-  }, [center, zoom, map]);
-  return null;
-}
+
 
 
 const API_BASE = (import.meta.env.VITE_API_URL || "https://skygloss-backend-production-3b96.up.railway.app").replace(/\/$/, "");
@@ -162,10 +154,11 @@ export default function MapWidget() {
         const responseData = await res.json();
 
         // Backend wraps response in { data, statusCode, message }
-        const rawLocations = responseData.data || [];
+        const rawLocations = Array.isArray(responseData.data) ? responseData.data : [];
 
         // Transform public data and filter out invalid coordinates
         const enrichedData = rawLocations
+
           .filter((user: any) =>
             user.lat != null &&
             user.lng != null &&
@@ -299,6 +292,7 @@ export default function MapWidget() {
                 </div>
               )}
               <MapContainer 
+                key={`${mapCenter[0]}-${mapCenter[1]}-${mapZoom}`}
                 center={mapCenter && !isNaN(mapCenter[0]) ? mapCenter : [20, 0]} 
                 zoom={mapZoom || 2} 
                 scrollWheelZoom={true} 
@@ -306,8 +300,8 @@ export default function MapWidget() {
                 zoomControl={false} 
                 style={{ zIndex: 9 }}
               >
-                <ChangeView center={mapCenter} zoom={mapZoom} />
                 <TileLayer
+
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
                   url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 />
