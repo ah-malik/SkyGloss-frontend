@@ -154,10 +154,13 @@ export default function MapWidget() {
     const fetchLocations = async () => {
       try {
         const res = await fetch(`${API_BASE}/public/map-locations`);
-        const data = await res.json();
+        const responseData = await res.json();
+        
+        // Backend wraps response in { data, statusCode, message }
+        const rawLocations = responseData.data || [];
         
         // Transform public data to include the random stats used in InteractiveWorldMap
-        const enrichedData = data.map((user: any) => ({
+        const enrichedData = rawLocations.map((user: any) => ({
           ...user,
           stats: {
             shops: user.shops || Math.floor(Math.random() * 20) + 5,
@@ -175,6 +178,7 @@ export default function MapWidget() {
     };
     fetchLocations();
   }, []);
+
 
   const currentLocations = useMemo(() => {
     return locations.filter((loc) => {
