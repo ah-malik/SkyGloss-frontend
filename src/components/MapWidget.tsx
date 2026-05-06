@@ -135,7 +135,7 @@ function ChangeView({ center, zoom }: { center: [number, number]; zoom: number }
   return null;
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || "https://skygloss-backend-production-3b96.up.railway.app";
+const API_BASE = (import.meta.env.VITE_API_URL || "https://skygloss-backend-production-3b96.up.railway.app").replace(/\/$/, "");
 
 export default function MapWidget() {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
@@ -153,12 +153,14 @@ export default function MapWidget() {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
+        console.log("Fetching map data from:", `${API_BASE}/public/map-locations`);
         const res = await fetch(`${API_BASE}/public/map-locations`);
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const responseData = await res.json();
-        
+
         // Backend wraps response in { data, statusCode, message }
         const rawLocations = responseData.data || [];
-        
+
         // Transform public data to include the random stats used in InteractiveWorldMap
         const enrichedData = rawLocations.map((user: any) => ({
           ...user,
@@ -168,7 +170,7 @@ export default function MapWidget() {
             growth: (Math.random() * 15 + 5).toFixed(1)
           }
         }));
-        
+
         setLocations([headquarters, ...enrichedData]);
       } catch (err) {
         console.error("Failed to fetch map locations:", err);
@@ -222,7 +224,7 @@ export default function MapWidget() {
             className={`min-h-12 px-5 sm:px-8 rounded-xl transition-all duration-200 border-none ${viewMode === "global"
               ? "bg-[#0EA0DC] text-white shadow-lg shadow-[#0EA0DC]/20"
               : "bg-[#272727] text-white hover:bg-[#272727]/90"
-            }`}
+              }`}
           >
             <Globe className="w-4 h-4 mr-2" />
             <span className="font-semibold">Global View</span>
@@ -262,7 +264,7 @@ export default function MapWidget() {
                         className={`w-full px-4 py-3 rounded-xl text-sm font-semibold flex items-center justify-between transition-all ${countryFilter === country
                           ? "bg-[#0EA0DC] text-white"
                           : "text-gray-300 hover:bg-white/5 hover:text-white"
-                        }`}
+                          }`}
                       >
                         <span>{country}</span>
                         {countryFilter === country && <div className="w-2 h-2 rounded-full bg-white shadow-lg" />}
@@ -277,7 +279,9 @@ export default function MapWidget() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Map Section */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="lg:col-span-2">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="
+            hidden md:block
+          lg:col-span-2">
             <Card className="p-0 rounded-2xl relative overflow-hidden bg-white border-2 border-[#0EA0DC]/10 shadow-xl" style={{ height: "600px" }}>
               {loading && (
                 <div className="absolute inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center z-[1000]">
