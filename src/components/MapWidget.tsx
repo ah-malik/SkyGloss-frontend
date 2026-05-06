@@ -166,10 +166,10 @@ export default function MapWidget() {
 
         // Transform public data and filter out invalid coordinates
         const enrichedData = rawLocations
-          .filter((user: any) => 
-            user.lat != null && 
-            user.lng != null && 
-            !isNaN(Number(user.lat)) && 
+          .filter((user: any) =>
+            user.lat != null &&
+            user.lng != null &&
+            !isNaN(Number(user.lat)) &&
             !isNaN(Number(user.lng))
           )
           .map((user: any) => ({
@@ -298,26 +298,40 @@ export default function MapWidget() {
                   <Loader2 className="w-10 h-10 text-[#0EA0DC] animate-spin" />
                 </div>
               )}
-              <MapContainer center={mapCenter} zoom={mapZoom} scrollWheelZoom={true} className="w-full h-full" zoomControl={false} style={{ zIndex: 9 }}>
+              <MapContainer 
+                center={mapCenter && !isNaN(mapCenter[0]) ? mapCenter : [20, 0]} 
+                zoom={mapZoom || 2} 
+                scrollWheelZoom={true} 
+                className="w-full h-full" 
+                zoomControl={false} 
+                style={{ zIndex: 9 }}
+              >
                 <ChangeView center={mapCenter} zoom={mapZoom} />
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
                   url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 />
-                {groupedLocations.map((group, idx) => (
-                  <Marker
-                    key={`${group.country}-${idx}`}
-                    position={[group.center.lat, group.center.lng]}
-                    icon={group.locations.length > 1 ? createClusterIcon(group.locations.length) : createCustomIcon(group.center.type)}
-                    eventHandlers={{
-                      click: () => {
-                        if (group.locations.length > 1) setSelectedCountry(group);
-                        else setSelectedLocation(group.locations[0]);
-                      },
-                    }}
-                  />
-                ))}
+                {groupedLocations.map((group, idx) => {
+                  const lat = Number(group.center.lat);
+                  const lng = Number(group.center.lng);
+                  if (isNaN(lat) || isNaN(lng)) return null;
+                  
+                  return (
+                    <Marker
+                      key={`${group.country}-${idx}`}
+                      position={[lat, lng]}
+                      icon={group.locations.length > 1 ? createClusterIcon(group.locations.length) : createCustomIcon(group.center.type)}
+                      eventHandlers={{
+                        click: () => {
+                          if (group.locations.length > 1) setSelectedCountry(group);
+                          else setSelectedLocation(group.locations[0]);
+                        },
+                      }}
+                    />
+                  );
+                })}
               </MapContainer>
+
               <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md rounded-xl p-3 shadow-lg z-[1000] border border-gray-100 hidden sm:block">
                 <p className="text-xs text-[#666666] font-bold flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-[#0EA0DC] animate-pulse"></span>
