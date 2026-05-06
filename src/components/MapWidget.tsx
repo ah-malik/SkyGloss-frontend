@@ -3,6 +3,10 @@ import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import { motion, AnimatePresence } from "framer-motion";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { Card } from "./ui/card";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
+import { Globe, MapPin, Building2, TrendingUp, Users, X, Loader2, Search } from "lucide-react";
 
 // Custom marker icons
 const createCustomIcon = (type: "headquarters" | "Partner" | "shop") => {
@@ -95,6 +99,11 @@ interface Location {
     tiktok?: string;
     website?: string;
   };
+  stats: {
+    shops: number;
+    revenue: string;
+    growth: string;
+  };
 }
 
 interface GroupedLocation {
@@ -104,12 +113,17 @@ interface GroupedLocation {
 }
 
 const headquarters: Location = {
-  name: "SkyGloss HQ",
+  name: "Phoenix HQ",
   country: "USA",
   city: "Phoenix",
   lat: 33.4484,
   lng: -112.074,
   type: "headquarters",
+  stats: {
+    shops: 45,
+    revenue: "$2.4M",
+    growth: "24",
+  },
   address: "2 E Camelback Rd, Phoenix, AZ 85012, USA",
 };
 
@@ -124,20 +138,35 @@ function ChangeView({ center, zoom }: { center: [number, number]; zoom: number }
 const API_BASE = import.meta.env.VITE_API_URL || "https://skygloss-backend-production-3b96.up.railway.app";
 
 export default function MapWidget() {
-  const [locations, setLocations] = useState<Location[]>([headquarters]);
-  const [loading, setLoading] = useState(true);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<GroupedLocation | null>(null);
+  const [viewMode, setViewMode] = useState<"global" | "regional">("global");
+  const [countryFilter, setCountryFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [locations, setLocations] = useState<Location[]>([headquarters]);
+  const [loading, setLoading] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const mapCenter: [number, number] = [20, 0];
-  const mapZoom = 2;
+  const mapCenter: [number, number] = viewMode === "global" ? [20, 0] : [37.0902, -95.7129];
+  const mapZoom = viewMode === "global" ? 2 : 4;
 
   useEffect(() => {
     const fetchLocations = async () => {
       try {
         const res = await fetch(`${API_BASE}/public/map-locations`);
         const data = await res.json();
-        setLocations([headquarters, ...data]);
+        
+        // Transform public data to include the random stats used in InteractiveWorldMap
+        const enrichedData = data.map((user: any) => ({
+          ...user,
+          stats: {
+            shops: user.shops || Math.floor(Math.random() * 20) + 5,
+            revenue: user.revenue || `$${(Math.random() * 500 + 100).toFixed(1)}k`,
+            growth: (Math.random() * 15 + 5).toFixed(1)
+          }
+        }));
+        
+        setLocations([headquarters, ...enrichedData]);
       } catch (err) {
         console.error("Failed to fetch map locations:", err);
       } finally {
@@ -147,9 +176,28 @@ export default function MapWidget() {
     fetchLocations();
   }, []);
 
+  const currentLocations = useMemo(() => {
+    return locations.filter((loc) => {
+      const matchesView = viewMode === "global" || loc.country === "USA";
+      const matchesCountry = countryFilter === "All" || loc.country === countryFilter;
+      const matchesSearch =
+        !searchQuery ||
+        loc.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (loc.city && loc.city.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        loc.name.toLowerCase().includes(searchQuery.toLowerCase());
+
+      return matchesView && matchesCountry && matchesSearch;
+    });
+  }, [locations, viewMode, countryFilter, searchQuery]);
+
+  const availableCountries = useMemo(() => {
+    const countries = new Set(locations.map((loc) => loc.country));
+    return ["All", ...Array.from(countries)].sort();
+  }, [locations]);
+
   const groupedLocations = useMemo(() => {
     const groups: Record<string, Location[]> = {};
-    locations.forEach((loc) => {
+    currentLocations.forEach((loc) => {
       if (!groups[loc.country]) groups[loc.country] = [];
       groups[loc.country].push(loc);
     });
@@ -158,442 +206,240 @@ export default function MapWidget() {
       locations: locs,
       center: locs[0],
     }));
-  }, [locations]);
+  }, [currentLocations]);
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        minHeight: "400px",
-        position: "relative",
-        fontFamily: "'Inter', 'Segoe UI', sans-serif",
-        background: "#fff",
-        borderRadius: "16px",
-        overflow: "hidden",
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          position: "absolute",
-          top: 16,
-          left: 16,
-          zIndex: 1000,
-          background: "rgba(255,255,255,0.95)",
-          backdropFilter: "blur(12px)",
-          borderRadius: 14,
-          padding: "12px 18px",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-        }}
-      >
-        <div
-          style={{
-            width: 36,
-            height: 36,
-            borderRadius: 10,
-            background: "linear-gradient(135deg, #0EA0DC, #0B7DAF)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="white"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+    <div className="w-full h-screen p-4 sm:p-8 bg-white overflow-y-auto">
+      <div className="w-full space-y-8 max-w-[1600px] mx-auto">
+        {/* View Mode Toggle */}
+        <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4">
+          <Button
+            onClick={() => { setViewMode("global"); setCountryFilter("All"); }}
+            className={`min-h-12 px-5 sm:px-8 rounded-xl transition-all duration-200 border-none ${viewMode === "global"
+              ? "bg-[#0EA0DC] text-white shadow-lg shadow-[#0EA0DC]/20"
+              : "bg-[#272727] text-white hover:bg-[#272727]/90"
+            }`}
           >
-            <circle cx="12" cy="12" r="10" />
-            <path d="M2 12h20" />
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-          </svg>
+            <Globe className="w-4 h-4 mr-2" />
+            <span className="font-semibold">Global View</span>
+          </Button>
+
+          {/* Country Dropdown */}
+          <div className="relative min-w-[200px] z-[1001]">
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="w-full min-h-12 px-5 bg-[#272727] text-white rounded-xl text-sm font-bold flex items-center justify-between hover:bg-[#272727]/90 transition-all border border-white/5 shadow-lg group"
+            >
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-[#0EA0DC]" />
+                <span>{countryFilter === "All" ? "Select Country" : countryFilter}</span>
+              </div>
+              <motion.div animate={{ rotate: isDropdownOpen ? 180 : 0 }}>
+                <X className={`w-4 h-4 transition-colors ${isDropdownOpen ? "text-[#0EA0DC]" : "text-gray-400 rotate-45"}`} />
+              </motion.div>
+            </button>
+
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 5 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="absolute top-full left-0 w-full mt-2 bg-[#272727] border border-white/10 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl"
+                >
+                  <div className="max-h-[300px] overflow-y-auto custom-scrollbar p-2">
+                    {availableCountries.map((country) => (
+                      <button
+                        key={country}
+                        onClick={() => {
+                          setCountryFilter(country);
+                          setIsDropdownOpen(false);
+                        }}
+                        className={`w-full px-4 py-3 rounded-xl text-sm font-semibold flex items-center justify-between transition-all ${countryFilter === country
+                          ? "bg-[#0EA0DC] text-white"
+                          : "text-gray-300 hover:bg-white/5 hover:text-white"
+                        }`}
+                      >
+                        <span>{country}</span>
+                        {countryFilter === country && <div className="w-2 h-2 rounded-full bg-white shadow-lg" />}
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
-        <div>
-          <div style={{ fontWeight: 800, fontSize: 14, color: "#272727", lineHeight: 1.2 }}>
-            SkyGloss Network
-          </div>
-          <div style={{ fontSize: 11, color: "#999", fontWeight: 600 }}>
-            {locations.length} locations worldwide
-          </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Map Section */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="lg:col-span-2">
+            <Card className="p-0 rounded-2xl relative overflow-hidden bg-white border-2 border-[#0EA0DC]/10 shadow-xl" style={{ height: "600px" }}>
+              {loading && (
+                <div className="absolute inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center z-[1000]">
+                  <Loader2 className="w-10 h-10 text-[#0EA0DC] animate-spin" />
+                </div>
+              )}
+              <MapContainer center={mapCenter} zoom={mapZoom} scrollWheelZoom={true} className="w-full h-full" zoomControl={false} style={{ zIndex: 9 }}>
+                <ChangeView center={mapCenter} zoom={mapZoom} />
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                  url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+                />
+                {groupedLocations.map((group, idx) => (
+                  <Marker
+                    key={`${group.country}-${idx}`}
+                    position={[group.center.lat, group.center.lng]}
+                    icon={group.locations.length > 1 ? createClusterIcon(group.locations.length) : createCustomIcon(group.center.type)}
+                    eventHandlers={{
+                      click: () => {
+                        if (group.locations.length > 1) setSelectedCountry(group);
+                        else setSelectedLocation(group.locations[0]);
+                      },
+                    }}
+                  />
+                ))}
+              </MapContainer>
+              <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md rounded-xl p-3 shadow-lg z-[1000] border border-gray-100 hidden sm:block">
+                <p className="text-xs text-[#666666] font-bold flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#0EA0DC] animate-pulse"></span>
+                  Global Network Live
+                </p>
+              </div>
+            </Card>
+          </motion.div>
+
+          {/* Feed Section */}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-black text-[#272727] uppercase">Network Locations</h3>
+              <Badge className="bg-[#0EA0DC]/10 text-[#0EA0DC] border-none font-bold">
+                {currentLocations.length} Online
+              </Badge>
+            </div>
+
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <input
+                type="text"
+                placeholder="Search country or city..."
+                className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:ring-2 focus:ring-[#0EA0DC]/20 outline-none transition-all"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            <div className="max-h-[500px] overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+              {currentLocations.map((location, index) => (
+                <Card
+                  key={`${location.name}-${index}`}
+                  onClick={() => setSelectedLocation(location)}
+                  className={`p-4 rounded-xl cursor-pointer transition-all border-2 ${selectedLocation?.name === location.name ? "border-[#0EA0DC] bg-[#0EA0DC]/5" : "border-transparent bg-white hover:shadow-md"}`}
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${location.type === "headquarters" ? "bg-yellow-100" : location.type === "shop" ? "bg-blue-50" : "bg-purple-50"}`}>
+                        {location.type === "headquarters" ? <Building2 className="w-5 h-5 text-yellow-600" /> : <MapPin className={`w-5 h-5 ${location.type === "shop" ? "text-blue-600" : "text-purple-600"}`} />}
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-[#272727]">{location.name}</h4>
+                        <p className="text-[10px] text-gray-500 font-medium">{location.country}</p>
+                      </div>
+                    </div>
+                    <Badge className={location.type === "headquarters" ? "bg-yellow-100 text-yellow-700" : location.type === "shop" ? "bg-blue-100 text-blue-700" : "bg-purple-100 text-purple-700"}>
+                      {location.type.toUpperCase()}
+                    </Badge>
+                  </div>
+                  <div className="flex justify-between items-center text-[10px] bg-gray-50 p-2 rounded-lg">
+                    <div><span className="text-gray-400 font-bold">SHOPS: </span><span className="font-black">{location.stats.shops}</span></div>
+                    <div><span className="text-gray-400 font-bold">REVENUE: </span><span className="font-black">{location.stats.revenue}</span></div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
 
-      {/* Legend */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 16,
-          left: 16,
-          zIndex: 1000,
-          background: "rgba(255,255,255,0.95)",
-          backdropFilter: "blur(12px)",
-          borderRadius: 12,
-          padding: "10px 16px",
-          boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
-          display: "flex",
-          gap: 16,
-          fontSize: 11,
-          fontWeight: 700,
-        }}
-      >
-        <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#FFD700", display: "inline-block" }} />
-          HQ
-        </span>
-        <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#A855F7", display: "inline-block" }} />
-          Partners
-        </span>
-        <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#3B82F6", display: "inline-block" }} />
-          Shops
-        </span>
-      </div>
-
-      {/* Loading */}
-      {loading && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1001,
-            background: "rgba(255,255,255,0.6)",
-          }}
-        >
-          <div
-            style={{
-              width: 36,
-              height: 36,
-              border: "3px solid #e5e7eb",
-              borderTopColor: "#0EA0DC",
-              borderRadius: "50%",
-              animation: "spin 0.8s linear infinite",
-            }}
-          />
-          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-        </div>
-      )}
-
-      {/* Map */}
-      <MapContainer
-        center={mapCenter}
-        zoom={mapZoom}
-        scrollWheelZoom={true}
-        className="w-full h-full"
-        zoomControl={false}
-        style={{ width: "100%", height: "100%", minHeight: "400px", zIndex: 9 }}
-      >
-        <ChangeView center={mapCenter} zoom={mapZoom} />
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        />
-
-        {groupedLocations.map((group: GroupedLocation, idx: number) => (
-          <Marker
-            key={`${group.country}-${idx}`}
-            position={[group.center.lat, group.center.lng]}
-            icon={
-              group.locations.length > 1
-                ? createClusterIcon(group.locations.length)
-                : createCustomIcon(group.center.type)
-            }
-            eventHandlers={{
-              click: () => {
-                if (group.locations.length > 1) {
-                  setSelectedCountry(group);
-                } else {
-                  setSelectedLocation(group.locations[0]);
-                }
-              },
-            }}
-          />
-        ))}
-      </MapContainer>
-
-      {/* Country Group Modal */}
+      {/* Multi-Location Modal */}
       <AnimatePresence>
         {selectedCountry && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "rgba(0,0,0,0.5)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 9999,
-              padding: 16,
-            }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 z-[9999]"
             onClick={() => setSelectedCountry(null)}
           >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                background: "#fff",
-                borderRadius: 20,
-                padding: 24,
-                width: "100%",
-                maxWidth: 420,
-                maxHeight: "80%",
-                overflow: "auto",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                <div>
-                  <h3 style={{ margin: 0, fontSize: 18, fontWeight: 900, color: "#272727" }}>
-                    {selectedCountry.country}
-                  </h3>
-                  <p style={{ margin: 0, fontSize: 12, color: "#999", fontWeight: 600 }}>
-                    {selectedCountry.locations.length} locations
-                  </p>
-                </div>
-                <button
-                  onClick={() => setSelectedCountry(null)}
-                  style={{
-                    width: 32,
-                    height: 32,
-                    border: "none",
-                    background: "#f1f5f9",
-                    borderRadius: "50%",
-                    cursor: "pointer",
-                    fontSize: 16,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  ✕
-                </button>
+            <Card className="w-full max-w-xl p-6 rounded-[2.5rem] bg-white relative" onClick={e => e.stopPropagation()}>
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-black">{selectedCountry.country} Locations</h3>
+                <button onClick={() => setSelectedCountry(null)} className="p-2 bg-gray-100 rounded-full"><X className="w-5 h-5" /></button>
               </div>
-              {selectedCountry.locations.map((loc, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => {
-                    setSelectedLocation(loc);
-                    setSelectedCountry(null);
-                  }}
-                  style={{
-                    padding: 12,
-                    background: "#f8fafc",
-                    borderRadius: 12,
-                    marginBottom: 8,
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    border: "1px solid #e2e8f0",
-                    transition: "all 0.2s",
-                  }}
-                  onMouseOver={(e) => ((e.currentTarget.style.background = "#eff6ff"), (e.currentTarget.style.borderColor = "#93c5fd"))}
-                  onMouseOut={(e) => ((e.currentTarget.style.background = "#f8fafc"), (e.currentTarget.style.borderColor = "#e2e8f0"))}
-                >
-                  <div
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 10,
-                      background: loc.type === "headquarters" ? "#fef3c7" : loc.type === "shop" ? "#dbeafe" : "#f3e8ff",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: 16,
-                      flexShrink: 0,
-                    }}
-                  >
-                    {loc.type === "headquarters" ? "🏢" : loc.type === "shop" ? "📍" : "💜"}
-                  </div>
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ fontWeight: 700, fontSize: 13, color: "#272727", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                      {loc.name}
+              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                {selectedCountry.locations.map((loc, idx) => (
+                  <div key={idx} onClick={() => { setSelectedLocation(loc); setSelectedCountry(null); }} className="p-4 bg-gray-50 hover:bg-[#0EA0DC]/5 rounded-2xl cursor-pointer flex items-center justify-between group">
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${loc.type === "headquarters" ? "bg-yellow-100" : "bg-blue-100"}`}>
+                        {loc.type === "headquarters" ? <Building2 className="w-6 h-6 text-yellow-600" /> : <MapPin className="w-6 h-6 text-blue-600" />}
+                      </div>
+                      <div><p className="font-bold">{loc.name}</p><p className="text-xs text-gray-500">{loc.city}</p></div>
                     </div>
-                    <div style={{ fontSize: 11, color: "#94a3b8" }}>
-                      {loc.type === "shop" ? "Certified Shop" : "Partner"}
-                    </div>
+                    <Badge className="bg-white text-gray-400">View</Badge>
                   </div>
-                </div>
-              ))}
-            </motion.div>
+                ))}
+              </div>
+            </Card>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Location Detail Modal */}
+      {/* Detail Modal */}
       <AnimatePresence>
         {selectedLocation && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "rgba(0,0,0,0.5)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 9999,
-              padding: 16,
-            }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 z-[9999]"
             onClick={() => setSelectedLocation(null)}
           >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                background: "#fff",
-                borderRadius: 24,
-                padding: 28,
-                width: "100%",
-                maxWidth: 440,
-                boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
-                position: "relative",
-              }}
-            >
-              <button
-                onClick={() => setSelectedLocation(null)}
-                style={{
-                  position: "absolute",
-                  top: 16,
-                  right: 16,
-                  width: 32,
-                  height: 32,
-                  border: "none",
-                  background: "#f1f5f9",
-                  borderRadius: "50%",
-                  cursor: "pointer",
-                  fontSize: 16,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                ✕
-              </button>
+            <motion.div initial={{ scale: 0.9, y: 30 }} animate={{ scale: 1, y: 0 }} className="w-full max-w-2xl" onClick={e => e.stopPropagation()}>
+              <Card className="p-10 rounded-[2.5rem] bg-white relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#0EA0DC]/5 rounded-bl-[5rem] -mr-10 -mt-10"></div>
+                <button onClick={() => setSelectedLocation(null)} className="absolute top-6 right-6 p-2 bg-gray-100 rounded-full z-10"><X className="w-5 h-5" /></button>
 
-              <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
-                <div
-                  style={{
-                    width: 52,
-                    height: 52,
-                    borderRadius: 16,
-                    background:
-                      selectedLocation.type === "headquarters"
-                        ? "linear-gradient(135deg, #FBBF24, #F59E0B)"
-                        : selectedLocation.type === "shop"
-                        ? "linear-gradient(135deg, #60A5FA, #2563EB)"
-                        : "linear-gradient(135deg, #C084FC, #9333EA)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: 22,
-                    boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
-                  }}
-                >
-                  {selectedLocation.type === "headquarters" ? "🏢" : selectedLocation.type === "shop" ? "📍" : "💜"}
-                </div>
-                <div>
-                  <h2
-                    style={{
-                      margin: 0,
-                      fontSize: 20,
-                      fontWeight: 900,
-                      color: "#272727",
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    {selectedLocation.name}
-                  </h2>
-                  <p style={{ margin: "4px 0 0", fontSize: 13, color: "#94a3b8", fontWeight: 600 }}>
-                    🌍 {selectedLocation.country} ·{" "}
-                    {selectedLocation.type === "shop" ? "Certified Shop" : "Partner"}
-                  </p>
-                </div>
-              </div>
-
-              {/* Social Media */}
-              {selectedLocation.socials && Object.values(selectedLocation.socials).some((v) => v) && (
-                <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
-                  {selectedLocation.socials.website && (
-                    <a href={selectedLocation.socials.website} target="_blank" rel="noopener noreferrer" style={socialBtnStyle}>
-                      🌐
-                    </a>
-                  )}
-                  {selectedLocation.socials.facebook && (
-                    <a href={selectedLocation.socials.facebook} target="_blank" rel="noopener noreferrer" style={socialBtnStyle}>
-                      <svg width="16" height="16" fill="#1877F2" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
-                    </a>
-                  )}
-                  {selectedLocation.socials.instagram && (
-                    <a href={selectedLocation.socials.instagram} target="_blank" rel="noopener noreferrer" style={socialBtnStyle}>
-                      <svg width="16" height="16" fill="#E4405F" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>
-                    </a>
-                  )}
-                  {selectedLocation.socials.youtube && (
-                    <a href={selectedLocation.socials.youtube} target="_blank" rel="noopener noreferrer" style={socialBtnStyle}>
-                      <svg width="16" height="16" fill="#FF0000" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg>
-                    </a>
-                  )}
-                  {selectedLocation.socials.tiktok && (
-                    <a href={selectedLocation.socials.tiktok} target="_blank" rel="noopener noreferrer" style={{ ...socialBtnStyle, background: "#000" }}>
-                      <svg width="16" height="16" fill="#fff" viewBox="0 0 24 24"><path d="M21,7V9a1,1,0,0,1-1,1,8,8,0,0,1-4-1.08V15.5A6.5,6.5,0,1,1,6.53,9.72a1,1,0,0,1,1.47.9v2.52a.92.92,0,0,1-.28.62,2.49,2.49,0,0,0,2,4.23A2.61,2.61,0,0,0,12,15.35V3a1,1,0,0,1,1-1h2.11a1,1,0,0,1,1,.83A4,4,0,0,0,20,6,1,1,0,0,1,21,7Z" /></svg>
-                    </a>
-                  )}
-                </div>
-              )}
-
-              {selectedLocation.address && (
-                <div
-                  style={{
-                    padding: "12px 16px",
-                    background: "#f8fafc",
-                    borderRadius: 12,
-                    border: "1px solid #e2e8f0",
-                    marginBottom: 16,
-                  }}
-                >
-                  <div style={{ fontSize: 10, fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", marginBottom: 4 }}>
-                    Address
+                <div className="flex items-center gap-6 mb-8">
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg bg-gradient-to-br ${selectedLocation.type === "headquarters" ? "from-yellow-400 to-orange-500" : "from-blue-400 to-blue-600"}`}>
+                    {selectedLocation.type === "headquarters" ? <Building2 className="w-8 h-8 text-white" /> : <MapPin className="w-8 h-8 text-white" />}
                   </div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: "#272727" }}>{selectedLocation.address}</div>
-                </div>
-              )}
-
-              {selectedLocation.city && (
-                <div
-                  style={{
-                    padding: "12px 16px",
-                    background: "#f8fafc",
-                    borderRadius: 12,
-                    border: "1px solid #e2e8f0",
-                  }}
-                >
-                  <div style={{ fontSize: 10, fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", marginBottom: 4 }}>
-                    City
+                  <div>
+                    <h2 className="text-2xl font-black">{selectedLocation.name}</h2>
+                    <p className="text-gray-500 font-semibold">{selectedLocation.country} · {selectedLocation.type.toUpperCase()}</p>
                   </div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: "#272727" }}>{selectedLocation.city}</div>
                 </div>
-              )}
+
+                <div className="mb-6 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Address</p>
+                  <p className="font-semibold">{selectedLocation.address}</p>
+                </div>
+
+                <div className="grid grid-cols-3 gap-4 mb-10">
+                  <div className="p-4 rounded-3xl bg-gray-50 text-center">
+                    <span className="text-[10px] text-gray-400 font-bold uppercase block mb-1">Shops</span>
+                    <p className="text-xl font-black">{selectedLocation.stats.shops}</p>
+                  </div>
+                  <div className="p-4 rounded-3xl bg-gray-50 text-center">
+                    <span className="text-[10px] text-gray-400 font-bold uppercase block mb-1">Revenue</span>
+                    <p className="text-xl font-black">{selectedLocation.stats.revenue}</p>
+                  </div>
+                  <div className="p-4 rounded-3xl bg-gray-50 text-center">
+                    <span className="text-[10px] text-gray-400 font-bold uppercase block mb-1">Growth</span>
+                    <p className="text-xl font-black text-green-600">+{selectedLocation.stats.growth}%</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <Button className="flex-1 bg-black hover:bg-black/80 text-white py-6 rounded-2xl font-black">Contact Center</Button>
+                  <Button variant="outline" onClick={() => setSelectedLocation(null)} className="flex-1 border-gray-200 py-6 rounded-2xl font-black">Close</Button>
+                </div>
+              </Card>
             </motion.div>
           </motion.div>
         )}
@@ -602,17 +448,3 @@ export default function MapWidget() {
   );
 }
 
-const socialBtnStyle: React.CSSProperties = {
-  width: 36,
-  height: 36,
-  borderRadius: 10,
-  background: "#f1f5f9",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  border: "none",
-  cursor: "pointer",
-  textDecoration: "none",
-  transition: "all 0.2s",
-  fontSize: 16,
-};
