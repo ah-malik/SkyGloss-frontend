@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Globe, MapPin, Building2, TrendingUp, Users, X, Map as MapIcon, Loader2, Search } from "lucide-react";
 import api from "../api/axios";
+import MapWidget from "./MapWidget";
 
 // Custom marker icons
 const createCustomIcon = (type: "headquarters" | "Partner" | "retail" | "shop") => {
@@ -232,9 +233,11 @@ export function InteractiveWorldMap() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
+
     <div className="w-full space-y-8">
+      <MapWidget />
       {/* View Mode Toggle - Integrated Style */}
-      <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 px-4">
+      <div className="hidden flex flex-wrap justify-center items-center gap-2 sm:gap-4 px-4">
         <Button
           onClick={() => { setViewMode("global"); setCountryFilter("All"); }}
           className={`px-4 min-h-12 px-5 py-2.5 sm:px-8 py-2 sm:py-3 rounded-xl transition-all duration-200 border-none ${viewMode === "global"
@@ -308,7 +311,7 @@ export function InteractiveWorldMap() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+      <div className="hidden grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         {/* Real World Map Container */}
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}

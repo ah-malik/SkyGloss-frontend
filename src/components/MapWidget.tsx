@@ -200,9 +200,10 @@ export default function MapWidget() {
   }, [locations, viewMode, countryFilter, searchQuery]);
 
   const availableCountries = useMemo(() => {
-    const countries = new Set(locations.map((loc) => loc.country));
-    return ["All", ...Array.from(countries)].sort();
+    const countries = Array.from(new Set(locations.map((loc) => loc.country))).sort();
+    return ["All", ...countries];
   }, [locations]);
+
 
   const groupedLocations = useMemo(() => {
     const groups: Record<string, Location[]> = {};
@@ -218,7 +219,7 @@ export default function MapWidget() {
   }, [currentLocations]);
 
   return (
-    <div className="w-full h-screen p-4 sm:p-8 bg-white overflow-y-auto">
+    <div className="w-full h-screen min-h-[650px] p-4 sm:p-8 bg-white overflow-y-auto">
       <div className="w-full space-y-8 max-w-[1600px] mx-auto">
         {/* View Mode Toggle */}
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4">
@@ -283,21 +284,20 @@ export default function MapWidget() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Map Section */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="
-            hidden md:block
-          lg:col-span-2">
+            hidden sm:block lg:col-span-2">
             <Card className="p-0 rounded-2xl relative overflow-hidden bg-white border-2 border-[#0EA0DC]/10 shadow-xl" style={{ height: "600px" }}>
               {loading && (
                 <div className="absolute inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center z-[1000]">
                   <Loader2 className="w-10 h-10 text-[#0EA0DC] animate-spin" />
                 </div>
               )}
-              <MapContainer 
+              <MapContainer
                 key={`${mapCenter[0]}-${mapCenter[1]}-${mapZoom}`}
-                center={mapCenter && !isNaN(mapCenter[0]) ? mapCenter : [20, 0]} 
-                zoom={mapZoom || 2} 
-                scrollWheelZoom={true} 
-                className="w-full h-full" 
-                zoomControl={false} 
+                center={mapCenter && !isNaN(mapCenter[0]) ? mapCenter : [20, 0]}
+                zoom={mapZoom || 2}
+                scrollWheelZoom={true}
+                className="w-full h-full"
+                zoomControl={false}
                 style={{ zIndex: 9 }}
               >
                 <TileLayer
@@ -309,7 +309,7 @@ export default function MapWidget() {
                   const lat = Number(group.center.lat);
                   const lng = Number(group.center.lng);
                   if (isNaN(lat) || isNaN(lng)) return null;
-                  
+
                   return (
                     <Marker
                       key={`${group.country}-${idx}`}
