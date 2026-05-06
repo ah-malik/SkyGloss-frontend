@@ -130,10 +130,13 @@ const headquarters: Location = {
 function ChangeView({ center, zoom }: { center: [number, number]; zoom: number }) {
   const map = useMap();
   useEffect(() => {
-    map.flyTo(center, zoom, { duration: 1.5 });
+    if (center && !isNaN(center[0]) && !isNaN(center[1])) {
+      map.flyTo(center, zoom, { duration: 1.5 });
+    }
   }, [center, zoom, map]);
   return null;
 }
+
 
 const API_BASE = (import.meta.env.VITE_API_URL || "https://skygloss-backend-production-3b96.up.railway.app").replace(/\/$/, "");
 
@@ -161,15 +164,22 @@ export default function MapWidget() {
         // Backend wraps response in { data, statusCode, message }
         const rawLocations = responseData.data || [];
 
-        // Transform public data to include the random stats used in InteractiveWorldMap
-        const enrichedData = rawLocations.map((user: any) => ({
-          ...user,
-          stats: {
-            shops: user.shops || Math.floor(Math.random() * 20) + 5,
-            revenue: user.revenue || `$${(Math.random() * 500 + 100).toFixed(1)}k`,
-            growth: (Math.random() * 15 + 5).toFixed(1)
-          }
-        }));
+        // Transform public data and filter out invalid coordinates
+        const enrichedData = rawLocations
+          .filter((user: any) => 
+            user.lat != null && 
+            user.lng != null && 
+            !isNaN(Number(user.lat)) && 
+            !isNaN(Number(user.lng))
+          )
+          .map((user: any) => ({
+            ...user,
+            stats: {
+              shops: user.shops || Math.floor(Math.random() * 20) + 5,
+              revenue: user.revenue || `$${(Math.random() * 500 + 100).toFixed(1)}k`,
+              growth: (Math.random() * 15 + 5).toFixed(1)
+            }
+          }));
 
         setLocations([headquarters, ...enrichedData]);
       } catch (err) {
